@@ -1,0 +1,141 @@
+import { DatePipe, TitleCasePipe } from '@angular/common';
+import { Component, OnInit, inject, signal } from '@angular/core';
+import { AbstractControl, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  AdminUser,
+  STAFF_PERMISSION_OPTIONS,
+  StaffRole
+} from '../../../core/models';
+import { AdminUsersService } from '../../../core/services/admin-users.service';
+import { AuthService } from '../../../core/services/auth.service';
+import { ToastService } from '../../../core/services/toast.service';
+import {
+  adminUserPayload,
+  emailAddress,
+  matchControls,
+  optionalPhone,
+  personName,
+  staffPassword
+} from '../../../core/utils/auth-validation';
+import { LvjIconsModule } from '../../../shared/icons/lvj-icons';
+
+@Component({
+  selector: 'app-admin-users',
+  imports: [ReactiveFormsModule, DatePipe, TitleCasePipe, LvjIconsModule],
+  templateUrl: './users.component.html',
+  styleUrl: './users.component.scss'
+})
+export class AdminUsersComponent implements OnInit {
+  private readonly api = inject(AdminUsersService);
+  private readonly toast = inject(ToastService);
+  private readonly fb = inject(FormBuilder);
+  readonly auth = inject(AuthService);
+  readonly permissionOptions = STAFF_PERMISSION_OPTIONS;
+  readonly users = signal<AdminUser[]>([]);
+  readonly loading = signal(true);
+  readonly creating = signal(false);
+  readonly showPassword = signal(false);
+  readonly showConfirm = signal(false);
+  readonly formError = signal('');
+  readonly selectedPermissions = signal<string[]>([]);
+
+  readonly form = this.fb.nonNullable.group(
+    {
+      name: ['', [personName]],
+      email: ['', [emailAddress]],
+      phone: ['', [optionalPhone]],
+      role: ['staff' as StaffRole, [Validators.required]],
+      password: ['', [staffPassword]],
+      confirmPassword: ['', [Validators.required]]
+    },
+    { validators: matchControls('password', 'confirmPassword') }
+  );
+
+  ngOnInit(): void {
+    this.load();
+  }
+
+  load(): void {
+    this.loading.set(true);
+    this.api.list().subscribe({
+      next: list => {
+        this.users.set([...list].sort((a, b) => a.name.localeCompare(b.name)));
+        this.loading.set(false);
+      },
+      error: () => this.loading.set(false)
+    });
+  }
+
+  invalid(control: AbstractControl | null): boolean {
+    return !!control && control.invalid && (control.touched || control.dirty);
+  }
+
+  confirmInvalid(): boolean {
+    const confirm = this.form.controls.confirmPassword;
+    return this.invalid(confirm) || (this.form.hasError('mismatch') && (confirm.touched || confirm.dirty));
+  }
+
+  message(control: AbstractControl | null, label: string): string {
+    if (!control?.errors) return '';
+    if (control.errors['required']) return `${label} is required.`;
+    if (control.errors['email']) return 'Enter a valid email address.';
+    if (control.errors['minlength']) return `${label} must be at least ${control.errors['minlength'].requiredLength} characters.`;
+    if (control.errors['name']) return 'Use letters, spaces, hyphen, or apostrophe only.';
+    if (control.errors['phone']) return 'Enter a valid phone number with at least 10 digits.';
+    return `${label} is invalid.`;
+  }
+
+  isStaff(): boolean {
+    return this.form.controls.role.value === 'staff';
+  }
+
+  togglePermission(key: string): void {
+    const current = this.selectedPermissions();
+    this.selectedPermissions.set(current.includes(key) ? current.filter(item => item !== key) : [...current, key]);
+  }
+
+  create(): void {
+    this.formError.set('');
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
+    const value = this.form.getRawValue();
+    const payload = adminUserPayload({
+      ...value,
+      permissions: this.isStaff() ? this.selectedPermissions() : undefined
+    });
+    this.form.patchValue({ password: '', confirmPassword: '' });
+    this.creating.set(true);
+    this.api.create(payload).subscribe({
+      next: created => {
+        this.creating.set(false);
+        this.users.update(list => [...list, created].sort((a, b) => a.name.localeCompare(b.name)));
+        this.form.reset({ name: '', email: '', phone: '', role: 'staff', password: '', confirmPassword: '' });
+        this.selectedPermissions.set([]);
+        this.toast.success(`${created.name} can now sign in at /admin/login.`, 'Staff account created');
+      },
+      error: err => {
+        this.creating.set(false);
+        const field = err.error?.errors;
+        const first = field ? Object.values(field as Record<string, string[]>).flat()[0] : '';
+        this.formError.set(first || err.error?.message || 'Unable to create this account.');
+      }
+    });
+  }
+
+  setActive(user: AdminUser, isActive: boolean): void {
+    if (user.id === this.auth.user()?.id) return;
+    this.api.updateStatus(user.id, isActive).subscribe({
+      next: updated => {
+        this.users.update(list => list.map(item => item.id === updated.id ? updated : item));
+        this.toast.success(`${updated.name} is ${updated.isActive ? 'active' : 'deactivated'}.`);
+      },
+      error: err => this.toast.error(err.error?.message || 'Unable to update this account.')
+    });
+  }
+
+  isSelf(user: AdminUser): boolean {
+    return user.id === this.auth.user()?.id;
+  }
+}

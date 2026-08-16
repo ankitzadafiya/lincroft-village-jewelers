@@ -1,0 +1,137 @@
+<div class="admin-page users">
+  <div class="head">
+    <div>
+      <p class="eyebrow">Access</p>
+      <h1>Staff accounts</h1>
+      <p class="lead">Create an atelier admin or staff login here. They sign in at <code>/admin/login</code> and open the console directly. Shopper accounts stay on the storefront.</p>
+    </div>
+  </div>
+
+  <div class="layout">
+    <form class="create" [formGroup]="form" (ngSubmit)="create()" novalidate autocomplete="off">
+      <p class="eyebrow">Create admin</p>
+      <h2>New staff login</h2>
+      <p class="hint">Password is sent only in the secure request body — never shown in the list afterward.</p>
+
+      @if (formError()) {
+        <p class="err" role="alert">{{ formError() }}</p>
+      }
+
+      <div class="field" [class.invalid]="invalid(form.controls.name)">
+        <label for="staff-name">Full name</label>
+        <input id="staff-name" formControlName="name" type="text" maxlength="80" autocomplete="off" />
+        @if (invalid(form.controls.name)) {
+          <span class="error">{{ message(form.controls.name, 'Name') }}</span>
+        }
+      </div>
+
+      <div class="field" [class.invalid]="invalid(form.controls.email)">
+        <label for="staff-email">Email</label>
+        <input id="staff-email" formControlName="email" type="email" maxlength="254" autocomplete="off" autocapitalize="none" spellcheck="false" />
+        @if (invalid(form.controls.email)) {
+          <span class="error">{{ message(form.controls.email, 'Email') }}</span>
+        }
+      </div>
+
+      <div class="field" [class.invalid]="invalid(form.controls.phone)">
+        <label for="staff-phone">Phone <span class="opt">optional</span></label>
+        <input id="staff-phone" formControlName="phone" type="tel" maxlength="20" />
+        @if (invalid(form.controls.phone)) {
+          <span class="error">{{ message(form.controls.phone, 'Phone') }}</span>
+        }
+      </div>
+
+      <div class="field">
+        <label for="staff-role">Role</label>
+        <select id="staff-role" formControlName="role">
+          <option value="admin">Admin — full console</option>
+          <option value="staff">Staff — pick screens below</option>
+        </select>
+      </div>
+
+      @if (isStaff()) {
+        <fieldset class="perms">
+          <legend>Staff permissions</legend>
+          <p class="hint">Staff start with no screens until you check them.</p>
+          @for (item of permissionOptions; track item.key) {
+            <label class="check">
+              <input type="checkbox" [checked]="selectedPermissions().includes(item.key)" (change)="togglePermission(item.key)" />
+              {{ item.label }}
+            </label>
+          }
+        </fieldset>
+      }
+
+      <div class="field" [class.invalid]="invalid(form.controls.password)">
+        <label for="staff-password">Password</label>
+        <div class="secret">
+          <input id="staff-password" formControlName="password" [type]="showPassword() ? 'text' : 'password'" maxlength="128" autocomplete="new-password" />
+          <button type="button" class="reveal" (click)="showPassword.set(!showPassword())" [attr.aria-label]="showPassword() ? 'Hide password' : 'Show password'">
+            <lucide-icon [name]="showPassword() ? 'eye-off' : 'eye'" [size]="18" [strokeWidth]="1.7"></lucide-icon>
+          </button>
+        </div>
+        @if (invalid(form.controls.password)) {
+          <span class="error">{{ message(form.controls.password, 'Password') }}</span>
+        } @else {
+          <span class="hint">At least 8 characters.</span>
+        }
+      </div>
+
+      <div class="field" [class.invalid]="confirmInvalid()">
+        <label for="staff-confirm">Confirm password</label>
+        <div class="secret">
+          <input id="staff-confirm" formControlName="confirmPassword" [type]="showConfirm() ? 'text' : 'password'" maxlength="128" autocomplete="new-password" />
+          <button type="button" class="reveal" (click)="showConfirm.set(!showConfirm())" [attr.aria-label]="showConfirm() ? 'Hide password' : 'Show password'">
+            <lucide-icon [name]="showConfirm() ? 'eye-off' : 'eye'" [size]="18" [strokeWidth]="1.7"></lucide-icon>
+          </button>
+        </div>
+        @if (form.hasError('mismatch') && form.controls.confirmPassword.touched) {
+          <span class="error">Passwords do not match.</span>
+        } @else if (invalid(form.controls.confirmPassword)) {
+          <span class="error">Confirm the password.</span>
+        }
+      </div>
+
+      <button class="btn btn-gold" type="submit" [disabled]="creating()">
+        {{ creating() ? 'Creating…' : 'Create account' }}
+      </button>
+    </form>
+
+    <div class="list">
+      @if (loading()) {
+        <p class="muted">Loading staff…</p>
+      } @else {
+        <p class="count">{{ users().length }} staff accounts</p>
+        <div class="table">
+          <div class="row head-row">
+            <span>Person</span>
+            <span>Role</span>
+            <span>Status</span>
+            <span>Last login</span>
+            <span></span>
+          </div>
+          @for (user of users(); track user.id) {
+            <div class="row" [class.off]="!user.isActive">
+              <span>
+                <strong>{{ user.name }}</strong>
+                <small>{{ user.email }}</small>
+              </span>
+              <span class="role" [attr.data-role]="user.role">{{ user.role | titlecase }}</span>
+              <span class="status" [attr.data-on]="user.isActive">{{ user.isActive ? 'Active' : 'Inactive' }}</span>
+              <span>{{ user.lastLoginAt ? (user.lastLoginAt | date:'mediumDate') : 'Never' }}</span>
+              <span class="actions">
+                @if (isSelf(user)) {
+                  <span class="you">You</span>
+                } @else if (user.isActive) {
+                  <button type="button" (click)="setActive(user, false)">Deactivate</button>
+                } @else {
+                  <button type="button" class="on" (click)="setActive(user, true)">Reactivate</button>
+                }
+              </span>
+            </div>
+          }
+        </div>
+      }
+    </div>
+  </div>
+</div>

@@ -1,0 +1,91 @@
+<div class="admin-page">
+  <a routerLink="/admin/products">← Products</a>
+  <h1>{{ id ? 'Edit product' : 'New product' }}</h1>
+  <form [formGroup]="form" (ngSubmit)="save()">
+    <div class="form-grid">
+      <div class="field"><label>SKU</label><input formControlName="sku" /></div>
+      <div class="field"><label>Name</label><input formControlName="name" /></div>
+      <div class="field"><label>Slug</label><input formControlName="slug" placeholder="optional" /></div>
+      <div class="field">
+        <label>Category</label>
+        <select formControlName="categoryId">
+          <option value="">Select</option>
+          @for (cat of parents(); track cat.id) {
+            <option [value]="cat.id">{{ cat.name }}</option>
+          }
+        </select>
+      </div>
+      <div class="field">
+        <label>Subcategory</label>
+        <select formControlName="subcategoryId">
+          <option value="">None</option>
+          @for (cat of children(); track cat.id) {
+            <option [value]="cat.id">{{ cat.name }}</option>
+          }
+        </select>
+      </div>
+      <div class="field">
+        <label>Designer</label>
+        <select formControlName="designerId">
+          <option value="">None</option>
+          @for (designer of designers(); track designer.id) {
+            <option [value]="designer.id">{{ designer.name }}</option>
+          }
+        </select>
+      </div>
+      <div class="field"><label>Price</label><input type="number" formControlName="price" /></div>
+      <div class="field"><label>Compare-at price</label><input type="number" formControlName="compareAtPrice" /></div>
+      <div class="field"><label>Status</label>
+        <select formControlName="status">
+          <option value="active">Active</option>
+          <option value="inactive">Inactive</option>
+          <option value="archived">Archived</option>
+        </select>
+      </div>
+      <div class="field"><label>Availability</label>
+        <select formControlName="availability">
+          <option value="in_stock">In stock</option>
+          <option value="made_to_order">Made to order</option>
+          <option value="sold">Sold</option>
+        </select>
+      </div>
+      <div class="field"><label><input type="checkbox" formControlName="showPrice" /> Show price</label></div>
+      <div class="field"><label><input type="checkbox" formControlName="featured" /> Featured</label></div>
+      <div class="field"><label><input type="checkbox" formControlName="newArrival" /> New arrival</label></div>
+      <div class="field"><label><input type="checkbox" formControlName="bestSeller" /> Best seller</label></div>
+      <div class="field full"><label>Description</label><textarea formControlName="description"></textarea></div>
+      <div class="field full"><label>Tags</label><input formControlName="tags" placeholder="comma separated" /></div>
+    </div>
+
+    <div class="presets">
+      <span>Specification presets</span>
+      <button type="button" class="btn btn-ghost" (click)="applyPreset('ring')">Ring</button>
+      <button type="button" class="btn btn-ghost" (click)="applyPreset('earrings')">Earrings</button>
+      <button type="button" class="btn btn-ghost" (click)="applyPreset('watch')">Watch</button>
+      <button type="button" class="btn btn-ghost" (click)="addSpec()">Add field</button>
+    </div>
+
+    <div formArrayName="specs" class="specs">
+      @for (spec of specs.controls; track $index) {
+        <div [formGroupName]="$index" class="spec-row">
+          <input formControlName="label" placeholder="Label" />
+          <input formControlName="key" placeholder="Key" />
+          <input formControlName="value" placeholder="Value" />
+          <select formControlName="group">
+            <option value="metal">Metal</option>
+            <option value="diamond">Diamond</option>
+            <option value="gemstone">Gemstone</option>
+            <option value="watch">Watch</option>
+            <option value="dimensions">Dimensions</option>
+            <option value="general">General</option>
+          </select>
+        </div>
+      }
+    </div>
+
+    <app-media-uploader kind="image" [items]="images()" (itemsChange)="images.set($event)" />
+    <app-media-uploader kind="video" [items]="videos()" (itemsChange)="videos.set($event)" />
+
+    <button class="btn" type="submit">Save product</button>
+  </form>
+</div>

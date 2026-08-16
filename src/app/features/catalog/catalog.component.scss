@@ -1,0 +1,133 @@
+@use 'mixins' as *;
+
+.catalog {
+  padding: 1.25rem 0 5rem;
+  background: var(--lvj-white);
+}
+
+.layout {
+  display: grid;
+  gap: 2rem;
+  padding-top: 0.5rem;
+}
+
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.75rem;
+  flex-wrap: wrap;
+}
+
+.tools {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.toolbar label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--lvj-muted);
+}
+
+.toolbar select {
+  border: 1px solid var(--lvj-line-strong);
+  background: #fff;
+  padding: 0.55rem 0.75rem;
+  letter-spacing: 0;
+  text-transform: none;
+  font-size: 0.88rem;
+  color: var(--lvj-charcoal);
+  min-width: 10rem;
+}
+
+.cols {
+  display: inline-flex;
+  gap: 0.3rem;
+}
+
+.cols button {
+  width: 34px;
+  height: 34px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  background: #fff;
+  color: #888;
+  cursor: pointer;
+  font-size: 0.75rem;
+  font-weight: 600;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.cols button.on,
+.cols button:hover {
+  background: #111;
+  color: #fff;
+  border-color: #111;
+}
+
+.grid-products.cols-2 {
+  grid-template-columns: 1fr 1fr;
+}
+
+.grid-products.cols-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.grid-products.cols-4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+@media (max-width: 1100px) {
+  .grid-products.cols-4 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 767px) {
+  .grid-products.cols-2,
+  .grid-products.cols-3,
+  .grid-products.cols-4 {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .cols {
+    display: none;
+  }
+}
+
+.filter-toggle {
+  margin: 0 0 1rem;
+  display: inline-flex;
+}
+
+@include mq(lg) {
+  .layout {
+    grid-template-columns: 240px 1fr;
+    gap: 3.25rem;
+  }
+
+  .filter-toggle {
+    display: none;
+  }
+}
+
+@media (max-width: 1023px) {
+  .layout app-product-filters {
+    display: none;
+  }
+
+  .layout.open app-product-filters {
+    display: block;
+    background: #fafafa;
+    padding: 1.25rem;
+    border: 1px solid var(--lvj-line);
+    margin-bottom: 0.5rem;
+  }
+}

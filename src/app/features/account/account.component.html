@@ -1,0 +1,200 @@
+<section class="auth-page">
+  <div class="container shell">
+    @if (customer.isAuthenticated()) {
+      <article class="profile">
+        <div class="avatar" aria-hidden="true">{{ initials() }}</div>
+        <div class="who">
+          <p class="eyebrow">Your profile</p>
+          <h1>{{ customer.user()?.name }}</h1>
+          <p class="email">{{ customer.user()?.email }}</p>
+          <div class="chips">
+            <span>{{ customer.user()?.provider === 'google' ? 'Google account' : 'Email account' }}</span>
+            @if (customer.user()?.role === 'admin' || customer.user()?.role === 'staff') {
+              <span class="staff">Atelier {{ customer.user()?.role }}</span>
+            }
+          </div>
+        </div>
+        <dl class="facts">
+          @if (customer.user()?.phone) {
+            <div>
+              <dt>Phone</dt>
+              <dd>{{ customer.user()?.phone }}</dd>
+            </div>
+          }
+          <div>
+            <dt>Saved favorites</dt>
+            <dd>{{ favorites.count() }}</dd>
+          </div>
+          <div>
+            <dt>Signed in as</dt>
+            <dd>{{ customer.user()?.email }}</dd>
+          </div>
+        </dl>
+        <div class="actions">
+          <a routerLink="/favorites" class="btn btn-gold">View favorites</a>
+          <a routerLink="/inquiry" class="btn btn-ghost">Inquiry bag</a>
+          @if (customer.user()?.role === 'admin' || customer.user()?.role === 'staff') {
+            <a routerLink="/admin/login" class="btn btn-ghost">Open atelier admin</a>
+          }
+          <button type="button" class="btn btn-ghost" (click)="logout()">Sign out</button>
+        </div>
+      </article>
+    } @else {
+      <div class="layout">
+        <aside class="intro">
+          <p class="eyebrow">Account</p>
+          <h1>{{ mode() === 'login' ? 'Welcome back' : 'Create your account' }}</h1>
+          <p>Save favorites across devices and keep inquiry pieces with you. Guest favorites stay on this browser until you sign in.</p>
+        </aside>
+
+        <div class="auth-card">
+          <div class="tabs" role="tablist" aria-label="Account">
+            <button type="button" role="tab" [class.on]="mode() === 'login'" [attr.aria-selected]="mode() === 'login'" (click)="setMode('login')">Sign in</button>
+            <button type="button" role="tab" [class.on]="mode() === 'register'" [attr.aria-selected]="mode() === 'register'" (click)="setMode('register')">Create account</button>
+          </div>
+
+          @if (error()) {
+            <p class="err" role="alert">{{ error() }}</p>
+          }
+
+          <div class="oauth">
+            <app-google-sign-in
+              [label]="mode() === 'register' ? 'Continue with Google' : 'Sign in with Google'"
+              [disabled]="submitting()"
+              (credential)="google($event)"
+              (failed)="error.set($event)" />
+            <p class="divider"><span>or use email</span></p>
+          </div>
+
+          @if (mode() === 'login') {
+            <form [formGroup]="loginForm" (ngSubmit)="login()" class="panel" novalidate autocomplete="on">
+              <div class="field" [class.invalid]="invalid(loginForm.controls.email)">
+                <label for="login-email">Email</label>
+                <input
+                  id="login-email"
+                  formControlName="email"
+                  type="email"
+                  inputmode="email"
+                  maxlength="254"
+                  autocomplete="username"
+                  autocapitalize="none"
+                  spellcheck="false"
+                  [attr.aria-invalid]="invalid(loginForm.controls.email)" />
+                @if (invalid(loginForm.controls.email)) {
+                  <span class="error">{{ message(loginForm.controls.email, 'Email') }}</span>
+                }
+              </div>
+
+              <div class="field" [class.invalid]="invalid(loginForm.controls.password)">
+                <label for="login-password">Password</label>
+                <div class="secret">
+                  <input
+                    id="login-password"
+                    formControlName="password"
+                    [type]="showLoginPassword() ? 'text' : 'password'"
+                    maxlength="128"
+                    autocomplete="current-password"
+                    spellcheck="false"
+                    [attr.aria-invalid]="invalid(loginForm.controls.password)" />
+                  <button type="button" class="reveal" (click)="showLoginPassword.set(!showLoginPassword())" [attr.aria-label]="showLoginPassword() ? 'Hide password' : 'Show password'" [attr.aria-pressed]="showLoginPassword()">
+                    <lucide-icon [name]="showLoginPassword() ? 'eye-off' : 'eye'" [size]="18" [strokeWidth]="1.7"></lucide-icon>
+                  </button>
+                </div>
+                @if (invalid(loginForm.controls.password)) {
+                  <span class="error">{{ message(loginForm.controls.password, 'Password') }}</span>
+                }
+              </div>
+
+              <button class="btn btn-gold" type="submit" [disabled]="submitting()">
+                {{ submitting() ? 'Signing in…' : 'Sign in' }}
+              </button>
+            </form>
+          } @else {
+            <form [formGroup]="registerForm" (ngSubmit)="register()" class="panel" novalidate autocomplete="on">
+              <div class="field" [class.invalid]="invalid(registerForm.controls.name)">
+                <label for="reg-name">Full name</label>
+                <input id="reg-name" formControlName="name" type="text" maxlength="80" autocomplete="name" [attr.aria-invalid]="invalid(registerForm.controls.name)" />
+                @if (invalid(registerForm.controls.name)) {
+                  <span class="error">{{ message(registerForm.controls.name, 'Name') }}</span>
+                }
+              </div>
+
+              <div class="field" [class.invalid]="invalid(registerForm.controls.email)">
+                <label for="reg-email">Email</label>
+                <input
+                  id="reg-email"
+                  formControlName="email"
+                  type="email"
+                  inputmode="email"
+                  maxlength="254"
+                  autocomplete="email"
+                  autocapitalize="none"
+                  spellcheck="false"
+                  [attr.aria-invalid]="invalid(registerForm.controls.email)" />
+                @if (invalid(registerForm.controls.email)) {
+                  <span class="error">{{ message(registerForm.controls.email, 'Email') }}</span>
+                }
+              </div>
+
+              <div class="field" [class.invalid]="invalid(registerForm.controls.phone)">
+                <label for="reg-phone">Phone <span class="opt">optional</span></label>
+                <input id="reg-phone" formControlName="phone" type="tel" inputmode="tel" maxlength="20" autocomplete="tel" [attr.aria-invalid]="invalid(registerForm.controls.phone)" />
+                @if (invalid(registerForm.controls.phone)) {
+                  <span class="error">{{ message(registerForm.controls.phone, 'Phone') }}</span>
+                }
+              </div>
+
+              <div class="field" [class.invalid]="invalid(registerForm.controls.password)">
+                <label for="reg-password">Password</label>
+                <div class="secret">
+                  <input
+                    id="reg-password"
+                    formControlName="password"
+                    [type]="showRegisterPassword() ? 'text' : 'password'"
+                    maxlength="128"
+                    autocomplete="new-password"
+                    spellcheck="false"
+                    [attr.aria-invalid]="invalid(registerForm.controls.password)" />
+                  <button type="button" class="reveal" (click)="showRegisterPassword.set(!showRegisterPassword())" [attr.aria-label]="showRegisterPassword() ? 'Hide password' : 'Show password'" [attr.aria-pressed]="showRegisterPassword()">
+                    <lucide-icon [name]="showRegisterPassword() ? 'eye-off' : 'eye'" [size]="18" [strokeWidth]="1.7"></lucide-icon>
+                  </button>
+                </div>
+                @if (invalid(registerForm.controls.password)) {
+                  <span class="error">{{ message(registerForm.controls.password, 'Password') }}</span>
+                } @else {
+                  <span class="hint">At least 8 characters, with a letter and a number.</span>
+                }
+              </div>
+
+              <div class="field" [class.invalid]="confirmInvalid()">
+                <label for="reg-confirm">Confirm password</label>
+                <div class="secret">
+                  <input
+                    id="reg-confirm"
+                    formControlName="confirmPassword"
+                    [type]="showConfirmPassword() ? 'text' : 'password'"
+                    maxlength="128"
+                    autocomplete="new-password"
+                    spellcheck="false"
+                    [attr.aria-invalid]="confirmInvalid()" />
+                  <button type="button" class="reveal" (click)="showConfirmPassword.set(!showConfirmPassword())" [attr.aria-label]="showConfirmPassword() ? 'Hide password' : 'Show password'" [attr.aria-pressed]="showConfirmPassword()">
+                    <lucide-icon [name]="showConfirmPassword() ? 'eye-off' : 'eye'" [size]="18" [strokeWidth]="1.7"></lucide-icon>
+                  </button>
+                </div>
+                @if (registerForm.hasError('mismatch') && registerForm.controls.confirmPassword.touched) {
+                  <span class="error">Passwords do not match.</span>
+                } @else if (invalid(registerForm.controls.confirmPassword)) {
+                  <span class="error">Confirm your password.</span>
+                }
+              </div>
+
+              <button class="btn btn-gold" type="submit" [disabled]="submitting()">
+                {{ submitting() ? 'Creating account…' : 'Create account' }}
+              </button>
+            </form>
+          }
+        </div>
+      </div>
+    }
+  </div>
+</section>

@@ -1,0 +1,145 @@
+@use 'mixins' as *;
+
+.editorial {
+  padding: 1rem 0 2rem;
+}
+
+.editorial-grid {
+  display: grid;
+  gap: 1rem;
+
+  @include mq(md) {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.banner {
+  position: relative;
+  min-height: 320px;
+  border-radius: 22px;
+  overflow: hidden;
+  background: #efece7;
+  display: block;
+}
+
+.banner img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  inset: 0;
+  transition: transform 0.9s var(--lvj-ease-out);
+  animation: floatZoom 12s ease-in-out infinite alternate;
+}
+
+.banner:hover img {
+  transform: scale(1.06);
+  animation-play-state: paused;
+}
+
+.banner-copy {
+  position: absolute;
+  inset: auto 0 0 0;
+  padding: 1.5rem;
+  color: #fff;
+  background: linear-gradient(180deg, transparent, rgba(20, 18, 16, 0.55));
+  display: grid;
+  gap: 0.35rem;
+}
+
+.banner-copy p {
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 600;
+  opacity: 0.85;
+}
+
+.banner-copy h2 {
+  color: #fff;
+  font-family: var(--font-logo-serif);
+  font-style: italic;
+  font-size: clamp(1.7rem, 2.8vw, 2.35rem);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+
+.banner-copy span {
+  font-size: 0.88rem;
+  font-weight: 600;
+  margin-top: 0.35rem;
+  width: fit-content;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.7);
+  padding-bottom: 2px;
+}
+
+.soft-band {
+  background: transparent;
+}
+
+.occasions {
+  padding: 1rem 0 5rem;
+}
+
+.occ-head {
+  text-align: center;
+  margin-bottom: 1.75rem;
+}
+
+.occ-head h2 {
+  font-size: clamp(1.8rem, 3vw, 2.5rem);
+  font-weight: 600;
+}
+
+.occ-grid {
+  display: grid;
+  gap: 1rem;
+
+  @include mq(md) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.occ {
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+  min-height: 260px;
+  background: #efece7;
+}
+
+.occ img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  inset: 0;
+  transition: transform 0.8s var(--lvj-ease-out);
+  animation: floatZoom 11s ease-in-out infinite alternate;
+}
+
+.occ:hover img {
+  transform: scale(1.07);
+}
+
+.occ span {
+  position: absolute;
+  left: 1.1rem;
+  bottom: 1.1rem;
+  z-index: 1;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(8px);
+  padding: 0.55rem 0.95rem;
+  border-radius: 999px;
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+@keyframes floatZoom {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.08);
+  }
+}

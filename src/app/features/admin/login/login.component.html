@@ -1,0 +1,75 @@
+<section class="login">
+  <div class="frame">
+    <aside>
+      <p class="eyebrow">Staff only</p>
+      <h1>Atelier console</h1>
+      <p>These credentials open the admin workspace — catalog, leads, content, and user access.</p>
+      <ul>
+        <li>Manage products and categories</li>
+        <li>Review inquiries and custom requests</li>
+        <li>Grant admin rights to any shopper</li>
+      </ul>
+    </aside>
+    <div class="panel">
+      <header class="brand">
+        <p class="eyebrow">Lincroft Village Jewelers</p>
+        <h2>Staff sign in</h2>
+        <p class="lead">Use your atelier email, or a Google account that already has admin rights.</p>
+      </header>
+
+      @if (error()) {
+        <p class="banner" role="alert">{{ error() }}</p>
+      }
+
+      <app-google-sign-in
+        label="Continue with Google"
+        [disabled]="submitting()"
+        (credential)="google($event)"
+        (failed)="error.set($event)" />
+      <p class="divider"><span>or staff email</span></p>
+
+      <form [formGroup]="form" (ngSubmit)="submit()" novalidate autocomplete="on">
+        <div class="field" [class.invalid]="invalid('email')">
+          <label for="admin-email">Email</label>
+          <input
+            id="admin-email"
+            formControlName="email"
+            type="email"
+            inputmode="email"
+            maxlength="254"
+            autocomplete="username"
+            autocapitalize="none"
+            spellcheck="false"
+            [attr.aria-invalid]="invalid('email')" />
+          @if (invalid('email')) {
+            <span class="error">{{ emailError() }}</span>
+          }
+        </div>
+
+        <div class="field" [class.invalid]="invalid('password')">
+          <label for="admin-password">Password</label>
+          <div class="secret">
+            <input
+              id="admin-password"
+              formControlName="password"
+              [type]="showPassword() ? 'text' : 'password'"
+              maxlength="128"
+              autocomplete="current-password"
+              spellcheck="false"
+              [attr.aria-invalid]="invalid('password')" />
+            <button type="button" class="reveal" (click)="showPassword.set(!showPassword())" [attr.aria-label]="showPassword() ? 'Hide password' : 'Show password'" [attr.aria-pressed]="showPassword()">
+              <lucide-icon [name]="showPassword() ? 'eye-off' : 'eye'" [size]="18" [strokeWidth]="1.7"></lucide-icon>
+            </button>
+          </div>
+          @if (invalid('password')) {
+            <span class="error">{{ passwordError() }}</span>
+          }
+        </div>
+
+        <button class="btn btn-gold" type="submit" [disabled]="submitting()">
+          {{ submitting() ? 'Opening console…' : 'Open atelier admin' }}
+        </button>
+      </form>
+    </div>
+  </div>
+</section>

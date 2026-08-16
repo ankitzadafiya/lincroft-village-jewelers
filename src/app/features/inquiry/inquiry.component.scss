@@ -1,0 +1,16 @@
+@use 'mixins' as *;
+
+.bag { padding-bottom: 4rem; }
+.layout { display: grid; gap: 2.4rem; }
+ul { display: grid; gap: 1rem; }
+li {
+  display: grid;
+  grid-template-columns: 72px 1fr auto;
+  gap: 1rem;
+  align-items: center;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--lvj-line);
+}
+img { width: 72px; height: 90px; object-fit: cover; }
+.alt { display: flex; gap: 0.6rem; flex-wrap: wrap; margin-top: 0.8rem; }
+@include mq(lg) { .layout { grid-template-columns: 1fr 0.9fr; align-items: start; } }

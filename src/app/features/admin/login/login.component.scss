@@ -1,0 +1,161 @@
+:host {
+  display: block;
+}
+
+.login {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(circle at 18% 0%, rgba(196, 165, 116, 0.2), transparent 36%),
+    #141210;
+  padding: 2rem 1rem;
+}
+
+.frame {
+  width: min(920px, 100%);
+  display: grid;
+  gap: 1.5rem;
+
+  @media (min-width: 840px) {
+    grid-template-columns: 0.9fr 1.1fr;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(247, 243, 236, 0.08);
+    border-radius: 28px;
+    overflow: hidden;
+    gap: 0;
+  }
+}
+
+aside {
+  color: #f7f3ec;
+  padding: 0.4rem 0.2rem 0;
+
+  @media (min-width: 840px) {
+    padding: 2.4rem 2rem;
+  }
+}
+
+aside h1 {
+  font-family: var(--font-logo-serif);
+  font-style: italic;
+  font-size: clamp(2.2rem, 4vw, 3.1rem);
+  color: #f7f3ec;
+  margin: 0.35rem 0 0.8rem;
+}
+
+aside p,
+aside li {
+  color: rgba(247, 243, 236, 0.7);
+  line-height: 1.55;
+}
+
+aside ul {
+  margin-top: 1.2rem;
+  display: grid;
+  gap: 0.45rem;
+}
+
+.panel {
+  background: #fff;
+  color: var(--lvj-ink);
+  border-radius: 22px;
+  padding: 1.7rem 1.45rem 1.5rem;
+
+  @media (min-width: 840px) {
+    border-radius: 0;
+    padding: 2.1rem 1.8rem;
+  }
+}
+
+.brand {
+  margin-bottom: 1.1rem;
+}
+
+.eyebrow {
+  color: var(--lvj-gold);
+  margin-bottom: 0.4rem;
+}
+
+h2 {
+  font-family: var(--font-logo-serif);
+  font-style: italic;
+  font-size: 2rem;
+  margin: 0 0 0.35rem;
+}
+
+.lead {
+  color: var(--lvj-muted);
+  font-size: 0.92rem;
+}
+
+.divider {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 0.7rem;
+  margin: 1rem 0;
+  color: var(--lvj-muted-2);
+  font-size: 0.78rem;
+}
+
+.divider::before,
+.divider::after {
+  content: '';
+  height: 1px;
+  background: var(--lvj-line);
+}
+
+form {
+  display: grid;
+  gap: 1rem;
+}
+
+.field.invalid input {
+  border-color: #c46a62;
+}
+
+.secret {
+  position: relative;
+}
+
+.secret input {
+  padding-right: 3rem;
+}
+
+.reveal {
+  position: absolute;
+  right: 0.35rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  border: 0;
+  background: transparent;
+  color: var(--lvj-muted);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+}
+
+.banner {
+  color: #9a3b32;
+  background: #f8ece9;
+  padding: 0.7rem 0.85rem;
+  border-radius: var(--lvj-radius-sm);
+  font-size: 0.88rem;
+  margin-bottom: 1rem;
+}
+
+.btn-gold {
+  width: 100%;
+  margin-top: 0.15rem;
+  background: var(--lvj-champagne);
+  border-color: var(--lvj-champagne);
+  color: #141210;
+}
+
+.btn:disabled {
+  opacity: 0.65;
+  cursor: wait;
+}

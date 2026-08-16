@@ -1,0 +1,52 @@
+:root {
+  /* Bright jewelry showroom — Ana Luisa / Tanishq light */
+  --lvj-ivory: #fbfaf8;
+  --lvj-cream: #f5f3ef;
+  --lvj-white: #ffffff;
+  --lvj-paper: #f7f6f3;
+  --lvj-soft: #efece7;
+
+  --lvj-charcoal: #1c1c1c;
+  --lvj-ink: #111111;
+  --lvj-muted: #6f6b66;
+  --lvj-muted-2: #9a9590;
+
+  --lvj-champagne: #c4a574;
+  --lvj-gold: #b8956a;
+  --lvj-gold-deep: #8a6f4a;
+
+  --lvj-line: rgba(28, 28, 28, 0.08);
+  --lvj-line-strong: rgba(28, 28, 28, 0.14);
+  --lvj-shadow: 0 20px 50px rgba(28, 28, 28, 0.08);
+  --lvj-shadow-soft: 0 10px 28px rgba(28, 28, 28, 0.06);
+
+  --lvj-radius: 16px;
+  --lvj-radius-sm: 10px;
+  --lvj-header-h: 72px;
+  --lvj-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --lvj-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+
+  --font-logo: 'Outfit', sans-serif;
+  --font-logo-serif: 'Cormorant Garamond', Georgia, serif;
+  --font-logo-script: 'Great Vibes', cursive;
+  --font-display: 'Outfit', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+
+  --text-xs: 0.7rem;
+  --text-sm: 0.84rem;
+  --text-md: 0.98rem;
+  --text-lg: 1.125rem;
+  --text-xl: clamp(1.7rem, 2.8vw, 2.35rem);
+  --text-2xl: clamp(2.1rem, 4.2vw, 3.2rem);
+  --text-3xl: clamp(2.4rem, 5.5vw, 4.2rem);
+
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4.5rem;
+  --space-9: 6.5rem;
+}

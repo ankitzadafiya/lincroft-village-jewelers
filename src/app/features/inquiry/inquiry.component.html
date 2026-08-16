@@ -1,0 +1,41 @@
+<section class="page-hero">
+  <p class="eyebrow">No checkout required</p>
+  <h1>Inquiry bag</h1>
+  <p class="lede">Save pieces from the floor, then send them as one conversation — we will follow up from the atelier.</p>
+</section>
+
+<section class="bag container">
+  @if (!inquiry.count()) {
+    <app-empty-state title="Your inquiry bag is empty." message="Add pieces from the collection, then send them as one conversation.">
+      <a routerLink="/shop" class="btn btn-gold" style="margin-top:1.2rem">View jewelry</a>
+    </app-empty-state>
+  } @else {
+    <div class="layout">
+      <ul>
+        @for (item of inquiry.items(); track item.productId) {
+          <li>
+            @if (item.imageUrl) {
+              <img [src]="item.imageUrl" [alt]="item.name" />
+            }
+            <div>
+              <a [routerLink]="['/product', item.slug]"><strong>{{ item.name }}</strong></a>
+              <p class="sku">{{ item.sku }}</p>
+            </div>
+            <button type="button" class="btn btn-ghost" (click)="inquiry.remove(item.productId || item.sku)">Remove</button>
+          </li>
+        }
+      </ul>
+      <form [formGroup]="form" (ngSubmit)="submit()">
+        <div class="field"><label>Name</label><input formControlName="name" /></div>
+        <div class="field"><label>Email</label><input formControlName="email" /></div>
+        <div class="field"><label>Phone</label><input formControlName="phone" /></div>
+        <div class="field"><label>Message</label><textarea formControlName="message"></textarea></div>
+        <button class="btn btn-gold" type="submit">Send inquiry</button>
+        <div class="alt">
+          <a class="btn btn-ghost" [href]="whatsapp()" target="_blank" rel="noreferrer">WhatsApp inquiry</a>
+          <a class="btn btn-ghost" [href]="emailHref()">Email inquiry</a>
+        </div>
+      </form>
+    </div>
+  }
+</section>

@@ -1,0 +1,72 @@
+<app-hero-carousel />
+
+<app-category-showcase [categories]="heroCategories()" />
+
+<section class="section container">
+  <app-section-header
+    eyebrow="Trending"
+    title="Best sellers"
+    subtitle="Pieces customers love right now — priced in USD."
+    link="/shop"
+    linkLabel="View all" />
+  @if (loading()) {
+    <app-loading-skeleton />
+  } @else {
+    <app-product-grid [products]="featured()" />
+  }
+</section>
+
+<section class="editorial">
+  <div class="container editorial-grid">
+    <a class="banner" routerLink="/ring">
+      <img [src]="bannerLeft" alt="Engagement and wedding rings" />
+      <div class="banner-copy">
+        <p>Rings</p>
+        <h2>Lab-grown & natural</h2>
+        <span>Shop rings</span>
+      </div>
+    </a>
+    <a class="banner" routerLink="/silver-jewelry-with-24k-gold-plating">
+      <img [src]="bannerRight" alt="Silver jewelry with 24k gold plating" />
+      <div class="banner-copy">
+        <p>Everyday</p>
+        <h2>Silver + 24k gold</h2>
+        <span>Shop collection</span>
+      </div>
+    </a>
+  </div>
+</section>
+
+<section class="section container soft-band">
+  <app-section-header
+    eyebrow="Fresh from the atelier"
+    title="Just arrived"
+    link="/shop"
+    linkLabel="View all" />
+  <app-product-grid [products]="arrivals()" />
+</section>
+
+<app-services-help />
+
+<app-custom-design-feature />
+
+<section class="occasions container">
+  <div class="occ-head">
+    <p class="eyebrow">Shop for occasions</p>
+    <h2>Jewelry for every moment</h2>
+  </div>
+  <div class="occ-grid">
+    <a routerLink="/ring" class="occ">
+      <img [src]="occBridal" alt="Bridal jewelry" />
+      <span>Bridal</span>
+    </a>
+    <a routerLink="/earring" class="occ">
+      <img [src]="occEveryday" alt="Everyday earrings" />
+      <span>Everyday</span>
+    </a>
+    <a routerLink="/pendant" class="occ">
+      <img [src]="occGifts" alt="Gift pendants" />
+      <span>Gifting</span>
+    </a>
+  </div>
+</section>

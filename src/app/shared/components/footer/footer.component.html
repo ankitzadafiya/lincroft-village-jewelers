@@ -1,0 +1,50 @@
+<footer class="foot">
+  <div class="grid container">
+    <div class="news-col">
+      <h2>Let’s get in touch</h2>
+      <p class="about">Sign up for new arrivals, atelier notes, and private events across the USA.</p>
+      <form class="news" (submit)="$event.preventDefault(); subscribe()">
+        <input type="email" [formControl]="email" placeholder="Enter your email" />
+        <button class="btn btn-gold" type="submit">Subscribe Now</button>
+      </form>
+    </div>
+    <div>
+      <h3>Shop</h3>
+      @for (link of shopLinks; track link.slug) {
+        <a [routerLink]="'/' + link.slug">{{ link.navLabel }}</a>
+      }
+    </div>
+    <div>
+      <h3>Resources</h3>
+      <a routerLink="/about">About Us</a>
+      <a routerLink="/custom-jewelry">Custom Jewelry</a>
+      <a routerLink="/services">Services</a>
+      <a routerLink="/contact">Contact Us</a>
+      <a routerLink="/favorites">Wishlist</a>
+    </div>
+    <div>
+      <h3>Store Hours</h3>
+      @if (config.config(); as cfg) {
+        <div class="hours">
+          @for (day of cfg.hours; track day.day) {
+            <span>{{ day.day }} {{ day.hours }}</span>
+          }
+        </div>
+        <p class="contact-line">{{ cfg.phoneDisplay }}</p>
+        <p class="contact-line">{{ cfg.email }}</p>
+        <div class="social">
+          <a [href]="cfg.instagramUrl || 'https://instagram.com'" target="_blank" rel="noreferrer" aria-label="Instagram">
+            <lucide-icon name="instagram" [size]="16" [strokeWidth]="1.6"></lucide-icon>
+          </a>
+          <a [href]="cfg.facebookUrl || 'https://facebook.com'" target="_blank" rel="noreferrer" aria-label="Facebook">
+            <lucide-icon name="facebook" [size]="16" [strokeWidth]="1.6"></lucide-icon>
+          </a>
+        </div>
+      }
+    </div>
+  </div>
+  <div class="legal container">
+    <span>© {{ year }} Lincroft Village Jewelers</span>
+    <span>Serving Lincroft, NJ · United States</span>
+  </div>
+</footer>

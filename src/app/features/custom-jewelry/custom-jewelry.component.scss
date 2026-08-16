@@ -1,0 +1,96 @@
+@use 'mixins' as *;
+
+.intro {
+  padding-top: 2rem;
+  border-bottom: 1px solid var(--lvj-line);
+}
+
+.intro-grid {
+  display: grid;
+  gap: 2rem;
+  align-items: center;
+}
+
+.intro-copy {
+  display: grid;
+  gap: 0.85rem;
+  justify-items: start;
+}
+
+.intro-copy h1 {
+  font-family: var(--font-logo-serif);
+  font-style: italic;
+  font-size: clamp(2.2rem, 4.6vw, 3.4rem);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  max-width: 14ch;
+  line-height: 1.12;
+}
+
+.intro-copy > p {
+  color: var(--lvj-muted);
+  max-width: 42ch;
+  line-height: 1.65;
+}
+
+.layout {
+  display: grid;
+  gap: 2.5rem;
+}
+
+h2 {
+  font-family: var(--font-body);
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+
+ol {
+  display: grid;
+  gap: 1rem;
+  margin: 1.2rem 0;
+}
+
+li {
+  color: var(--lvj-muted);
+}
+
+li strong {
+  display: block;
+  color: var(--lvj-charcoal);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.alt {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+@include mq(lg) {
+  .intro-grid {
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: 3.5rem;
+  }
+
+  .layout {
+    grid-template-columns: 0.8fr 1.1fr;
+  }
+}
+
+.hint {
+  color: var(--lvj-muted);
+  font-size: 0.85rem;
+  margin: 0 0 0.6rem;
+}
+
+.url-row {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.url-row input {
+  flex: 1;
+}

@@ -1,0 +1,136 @@
+@use 'mixins' as *;
+
+.foot {
+  background: #fff;
+  color: var(--lvj-charcoal);
+  padding: 4.5rem 0 1.5rem;
+  margin-top: 0;
+  border-top: 1px solid var(--lvj-line);
+}
+
+.grid {
+  display: grid;
+  gap: 2.5rem;
+}
+
+.news-col h2 {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 3vw, 2.4rem);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  margin-bottom: 0.75rem;
+  color: var(--lvj-ink);
+}
+
+.about {
+  color: var(--lvj-muted);
+  max-width: 34ch;
+  font-size: 0.95rem;
+  line-height: 1.65;
+  margin-bottom: 1.2rem;
+}
+
+.news {
+  display: grid;
+  gap: 0.65rem;
+  max-width: 380px;
+}
+
+.news input {
+  background: var(--lvj-cream);
+  border: 1px solid var(--lvj-line-strong);
+  border-radius: 999px;
+  color: var(--lvj-ink);
+  padding: 0.95rem 1.1rem;
+  outline: none;
+}
+
+.news input::placeholder {
+  color: var(--lvj-muted-2);
+}
+
+.news .btn {
+  background: var(--lvj-ink);
+  color: #fff;
+  border-color: var(--lvj-ink);
+}
+
+.news .btn:hover {
+  background: #000;
+  color: #fff;
+}
+
+h3 {
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+  color: var(--lvj-ink);
+}
+
+.grid a,
+.grid p,
+.hours span,
+.contact-line {
+  display: block;
+  color: var(--lvj-muted);
+  margin-bottom: 0.5rem;
+  font-size: 0.92rem;
+  transition: color 0.25s ease, padding-left 0.3s var(--lvj-ease);
+}
+
+.grid > div > a:hover {
+  color: var(--lvj-ink);
+  padding-left: 0.2rem;
+}
+
+.hours {
+  display: grid;
+  gap: 0.3rem;
+  margin-bottom: 1rem;
+}
+
+.social {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 0.65rem;
+}
+
+.social a {
+  color: var(--lvj-ink) !important;
+  margin: 0 !important;
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  background: var(--lvj-cream);
+  transition: transform 0.3s var(--lvj-ease), background 0.25s ease;
+}
+
+.social a:hover {
+  transform: translateY(-2px);
+  background: #ebe7e1;
+  padding-left: 0 !important;
+}
+
+.legal {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 3rem;
+  padding-top: 1.15rem;
+  border-top: 1px solid var(--lvj-line);
+  font-size: 0.75rem;
+  color: var(--lvj-muted-2);
+}
+
+@include mq(md) {
+  .grid {
+    grid-template-columns: 1.3fr 0.8fr 0.8fr 1fr;
+    gap: 2rem;
+  }
+}

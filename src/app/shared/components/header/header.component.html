@@ -1,0 +1,125 @@
+@if (promoOpen()) {
+  <div class="promo">
+    <div class="promo-inner">
+      <button type="button" class="promo-nav" aria-label="Previous announcement" (click)="shiftPromo(-1)">
+        <lucide-icon name="chevron-left" [size]="14" [strokeWidth]="1.75"></lucide-icon>
+      </button>
+      <p>{{ promos[promoIndex()] }}</p>
+      <button type="button" class="promo-nav" aria-label="Next announcement" (click)="shiftPromo(1)">
+        <lucide-icon name="chevron-right" [size]="14" [strokeWidth]="1.75"></lucide-icon>
+      </button>
+    </div>
+    <button type="button" class="promo-close" aria-label="Dismiss announcement" (click)="promoOpen.set(false)">
+      <lucide-icon name="x" [size]="14" [strokeWidth]="1.75"></lucide-icon>
+    </button>
+  </div>
+}
+
+<header class="header" [class.compact]="compact()" (mouseleave)="megaKey.set(null)">
+  <div class="bar container">
+    <div class="left">
+      <button class="icon-btn menu-btn" type="button" aria-label="Open menu" (click)="mobileOpen.set(true)">
+        <lucide-icon name="menu" [size]="20" [strokeWidth]="1.5"></lucide-icon>
+      </button>
+      <app-logo [compact]="compact()" align="left" />
+    </div>
+
+    <nav class="nav-desktop" aria-label="Primary">
+      @for (item of nav; track item.path) {
+        <a
+          [routerLink]="item.path"
+          routerLinkActive="active"
+          (mouseenter)="openMega(item.mega)">
+          {{ item.label }}
+          @if (item.mega) {
+            <lucide-icon name="chevron-down" [size]="12" [strokeWidth]="1.75"></lucide-icon>
+          }
+        </a>
+      }
+    </nav>
+
+    <div class="tools">
+      <button class="icon-btn icon-tip" type="button" data-tip="Search" aria-label="Search" (click)="searchOpen.set(true)">
+        <lucide-icon name="search" [size]="19" [strokeWidth]="1.5"></lucide-icon>
+      </button>
+      <a
+        class="icon-btn icon-tip"
+        routerLink="/account"
+        [attr.data-tip]="customer.isAuthenticated() ? 'Account' : 'Sign in'"
+        [attr.aria-label]="customer.isAuthenticated() ? 'Account' : 'Sign in'">
+        <lucide-icon name="user" [size]="19" [strokeWidth]="1.5"></lucide-icon>
+      </a>
+      <a routerLink="/favorites" class="icon-btn icon-tip" data-tip="Wishlist" aria-label="Wishlist">
+        <lucide-icon name="heart" [size]="19" [strokeWidth]="1.5"></lucide-icon>
+        @if (favorites.count()) {
+          <span class="badge-count">{{ favorites.count() }}</span>
+        }
+      </a>
+      <a routerLink="/inquiry" class="icon-btn icon-tip" data-tip="Inquiry bag" aria-label="Inquiry bag">
+        <lucide-icon name="shopping-bag" [size]="19" [strokeWidth]="1.5"></lucide-icon>
+        @if (inquiry.count()) {
+          <span class="badge-count">{{ inquiry.count() }}</span>
+        }
+      </a>
+    </div>
+  </div>
+
+  @if (megaKey(); as key) {
+    <app-mega-menu
+      [parent]="parent(key)"
+      [children]="children(key)"
+      [parentSlug]="key"
+      (close)="megaKey.set(null)"
+      (stay)="megaKey.set(key)" />
+  }
+</header>
+
+@if (mobileOpen()) {
+  <div class="drawer">
+    <div class="drawer-head">
+      <app-logo align="left" />
+      <button class="icon-btn" type="button" aria-label="Close menu" (click)="mobileOpen.set(false)">
+        <lucide-icon name="x" [size]="20" [strokeWidth]="1.5"></lucide-icon>
+      </button>
+    </div>
+    <nav>
+      @for (item of nav; track item.path) {
+        <a [routerLink]="item.path">{{ item.label }}</a>
+      }
+      <a routerLink="/account">{{ customer.isAuthenticated() ? 'My Account' : 'Sign In' }}</a>
+      <a routerLink="/contact">Book Appointment</a>
+      <a routerLink="/favorites">Wishlist</a>
+      <a routerLink="/services">Services</a>
+    </nav>
+  </div>
+}
+
+@if (searchOpen()) {
+  <div class="search-layer" (click)="searchOpen.set(false)">
+    <div class="search-panel" (click)="$event.stopPropagation()">
+      <p class="eyebrow">Search</p>
+      <form (submit)="$event.preventDefault(); goSearch()">
+        <input [formControl]="query" placeholder="Rings, SKUs, designers…" autofocus />
+        <button class="btn btn-gold" type="submit">Search</button>
+      </form>
+      @if (searching()) {
+        <p class="muted">Searching…</p>
+      } @else if (query.value.trim().length >= 2 && results().length === 0) {
+        <p class="muted">No pieces matched “{{ query.value }}”.</p>
+      }
+      <div class="hits">
+        @for (item of results(); track item.id) {
+          <a [routerLink]="['/product', item.slug]" (click)="searchOpen.set(false)">
+            @if (item.primaryImage) {
+              <img [src]="item.primaryImage.thumbnailUrl" [alt]="item.name" />
+            }
+            <span>
+              <strong>{{ item.name }}</strong>
+              <small>{{ item.sku }}</small>
+            </span>
+          </a>
+        }
+      </div>
+    </div>
+  </div>
+}

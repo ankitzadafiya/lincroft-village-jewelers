@@ -1,0 +1,77 @@
+<section class="intro section">
+  <div class="container intro-grid">
+    <app-image-compare
+      [beforeSrc]="sketch"
+      [afterSrc]="finished"
+      beforeAlt="Engagement ring design sketch"
+      afterAlt="Finished diamond engagement ring" />
+    <div class="intro-copy">
+      <p class="eyebrow">Custom Jewelry Design</p>
+      <h1>If you can dream it, we can build it.</h1>
+      <p>Drag the slider to see how a sketch becomes a finished piece. Share your idea below and we will guide the next steps.</p>
+      <a routerLink="/contact" class="btn btn-gold">Book an Appointment</a>
+    </div>
+  </div>
+</section>
+
+<section class="section container layout">
+  <div>
+    <h2>How it works</h2>
+    <ol>
+      <li><strong>01 · Begin</strong> Share the idea, the stone, or the heirloom.</li>
+      <li><strong>02 · Draw</strong> We refine metal, proportion, and budget together.</li>
+      <li><strong>03 · Make</strong> You approve the design before it is finished.</li>
+    </ol>
+    <div class="alt">
+      <a class="btn btn-ghost" [href]="whatsapp()" target="_blank" rel="noreferrer">WhatsApp</a>
+      <a class="btn btn-ghost" [href]="emailHref()">Email</a>
+    </div>
+  </div>
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <div class="form-grid">
+      <div class="field"><label>Name</label><input formControlName="name" /></div>
+      <div class="field"><label>Email</label><input formControlName="email" /></div>
+      <div class="field"><label>Phone</label><input formControlName="phone" /></div>
+      <div class="field">
+        <label>Jewelry type</label>
+        <select formControlName="jewelryType">
+          <option>Engagement ring</option>
+          <option>Wedding band</option>
+          <option>Earrings</option>
+          <option>Necklace</option>
+          <option>Bracelet</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Preferred metal</label>
+        <select formControlName="preferredMetal">
+          <option>Yellow gold</option>
+          <option>White gold</option>
+          <option>Rose gold</option>
+          <option>Platinum</option>
+          <option>Undecided</option>
+        </select>
+      </div>
+      <div class="field"><label>Gemstone / diamond</label><input formControlName="gemstone" placeholder="Optional" /></div>
+      <div class="field"><label>Budget</label><input formControlName="budget" placeholder="Optional" /></div>
+      <div class="field full"><label>Describe the piece</label><textarea formControlName="description"></textarea></div>
+      <div class="field full">
+        <label>Reference image URLs</label>
+        <p class="hint">Paste public photo links (Instagram, Pinterest, Google Drive, etc.). Add as many as you like.</p>
+        @for (url of referenceUrls(); track $index) {
+          <div class="url-row">
+            <input
+              type="url"
+              [value]="url"
+              placeholder="https://"
+              (input)="updateReferenceUrl($index, $event)" />
+            <button type="button" class="btn btn-ghost" (click)="removeReferenceUrl($index)">Remove</button>
+          </div>
+        }
+        <button type="button" class="btn btn-ghost" (click)="addReferenceUrl()">Add another link</button>
+      </div>
+    </div>
+    <button class="btn btn-gold" type="submit">Request a custom design</button>
+  </form>
+</section>

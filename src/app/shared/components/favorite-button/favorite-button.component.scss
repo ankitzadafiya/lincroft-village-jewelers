@@ -1,0 +1,54 @@
+.fav {
+  width: 38px;
+  height: 38px;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.96);
+  color: #111;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+  transition:
+    color 0.25s ease,
+    transform 0.3s var(--lvj-ease),
+    box-shadow 0.3s ease,
+    background 0.25s ease;
+}
+
+.fav.ghost {
+  background: transparent;
+  box-shadow: none;
+  width: 34px;
+  height: 34px;
+}
+
+.fav:hover {
+  transform: scale(1.08);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.12);
+}
+
+.fav.ghost:hover {
+  box-shadow: none;
+  opacity: 0.55;
+}
+
+.fav.on {
+  color: #111;
+  animation: pop 0.4s var(--lvj-ease);
+}
+
+.fav.on ::ng-deep svg {
+  fill: currentColor;
+}
+
+@keyframes pop {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.18); }
+  100% { transform: scale(1); }
+}
+
+.fav lucide-icon {
+  display: block;
+  transition: transform 0.3s var(--lvj-ease);
+}

@@ -1,0 +1,59 @@
+<div class="admin">
+  <aside>
+    <a routerLink="/" class="brand">
+      <span>LVJ</span>
+      Atelier
+    </a>
+
+    <p class="group-label">Catalog</p>
+    <nav>
+      @for (item of catalogNav; track item.path) {
+        <a [routerLink]="item.path" routerLinkActive="on">
+          <lucide-icon [name]="item.icon" [size]="16" [strokeWidth]="1.7"></lucide-icon>
+          {{ item.label }}
+        </a>
+      }
+    </nav>
+
+    <p class="group-label">Studio</p>
+    <nav>
+      @for (item of studioNav; track item.path) {
+        <a [routerLink]="item.path" routerLinkActive="on">
+          <lucide-icon [name]="item.icon" [size]="16" [strokeWidth]="1.7"></lucide-icon>
+          {{ item.label }}
+        </a>
+      }
+      <a routerLink="/admin/users" routerLinkActive="on">
+        <lucide-icon name="users" [size]="16" [strokeWidth]="1.7"></lucide-icon>
+        Staff
+      </a>
+    </nav>
+
+    <div class="aside-foot">
+      <div class="who">
+        <span class="avatar">{{ initials() }}</span>
+        <span>
+          <strong>{{ auth.user()?.name }}</strong>
+          <small>{{ auth.user()?.role }}</small>
+        </span>
+      </div>
+      <button type="button" (click)="logout()">
+        <lucide-icon name="log-out" [size]="15" [strokeWidth]="1.7"></lucide-icon>
+        Sign out
+      </button>
+    </div>
+  </aside>
+
+  <section>
+    <header>
+      <div>
+        <p class="eyebrow">Lincroft Village Jewelers</p>
+        <strong>{{ auth.user()?.email }}</strong>
+      </div>
+      <a routerLink="/" class="storefront">View storefront</a>
+    </header>
+    <div class="stage">
+      <router-outlet />
+    </div>
+  </section>
+</div>

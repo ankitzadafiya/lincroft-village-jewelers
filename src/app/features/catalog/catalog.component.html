@@ -1,0 +1,55 @@
+<section class="page-hero">
+  <p class="eyebrow">{{ eyebrow() }}</p>
+  <h1>{{ title() }}</h1>
+  @if (description()) {
+    <p class="lede">{{ description() }}</p>
+  }
+</section>
+
+<section class="catalog container">
+  <button class="btn btn-ghost filter-toggle" type="button" (click)="mobileFilters.set(!mobileFilters())">Filters</button>
+
+  <div class="layout" [class.open]="mobileFilters()">
+    <app-product-filters [facets]="facets()" [query]="query()" (queryChange)="onFilter($event)" />
+    <div>
+      <div class="toolbar">
+        <p class="muted">{{ total() }} pieces</p>
+        <div class="tools">
+          <label>
+            Sort
+            <select [ngModel]="query().sort" (ngModelChange)="onSort($event)">
+              <option value="newest">Newest</option>
+              <option value="featured">Best selling</option>
+              <option value="name_asc">Name A–Z</option>
+              <option value="name_desc">Name Z–A</option>
+              <option value="price_asc">Price · low to high</option>
+              <option value="price_desc">Price · high to low</option>
+            </select>
+          </label>
+          <div class="cols" aria-label="Grid density">
+            @for (n of [2,3,4]; track n) {
+              <button type="button" [class.on]="columns() === n" (click)="columns.set(n)" [attr.aria-label]="n + ' columns'">{{ n }}</button>
+            }
+          </div>
+        </div>
+      </div>
+
+      @if (loading()) {
+        <app-loading-skeleton />
+      } @else if (!products().length) {
+        <app-empty-state title="No pieces matched these filters." message="Clear filters or try another category. The floor collection changes often." />
+      } @else {
+        <div [class]="'grid-products cols-' + columns()">
+          @for (product of products(); track product.id) {
+            <app-product-card [product]="product" />
+          }
+        </div>
+        <p-paginator
+          [rows]="query().pageSize || 12"
+          [totalRecords]="total()"
+          [first]="((query().page || 1) - 1) * (query().pageSize || 12)"
+          (onPageChange)="onPage($event)" />
+      }
+    </div>
+  </div>
+</section>
