@@ -23,6 +23,7 @@ body {
   letter-spacing: 0.01em;
   font-weight: 400;
   -webkit-font-smoothing: antialiased;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 img {
@@ -245,14 +246,14 @@ ul {
   justify-content: center;
   border: 0;
   background: transparent;
-  color: inherit;
+  color: var(--lvj-ink);
   cursor: pointer;
   position: relative;
   border-radius: 0;
-  transition: background 0.25s ease, opacity 0.25s ease;
+  transition: background 0.25s ease, opacity 0.25s ease, color 0.25s ease;
 
   &:hover {
-    background: rgba(17, 17, 17, 0.04);
+    background: color-mix(in srgb, var(--lvj-ink) 6%, transparent);
   }
 
   app-icon,
@@ -795,4 +796,140 @@ input[type='checkbox']:checked:hover {
   background: var(--lvj-line);
   border: 0;
   margin: 0;
+}
+
+/* Dark theme: map common hardcoded light surfaces used in feature components */
+[data-theme='dark'] {
+  color-scheme: dark;
+
+  /* Keep logo / nav / icons readable */
+  app-logo .logo:not(.light) {
+    color: var(--lvj-ink) !important;
+  }
+
+  .header,
+  .header .nav-desktop a,
+  .header .tools,
+  .drawer,
+  .drawer nav a,
+  .search-panel,
+  .search-panel strong,
+  .page-hero h1,
+  .page-hero .lede,
+  .display-title,
+  .admin-page h1,
+  .admin-page h2 {
+    color: var(--lvj-ink);
+  }
+
+  .muted,
+  .eyebrow {
+    color: var(--lvj-muted);
+  }
+
+  .search-panel {
+    background: var(--lvj-panel);
+  }
+
+  .admin-page table,
+  .admin-page .editor,
+  .admin-page .table-card,
+  .admin-page .create,
+  .admin-page .table,
+  .admin-page article,
+  .admin-page .recent,
+  .users .create,
+  .users .table {
+    background: var(--lvj-panel) !important;
+    border-color: var(--lvj-line) !important;
+    color: var(--lvj-charcoal);
+  }
+
+  .field input:not([type='checkbox']):not([type='radio']),
+  .field textarea,
+  .field select,
+  .admin-page input:not([type='checkbox']),
+  .admin-page textarea,
+  .admin-page select,
+  .search {
+    background: var(--lvj-paper) !important;
+    color: var(--lvj-ink) !important;
+    border-color: var(--lvj-line-strong) !important;
+  }
+
+  .btn {
+    background: var(--lvj-ink);
+    color: var(--lvj-on-ink);
+    border-color: var(--lvj-ink);
+  }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--lvj-ink);
+    border-color: var(--lvj-line-strong);
+  }
+
+  .icon-btn {
+    background: transparent;
+    color: var(--lvj-ink);
+    border-color: var(--lvj-line-strong);
+  }
+
+  .icon-btn:hover {
+    background: color-mix(in srgb, var(--lvj-ink) 8%, transparent);
+    color: var(--lvj-ink);
+  }
+
+  .row-actions .icon-btn {
+    background: var(--lvj-panel);
+  }
+
+  .icon-btn.danger:hover {
+    background: var(--lvj-danger);
+    border-color: var(--lvj-danger);
+    color: #fff;
+  }
+
+  .checks .check {
+    background: var(--lvj-panel);
+    border-color: var(--lvj-line);
+    color: var(--lvj-ink);
+  }
+
+  input[type='checkbox'] {
+    background: var(--lvj-panel);
+    border-color: var(--lvj-line-strong);
+  }
+
+  input[type='checkbox']:checked {
+    background-color: var(--lvj-champagne);
+    border-color: var(--lvj-champagne);
+  }
+
+  .product-modal .p-dialog,
+  .product-modal .p-dialog-content,
+  .product-modal .p-dialog-header {
+    background: var(--lvj-panel) !important;
+    color: var(--lvj-ink) !important;
+  }
+
+  /* Home / catalog sections with hard-coded blacks */
+  app-category-showcase,
+  app-services-showcase,
+  app-services-help,
+  app-custom-design-feature,
+  app-designer-strip,
+  app-product-filters,
+  app-product-gallery,
+  app-section-header {
+    color: var(--lvj-charcoal);
+  }
+
+  app-section-header h2,
+  app-category-showcase h2,
+  app-category-showcase h3,
+  app-services-help h2,
+  app-custom-design-feature h2 {
+    color: var(--lvj-ink) !important;
+  }
 }

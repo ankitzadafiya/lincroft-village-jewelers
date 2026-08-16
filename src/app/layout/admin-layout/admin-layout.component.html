@@ -58,7 +58,10 @@
         <p class="brand-line">Lincroft Village Jewelers</p>
         <p class="signed-in">{{ auth.user()?.email }}</p>
       </div>
-      <a routerLink="/" class="storefront">View storefront</a>
+      <div class="topbar-actions">
+        <app-theme-toggle [compact]="false" [showLabel]="true" [size]="16" />
+        <a routerLink="/" class="storefront">View storefront</a>
+      </div>
     </header>
     <div class="stage">
       <router-outlet />

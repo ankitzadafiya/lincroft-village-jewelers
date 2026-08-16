@@ -1,8 +1,8 @@
 @use 'mixins' as *;
 
 .foot {
-  background: var(--lvj-ink);
-  color: #f7f6f4;
+  background: var(--lvj-inverse);
+  color: var(--lvj-on-inverse);
   padding: 4.5rem 0 1.5rem;
   margin-top: 0;
   border-top: 0;

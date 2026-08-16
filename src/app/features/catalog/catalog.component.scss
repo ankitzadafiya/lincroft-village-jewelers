@@ -58,7 +58,7 @@
   height: 34px;
   border: 1px solid var(--lvj-line-strong);
   background: var(--lvj-panel);
-  color: #888;
+  color: var(--lvj-muted);
   cursor: pointer;
   font-size: 0.75rem;
   font-weight: 600;
@@ -67,9 +67,8 @@
 
 .cols button.on,
 .cols button:hover {
-  background: #111;
-  color: #fff;
-  border-color: #111;
+  background: var(--lvj-ink);`n      color: var(--lvj-on-ink);
+  border-color: var(--lvj-ink);
 }
 
 .grid-products.cols-2 {

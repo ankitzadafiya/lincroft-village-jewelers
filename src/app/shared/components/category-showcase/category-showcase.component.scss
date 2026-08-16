@@ -25,7 +25,7 @@ h2 {
   display: inline-flex;
   align-items: center;
   gap: 0.55rem;
-  color: #666;
+  color: var(--lvj-muted);
   font-size: 0.78rem;
   font-weight: 500;
   letter-spacing: 0.04em;
@@ -35,18 +35,17 @@ h2 {
   width: 34px;
   height: 34px;
   border: 1px solid var(--lvj-line-strong);
-  background: #fff;
+  background: var(--lvj-panel);
   border-radius: 999px;
   display: grid;
   place-items: center;
   cursor: pointer;
-  color: #111;
+  color: var(--lvj-ink);
   transition: background 0.25s ease, color 0.25s ease, transform 0.25s var(--lvj-ease);
 }
 
 .nav:hover:not(:disabled) {
-  background: #111;
-  color: #fff;
+  background: var(--lvj-ink);`n      color: var(--lvj-on-ink);
   transform: scale(1.04);
 }
 
@@ -85,7 +84,7 @@ h2 {
   display: flex;
   flex-direction: column;
   background: var(--lvj-cream);
-  color: #111;
+  color: var(--lvj-ink);
   scroll-snap-align: start;
   overflow: hidden;
   text-decoration: none;
@@ -130,7 +129,7 @@ h3 {
 
 p {
   margin: 0.2rem 0 0;
-  color: #8a8a8a;
+  color: var(--lvj-muted);
   font-size: 0.8rem;
 }
 
@@ -138,7 +137,7 @@ p {
   width: 42px;
   height: 42px;
   border-radius: 999px;
-  background: #fff;
+  background: var(--lvj-panel);
   display: grid;
   place-items: center;
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
@@ -147,8 +146,7 @@ p {
 }
 
 .tile:hover .go {
-  background: #111;
-  color: #fff;
+  background: var(--lvj-ink);`n      color: var(--lvj-on-ink);
   transform: translateX(2px);
 }
 

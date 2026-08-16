@@ -92,10 +92,10 @@ import { FacetValue, ProductFilterFacets, ProductListQuery } from '../../../core
       font-size: 0.65rem;
       font-weight: 600;
       cursor: pointer;
-      color: #888;
+      color: var(--lvj-muted);
       transition: color 0.2s ease;
     }
-    .clear:hover { color: #111; }
+    .clear:hover { color: var(--lvj-ink); }
     .group {
       border-top: 1px solid rgba(0,0,0,0.08);
     }
@@ -112,12 +112,12 @@ import { FacetValue, ProductFilterFacets, ProductListQuery } from '../../../core
       font-family: var(--font-body);
       font-size: 0.88rem;
       font-weight: 600;
-      color: #111;
+      color: var(--lvj-ink);
     }
     .chev {
       display: inline-block;
       transition: transform 0.3s var(--lvj-ease);
-      color: #888;
+      color: var(--lvj-muted);
       font-size: 0.75rem;
     }
     .chev.open { transform: rotate(180deg); }
@@ -136,20 +136,20 @@ import { FacetValue, ProductFilterFacets, ProductListQuery } from '../../../core
       align-items: flex-start;
       gap: 0.55rem;
       font-size: 0.86rem;
-      color: #333;
+      color: var(--lvj-charcoal);
       cursor: pointer;
       line-height: 1.35;
     }
     .check input {
       margin-top: 0.15rem;
-      accent-color: #111;
+      accent-color: var(--lvj-ink);
       width: 15px;
       height: 15px;
       flex: none;
     }
     .check em {
       font-style: normal;
-      color: #999;
+      color: var(--lvj-muted-2);
       font-size: 0.8rem;
     }
     .price-row {
@@ -166,8 +166,8 @@ import { FacetValue, ProductFilterFacets, ProductListQuery } from '../../../core
       padding: 0.45rem 0.55rem;
       background: var(--lvj-panel);
     }
-    .price-row span { color: #888; font-size: 0.8rem; }
-    .price-row .to { font-size: 0.75rem; color: #888; }
+    .price-row span { color: var(--lvj-muted); font-size: 0.8rem; }
+    .price-row .to { font-size: 0.75rem; color: var(--lvj-muted); }
     .price-row input[type="number"] {
       border: 0;
       width: 100%;
@@ -177,7 +177,7 @@ import { FacetValue, ProductFilterFacets, ProductListQuery } from '../../../core
     }
     .range {
       width: 100%;
-      accent-color: #111;
+      accent-color: var(--lvj-ink);
       margin-bottom: 0.85rem;
     }
   `]

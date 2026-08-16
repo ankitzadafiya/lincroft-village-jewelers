@@ -67,7 +67,7 @@ import { IMG } from '../../../core/mock/image-catalog';
     .consult {
       padding: 4.5rem 1rem 2rem;
       text-align: center;
-      background: #fff;
+      background: var(--lvj-panel);
     }
 
     .consult-inner {
@@ -88,7 +88,7 @@ import { IMG } from '../../../core/mock/image-catalog';
     }
 
     .consult p {
-      color: #6f6b66;
+      color: var(--lvj-muted);
       line-height: 1.65;
       font-size: 0.98rem;
       max-width: 54ch;
@@ -100,7 +100,7 @@ import { IMG } from '../../../core/mock/image-catalog';
 
     .custom {
       padding: 2rem 0 5rem;
-      background: #fff;
+      background: var(--lvj-panel);
     }
 
     .grid {
@@ -152,7 +152,7 @@ import { IMG } from '../../../core/mock/image-catalog';
       letter-spacing: 0.08em;
       text-transform: uppercase;
       background: rgba(255, 255, 255, 0.94);
-      color: #111;
+      color: var(--lvj-ink);
       padding: 0.35rem 0.55rem;
       border-radius: 999px;
       pointer-events: none;
@@ -172,7 +172,7 @@ import { IMG } from '../../../core/mock/image-catalog';
       top: 0;
       bottom: 0;
       width: 2px;
-      background: #fff;
+      background: var(--lvj-panel);
       transform: translateX(-50%);
       z-index: 4;
       pointer-events: none;
@@ -187,7 +187,7 @@ import { IMG } from '../../../core/mock/image-catalog';
       width: 42px;
       height: 42px;
       border-radius: 999px;
-      background: #fff;
+      background: var(--lvj-panel);
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
       display: grid;
       grid-auto-flow: column;
@@ -199,7 +199,7 @@ import { IMG } from '../../../core/mock/image-catalog';
     .knob span {
       width: 2px;
       height: 12px;
-      background: #111;
+      background: var(--lvj-ink);
       border-radius: 2px;
       opacity: 0.7;
     }
@@ -232,7 +232,7 @@ import { IMG } from '../../../core/mock/image-catalog';
     }
 
     .lead {
-      color: #6f6b66;
+      color: var(--lvj-muted);
       line-height: 1.7;
       font-size: 0.98rem;
       max-width: 40ch;

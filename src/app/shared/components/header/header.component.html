@@ -39,6 +39,7 @@
     </nav>
 
     <div class="tools">
+      <app-theme-toggle />
       <button class="icon-btn icon-tip" type="button" data-tip="Search" aria-label="Search" (click)="searchOpen.set(true)">
         <app-icon name="search" [size]="19" [strokeWidth]="1.5"></app-icon>
       </button>
@@ -102,6 +103,9 @@
       <a routerLink="/contact">Book Appointment</a>
       <a routerLink="/favorites">Wishlist</a>
       <a routerLink="/services">Services</a>
+      <div class="drawer-theme">
+        <app-theme-toggle [compact]="false" [showLabel]="true" />
+      </div>
     </nav>
   </div>
 }

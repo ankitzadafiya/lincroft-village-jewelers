@@ -68,12 +68,12 @@ import { ServiceOffering } from '../../../core/models';
     .title {
       font-size: 1.05rem;
       font-weight: 500;
-      color: #8a8a8a;
+      color: var(--lvj-muted);
       transition: color 0.3s ease, transform 0.35s var(--lvj-ease);
     }
     .item:hover .title,
     .item.active .title {
-      color: #111;
+      color: var(--lvj-ink);
       transform: translateX(4px);
     }
     .detail {
@@ -85,7 +85,7 @@ import { ServiceOffering } from '../../../core/models';
     .detail > p {
       overflow: hidden;
       margin: 0;
-      color: #666;
+      color: var(--lvj-muted);
       font-size: 0.92rem;
       max-width: 46ch;
       line-height: 1.65;

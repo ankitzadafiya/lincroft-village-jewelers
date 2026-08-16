@@ -3,12 +3,13 @@
   left: 0;
   right: 0;
   top: 100%;
-  background: #fff;
+  background: var(--lvj-panel);
   border-top: 1px solid var(--lvj-line);
-  box-shadow: 0 28px 56px rgba(28, 28, 28, 0.1);
+  box-shadow: var(--lvj-shadow);
   z-index: 40;
   padding: 0;
   animation: drop 0.28s var(--lvj-ease);
+  color: var(--lvj-ink);
 }
 
 @keyframes drop {
@@ -68,19 +69,19 @@
   font-weight: 600;
   letter-spacing: -0.02em;
   margin-bottom: 0.85rem;
-  color: #111;
+  color: var(--lvj-ink);
 }
 
 .list a {
   display: block;
-  color: #5c5c5c;
+  color: var(--lvj-muted);
   font-size: 0.95rem;
   padding: 0.48rem 0;
   transition: color 0.22s ease, transform 0.28s var(--lvj-ease);
 }
 
 .list a:hover {
-  color: #111;
+  color: var(--lvj-ink);
   transform: translateX(4px);
 }
 
@@ -91,7 +92,7 @@
   margin-top: 1rem;
   font-size: 0.82rem !important;
   font-weight: 600;
-  color: #111 !important;
+  color: var(--lvj-ink) !important;
   border-bottom: 1px solid currentColor;
   width: fit-content;
   padding-bottom: 2px !important;
@@ -116,7 +117,7 @@
   font-weight: 650;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: #9a9590;
+  color: var(--lvj-muted-2);
 }
 
 .card {
@@ -125,7 +126,7 @@
   width: 100%;
   overflow: hidden;
   border-radius: 14px;
-  background: #fff;
+  background: var(--lvj-panel);
   border: 1px solid var(--lvj-line);
   transition: box-shadow 0.3s ease, transform 0.35s var(--lvj-ease);
 }
@@ -165,7 +166,7 @@
   font-size: 0.95rem;
   font-weight: 600;
   letter-spacing: -0.02em;
-  color: #111;
+  color: var(--lvj-ink);
 }
 
 .cta {
@@ -174,13 +175,13 @@
   gap: 0.3rem;
   font-size: 0.75rem;
   font-weight: 600;
-  color: #6f6b66;
+  color: var(--lvj-muted);
   white-space: nowrap;
   transition: color 0.25s ease, gap 0.3s var(--lvj-ease);
 }
 
 .card:hover .cta {
-  color: #111;
+  color: var(--lvj-ink);
   gap: 0.5rem;
 }
 

@@ -88,7 +88,7 @@ import { AfterViewInit, Component, ElementRef, HostListener, ViewChild, input, s
       position: absolute;
       z-index: 3;
       background: rgba(255,255,255,0.94);
-      color: #111;
+      color: var(--lvj-ink);
       font-size: 0.68rem;
       font-weight: 600;
       letter-spacing: 0.08em;

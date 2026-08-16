@@ -170,7 +170,7 @@ import { AppIconComponent } from '../../shared/icons/lvj-icons';
       border: 1px solid var(--lvj-line-strong);
       background: #fff;
       padding: 0.95rem 1rem;
-      color: #111;
+      color: var(--lvj-ink);
       outline: none;
       border-radius: 14px;
       transition: border-color 0.3s var(--lvj-ease), box-shadow 0.3s var(--lvj-ease);
@@ -178,7 +178,7 @@ import { AppIconComponent } from '../../shared/icons/lvj-icons';
 
     .float input:focus,
     .float textarea:focus {
-      border-color: #111;
+      border-color: var(--lvj-ink);
       box-shadow: 0 0 0 3px rgba(28, 28, 28, 0.06);
     }
 
@@ -210,7 +210,7 @@ import { AppIconComponent } from '../../shared/icons/lvj-icons';
 
     .check input {
       margin-top: 0.2rem;
-      accent-color: #111;
+      accent-color: var(--lvj-ink);
     }
 
     .submit {
@@ -234,12 +234,12 @@ import { AppIconComponent } from '../../shared/icons/lvj-icons';
       letter-spacing: 0.12em;
       text-transform: uppercase;
       margin-bottom: 0.55rem;
-      color: #111;
+      color: var(--lvj-ink);
     }
 
     .uline {
       display: inline-block;
-      color: #111;
+      color: var(--lvj-ink);
       text-decoration: underline;
       text-underline-offset: 3px;
       transition: opacity 0.25s ease;
@@ -278,7 +278,7 @@ import { AppIconComponent } from '../../shared/icons/lvj-icons';
       grid-template-columns: 1fr auto;
       gap: 1rem;
       font-size: 0.92rem;
-      color: #333;
+      color: var(--lvj-charcoal);
       padding: 0.2rem 0;
     }
   `]

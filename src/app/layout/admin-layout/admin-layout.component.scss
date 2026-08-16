@@ -9,7 +9,7 @@
   height: 100dvh;
   grid-template-columns: 264px 1fr;
   overflow: hidden;
-  background: #ebe6df;
+  background: var(--lvj-admin-canvas);
 }
 
 aside {
@@ -162,7 +162,7 @@ section {
   overflow: hidden;
   background:
     radial-gradient(ellipse 50% 30% at 100% 0%, rgba(196, 165, 116, 0.12), transparent 55%),
-    #ebe6df;
+    var(--lvj-admin-canvas);
 }
 
 .topbar {
@@ -172,9 +172,16 @@ section {
   align-items: center;
   gap: 1.25rem;
   padding: 0.9rem 1.5rem;
-  border-bottom: 1px solid rgba(28, 28, 28, 0.08);
-  background: rgba(247, 243, 238, 0.92);
+  border-bottom: 1px solid var(--lvj-line);
+  background: var(--lvj-admin-topbar);
   backdrop-filter: blur(12px);
+}
+
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  flex-shrink: 0;
 }
 
 .identity {

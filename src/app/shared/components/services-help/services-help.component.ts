@@ -56,7 +56,7 @@ interface HelpItem {
   styles: [`
     .help {
       padding: 4.5rem 0;
-      background: #fff;
+      background: var(--lvj-panel);
     }
 
     .grid {
@@ -114,7 +114,7 @@ interface HelpItem {
     .num {
       font-size: 0.92rem;
       font-weight: 500;
-      color: #111;
+      color: var(--lvj-ink);
       font-variant-numeric: tabular-nums;
     }
 
@@ -122,7 +122,7 @@ interface HelpItem {
       font-size: 1.02rem;
       font-weight: 600;
       letter-spacing: -0.015em;
-      color: #111;
+      color: var(--lvj-ink);
       transition: opacity 0.25s ease;
     }
 
@@ -148,7 +148,7 @@ interface HelpItem {
       max-width: 48ch;
       font-size: 0.9rem;
       line-height: 1.65;
-      color: #6f6b66;
+      color: var(--lvj-muted);
       opacity: 0;
       transition: opacity 0.3s ease, padding-top 0.35s ease;
     }
@@ -171,7 +171,7 @@ interface HelpItem {
     .visual {
       border-radius: 4px;
       overflow: hidden;
-      background: #111;
+      background: var(--lvj-ink);
       min-height: 360px;
       position: relative;
     }

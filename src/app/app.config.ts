@@ -13,6 +13,7 @@ import { mockApiInterceptor } from './core/interceptors/mock-api.interceptor';
 import { AuthService } from './core/services/auth.service';
 import { ConfigurationService } from './core/services/configuration.service';
 import { CustomerAuthService } from './core/services/customer-auth.service';
+import { ThemeService } from './core/services/theme.service';
 import { LincroftPreset } from './core/theme/lincroft.preset';
 
 export const appConfig: ApplicationConfig = {
@@ -33,12 +34,13 @@ export const appConfig: ApplicationConfig = {
     providePrimeNG({
       theme: {
         preset: LincroftPreset,
-        options: { darkModeSelector: false }
+        options: { darkModeSelector: '[data-theme="dark"]' }
       }
     }),
     MessageService,
     ConfirmationService,
     provideAppInitializer(() => {
+      inject(ThemeService);
       const config = inject(ConfigurationService);
       const auth = inject(AuthService);
       const customer = inject(CustomerAuthService);

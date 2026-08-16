@@ -26,9 +26,9 @@ import { RouterLink } from '@angular/router';
       display: inline-flex;
       align-items: center;
       gap: 0.55rem;
-      color: #111;
+      color: var(--lvj-ink);
       text-decoration: none;
-      transition: opacity 0.28s ease;
+      transition: opacity 0.28s ease, color 0.25s ease;
     }
 
     .logo:hover {
@@ -36,7 +36,7 @@ import { RouterLink } from '@angular/router';
     }
 
     .logo.light {
-      color: #fff;
+      color: var(--lvj-on-inverse);
     }
 
     .diamond {

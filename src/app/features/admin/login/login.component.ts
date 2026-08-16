@@ -4,11 +4,12 @@ import { Router } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 import { emailAddress, loginPayload } from '../../../core/utils/auth-validation';
 import { GoogleSignInComponent } from '../../../shared/components/google-sign-in/google-sign-in.component';
+import { ThemeToggleComponent } from '../../../shared/components/theme-toggle/theme-toggle.component';
 import { AppIconComponent } from '../../../shared/icons/lvj-icons';
 
 @Component({
   selector: 'app-login',
-  imports: [ReactiveFormsModule, AppIconComponent, GoogleSignInComponent],
+  imports: [ReactiveFormsModule, AppIconComponent, GoogleSignInComponent, ThemeToggleComponent],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })

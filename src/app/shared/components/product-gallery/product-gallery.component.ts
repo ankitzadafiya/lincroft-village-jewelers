@@ -64,7 +64,7 @@ import { ProductMedia } from '../../../core/models';
     }
     .thumbs button.on,
     .thumbs button:hover {
-      border-color: #111;
+      border-color: var(--lvj-ink);
       opacity: 1;
     }
     .thumbs img {
@@ -74,7 +74,7 @@ import { ProductMedia } from '../../../core/models';
       transition: transform 0.45s var(--lvj-ease);
     }
     .thumbs button:hover img { transform: scale(1.06); }
-    .vid { color: #111; display: grid; place-items: center; }
+    .vid { color: var(--lvj-ink); display: grid; place-items: center; }
     .stage {
       position: relative;
       aspect-ratio: 1 / 1.08;
@@ -102,7 +102,7 @@ import { ProductMedia } from '../../../core/models';
       border: 0;
       border-radius: 999px;
       background: rgba(255,255,255,0.92);
-      color: #111;
+      color: var(--lvj-ink);
       cursor: pointer;
       display: grid;
       place-items: center;

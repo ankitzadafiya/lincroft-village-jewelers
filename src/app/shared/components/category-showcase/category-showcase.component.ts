@@ -88,14 +88,14 @@ import { AppIconComponent } from '../../icons/lvj-icons';
       font-size: clamp(1.55rem, 2.6vw, 2rem);
       font-weight: 600;
       letter-spacing: -0.03em;
-      color: #111;
+      color: var(--lvj-ink);
     }
 
     .pager {
       display: inline-flex;
       align-items: center;
       gap: 0.55rem;
-      color: #111;
+      color: var(--lvj-ink);
       user-select: none;
     }
 
@@ -114,7 +114,7 @@ import { AppIconComponent } from '../../icons/lvj-icons';
       border: 0;
       border-radius: 999px;
       background: transparent;
-      color: #111;
+      color: var(--lvj-ink);
       display: grid;
       place-items: center;
       cursor: pointer;
@@ -207,13 +207,13 @@ import { AppIconComponent } from '../../icons/lvj-icons';
       font-size: 0.98rem;
       font-weight: 600;
       letter-spacing: -0.015em;
-      color: #111;
+      color: var(--lvj-ink);
       line-height: 1.25;
     }
 
     .copy p {
       font-size: 0.8rem;
-      color: #8a8580;
+      color: var(--lvj-muted);
     }
 
     .go {
@@ -222,10 +222,10 @@ import { AppIconComponent } from '../../icons/lvj-icons';
       height: 38px;
       border-radius: 999px;
       border: 1px solid rgba(28, 28, 28, 0.12);
-      background: #fff;
+      background: var(--lvj-panel);
       display: grid;
       place-items: center;
-      color: #111;
+      color: var(--lvj-ink);
       transition:
         background 0.28s ease,
         color 0.28s ease,
@@ -234,9 +234,8 @@ import { AppIconComponent } from '../../icons/lvj-icons';
     }
 
     .card:hover .go {
-      background: #111;
-      color: #fff;
-      border-color: #111;
+      background: var(--lvj-ink);`n      color: var(--lvj-on-ink);
+      border-color: var(--lvj-ink);
       transform: translateX(2px);
     }
 

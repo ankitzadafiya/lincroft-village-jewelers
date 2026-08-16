@@ -47,11 +47,13 @@ import { AppIconComponent } from '../../icons/lvj-icons';
       letter-spacing: -0.02em;
       max-width: 16ch;
       line-height: 1.12;
+      color: var(--lvj-ink);
     }
     .muted {
       max-width: 46ch;
       margin-top: 0.55rem;
       font-size: 0.95rem;
+      color: var(--lvj-muted);
     }
     .link {
       display: inline-flex;
@@ -61,6 +63,7 @@ import { AppIconComponent } from '../../icons/lvj-icons';
       font-weight: 700;
       letter-spacing: 0.14em;
       text-transform: uppercase;
+      color: var(--lvj-ink);
       border-bottom: 1px solid currentColor;
       padding-bottom: 2px;
       transition: gap 0.3s var(--lvj-ease), opacity 0.25s ease;

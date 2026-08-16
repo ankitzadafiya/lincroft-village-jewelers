@@ -39,7 +39,7 @@ import { EmptyStateComponent } from '../../shared/components/empty-state/empty-s
   `,
   styles: [`
     .save-note { margin-top: 0.75rem; }
-    .save-note a { text-decoration: underline; text-underline-offset: 3px; color: #111; }
+    .save-note a { text-decoration: underline; text-underline-offset: 3px; color: var(--lvj-ink); }
     .empty-actions { display: flex; gap: 0.6rem; justify-content: center; flex-wrap: wrap; margin-top: 1.2rem; }
   `]
 })

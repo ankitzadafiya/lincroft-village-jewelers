@@ -30,7 +30,7 @@ import { AppIconComponent } from '../../icons/lvj-icons';
     </section>
   `,
   styles: [`
-    .strip { background: #fff; padding-top: 3.5rem; padding-bottom: 3.5rem; }
+    .strip { background: var(--lvj-panel); padding-top: 3.5rem; padding-bottom: 3.5rem; }
     h2 {
       text-align: center;
       font-family: var(--font-body);
@@ -50,15 +50,14 @@ import { AppIconComponent } from '../../icons/lvj-icons';
       height: 42px;
       border-radius: 999px;
       border: 1px solid rgba(0,0,0,0.1);
-      background: #fff;
+      background: var(--lvj-panel);
       display: grid;
       place-items: center;
       cursor: pointer;
       transition: background 0.25s ease, color 0.25s ease, transform 0.25s var(--lvj-ease);
     }
     .nav:hover {
-      background: #111;
-      color: #fff;
+      background: var(--lvj-ink);`n      color: var(--lvj-on-ink);
       transform: scale(1.04);
     }
     .track {

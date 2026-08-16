@@ -13,6 +13,7 @@ import { InquiryService } from '../../../core/services/inquiry.service';
 import { SearchService } from '../../../core/services/search.service';
 import { LogoComponent } from '../logo/logo.component';
 import { MegaMenuComponent } from '../mega-menu/mega-menu.component';
+import { ThemeToggleComponent } from '../theme-toggle/theme-toggle.component';
 import { AppIconComponent } from '../../icons/lvj-icons';
 
 interface NavItem {
@@ -23,7 +24,7 @@ interface NavItem {
 
 @Component({
   selector: 'app-header',
-  imports: [RouterLink, RouterLinkActive, ReactiveFormsModule, LogoComponent, MegaMenuComponent, AppIconComponent],
+  imports: [RouterLink, RouterLinkActive, ReactiveFormsModule, LogoComponent, MegaMenuComponent, AppIconComponent, ThemeToggleComponent],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })

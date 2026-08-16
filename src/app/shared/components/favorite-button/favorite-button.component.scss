@@ -3,12 +3,12 @@
   height: 38px;
   border: 0;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.96);
-  color: #111;
+  background: var(--lvj-panel);
+  color: var(--lvj-ink);
   cursor: pointer;
   display: grid;
   place-items: center;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+  box-shadow: var(--lvj-shadow-soft);
   transition:
     color 0.25s ease,
     transform 0.3s var(--lvj-ease),
@@ -25,7 +25,7 @@
 
 .fav:hover {
   transform: scale(1.08);
-  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.12);
+  box-shadow: var(--lvj-shadow-soft);
 }
 
 .fav.ghost:hover {
@@ -34,7 +34,7 @@
 }
 
 .fav.on {
-  color: #111;
+  color: var(--lvj-ink);
   animation: pop 0.4s var(--lvj-ease);
 }
 

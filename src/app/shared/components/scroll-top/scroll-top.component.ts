@@ -22,7 +22,7 @@ import { AppIconComponent } from '../../icons/lvj-icons';
       border: 0;
       border-radius: 12px;
       background: #111;
-      color: #fff;
+      color: var(--lvj-on-ink);
       cursor: pointer;
       display: grid;
       place-items: center;
@@ -32,7 +32,7 @@ import { AppIconComponent } from '../../icons/lvj-icons';
     }
     .top:hover {
       transform: translateY(-2px);
-      background: #000;
+      background: var(--lvj-ink);
       box-shadow: 0 14px 28px rgba(0, 0, 0, 0.2);
     }
     @keyframes rise {
