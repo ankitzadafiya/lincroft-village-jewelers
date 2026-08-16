@@ -72,7 +72,7 @@ export class LoginComponent {
 
   private enter(): void {
     this.submitting.set(false);
-    void this.router.navigate(['/admin/dashboard']);
+    void this.router.navigateByUrl(this.auth.firstAllowedPath());
   }
 
   private fail(err: { error?: { message?: string } }, fallback: string): void {

@@ -112,7 +112,6 @@ type LeadTab = 'inquiries' | 'custom' | 'contact' | 'newsletter';
     </div>
   `,
   styles: [`
-    h1 { font-style: italic; }
     .tabs { display: flex; gap: 0.4rem; flex-wrap: wrap; margin: 0 0 1.2rem; }
     .tabs button {
       background: none;

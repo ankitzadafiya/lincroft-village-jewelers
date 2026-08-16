@@ -3,12 +3,13 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HomeContent, InstagramPost, ServiceOffering, Testimonial } from '../../../core/models';
 import { ContentService } from '../../../core/services/content.service';
 import { ToastService } from '../../../core/services/toast.service';
+import { AppIconComponent } from '../../../shared/icons/lvj-icons';
 
 type ContentTab = 'home' | 'testimonials' | 'services' | 'instagram';
 
 @Component({
   selector: 'app-admin-content',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, AppIconComponent],
   template: `
     <div class="admin-page">
       <h1>Content</h1>
@@ -40,7 +41,9 @@ type ContentTab = 'home' | 'testimonials' | 'services' | 'instagram';
             <div class="field"><label>Rating</label><input type="number" min="1" max="5" formControlName="rating" /></div>
             <div class="field"><label>Sort</label><input type="number" formControlName="sortOrder" /></div>
             <div class="field full"><label>Quote</label><textarea formControlName="quote"></textarea></div>
-            <div class="field"><label><input type="checkbox" formControlName="active" /> Active</label></div>
+            <div class="field full checks">
+              <label class="check"><input type="checkbox" formControlName="active" /> Active</label>
+            </div>
           </div>
           <button class="btn" type="submit">{{ testimonialId ? 'Update' : 'Create' }} testimonial</button>
         </form>
@@ -52,8 +55,16 @@ type ContentTab = 'home' | 'testimonials' | 'services' | 'instagram';
               <td>{{ row.rating }}</td>
               <td>{{ row.active ? 'Active' : 'Hidden' }}</td>
               <td>
-                <button type="button" (click)="editTestimonial(row)">Edit</button>
-                <button type="button" (click)="removeTestimonial(row)">Delete</button>
+                <div class="row-actions">
+                  <button type="button" class="icon-btn" (click)="editTestimonial(row)" aria-label="Edit">
+                    <app-icon name="pencil" [size]="15" [strokeWidth]="1.8"></app-icon>
+                    <span class="label">Edit</span>
+                  </button>
+                  <button type="button" class="icon-btn danger" (click)="removeTestimonial(row)" aria-label="Delete">
+                    <app-icon name="trash-2" [size]="15" [strokeWidth]="1.8"></app-icon>
+                    <span class="label">Delete</span>
+                  </button>
+                </div>
               </td>
             </tr>
           }
@@ -69,7 +80,9 @@ type ContentTab = 'home' | 'testimonials' | 'services' | 'instagram';
             <div class="field full"><label>Summary</label><input formControlName="summary" /></div>
             <div class="field full"><label>Description</label><textarea formControlName="description"></textarea></div>
             <div class="field full"><label>Image URL</label><input formControlName="imageUrl" /></div>
-            <div class="field"><label><input type="checkbox" formControlName="active" /> Active</label></div>
+            <div class="field full checks">
+              <label class="check"><input type="checkbox" formControlName="active" /> Active</label>
+            </div>
           </div>
           <button class="btn" type="submit">{{ serviceId ? 'Update' : 'Create' }} service</button>
         </form>
@@ -81,8 +94,16 @@ type ContentTab = 'home' | 'testimonials' | 'services' | 'instagram';
               <td>{{ row.slug }}</td>
               <td>{{ row.active ? 'Active' : 'Hidden' }}</td>
               <td>
-                <button type="button" (click)="editService(row)">Edit</button>
-                <button type="button" (click)="removeService(row)">Delete</button>
+                <div class="row-actions">
+                  <button type="button" class="icon-btn" (click)="editService(row)" aria-label="Edit">
+                    <app-icon name="pencil" [size]="15" [strokeWidth]="1.8"></app-icon>
+                    <span class="label">Edit</span>
+                  </button>
+                  <button type="button" class="icon-btn danger" (click)="removeService(row)" aria-label="Delete">
+                    <app-icon name="trash-2" [size]="15" [strokeWidth]="1.8"></app-icon>
+                    <span class="label">Delete</span>
+                  </button>
+                </div>
               </td>
             </tr>
           }
@@ -96,7 +117,9 @@ type ContentTab = 'home' | 'testimonials' | 'services' | 'instagram';
             <div class="field"><label>Alt</label><input formControlName="alt" /></div>
             <div class="field"><label>Link</label><input formControlName="href" /></div>
             <div class="field"><label>Sort</label><input type="number" formControlName="sortOrder" /></div>
-            <div class="field"><label><input type="checkbox" formControlName="active" /> Active</label></div>
+            <div class="field full checks">
+              <label class="check"><input type="checkbox" formControlName="active" /> Active</label>
+            </div>
           </div>
           <button class="btn" type="submit">{{ instagramId ? 'Update' : 'Create' }} post</button>
         </form>
@@ -108,8 +131,16 @@ type ContentTab = 'home' | 'testimonials' | 'services' | 'instagram';
               <td>{{ row.alt }}</td>
               <td>{{ row.active ? 'Active' : 'Hidden' }}</td>
               <td>
-                <button type="button" (click)="editInstagram(row)">Edit</button>
-                <button type="button" (click)="removeInstagram(row)">Delete</button>
+                <div class="row-actions">
+                  <button type="button" class="icon-btn" (click)="editInstagram(row)" aria-label="Edit">
+                    <app-icon name="pencil" [size]="15" [strokeWidth]="1.8"></app-icon>
+                    <span class="label">Edit</span>
+                  </button>
+                  <button type="button" class="icon-btn danger" (click)="removeInstagram(row)" aria-label="Delete">
+                    <app-icon name="trash-2" [size]="15" [strokeWidth]="1.8"></app-icon>
+                    <span class="label">Delete</span>
+                  </button>
+                </div>
               </td>
             </tr>
           }
@@ -118,13 +149,11 @@ type ContentTab = 'home' | 'testimonials' | 'services' | 'instagram';
     </div>
   `,
   styles: [`
-    h1 { font-style: italic; }
     .tabs { display: flex; gap: 0.4rem; flex-wrap: wrap; margin: 0 0 1.2rem; }
     .tabs button { background: none; border: 1px solid var(--lvj-line); padding: 0.4rem 0.8rem; cursor: pointer; }
     .tabs button.on { border-color: var(--lvj-gold-deep); color: var(--lvj-gold-deep); }
-    table { width: 100%; margin-top: 2rem; border-collapse: collapse; background: #fff; }
-    th, td { text-align: left; padding: 0.7rem; border-bottom: 1px solid var(--lvj-line); }
-    td button { margin-right: 0.5rem; background: none; border: 0; color: var(--lvj-gold-deep); cursor: pointer; }
+    table { width: 100%; margin-top: 2rem; border-collapse: collapse; background: #fff; border-radius: var(--lvj-radius); overflow: hidden; }
+    th, td { text-align: left; padding: 0.85rem 0.7rem; border-bottom: 1px solid var(--lvj-line); }
   `]
 })
 export class AdminContentComponent implements OnInit {

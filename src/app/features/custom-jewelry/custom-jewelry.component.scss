@@ -18,7 +18,7 @@
 }
 
 .intro-copy h1 {
-  font-family: var(--font-logo-serif);
+  font-family: var(--font-display);
   font-style: italic;
   font-size: clamp(2.2rem, 4.6vw, 3.4rem);
   font-weight: 500;
@@ -36,18 +36,20 @@
 .layout {
   display: grid;
   gap: 2.5rem;
+  align-items: start;
 }
 
-h2 {
-  font-family: var(--font-body);
-  font-size: 1.4rem;
-  font-weight: 600;
+.process h2 {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: clamp(1.6rem, 2.4vw, 2rem);
+  font-weight: 500;
 }
 
 ol {
   display: grid;
   gap: 1rem;
-  margin: 1.2rem 0;
+  margin: 1.2rem 0 1.5rem;
 }
 
 li {
@@ -58,14 +60,86 @@ li strong {
   display: block;
   color: var(--lvj-charcoal);
   font-family: var(--font-body);
-  font-size: 0.95rem;
+  font-size: 0.92rem;
   font-weight: 600;
 }
 
-.alt {
-  display: flex;
-  gap: 0.6rem;
-  flex-wrap: wrap;
+.request {
+  background: var(--lvj-white);
+  border: 1px solid var(--lvj-line);
+  border-radius: var(--lvj-radius);
+  padding: 1.35rem 1.25rem 1.4rem;
+}
+
+.hint {
+  color: var(--lvj-muted);
+  font-size: 0.85rem;
+  margin: 0 0 0.75rem;
+  text-transform: none;
+  letter-spacing: 0;
+  font-weight: 400;
+}
+
+.url-list {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.url-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.55rem;
+  align-items: stretch;
+}
+
+.url-row input {
+  width: 100%;
+  min-width: 0;
+  border: 1px solid rgba(17, 17, 17, 0.12);
+  background: #fff;
+  padding: 0.7rem 0.9rem;
+  color: var(--lvj-charcoal);
+  outline: none;
+  border-radius: var(--lvj-radius-sm);
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.url-row input:focus {
+  border-color: var(--lvj-ink);
+  box-shadow: 0 0 0 3px rgba(17, 17, 17, 0.06);
+}
+
+.url-row .btn {
+  min-height: 100%;
+  align-self: stretch;
+}
+
+.add-link {
+  margin-top: 0.75rem;
+  border: 0;
+  background: transparent;
+  color: var(--lvj-ink);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  padding: 0.35rem 0;
+  width: fit-content;
+  border-bottom: 1px solid currentColor;
+  transition: opacity 0.25s ease, gap 0.25s ease;
+}
+
+.add-link:hover {
+  opacity: 0.55;
+}
+
+.form-actions {
+  margin-top: 1.5rem;
+}
+
+.form-actions .btn {
+  min-width: min(100%, 280px);
 }
 
 @include mq(lg) {
@@ -75,22 +149,25 @@ li strong {
   }
 
   .layout {
-    grid-template-columns: 0.8fr 1.1fr;
+    grid-template-columns: 0.85fr 1.15fr;
+    gap: 3rem;
+  }
+
+  .request {
+    padding: 1.6rem 1.5rem 1.55rem;
   }
 }
 
-.hint {
-  color: var(--lvj-muted);
-  font-size: 0.85rem;
-  margin: 0 0 0.6rem;
-}
+@media (max-width: 560px) {
+  .url-row {
+    grid-template-columns: 1fr;
+  }
 
-.url-row {
-  display: flex;
-  gap: 0.5rem;
-  margin-bottom: 0.5rem;
-}
+  .url-row .btn {
+    width: 100%;
+  }
 
-.url-row input {
-  flex: 1;
+  .form-actions .btn {
+    width: 100%;
+  }
 }

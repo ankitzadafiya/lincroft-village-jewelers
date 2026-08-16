@@ -20,7 +20,7 @@ import { AppIconComponent } from '../../icons/lvj-icons';
       width: 44px;
       height: 44px;
       border: 0;
-      border-radius: 999px;
+      border-radius: 12px;
       background: #111;
       color: #fff;
       cursor: pointer;
@@ -28,11 +28,12 @@ import { AppIconComponent } from '../../icons/lvj-icons';
       place-items: center;
       box-shadow: 0 10px 24px rgba(0, 0, 0, 0.16);
       animation: rise 0.3s var(--lvj-ease);
-      transition: transform 0.25s ease, background 0.25s ease;
+      transition: transform 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
     }
     .top:hover {
       transform: translateY(-2px);
       background: #000;
+      box-shadow: 0 14px 28px rgba(0, 0, 0, 0.2);
     }
     @keyframes rise {
       from { opacity: 0; transform: translateY(8px); }

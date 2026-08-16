@@ -224,7 +224,7 @@ import { AppIconComponent } from '../../shared/icons/lvj-icons';
       padding: 1.5rem;
       background: #fff;
       border: 1px solid var(--lvj-line);
-      border-radius: 22px;
+      border-radius: 0;
     }
 
     .block h2 {

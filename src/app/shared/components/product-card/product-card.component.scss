@@ -11,7 +11,7 @@
   overflow: hidden;
   background: var(--lvj-paper);
   display: block;
-  border-radius: 0;
+  border-radius: var(--lvj-radius-sm);
 }
 
 .img {

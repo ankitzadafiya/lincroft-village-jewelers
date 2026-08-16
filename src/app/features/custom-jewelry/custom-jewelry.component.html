@@ -9,25 +9,26 @@
       <p class="eyebrow">Custom Jewelry Design</p>
       <h1>If you can dream it, we can build it.</h1>
       <p>Drag the slider to see how a sketch becomes a finished piece. Share your idea below and we will guide the next steps.</p>
-      <a routerLink="/contact" class="btn btn-gold">Book an Appointment</a>
+      <a routerLink="/contact" class="btn">Book an Appointment</a>
     </div>
   </div>
 </section>
 
 <section class="section container layout">
-  <div>
+  <aside class="process">
     <h2>How it works</h2>
     <ol>
       <li><strong>01 · Begin</strong> Share the idea, the stone, or the heirloom.</li>
       <li><strong>02 · Draw</strong> We refine metal, proportion, and budget together.</li>
       <li><strong>03 · Make</strong> You approve the design before it is finished.</li>
     </ol>
-    <div class="alt">
-      <a class="btn btn-ghost" [href]="whatsapp()" target="_blank" rel="noreferrer">WhatsApp</a>
-      <a class="btn btn-ghost" [href]="emailHref()">Email</a>
+    <div class="btn-row">
+      <a class="btn btn-ghost btn-sm" [href]="whatsapp()" target="_blank" rel="noreferrer">WhatsApp</a>
+      <a class="btn btn-ghost btn-sm" [href]="emailHref()">Email</a>
     </div>
-  </div>
-  <form [formGroup]="form" (ngSubmit)="submit()">
+  </aside>
+
+  <form class="request" [formGroup]="form" (ngSubmit)="submit()">
     <div class="form-grid">
       <div class="field"><label>Name</label><input formControlName="name" /></div>
       <div class="field"><label>Email</label><input formControlName="email" /></div>
@@ -56,22 +57,32 @@
       <div class="field"><label>Gemstone / diamond</label><input formControlName="gemstone" placeholder="Optional" /></div>
       <div class="field"><label>Budget</label><input formControlName="budget" placeholder="Optional" /></div>
       <div class="field full"><label>Describe the piece</label><textarea formControlName="description"></textarea></div>
-      <div class="field full">
+      <div class="field full refs">
         <label>Reference image URLs</label>
-        <p class="hint">Paste public photo links (Instagram, Pinterest, Google Drive, etc.). Add as many as you like.</p>
-        @for (url of referenceUrls(); track $index) {
-          <div class="url-row">
-            <input
-              type="url"
-              [value]="url"
-              placeholder="https://"
-              (input)="updateReferenceUrl($index, $event)" />
-            <button type="button" class="btn btn-ghost" (click)="removeReferenceUrl($index)">Remove</button>
-          </div>
-        }
-        <button type="button" class="btn btn-ghost" (click)="addReferenceUrl()">Add another link</button>
+        <p class="hint">Paste public photo links (Instagram, Pinterest, Google Drive, etc.).</p>
+        <div class="url-list">
+          @for (url of referenceUrls(); track $index) {
+            <div class="url-row">
+              <input
+                type="url"
+                [value]="url"
+                placeholder="https://"
+                (input)="updateReferenceUrl($index, $event)" />
+              <button
+                type="button"
+                class="btn btn-soft btn-sm"
+                [disabled]="referenceUrls().length <= 1"
+                (click)="removeReferenceUrl($index)">
+                Remove
+              </button>
+            </div>
+          }
+        </div>
+        <button type="button" class="add-link" (click)="addReferenceUrl()">+ Add another link</button>
       </div>
     </div>
-    <button class="btn btn-gold" type="submit">Request a custom design</button>
+    <div class="form-actions">
+      <button class="btn" type="submit">Request a custom design</button>
+    </div>
   </form>
 </section>

@@ -3,15 +3,28 @@
     <div>
       <p class="eyebrow">Access</p>
       <h1>Staff accounts</h1>
-      <p class="lead">Create an atelier admin or staff login here. They sign in at <code>/admin/login</code> and open the console directly. Shopper accounts stay on the storefront.</p>
+      <p class="lead">Create or update atelier admin/staff logins. They sign in at <code>/admin/login</code>. Screen rights control which admin pages they can open.</p>
     </div>
   </div>
 
   <div class="layout">
-    <form class="create" [formGroup]="form" (ngSubmit)="create()" novalidate autocomplete="off">
-      <p class="eyebrow">Create admin</p>
-      <h2>New staff login</h2>
-      <p class="hint">Password is sent only in the secure request body — never shown in the list afterward.</p>
+    <form #formPanel class="create" [formGroup]="form" (ngSubmit)="save()" novalidate autocomplete="off">
+      <div class="form-head">
+        <div>
+          <p class="eyebrow">{{ isEditing() ? 'Edit staff' : 'Create admin' }}</p>
+          <h2>{{ isEditing() ? 'Update access' : 'New staff login' }}</h2>
+        </div>
+        @if (isEditing()) {
+          <button type="button" class="btn btn-ghost btn-sm" (click)="cancelEdit()">Cancel</button>
+        }
+      </div>
+      <p class="hint">
+        @if (isEditing()) {
+          Leave password blank to keep the current password. Email cannot be changed.
+        } @else {
+          Password is sent only in the secure request body — never shown in the list afterward.
+        }
+      </p>
 
       @if (formError()) {
         <p class="err" role="alert">{{ formError() }}</p>
@@ -50,9 +63,9 @@
       </div>
 
       @if (isStaff()) {
-        <fieldset class="perms">
+        <fieldset class="perms checks">
           <legend>Staff permissions</legend>
-          <p class="hint">Staff start with no screens until you check them.</p>
+          <p class="hint">Only checked screens appear in the sidebar and are reachable by URL.</p>
           @for (item of permissionOptions; track item.key) {
             <label class="check">
               <input type="checkbox" [checked]="selectedPermissions().includes(item.key)" (change)="togglePermission(item.key)" />
@@ -63,7 +76,7 @@
       }
 
       <div class="field" [class.invalid]="invalid(form.controls.password)">
-        <label for="staff-password">Password</label>
+        <label for="staff-password">Password @if (isEditing()) { <span class="opt">optional</span> }</label>
         <div class="secret">
           <input id="staff-password" formControlName="password" [type]="showPassword() ? 'text' : 'password'" maxlength="128" autocomplete="new-password" />
           <button type="button" class="reveal" (click)="showPassword.set(!showPassword())" [attr.aria-label]="showPassword() ? 'Hide password' : 'Show password'">
@@ -72,13 +85,13 @@
         </div>
         @if (invalid(form.controls.password)) {
           <span class="error">{{ message(form.controls.password, 'Password') }}</span>
-        } @else {
+        } @else if (!isEditing()) {
           <span class="hint">At least 8 characters.</span>
         }
       </div>
 
       <div class="field" [class.invalid]="confirmInvalid()">
-        <label for="staff-confirm">Confirm password</label>
+        <label for="staff-confirm">Confirm password @if (isEditing()) { <span class="opt">if changing</span> }</label>
         <div class="secret">
           <input id="staff-confirm" formControlName="confirmPassword" [type]="showConfirm() ? 'text' : 'password'" maxlength="128" autocomplete="new-password" />
           <button type="button" class="reveal" (click)="showConfirm.set(!showConfirm())" [attr.aria-label]="showConfirm() ? 'Hide password' : 'Show password'">
@@ -92,8 +105,12 @@
         }
       </div>
 
-      <button class="btn btn-gold" type="submit" [disabled]="creating()">
-        {{ creating() ? 'Creating…' : 'Create account' }}
+      <button class="btn btn-gold" type="submit" [disabled]="saving()">
+        @if (saving()) {
+          {{ isEditing() ? 'Updating…' : 'Creating…' }}
+        } @else {
+          {{ isEditing() ? 'Update account' : 'Create account' }}
+        }
       </button>
     </form>
 
@@ -111,21 +128,34 @@
             <span></span>
           </div>
           @for (user of users(); track user.id) {
-            <div class="row" [class.off]="!user.isActive">
+            <div class="row" [class.off]="!user.isActive" [class.editing]="editingId() === user.id">
               <span>
                 <strong>{{ user.name }}</strong>
                 <small>{{ user.email }}</small>
+                @if (user.role === 'staff' && user.permissions?.length) {
+                  <small class="perms-preview">{{ user.permissions.join(', ') }}</small>
+                }
               </span>
               <span class="role" [attr.data-role]="user.role">{{ user.role | titlecase }}</span>
               <span class="status" [attr.data-on]="user.isActive">{{ user.isActive ? 'Active' : 'Inactive' }}</span>
               <span>{{ user.lastLoginAt ? (user.lastLoginAt | date:'mediumDate') : 'Never' }}</span>
               <span class="actions">
+                <button type="button" class="icon-btn" (click)="edit(user)" aria-label="Edit">
+                  <app-icon name="pencil" [size]="15" [strokeWidth]="1.8"></app-icon>
+                  <span class="label">Edit</span>
+                </button>
                 @if (isSelf(user)) {
                   <span class="you">You</span>
                 } @else if (user.isActive) {
-                  <button type="button" (click)="setActive(user, false)">Deactivate</button>
+                  <button type="button" class="icon-btn danger" (click)="setActive(user, false)" aria-label="Deactivate">
+                    <app-icon name="power" [size]="15" [strokeWidth]="1.8"></app-icon>
+                    <span class="label">Off</span>
+                  </button>
                 } @else {
-                  <button type="button" class="on" (click)="setActive(user, true)">Reactivate</button>
+                  <button type="button" class="icon-btn muted" (click)="setActive(user, true)" aria-label="Reactivate">
+                    <app-icon name="power" [size]="15" [strokeWidth]="1.8"></app-icon>
+                    <span class="label">On</span>
+                  </button>
                 }
               </span>
             </div>

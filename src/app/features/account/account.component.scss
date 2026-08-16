@@ -37,7 +37,7 @@
 .profile {
   background: var(--lvj-white);
   border: 1px solid var(--lvj-line);
-  border-radius: 0;
+  border-radius: var(--lvj-radius);
   box-shadow: var(--lvj-shadow-soft);
 }
 

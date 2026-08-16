@@ -1,5 +1,10 @@
-import { Component, OnChanges, OnInit, SimpleChanges, inject, input, output, signal } from '@angular/core';
+import { Component, OnChanges, OnInit, SimpleChanges, computed, inject, input, output, signal } from '@angular/core';
 import { FormArray, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { InputTextModule } from 'primeng/inputtext';
+import { TextareaModule } from 'primeng/textarea';
+import { SelectModule } from 'primeng/select';
+import { CheckboxModule } from 'primeng/checkbox';
+import { InputNumberModule } from 'primeng/inputnumber';
 import { Category, Designer, ProductMedia, ProductSpec, SpecGroup, toMediaWrite } from '../../../../core/models';
 import { AdminProductService } from '../../../../core/services/admin-product.service';
 import { CategoryService } from '../../../../core/services/category.service';
@@ -35,9 +40,22 @@ const PRESETS: Record<string, ProductSpec[]> = {
   ]
 };
 
+interface SelectOption {
+  label: string;
+  value: string;
+}
+
 @Component({
   selector: 'app-product-form',
-  imports: [ReactiveFormsModule, MediaUploaderComponent],
+  imports: [
+    ReactiveFormsModule,
+    MediaUploaderComponent,
+    InputTextModule,
+    TextareaModule,
+    SelectModule,
+    CheckboxModule,
+    InputNumberModule
+  ],
   templateUrl: './product-form.component.html',
   styleUrl: './product-form.component.scss'
 })
@@ -48,7 +66,6 @@ export class ProductFormComponent implements OnInit, OnChanges {
   private readonly designersApi = inject(DesignerService);
   private readonly toast = inject(ToastService);
 
-  /** When set, loads that product for edit. Null/empty = create. */
   readonly productId = input<string | null>(null);
   readonly saved = output<void>();
   readonly cancelled = output<void>();
@@ -59,6 +76,27 @@ export class ProductFormComponent implements OnInit, OnChanges {
   readonly videos = signal<ProductMedia[]>([]);
   readonly saving = signal(false);
   readonly loading = signal(false);
+
+  readonly statusOptions: SelectOption[] = [
+    { label: 'Active', value: 'active' },
+    { label: 'Inactive', value: 'inactive' },
+    { label: 'Archived', value: 'archived' }
+  ];
+
+  readonly availabilityOptions: SelectOption[] = [
+    { label: 'In stock', value: 'in_stock' },
+    { label: 'Made to order', value: 'made_to_order' },
+    { label: 'Sold', value: 'sold' }
+  ];
+
+  readonly groupOptions: SelectOption[] = [
+    { label: 'Metal', value: 'metal' },
+    { label: 'Diamond', value: 'diamond' },
+    { label: 'Gemstone', value: 'gemstone' },
+    { label: 'Watch', value: 'watch' },
+    { label: 'Dimensions', value: 'dimensions' },
+    { label: 'General', value: 'general' }
+  ];
 
   readonly form = this.fb.nonNullable.group({
     sku: ['', Validators.required],
@@ -80,6 +118,23 @@ export class ProductFormComponent implements OnInit, OnChanges {
     specs: this.fb.array<ReturnType<ProductFormComponent['specGroup']>>([])
   });
 
+  readonly categoryOptions = computed<SelectOption[]>(() =>
+    this.categories()
+      .filter(c => !c.parentId)
+      .map(c => ({ label: c.name, value: c.id }))
+  );
+
+  readonly subcategoryOptions = computed<SelectOption[]>(() => {
+    const parentId = this.form.controls.categoryId.value;
+    return this.categories()
+      .filter(c => c.parentId === parentId)
+      .map(c => ({ label: c.name, value: c.id }));
+  });
+
+  readonly designerOptions = computed<SelectOption[]>(() =>
+    this.designers().map(d => ({ label: d.name, value: d.id }))
+  );
+
   get specs(): FormArray {
     return this.form.controls.specs;
   }
@@ -88,15 +143,13 @@ export class ProductFormComponent implements OnInit, OnChanges {
     return this.productId();
   }
 
-  parents(): Category[] {
-    return this.categories().filter(c => !c.parentId);
-  }
-
-  children(): Category[] {
-    return this.categories().filter(c => c.parentId === this.form.controls.categoryId.value);
-  }
-
   ngOnInit(): void {
+    this.form.controls.categoryId.valueChanges.subscribe(value => {
+      if (this.loading()) return;
+      const currentSub = this.form.controls.subcategoryId.value;
+      const stillValid = this.categories().some(c => c.id === currentSub && c.parentId === value);
+      if (!stillValid) this.form.controls.subcategoryId.setValue('');
+    });
     this.bootstrap();
   }
 

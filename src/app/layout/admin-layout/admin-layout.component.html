@@ -6,31 +6,35 @@
     </a>
 
     <div class="aside-scroll">
-      <p class="group-label">Catalog</p>
-      <nav>
-        @for (item of catalogNav; track item.path) {
-          <a [routerLink]="item.path" routerLinkActive="on">
-            <app-icon [name]="item.icon" [size]="16" [strokeWidth]="1.7"></app-icon>
-            {{ item.label }}
-          </a>
-        }
-      </nav>
+      @if (catalogNav().length) {
+        <p class="group-label">Catalog</p>
+        <nav>
+          @for (item of catalogNav(); track item.path) {
+            <a [routerLink]="item.path" routerLinkActive="on">
+              <app-icon [name]="item.icon" [size]="16" [strokeWidth]="1.7"></app-icon>
+              {{ item.label }}
+            </a>
+          }
+        </nav>
+      }
 
-      <p class="group-label">Studio</p>
-      <nav>
-        @for (item of studioNav; track item.path) {
-          <a [routerLink]="item.path" routerLinkActive="on">
-            <app-icon [name]="item.icon" [size]="16" [strokeWidth]="1.7"></app-icon>
-            {{ item.label }}
-          </a>
-        }
-        @if (auth.canManageUsers()) {
-          <a routerLink="/admin/users" routerLinkActive="on">
-            <app-icon name="users" [size]="16" [strokeWidth]="1.7"></app-icon>
-            Staff
-          </a>
-        }
-      </nav>
+      @if (studioNav().length || auth.canManageUsers()) {
+        <p class="group-label">Studio</p>
+        <nav>
+          @for (item of studioNav(); track item.path) {
+            <a [routerLink]="item.path" routerLinkActive="on">
+              <app-icon [name]="item.icon" [size]="16" [strokeWidth]="1.7"></app-icon>
+              {{ item.label }}
+            </a>
+          }
+          @if (auth.canManageUsers()) {
+            <a routerLink="/admin/users" routerLinkActive="on">
+              <app-icon name="users" [size]="16" [strokeWidth]="1.7"></app-icon>
+              Staff
+            </a>
+          }
+        </nav>
+      }
     </div>
 
     <div class="aside-foot">
@@ -49,10 +53,10 @@
   </aside>
 
   <section>
-    <header>
-      <div>
-        <p class="eyebrow">Lincroft Village Jewelers</p>
-        <strong>{{ auth.user()?.email }}</strong>
+    <header class="topbar">
+      <div class="identity">
+        <p class="brand-line">Lincroft Village Jewelers</p>
+        <p class="signed-in">{{ auth.user()?.email }}</p>
       </div>
       <a routerLink="/" class="storefront">View storefront</a>
     </header>

@@ -5,12 +5,17 @@ export type AuthProvider = 'password' | 'google';
 export const STAFF_PERMISSION_OPTIONS = [
   { key: 'products.manage', label: 'Products' },
   { key: 'categories.manage', label: 'Categories' },
+  { key: 'designers.manage', label: 'Designers' },
   { key: 'import', label: 'Import' },
+  { key: 'inquiries', label: 'Leads / inquiries' },
+  { key: 'content.manage', label: 'Content' },
   { key: 'settings', label: 'Pricing & Store' },
-  { key: 'inquiries', label: 'Leads' }
+  { key: 'users.manage', label: 'Staff accounts' }
 ] as const;
 
-export const ADMIN_DEFAULT_PERMISSIONS = STAFF_PERMISSION_OPTIONS.map(item => item.key);
+export type StaffPermission = (typeof STAFF_PERMISSION_OPTIONS)[number]['key'];
+
+export const ADMIN_DEFAULT_PERMISSIONS: StaffPermission[] = STAFF_PERMISSION_OPTIONS.map(item => item.key);
 
 export interface AuthUser {
   id: string;
@@ -66,6 +71,15 @@ export interface AdminUserCreateRequest {
   phone?: string;
   role: StaffRole;
   permissions?: string[];
+}
+
+/** PATCH /api/admin/users/{id} — password optional (omit to keep existing). */
+export interface AdminUserUpdateRequest {
+  name: string;
+  phone?: string | null;
+  role: StaffRole;
+  permissions?: string[];
+  password?: string;
 }
 
 export interface AdminUserStatusUpdate {

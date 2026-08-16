@@ -2,11 +2,24 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, computed, inject, signal } from '@angular/core';
 import { Observable, of, tap, catchError } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { AuthSession, AuthUser, GoogleLoginRequest, LoginRequest } from '../models';
+import { AuthSession, AuthUser, GoogleLoginRequest, LoginRequest, StaffPermission } from '../models';
 import { loginPayload } from '../utils/auth-validation';
 
 const TOKEN_KEY = 'lvj_admin_token';
 const USER_KEY = 'lvj_admin_user';
+
+/** Route order used after login and when a permission guard rejects access. */
+const ADMIN_ROUTE_PERMISSIONS: Array<{ path: string; permission: StaffPermission | null }> = [
+  { path: '/admin/dashboard', permission: null },
+  { path: '/admin/products', permission: 'products.manage' },
+  { path: '/admin/categories', permission: 'categories.manage' },
+  { path: '/admin/designers', permission: 'designers.manage' },
+  { path: '/admin/import', permission: 'import' },
+  { path: '/admin/inquiries', permission: 'inquiries' },
+  { path: '/admin/content', permission: 'content.manage' },
+  { path: '/admin/settings', permission: 'settings' },
+  { path: '/admin/users', permission: 'users.manage' }
+];
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -19,10 +32,7 @@ export class AuthService {
   readonly user = this.sessionUser.asReadonly();
   readonly token = this.sessionToken.asReadonly();
   readonly isAuthenticated = computed(() => !!this.sessionToken());
-  readonly canManageUsers = computed(() => {
-    const user = this.sessionUser();
-    return user?.role === 'admin' || !!user?.permissions.includes('users.manage');
-  });
+  readonly canManageUsers = computed(() => this.canAccess('users.manage'));
 
   login(payload: LoginRequest): Observable<AuthSession> {
     return this.http.post<AuthSession>(`${this.api}/auth/login`, loginPayload(payload.email, payload.password)).pipe(
@@ -62,8 +72,28 @@ export class AuthService {
     this.sessionUser.set(null);
   }
 
+  /**
+   * Admin role always has full access.
+   * Staff must have the exact permission key on the session user.
+   */
+  canAccess(permission: string): boolean {
+    const user = this.sessionUser();
+    if (!user) return false;
+    if (user.role === 'admin') return true;
+    return user.permissions.includes(permission);
+  }
+
+  /** @deprecated Prefer canAccess — kept for older call sites. */
   hasPermission(permission: string): boolean {
-    return this.sessionUser()?.permissions.includes(permission) ?? false;
+    return this.canAccess(permission);
+  }
+
+  /** First admin console path the current user is allowed to open. */
+  firstAllowedPath(): string {
+    for (const item of ADMIN_ROUTE_PERMISSIONS) {
+      if (!item.permission || this.canAccess(item.permission)) return item.path;
+    }
+    return '/admin/dashboard';
   }
 
   private persist(session: AuthSession): void {

@@ -107,32 +107,41 @@ ul {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.55rem;
-  min-height: 48px;
-  padding: 0.85rem 1.85rem;
+  gap: 0.5rem;
+  min-height: 46px;
+  padding: 0.8rem 1.6rem;
   border: 1px solid var(--lvj-ink);
-  border-radius: 0;
+  border-radius: var(--lvj-radius-pill);
   background: var(--lvj-ink);
   color: #fff;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   font-size: 0.68rem;
   font-weight: 600;
+  line-height: 1;
   cursor: pointer;
+  white-space: nowrap;
+  text-decoration: none;
   box-shadow: none;
   transition:
-    background 0.3s var(--lvj-ease),
-    color 0.3s var(--lvj-ease),
-    border-color 0.3s var(--lvj-ease),
-    transform 0.3s var(--lvj-ease),
-    box-shadow 0.3s var(--lvj-ease);
+    background 0.28s var(--lvj-ease),
+    color 0.28s var(--lvj-ease),
+    border-color 0.28s var(--lvj-ease),
+    transform 0.28s var(--lvj-ease),
+    box-shadow 0.28s var(--lvj-ease),
+    opacity 0.2s ease;
 
-  &:hover {
+  &:hover:not(:disabled) {
     background: #000;
     color: #fff;
     border-color: #000;
     transform: translateY(-1px);
-    box-shadow: var(--lvj-shadow-soft);
+    box-shadow: 0 10px 24px rgba(17, 17, 17, 0.12);
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(0);
+    box-shadow: none;
   }
 
   &:focus-visible {
@@ -149,12 +158,13 @@ ul {
 }
 
 .btn-gold,
-.btn.solid {
+.btn.solid,
+.btn-primary {
   background: var(--lvj-ink);
   color: #fff;
   border-color: var(--lvj-ink);
 
-  &:hover {
+  &:hover:not(:disabled) {
     background: #000;
     color: #fff;
     border-color: #000;
@@ -164,9 +174,22 @@ ul {
 .btn-ghost {
   background: transparent;
   color: var(--lvj-ink);
-  border-color: var(--lvj-ink);
+  border-color: rgba(17, 17, 17, 0.22);
 
-  &:hover {
+  &:hover:not(:disabled) {
+    background: var(--lvj-ink);
+    color: #fff;
+    border-color: var(--lvj-ink);
+    box-shadow: 0 10px 24px rgba(17, 17, 17, 0.1);
+  }
+}
+
+.btn-soft {
+  background: var(--lvj-paper);
+  color: var(--lvj-ink);
+  border-color: transparent;
+
+  &:hover:not(:disabled) {
     background: var(--lvj-ink);
     color: #fff;
     border-color: var(--lvj-ink);
@@ -178,11 +201,40 @@ ul {
   color: var(--lvj-ink);
   border-color: #fff;
 
-  &:hover {
+  &:hover:not(:disabled) {
     background: transparent;
     color: #fff;
     border-color: #fff;
+    box-shadow: none;
   }
+}
+
+.btn-sm {
+  min-height: 38px;
+  padding: 0.5rem 1rem;
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+}
+
+.btn-block {
+  width: 100%;
+}
+
+.btn-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  align-items: center;
+}
+
+.form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+  margin-top: 1.35rem;
+  padding-top: 1.15rem;
+  border-top: 1px solid var(--lvj-line);
 }
 
 .icon-btn {
@@ -353,7 +405,7 @@ ul {
 
 .form-grid {
   display: grid;
-  gap: 1rem;
+  gap: 1.05rem;
 
   @include mq(md) {
     grid-template-columns: 1fr 1fr;
@@ -363,9 +415,9 @@ ul {
 .field {
   display: flex;
   flex-direction: column;
-  gap: 0.35rem;
+  gap: 0.4rem;
 
-  label {
+  > label:not(.check) {
     font-size: 0.68rem;
     letter-spacing: 0.12em;
     text-transform: uppercase;
@@ -373,26 +425,39 @@ ul {
     font-weight: 600;
   }
 
-  input,
+  input:not([type='checkbox']):not([type='radio']),
   textarea,
   select {
     width: 100%;
-    border: 1px solid var(--lvj-line-strong);
+    border: 1px solid rgba(17, 17, 17, 0.12);
     background: #fff;
-    padding: 0.95rem 1rem;
+    padding: 0.85rem 1rem;
     color: var(--lvj-charcoal);
     outline: none;
     border-radius: var(--lvj-radius-sm);
-    transition: border-color 0.3s var(--lvj-ease), box-shadow 0.3s var(--lvj-ease);
+    font-size: 0.95rem;
+    transition:
+      border-color 0.25s var(--lvj-ease),
+      box-shadow 0.25s var(--lvj-ease),
+      background 0.25s ease;
 
     &:hover {
-      border-color: rgba(28, 28, 28, 0.28);
+      border-color: rgba(17, 17, 17, 0.28);
     }
 
     &:focus {
       border-color: var(--lvj-ink);
-      box-shadow: 0 0 0 3px rgba(28, 28, 28, 0.06);
+      box-shadow: 0 0 0 4px rgba(17, 17, 17, 0.06);
+      background: #fff;
     }
+  }
+
+  select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236b6b6b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.9rem center;
+    padding-right: 2.4rem;
   }
 
   textarea {
@@ -408,6 +473,180 @@ ul {
 
 .field.full {
   grid-column: 1 / -1;
+}
+
+.check,
+.field .check,
+label.check {
+  display: inline-flex !important;
+  flex-direction: row !important;
+  align-items: center;
+  gap: 0.7rem;
+  margin: 0;
+  padding: 0.45rem 0.7rem 0.45rem 0.45rem;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--lvj-ink);
+  cursor: pointer;
+  width: fit-content;
+  border-radius: 10px;
+  transition: background 0.2s ease;
+  user-select: none;
+}
+
+.check:hover,
+.field .check:hover,
+label.check:hover {
+  background: rgba(17, 17, 17, 0.04);
+}
+
+/* Native checkboxes — custom look project-wide */
+input[type='checkbox'] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 1.2rem;
+  height: 1.2rem;
+  margin: 0;
+  flex: none;
+  border: 1.5px solid rgba(17, 17, 17, 0.22);
+  border-radius: 6px;
+  background: #fff;
+  cursor: pointer;
+  position: relative;
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.15s ease;
+}
+
+input[type='checkbox']:hover {
+  border-color: rgba(17, 17, 17, 0.45);
+}
+
+input[type='checkbox']:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(17, 17, 17, 0.1);
+}
+
+input[type='checkbox']:checked {
+  background: var(--lvj-ink);
+  border-color: var(--lvj-ink);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 0.72rem;
+}
+
+input[type='checkbox']:checked:hover {
+  background-color: #2a2a2a;
+  border-color: #2a2a2a;
+}
+
+.checks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.5rem;
+  align-items: center;
+  padding: 0.55rem;
+  background: transparent;
+  border-radius: var(--lvj-radius-sm);
+  border: 1px dashed rgba(17, 17, 17, 0.12);
+}
+
+.checks .check {
+  background: #fff;
+  border: 1px solid rgba(17, 17, 17, 0.08);
+  box-shadow: 0 1px 2px rgba(17, 17, 17, 0.03);
+}
+
+.checks .check:hover {
+  border-color: rgba(17, 17, 17, 0.18);
+  background: #fff;
+}
+
+/* Admin row icon actions — pencil / trash with hover labels */
+.row-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  white-space: nowrap;
+}
+
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  min-width: 2.05rem;
+  height: 2.05rem;
+  padding: 0 0.55rem;
+  border: 1px solid rgba(17, 17, 17, 0.1);
+  border-radius: 10px;
+  background: #fff;
+  color: var(--lvj-muted);
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  transition:
+    background 0.22s var(--lvj-ease),
+    color 0.22s ease,
+    border-color 0.22s ease,
+    gap 0.22s ease,
+    min-width 0.22s ease,
+    box-shadow 0.22s ease,
+    transform 0.2s ease;
+}
+
+.icon-btn .label {
+  max-width: 0;
+  overflow: hidden;
+  opacity: 0;
+  white-space: nowrap;
+  transition: max-width 0.22s ease, opacity 0.18s ease, margin 0.22s ease;
+}
+
+.icon-btn:hover {
+  gap: 0.4rem;
+  min-width: 0;
+  color: var(--lvj-ink);
+  border-color: rgba(17, 17, 17, 0.22);
+  background: var(--lvj-paper);
+  box-shadow: 0 4px 12px rgba(17, 17, 17, 0.06);
+  transform: translateY(-1px);
+}
+
+.icon-btn:hover .label {
+  max-width: 4.5rem;
+  opacity: 1;
+}
+
+.icon-btn.danger {
+  color: #a35a52;
+  border-color: rgba(154, 59, 50, 0.18);
+}
+
+.icon-btn.danger:hover {
+  color: #fff;
+  background: #9a3b32;
+  border-color: #9a3b32;
+  box-shadow: 0 6px 16px rgba(154, 59, 50, 0.28);
+}
+
+.icon-btn.danger:hover .label {
+  color: #fff;
+}
+
+.icon-btn.muted:hover {
+  color: #fff;
+  background: var(--lvj-ink);
+  border-color: var(--lvj-ink);
 }
 
 .skip-link {
@@ -457,7 +696,7 @@ ul {
   letter-spacing: 0.02em;
   text-transform: none;
   font-size: 0.85rem !important;
-  border-radius: 0 !important;
+  border-radius: var(--lvj-radius-pill) !important;
 }
 
 .p-dialog,
@@ -466,28 +705,28 @@ ul {
 }
 
 .product-modal.p-dialog {
-  border-radius: 18px !important;
+  border-radius: 20px !important;
   overflow: hidden;
   border: 1px solid var(--lvj-line) !important;
   box-shadow: var(--lvj-shadow) !important;
 }
 
 .product-modal .p-dialog-header {
-  background: var(--lvj-panel) !important;
+  background: #fff !important;
   border-bottom: 1px solid var(--lvj-line) !important;
-  padding: 1.1rem 1.35rem !important;
+  padding: 1.15rem 1.4rem !important;
 }
 
 .product-modal .p-dialog-title {
   font-family: var(--font-logo-serif) !important;
   font-style: italic !important;
   font-size: 1.55rem !important;
-  font-weight: 600 !important;
+  font-weight: 500 !important;
 }
 
 .product-modal .p-dialog-content {
-  background: #f7f3ee !important;
-  padding: 1.15rem 1.35rem 1.35rem !important;
+  background: #fafaf8 !important;
+  padding: 1.2rem 1.4rem 1.4rem !important;
 }
 
 .p-paginator {
@@ -499,6 +738,7 @@ ul {
 
 .admin-page {
   padding: 1.5rem;
+  font-family: var(--font-body);
 
   @include mq(lg) {
     padding: 2rem 2.4rem 3rem;
@@ -509,10 +749,27 @@ ul {
     margin-bottom: 1.1rem;
   }
 
-  h1 {
-    font-family: var(--font-logo-serif);
-    font-style: italic;
+  .eyebrow {
+    display: block;
+    margin: 0 0 0.35rem;
+    font-family: var(--font-body);
+    font-size: 0.62rem;
     font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--lvj-muted);
+  }
+
+  /* One title style for every admin screen */
+  h1 {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 500;
+    font-size: clamp(1.9rem, 3vw, 2.4rem);
+    letter-spacing: -0.015em;
+    line-height: 1.15;
+    margin: 0;
+    color: var(--lvj-ink);
   }
 }
 

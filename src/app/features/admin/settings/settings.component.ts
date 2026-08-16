@@ -12,8 +12,12 @@ import { ToastService } from '../../../core/services/toast.service';
       <h1>Pricing & store</h1>
       <p class="muted">Global hide + product show follows <code>allowProductPriceOverride</code>. Product hide always wins when global prices are on. PUT sends the full configuration object.</p>
       <form [formGroup]="form" (ngSubmit)="save()">
-        <div class="field"><label><input type="checkbox" formControlName="showPricesGlobally" /> Show prices globally</label></div>
-        <div class="field"><label><input type="checkbox" formControlName="allowProductPriceOverride" /> Allow a product to show price when global hide is on</label></div>
+        <div class="field checks">
+          <label class="check"><input type="checkbox" formControlName="showPricesGlobally" /> Show prices globally</label>
+        </div>
+        <div class="field checks">
+          <label class="check"><input type="checkbox" formControlName="allowProductPriceOverride" /> Allow a product to show price when global hide is on</label>
+        </div>
         <div class="field"><label>Store email</label><input formControlName="email" /></div>
         <div class="field"><label>Phone display</label><input formControlName="phoneDisplay" /></div>
         <div class="field"><label>WhatsApp number</label><input formControlName="whatsApp" /></div>
@@ -22,7 +26,6 @@ import { ToastService } from '../../../core/services/toast.service';
     </div>
   `,
   styles: [`
-    h1 { font-style: italic; }
     form { display: grid; gap: 1rem; max-width: 520px; }
     code { font-size: 0.85em; }
   `]

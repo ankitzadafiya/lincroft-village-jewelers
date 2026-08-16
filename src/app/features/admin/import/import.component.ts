@@ -58,7 +58,6 @@ import { ToastService } from '../../../core/services/toast.service';
     </div>
   `,
   styles: [`
-    h1 { font-style: italic; }
     .actions { display: flex; gap: 0.7rem; flex-wrap: wrap; margin: 1.2rem 0; }
     .bad { background: #f8ece9; }
   `]

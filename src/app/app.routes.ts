@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 import { LEGACY_CATEGORY_REDIRECTS, STORE_TOP_CATEGORIES } from './core/catalog/store-categories';
-import { authGuard, guestGuard, adminUsersGuard } from './core/guards/auth.guard';
+import { authGuard, guestGuard, adminUsersGuard, permissionGuard } from './core/guards/auth.guard';
 
 const catalogPage = () => import('./features/catalog/catalog.component').then(m => m.CatalogComponent);
 
@@ -20,16 +20,16 @@ export const routes: Routes = [
         children: [
           { path: '', pathMatch: 'full', redirectTo: 'dashboard' },
           { path: 'dashboard', loadComponent: () => import('./features/admin/dashboard/dashboard.component').then(m => m.DashboardComponent) },
-          { path: 'products', loadComponent: () => import('./features/admin/products/product-list/product-list.component').then(m => m.AdminProductListComponent) },
+          { path: 'products', canActivate: [permissionGuard('products.manage')], loadComponent: () => import('./features/admin/products/product-list/product-list.component').then(m => m.AdminProductListComponent) },
           { path: 'products/new', redirectTo: 'products', pathMatch: 'full' },
           { path: 'products/:id', redirectTo: 'products', pathMatch: 'full' },
-          { path: 'categories', loadComponent: () => import('./features/admin/categories/categories.component').then(m => m.AdminCategoriesComponent) },
-          { path: 'designers', loadComponent: () => import('./features/admin/designers/designers.component').then(m => m.AdminDesignersComponent) },
-          { path: 'import', loadComponent: () => import('./features/admin/import/import.component').then(m => m.ImportComponent) },
-          { path: 'inquiries', loadComponent: () => import('./features/admin/inquiries/inquiries.component').then(m => m.AdminInquiriesComponent) },
-          { path: 'content', loadComponent: () => import('./features/admin/content/content.component').then(m => m.AdminContentComponent) },
+          { path: 'categories', canActivate: [permissionGuard('categories.manage')], loadComponent: () => import('./features/admin/categories/categories.component').then(m => m.AdminCategoriesComponent) },
+          { path: 'designers', canActivate: [permissionGuard('designers.manage')], loadComponent: () => import('./features/admin/designers/designers.component').then(m => m.AdminDesignersComponent) },
+          { path: 'import', canActivate: [permissionGuard('import')], loadComponent: () => import('./features/admin/import/import.component').then(m => m.ImportComponent) },
+          { path: 'inquiries', canActivate: [permissionGuard('inquiries')], loadComponent: () => import('./features/admin/inquiries/inquiries.component').then(m => m.AdminInquiriesComponent) },
+          { path: 'content', canActivate: [permissionGuard('content.manage')], loadComponent: () => import('./features/admin/content/content.component').then(m => m.AdminContentComponent) },
           { path: 'users', canActivate: [adminUsersGuard], loadComponent: () => import('./features/admin/users/users.component').then(m => m.AdminUsersComponent) },
-          { path: 'settings', loadComponent: () => import('./features/admin/settings/settings.component').then(m => m.AdminSettingsComponent) }
+          { path: 'settings', canActivate: [permissionGuard('settings')], loadComponent: () => import('./features/admin/settings/settings.component').then(m => m.AdminSettingsComponent) }
         ]
       }
     ]

@@ -17,7 +17,16 @@ import { slugify } from '../utils/slug';
 import { DEFAULT_IMPORT_MAPPING, MOCK_CUSTOM_REQUESTS, MOCK_HOME, MOCK_INSTAGRAM, MOCK_SERVICES, MOCK_TESTIMONIALS } from './mock-data';
 import { mockStore } from './mock-store';
 
-const ADMIN_PERMISSIONS = ['products.manage', 'categories.manage', 'import', 'settings', 'inquiries'];
+const ADMIN_PERMISSIONS = [
+  'products.manage',
+  'categories.manage',
+  'designers.manage',
+  'import',
+  'inquiries',
+  'content.manage',
+  'settings',
+  'users.manage'
+];
 const STAFF_PERMISSIONS: string[] = [];
 const CUSTOMER_PERMISSIONS = ['favorites'];
 
@@ -554,6 +563,41 @@ export function handleMockRequest(req: HttpRequest<unknown>): Observable<HttpRes
     };
     users = [...users, created];
     return ok(adminUserRecord(created), 201);
+  }
+
+  const userUpdatePath = path.match(/\/admin\/users\/([^/]+)$/);
+  if (method === 'PATCH' && userUpdatePath && !path.endsWith('/status')) {
+    const actor = userFromToken(req, 'admin');
+    if (!actor || (actor.role !== 'admin' && !actor.permissions.includes('users.manage'))) {
+      return fail(403, 'You do not have permission to manage staff accounts.');
+    }
+    const target = users.find(u => u.id === userUpdatePath[1]);
+    if (!target || (target.role !== 'admin' && target.role !== 'staff')) {
+      return fail(404, 'User not found.');
+    }
+    const payload = body as {
+      name?: string;
+      phone?: string | null;
+      role?: string;
+      permissions?: string[];
+      password?: string;
+    };
+    const errors: Record<string, string[]> = {};
+    const name = payload?.name?.trim() ?? '';
+    if (!name || name.length < 2) errors['name'] = ['Name is required'];
+    if (payload?.role !== 'admin' && payload?.role !== 'staff') errors['role'] = ['Role must be admin or staff'];
+    if (payload?.password && payload.password.length < 8) {
+      errors['password'] = ['Password must be at least 8 characters'];
+    }
+    if (Object.keys(errors).length) return fail(400, 'Unable to update this account.', errors);
+
+    const role = payload.role as 'admin' | 'staff';
+    target.name = name;
+    target.phone = payload.phone?.trim() || undefined;
+    target.role = role;
+    target.permissions = role === 'admin' ? permissionsFor('admin') : [...(payload.permissions ?? [])];
+    if (payload.password) target.password = payload.password;
+    return ok(adminUserRecord(target));
   }
 
   const userStatusPath = path.match(/\/admin\/users\/([^/]+)\/status$/);

@@ -42,7 +42,6 @@ import { AdminProductService } from '../../../core/services/admin-product.servic
   `,
   styles: [`
     .intro { margin-bottom: 1.4rem; }
-    h1 { font-family: var(--font-logo-serif); font-style: italic; font-size: clamp(2rem, 4vw, 2.6rem); margin: 0.15rem 0 0.35rem; }
     .intro p { color: var(--lvj-muted); }
     .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 0.9rem; }
     article { background: #fff; padding: 1.15rem; border: 1px solid var(--lvj-line); border-radius: 16px; }

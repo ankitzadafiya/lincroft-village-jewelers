@@ -6,11 +6,12 @@ import { ConfirmationService } from 'primeng/api';
 import { Product } from '../../../../core/models';
 import { AdminProductService } from '../../../../core/services/admin-product.service';
 import { ToastService } from '../../../../core/services/toast.service';
+import { AppIconComponent } from '../../../../shared/icons/lvj-icons';
 import { ProductFormComponent } from '../product-form/product-form.component';
 
 @Component({
   selector: 'app-admin-product-list',
-  imports: [FormsModule, TableModule, DialogModule, ProductFormComponent],
+  imports: [FormsModule, TableModule, DialogModule, ProductFormComponent, AppIconComponent],
   template: `
     <div class="admin-page">
       <div class="head">
@@ -42,7 +43,7 @@ import { ProductFormComponent } from '../product-form/product-form.component';
               <th>Status</th>
               <th>Price</th>
               <th>Show price</th>
-              <th style="width: 11rem"></th>
+              <th style="width: 9rem"></th>
             </tr>
           </ng-template>
           <ng-template pTemplate="body" let-row>
@@ -52,10 +53,21 @@ import { ProductFormComponent } from '../product-form/product-form.component';
               <td><span class="status" [attr.data-s]="row.status">{{ row.status }}</span></td>
               <td>{{ row.price ?? '—' }}</td>
               <td>{{ row.showPrice ? 'Yes' : 'No' }}</td>
-              <td class="row-actions">
-                <button type="button" (click)="openEdit(row)">Edit</button>
-                <button type="button" (click)="toggle(row)">{{ row.status === 'active' ? 'Off' : 'On' }}</button>
-                <button type="button" class="danger" (click)="archive(row)">Archive</button>
+              <td>
+                <div class="row-actions">
+                  <button type="button" class="icon-btn" (click)="openEdit(row)" aria-label="Edit">
+                    <app-icon name="pencil" [size]="15" [strokeWidth]="1.8"></app-icon>
+                    <span class="label">Edit</span>
+                  </button>
+                  <button type="button" class="icon-btn muted" (click)="toggle(row)" [attr.aria-label]="row.status === 'active' ? 'Turn off' : 'Turn on'">
+                    <app-icon name="power" [size]="15" [strokeWidth]="1.8"></app-icon>
+                    <span class="label">{{ row.status === 'active' ? 'Off' : 'On' }}</span>
+                  </button>
+                  <button type="button" class="icon-btn danger" (click)="archive(row)" aria-label="Archive">
+                    <app-icon name="trash-2" [size]="15" [strokeWidth]="1.8"></app-icon>
+                    <span class="label">Archive</span>
+                  </button>
+                </div>
               </td>
             </tr>
           </ng-template>
@@ -91,12 +103,6 @@ import { ProductFormComponent } from '../product-form/product-form.component';
       gap: 1rem;
       margin-bottom: 1.25rem;
     }
-    h1 {
-      font-family: var(--font-logo-serif);
-      font-style: italic;
-      font-size: clamp(1.9rem, 3vw, 2.4rem);
-      margin: 0;
-    }
     .search {
       margin: 0 0 1rem;
       width: min(360px, 100%);
@@ -124,20 +130,6 @@ import { ProductFormComponent } from '../product-form/product-form.component';
     .status[data-s="active"] { background: rgba(70, 130, 90, 0.14); color: #2f5d3d; }
     .status[data-s="inactive"] { background: rgba(28,28,28,0.08); color: #666; }
     .status[data-s="archived"] { background: rgba(154, 59, 50, 0.12); color: #9a3b32; }
-    .row-actions {
-      white-space: nowrap;
-    }
-    .row-actions button {
-      margin-right: 0.45rem;
-      background: none;
-      border: 0;
-      cursor: pointer;
-      color: var(--lvj-gold-deep);
-      font-weight: 600;
-      font-size: 0.82rem;
-      padding: 0;
-    }
-    .row-actions .danger { color: #9a3b32; }
   `]
 })
 export class AdminProductListComponent implements OnInit {

@@ -1,5 +1,5 @@
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
-import { LoginRequest, RegisterRequest, StaffRole, AdminUserCreateRequest } from '../models';
+import { LoginRequest, RegisterRequest, StaffRole, AdminUserCreateRequest, AdminUserUpdateRequest } from '../models';
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
@@ -79,6 +79,14 @@ export function staffPassword(control: AbstractControl): ValidationErrors | null
   return null;
 }
 
+/** Empty allowed (keep existing password); if set, must be ≥ 8 chars. */
+export function optionalStaffPassword(control: AbstractControl): ValidationErrors | null {
+  const value = String(control.value ?? '');
+  if (!value) return null;
+  if (value.length < 8) return { minlength: { requiredLength: 8, actualLength: value.length } };
+  return null;
+}
+
 export function adminUserPayload(value: {
   name: string;
   email: string;
@@ -97,5 +105,25 @@ export function adminUserPayload(value: {
   };
   if (phone) payload.phone = phone;
   if (value.role === 'staff') payload.permissions = [...(value.permissions ?? [])];
+  return payload;
+}
+
+export function adminUserUpdatePayload(value: {
+  name: string;
+  phone?: string;
+  role: StaffRole;
+  permissions?: string[];
+  password?: string;
+  confirmPassword?: string;
+}): AdminUserUpdateRequest {
+  const phone = value.phone?.trim();
+  const password = value.password?.trim();
+  const payload: AdminUserUpdateRequest = {
+    name: String(value.name ?? '').trim(),
+    role: value.role,
+    phone: phone || null
+  };
+  if (value.role === 'staff') payload.permissions = [...(value.permissions ?? [])];
+  if (password) payload.password = password;
   return payload;
 }
