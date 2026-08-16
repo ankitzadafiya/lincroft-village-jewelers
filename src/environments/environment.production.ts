@@ -16,7 +16,7 @@ export const environment = {
   apiUrl: backend.apiUrl,
   useMockApi: backend.useMockApi,
   extraHeaders: backend.extraHeaders,
-  googleClientId: '',
+  googleClientId: '875754637701-1h2cbj3uu75arauu4qelq6da4m0ji2fa.apps.googleusercontent.com',
   appName: 'Lincroft Village Jewelers',
   defaultPageSize: 12,
   media: {

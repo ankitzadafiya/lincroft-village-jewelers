@@ -5,8 +5,8 @@ export const environment = {
   apiUrl: activeBackend.apiUrl,
   useMockApi: activeBackend.useMockApi,
   extraHeaders: activeBackend.extraHeaders,
-  /** Google Cloud OAuth 2.0 Web client ID. Empty = GIS button disabled (mock still works). */
-  googleClientId: '',
+  /** Google Cloud OAuth 2.0 Web client ID (from BE GOOGLE_SIGN_IN.md). */
+  googleClientId: '875754637701-1h2cbj3uu75arauu4qelq6da4m0ji2fa.apps.googleusercontent.com',
   appName: 'Lincroft Village Jewelers',
   defaultPageSize: 12,
   media: {
