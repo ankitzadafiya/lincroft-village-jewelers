@@ -15,10 +15,10 @@
 
 .banner {
   position: relative;
-  min-height: 320px;
-  border-radius: 22px;
+  min-height: 360px;
+  border-radius: 0;
   overflow: hidden;
-  background: #efece7;
+  background: var(--lvj-paper);
   display: block;
 }
 
@@ -87,8 +87,10 @@
 }
 
 .occ-head h2 {
-  font-size: clamp(1.8rem, 3vw, 2.5rem);
-  font-weight: 600;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: clamp(1.9rem, 3.2vw, 2.7rem);
+  font-weight: 500;
 }
 
 .occ-grid {
@@ -102,10 +104,10 @@
 
 .occ {
   position: relative;
-  border-radius: 20px;
+  border-radius: 0;
   overflow: hidden;
-  min-height: 260px;
-  background: #efece7;
+  min-height: 280px;
+  background: var(--lvj-paper);
 }
 
 .occ img {
@@ -127,12 +129,14 @@
   left: 1.1rem;
   bottom: 1.1rem;
   z-index: 1;
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.94);
   backdrop-filter: blur(8px);
   padding: 0.55rem 0.95rem;
-  border-radius: 999px;
-  font-size: 0.88rem;
-  font-weight: 600;
+  border-radius: 0;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
 }
 
 @keyframes floatZoom {

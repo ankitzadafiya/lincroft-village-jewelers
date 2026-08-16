@@ -2,18 +2,18 @@ import { Component, OnInit, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Designer } from '../../../core/models';
 import { CategoryService } from '../../../core/services/category.service';
-import { LvjIconsModule } from '../../icons/lvj-icons';
+import { AppIconComponent } from '../../icons/lvj-icons';
 
 @Component({
   selector: 'app-designer-strip',
-  imports: [RouterLink, LvjIconsModule],
+  imports: [RouterLink, AppIconComponent],
   template: `
     <section class="strip section">
       <div class="container">
         <h2>Featured Designers</h2>
         <div class="row">
           <button type="button" class="nav" aria-label="Previous" (click)="shift(-1)">
-            <lucide-icon name="chevron-left" [size]="18" [strokeWidth]="1.6"></lucide-icon>
+            <app-icon name="chevron-left" [size]="18" [strokeWidth]="1.6"></app-icon>
           </button>
           <div class="track">
             @for (d of visible(); track d.id) {
@@ -23,7 +23,7 @@ import { LvjIconsModule } from '../../icons/lvj-icons';
             }
           </div>
           <button type="button" class="nav" aria-label="Next" (click)="shift(1)">
-            <lucide-icon name="chevron-right" [size]="18" [strokeWidth]="1.6"></lucide-icon>
+            <app-icon name="chevron-right" [size]="18" [strokeWidth]="1.6"></app-icon>
           </button>
         </div>
       </div>

@@ -1,55 +1,143 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
 import { TableLazyLoadEvent, TableModule } from 'primeng/table';
+import { DialogModule } from 'primeng/dialog';
 import { ConfirmationService } from 'primeng/api';
 import { Product } from '../../../../core/models';
 import { AdminProductService } from '../../../../core/services/admin-product.service';
 import { ToastService } from '../../../../core/services/toast.service';
+import { ProductFormComponent } from '../product-form/product-form.component';
 
 @Component({
   selector: 'app-admin-product-list',
-  imports: [RouterLink, FormsModule, TableModule],
+  imports: [FormsModule, TableModule, DialogModule, ProductFormComponent],
   template: `
     <div class="admin-page">
       <div class="head">
-        <h1>Products</h1>
-        <a routerLink="/admin/products/new" class="btn">New product</a>
+        <div>
+          <p class="eyebrow">Catalog</p>
+          <h1>Products</h1>
+        </div>
+        <button type="button" class="btn" (click)="openCreate()">New product</button>
       </div>
-      <input class="search" placeholder="Search name or SKU" [ngModel]="q" (ngModelChange)="q = $event; load()" />
-      <p-table [value]="products()" [lazy]="true" [paginator]="true" [rows]="20" [totalRecords]="total()" (onLazyLoad)="onLazy($event)">
-        <ng-template pTemplate="header">
-          <tr>
-            <th>SKU</th>
-            <th>Name</th>
-            <th>Status</th>
-            <th>Price</th>
-            <th>Show price</th>
-            <th></th>
-          </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-row>
-          <tr>
-            <td>{{ row.sku }}</td>
-            <td>{{ row.name }}</td>
-            <td>{{ row.status }}</td>
-            <td>{{ row.price ?? '—' }}</td>
-            <td>{{ row.showPrice ? 'Yes' : 'No' }}</td>
-            <td>
-              <a [routerLink]="['/admin/products', row.id]">Edit</a>
-              <button type="button" (click)="toggle(row)">{{ row.status === 'active' ? 'Deactivate' : 'Activate' }}</button>
-              <button type="button" (click)="archive(row)">Archive</button>
-            </td>
-          </tr>
-        </ng-template>
-      </p-table>
+
+      <input
+        class="search"
+        placeholder="Search name or SKU"
+        [ngModel]="q"
+        (ngModelChange)="q = $event; load()" />
+
+      <div class="table-card">
+        <p-table
+          [value]="products()"
+          [lazy]="true"
+          [paginator]="true"
+          [rows]="20"
+          [totalRecords]="total()"
+          (onLazyLoad)="onLazy($event)">
+          <ng-template pTemplate="header">
+            <tr>
+              <th>SKU</th>
+              <th>Name</th>
+              <th>Status</th>
+              <th>Price</th>
+              <th>Show price</th>
+              <th style="width: 11rem"></th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-row>
+            <tr>
+              <td>{{ row.sku }}</td>
+              <td>{{ row.name }}</td>
+              <td><span class="status" [attr.data-s]="row.status">{{ row.status }}</span></td>
+              <td>{{ row.price ?? '—' }}</td>
+              <td>{{ row.showPrice ? 'Yes' : 'No' }}</td>
+              <td class="row-actions">
+                <button type="button" (click)="openEdit(row)">Edit</button>
+                <button type="button" (click)="toggle(row)">{{ row.status === 'active' ? 'Off' : 'On' }}</button>
+                <button type="button" class="danger" (click)="archive(row)">Archive</button>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
     </div>
+
+    <p-dialog
+      [header]="editingId() ? 'Edit product' : 'New product'"
+      [visible]="formOpen()"
+      (visibleChange)="onDialogVisible($event)"
+      [modal]="true"
+      [draggable]="false"
+      [resizable]="false"
+      [style]="{ width: 'min(920px, 96vw)' }"
+      [contentStyle]="{ 'max-height': 'min(78vh, 820px)', overflow: 'auto' }"
+      styleClass="product-modal"
+      [closable]="true"
+      [dismissableMask]="true">
+      @if (formOpen()) {
+        <app-product-form
+          [productId]="editingId()"
+          (saved)="onSaved()"
+          (cancelled)="closeForm()" />
+      }
+    </p-dialog>
   `,
   styles: [`
-    .head { display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
-    h1 { font-style: italic; font-size: 2.2rem; }
-    .search { margin: 1rem 0; width: min(360px, 100%); padding: 0.7rem; border: 1px solid var(--lvj-line-strong); background: #fff; }
-    td button, td a { margin-right: 0.6rem; background: none; border: 0; cursor: pointer; color: var(--lvj-gold-deep); }
+    .head {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 1rem;
+      margin-bottom: 1.25rem;
+    }
+    h1 {
+      font-family: var(--font-logo-serif);
+      font-style: italic;
+      font-size: clamp(1.9rem, 3vw, 2.4rem);
+      margin: 0;
+    }
+    .search {
+      margin: 0 0 1rem;
+      width: min(360px, 100%);
+      padding: 0.75rem 1rem;
+      border: 1px solid var(--lvj-line-strong);
+      background: var(--lvj-panel);
+      border-radius: 999px;
+    }
+    .table-card {
+      background: var(--lvj-panel);
+      border: 1px solid var(--lvj-line);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: var(--lvj-shadow-soft);
+    }
+    .status {
+      display: inline-block;
+      padding: 0.2rem 0.55rem;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      background: rgba(28,28,28,0.06);
+    }
+    .status[data-s="active"] { background: rgba(70, 130, 90, 0.14); color: #2f5d3d; }
+    .status[data-s="inactive"] { background: rgba(28,28,28,0.08); color: #666; }
+    .status[data-s="archived"] { background: rgba(154, 59, 50, 0.12); color: #9a3b32; }
+    .row-actions {
+      white-space: nowrap;
+    }
+    .row-actions button {
+      margin-right: 0.45rem;
+      background: none;
+      border: 0;
+      cursor: pointer;
+      color: var(--lvj-gold-deep);
+      font-weight: 600;
+      font-size: 0.82rem;
+      padding: 0;
+    }
+    .row-actions .danger { color: #9a3b32; }
   `]
 })
 export class AdminProductListComponent implements OnInit {
@@ -58,6 +146,8 @@ export class AdminProductListComponent implements OnInit {
   private readonly confirm = inject(ConfirmationService);
   readonly products = signal<Product[]>([]);
   readonly total = signal(0);
+  readonly formOpen = signal(false);
+  readonly editingId = signal<string | null>(null);
   q = '';
   page = 1;
 
@@ -74,6 +164,31 @@ export class AdminProductListComponent implements OnInit {
 
   onLazy(event: TableLazyLoadEvent): void {
     this.page = Math.floor((event.first ?? 0) / (event.rows ?? 20)) + 1;
+    this.load();
+  }
+
+  openCreate(): void {
+    this.editingId.set(null);
+    this.formOpen.set(true);
+  }
+
+  openEdit(row: Product): void {
+    this.editingId.set(row.id);
+    this.formOpen.set(true);
+  }
+
+  closeForm(): void {
+    this.formOpen.set(false);
+    this.editingId.set(null);
+  }
+
+  onDialogVisible(visible: boolean): void {
+    if (!visible) this.closeForm();
+    else this.formOpen.set(true);
+  }
+
+  onSaved(): void {
+    this.closeForm();
     this.load();
   }
 

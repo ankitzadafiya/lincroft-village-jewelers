@@ -42,16 +42,16 @@ import { ServiceOffering } from '../../../core/models';
     </section>
   `,
   styles: [`
-    .wrap { background: #fff; padding-top: 5rem; padding-bottom: 5rem; }
+    .wrap { background: var(--lvj-white); padding-top: 5rem; padding-bottom: 5rem; }
     .layout { display: grid; gap: 2.5rem; }
     h2 {
-      font-family: var(--font-logo-serif);
+      font-family: var(--font-display);
       font-style: italic;
-      font-size: clamp(2rem, 3.8vw, 3rem);
+      font-size: clamp(2.1rem, 4vw, 3.2rem);
       font-weight: 500;
-      letter-spacing: -0.02em;
+      letter-spacing: -0.015em;
       margin-bottom: 1.75rem;
-      line-height: 1.12;
+      line-height: 1.1;
     }
     .list { display: grid; margin-bottom: 1.75rem; }
     .item {
@@ -101,7 +101,7 @@ import { ServiceOffering } from '../../../core/models';
     .visual {
       position: relative;
       min-height: 380px;
-      background: #f3f3f3;
+      background: var(--lvj-paper);
       overflow: hidden;
     }
     .visual img {

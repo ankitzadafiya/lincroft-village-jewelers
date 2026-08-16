@@ -1,10 +1,10 @@
 import { Component, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { LvjIconsModule } from '../../icons/lvj-icons';
+import { AppIconComponent } from '../../icons/lvj-icons';
 
 @Component({
   selector: 'app-section-header',
-  imports: [RouterLink, LvjIconsModule],
+  imports: [RouterLink, AppIconComponent],
   template: `
     <div class="head" [class.center]="align() === 'center'">
       <div>
@@ -19,7 +19,7 @@ import { LvjIconsModule } from '../../icons/lvj-icons';
       @if (link()) {
         <a class="link" [routerLink]="link()">
           {{ linkLabel() }}
-          <lucide-icon name="arrow-right" [size]="14" [strokeWidth]="1.6"></lucide-icon>
+          <app-icon name="arrow-right" [size]="14" [strokeWidth]="1.6"></app-icon>
         </a>
       }
     </div>
@@ -57,9 +57,10 @@ import { LvjIconsModule } from '../../icons/lvj-icons';
       display: inline-flex;
       align-items: center;
       gap: 0.4rem;
-      font-size: 0.86rem;
-      font-weight: 600;
-      letter-spacing: 0.01em;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
       border-bottom: 1px solid currentColor;
       padding-bottom: 2px;
       transition: gap 0.3s var(--lvj-ease), opacity 0.25s ease;

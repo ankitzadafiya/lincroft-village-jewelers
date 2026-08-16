@@ -67,7 +67,7 @@
         <div class="secret">
           <input id="staff-password" formControlName="password" [type]="showPassword() ? 'text' : 'password'" maxlength="128" autocomplete="new-password" />
           <button type="button" class="reveal" (click)="showPassword.set(!showPassword())" [attr.aria-label]="showPassword() ? 'Hide password' : 'Show password'">
-            <lucide-icon [name]="showPassword() ? 'eye-off' : 'eye'" [size]="18" [strokeWidth]="1.7"></lucide-icon>
+            <app-icon [name]="showPassword() ? 'eye-off' : 'eye'" [size]="18" [strokeWidth]="1.7"></app-icon>
           </button>
         </div>
         @if (invalid(form.controls.password)) {
@@ -82,7 +82,7 @@
         <div class="secret">
           <input id="staff-confirm" formControlName="confirmPassword" [type]="showConfirm() ? 'text' : 'password'" maxlength="128" autocomplete="new-password" />
           <button type="button" class="reveal" (click)="showConfirm.set(!showConfirm())" [attr.aria-label]="showConfirm() ? 'Hide password' : 'Show password'">
-            <lucide-icon [name]="showConfirm() ? 'eye-off' : 'eye'" [size]="18" [strokeWidth]="1.7"></lucide-icon>
+            <app-icon [name]="showConfirm() ? 'eye-off' : 'eye'" [size]="18" [strokeWidth]="1.7"></app-icon>
           </button>
         </div>
         @if (form.hasError('mismatch') && form.controls.confirmPassword.touched) {

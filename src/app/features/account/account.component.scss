@@ -1,5 +1,7 @@
 .auth-page {
   padding: 2.4rem 0 5rem;
+  background: linear-gradient(180deg, var(--lvj-paper) 0%, var(--lvj-white) 45%);
+  min-height: calc(100vh - var(--lvj-header-h));
 }
 
 .shell {
@@ -33,9 +35,9 @@
 
 .auth-card,
 .profile {
-  background: #fff;
+  background: var(--lvj-white);
   border: 1px solid var(--lvj-line);
-  border-radius: 22px;
+  border-radius: 0;
   box-shadow: var(--lvj-shadow-soft);
 }
 
@@ -48,7 +50,7 @@
   grid-template-columns: 1fr 1fr;
   padding: 0.45rem;
   gap: 0.35rem;
-  background: var(--lvj-paper);
+  background: rgba(28, 28, 28, 0.04);
 }
 
 .tabs button {
@@ -59,12 +61,14 @@
   font-weight: 600;
   color: var(--lvj-muted);
   border-radius: 999px;
+  transition: background 0.25s ease, color 0.25s ease, box-shadow 0.25s ease;
 }
 
 .tabs button.on {
-  background: #fff;
+  background: var(--lvj-white);
   color: var(--lvj-ink);
   box-shadow: var(--lvj-shadow-soft);
+  border-radius: 0;
 }
 
 .oauth {
@@ -85,7 +89,7 @@
 .divider::after {
   content: '';
   height: 1px;
-  background: var(--lvj-line);
+  background: var(--lvj-line-strong);
 }
 
 .panel {
@@ -107,7 +111,7 @@
   border-radius: 50%;
   display: grid;
   place-items: center;
-  background: #141210;
+  background: linear-gradient(145deg, #2a241e, #141210);
   color: #f7f3ec;
   font-family: var(--font-logo-serif);
   font-size: 1.7rem;
@@ -136,12 +140,12 @@
   letter-spacing: 0.04em;
   padding: 0.28rem 0.65rem;
   border-radius: 999px;
-  background: var(--lvj-paper);
+  background: rgba(28, 28, 28, 0.05);
   color: var(--lvj-muted);
 }
 
 .chips .staff {
-  background: rgba(196, 165, 116, 0.18);
+  background: rgba(196, 165, 116, 0.22);
   color: var(--lvj-gold-deep);
 }
 
@@ -186,14 +190,19 @@
 
 .err {
   color: #9a3b32;
-  background: #f8ece9;
+  background: #f3e4df;
   margin: 0.9rem 1.35rem 0;
   padding: 0.7rem 0.85rem;
   border-radius: var(--lvj-radius-sm);
   font-size: 0.88rem;
 }
 
+.field input {
+  background: rgba(255, 255, 255, 0.45);
+}
+
 .field input:focus {
+  background: #fffefb;
   border-color: var(--lvj-gold);
   box-shadow: 0 0 0 3px rgba(184, 149, 106, 0.16);
 }

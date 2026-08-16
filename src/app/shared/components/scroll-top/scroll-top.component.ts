@@ -1,13 +1,13 @@
 import { Component, HostListener, signal } from '@angular/core';
-import { LvjIconsModule } from '../../icons/lvj-icons';
+import { AppIconComponent } from '../../icons/lvj-icons';
 
 @Component({
   selector: 'app-scroll-top',
-  imports: [LvjIconsModule],
+  imports: [AppIconComponent],
   template: `
     @if (visible()) {
       <button type="button" class="top" aria-label="Back to top" (click)="go()">
-        <lucide-icon name="arrow-up" [size]="18" [strokeWidth]="1.6"></lucide-icon>
+        <app-icon name="arrow-up" [size]="18" [strokeWidth]="1.6"></app-icon>
       </button>
     }
   `,

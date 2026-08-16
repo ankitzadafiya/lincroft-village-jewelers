@@ -97,7 +97,7 @@
                     spellcheck="false"
                     [attr.aria-invalid]="invalid(loginForm.controls.password)" />
                   <button type="button" class="reveal" (click)="showLoginPassword.set(!showLoginPassword())" [attr.aria-label]="showLoginPassword() ? 'Hide password' : 'Show password'" [attr.aria-pressed]="showLoginPassword()">
-                    <lucide-icon [name]="showLoginPassword() ? 'eye-off' : 'eye'" [size]="18" [strokeWidth]="1.7"></lucide-icon>
+                    <app-icon [name]="showLoginPassword() ? 'eye-off' : 'eye'" [size]="18" [strokeWidth]="1.7"></app-icon>
                   </button>
                 </div>
                 @if (invalid(loginForm.controls.password)) {
@@ -156,7 +156,7 @@
                     spellcheck="false"
                     [attr.aria-invalid]="invalid(registerForm.controls.password)" />
                   <button type="button" class="reveal" (click)="showRegisterPassword.set(!showRegisterPassword())" [attr.aria-label]="showRegisterPassword() ? 'Hide password' : 'Show password'" [attr.aria-pressed]="showRegisterPassword()">
-                    <lucide-icon [name]="showRegisterPassword() ? 'eye-off' : 'eye'" [size]="18" [strokeWidth]="1.7"></lucide-icon>
+                    <app-icon [name]="showRegisterPassword() ? 'eye-off' : 'eye'" [size]="18" [strokeWidth]="1.7"></app-icon>
                   </button>
                 </div>
                 @if (invalid(registerForm.controls.password)) {
@@ -178,7 +178,7 @@
                     spellcheck="false"
                     [attr.aria-invalid]="confirmInvalid()" />
                   <button type="button" class="reveal" (click)="showConfirmPassword.set(!showConfirmPassword())" [attr.aria-label]="showConfirmPassword() ? 'Hide password' : 'Show password'" [attr.aria-pressed]="showConfirmPassword()">
-                    <lucide-icon [name]="showConfirmPassword() ? 'eye-off' : 'eye'" [size]="18" [strokeWidth]="1.7"></lucide-icon>
+                    <app-icon [name]="showConfirmPassword() ? 'eye-off' : 'eye'" [size]="18" [strokeWidth]="1.7"></app-icon>
                   </button>
                 </div>
                 @if (registerForm.hasError('mismatch') && registerForm.controls.confirmPassword.touched) {

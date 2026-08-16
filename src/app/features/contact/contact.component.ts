@@ -6,11 +6,11 @@ import { ContentService } from '../../core/services/content.service';
 import { SeoService } from '../../core/services/seo.service';
 import { ToastService } from '../../core/services/toast.service';
 import { buildWhatsAppUrl } from '../../core/utils/slug';
-import { LvjIconsModule } from '../../shared/icons/lvj-icons';
+import { AppIconComponent } from '../../shared/icons/lvj-icons';
 
 @Component({
   selector: 'app-contact',
-  imports: [ReactiveFormsModule, RouterLink, LvjIconsModule],
+  imports: [ReactiveFormsModule, RouterLink, AppIconComponent],
   template: `
     <div class="contact-page">
       <nav class="crumbs container" aria-label="Breadcrumb">
@@ -68,10 +68,10 @@ import { LvjIconsModule } from '../../shared/icons/lvj-icons';
               <h2>Social Media</h2>
               <div class="social">
                 <a [href]="cfg.facebookUrl || 'https://facebook.com'" target="_blank" rel="noreferrer" aria-label="Facebook">
-                  <lucide-icon name="facebook" [size]="18" [strokeWidth]="1.5"></lucide-icon>
+                  <app-icon name="facebook" [size]="18" [strokeWidth]="1.5"></app-icon>
                 </a>
                 <a [href]="cfg.instagramUrl || 'https://instagram.com'" target="_blank" rel="noreferrer" aria-label="Instagram">
-                  <lucide-icon name="instagram" [size]="18" [strokeWidth]="1.5"></lucide-icon>
+                  <app-icon name="instagram" [size]="18" [strokeWidth]="1.5"></app-icon>
                 </a>
               </div>
             </div>

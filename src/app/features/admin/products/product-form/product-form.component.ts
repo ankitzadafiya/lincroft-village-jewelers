@@ -1,6 +1,5 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, OnChanges, OnInit, SimpleChanges, inject, input, output, signal } from '@angular/core';
 import { FormArray, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Category, Designer, ProductMedia, ProductSpec, SpecGroup, toMediaWrite } from '../../../../core/models';
 import { AdminProductService } from '../../../../core/services/admin-product.service';
 import { CategoryService } from '../../../../core/services/category.service';
@@ -38,24 +37,28 @@ const PRESETS: Record<string, ProductSpec[]> = {
 
 @Component({
   selector: 'app-product-form',
-  imports: [ReactiveFormsModule, RouterLink, MediaUploaderComponent],
+  imports: [ReactiveFormsModule, MediaUploaderComponent],
   templateUrl: './product-form.component.html',
   styleUrl: './product-form.component.scss'
 })
-export class ProductFormComponent implements OnInit {
+export class ProductFormComponent implements OnInit, OnChanges {
   private readonly fb = inject(FormBuilder);
   private readonly admin = inject(AdminProductService);
   private readonly categoriesApi = inject(CategoryService);
   private readonly designersApi = inject(DesignerService);
-  private readonly route = inject(ActivatedRoute);
-  private readonly router = inject(Router);
   private readonly toast = inject(ToastService);
+
+  /** When set, loads that product for edit. Null/empty = create. */
+  readonly productId = input<string | null>(null);
+  readonly saved = output<void>();
+  readonly cancelled = output<void>();
 
   readonly categories = signal<Category[]>([]);
   readonly designers = signal<Designer[]>([]);
   readonly images = signal<ProductMedia[]>([]);
   readonly videos = signal<ProductMedia[]>([]);
-  id: string | null = null;
+  readonly saving = signal(false);
+  readonly loading = signal(false);
 
   readonly form = this.fb.nonNullable.group({
     sku: ['', Validators.required],
@@ -81,6 +84,10 @@ export class ProductFormComponent implements OnInit {
     return this.form.controls.specs;
   }
 
+  get id(): string | null {
+    return this.productId();
+  }
+
   parents(): Category[] {
     return this.categories().filter(c => !c.parentId);
   }
@@ -90,11 +97,26 @@ export class ProductFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.categoriesApi.adminList().subscribe(list => this.categories.set(list));
-    this.designersApi.adminList().subscribe(list => this.designers.set(list));
-    this.id = this.route.snapshot.paramMap.get('id');
-    if (this.id) {
-      this.admin.get(this.id).subscribe(product => {
+    this.bootstrap();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['productId'] && !changes['productId'].firstChange) {
+      this.bootstrap();
+    }
+  }
+
+  private bootstrap(): void {
+    if (!this.categories().length) {
+      this.categoriesApi.adminList().subscribe(list => this.categories.set(list));
+      this.designersApi.adminList().subscribe(list => this.designers.set(list));
+    }
+    this.resetForm();
+    const id = this.productId();
+    if (!id) return;
+    this.loading.set(true);
+    this.admin.get(id).subscribe({
+      next: product => {
         this.form.patchValue({
           sku: product.sku,
           name: product.name,
@@ -117,8 +139,37 @@ export class ProductFormComponent implements OnInit {
         product.specs.forEach(s => this.specs.push(this.specGroup(s)));
         this.images.set(product.images);
         this.videos.set(product.videos);
-      });
-    }
+        this.loading.set(false);
+      },
+      error: () => {
+        this.loading.set(false);
+        this.toast.error('Unable to load product.');
+      }
+    });
+  }
+
+  private resetForm(): void {
+    this.form.reset({
+      sku: '',
+      name: '',
+      slug: '',
+      description: '',
+      categoryId: '',
+      subcategoryId: '',
+      designerId: '',
+      price: null,
+      compareAtPrice: null,
+      showPrice: true,
+      status: 'active',
+      availability: 'in_stock',
+      featured: false,
+      newArrival: false,
+      bestSeller: false,
+      tags: ''
+    });
+    this.specs.clear();
+    this.images.set([]);
+    this.videos.set([]);
   }
 
   specGroup(spec: Partial<ProductSpec> = {}) {
@@ -137,6 +188,10 @@ export class ProductFormComponent implements OnInit {
   applyPreset(key: string): void {
     this.specs.clear();
     (PRESETS[key] ?? []).forEach(spec => this.specs.push(this.specGroup(spec)));
+  }
+
+  cancel(): void {
+    this.cancelled.emit();
   }
 
   save(): void {
@@ -166,13 +221,19 @@ export class ProductFormComponent implements OnInit {
       images: this.images().map(toMediaWrite),
       videos: this.videos().map(toMediaWrite)
     };
-    const req = this.id ? this.admin.update(this.id, payload) : this.admin.create(payload);
+    this.saving.set(true);
+    const id = this.productId();
+    const req = id ? this.admin.update(id, payload) : this.admin.create(payload);
     req.subscribe({
       next: () => {
+        this.saving.set(false);
         this.toast.success('Product saved');
-        void this.router.navigate(['/admin/products']);
+        this.saved.emit();
       },
-      error: err => this.toast.error(err.error?.message || 'Unable to save product.')
+      error: err => {
+        this.saving.set(false);
+        this.toast.error(err.error?.message || 'Unable to save product.');
+      }
     });
   }
 }

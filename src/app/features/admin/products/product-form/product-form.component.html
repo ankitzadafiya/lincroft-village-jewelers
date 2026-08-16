@@ -1,6 +1,8 @@
-<div class="admin-page">
-  <a routerLink="/admin/products">← Products</a>
-  <h1>{{ id ? 'Edit product' : 'New product' }}</h1>
+<div class="product-form" [class.loading]="loading()">
+  @if (loading()) {
+    <p class="muted">Loading product…</p>
+  }
+
   <form [formGroup]="form" (ngSubmit)="save()">
     <div class="form-grid">
       <div class="field"><label>SKU</label><input formControlName="sku" /></div>
@@ -49,20 +51,22 @@
           <option value="sold">Sold</option>
         </select>
       </div>
-      <div class="field"><label><input type="checkbox" formControlName="showPrice" /> Show price</label></div>
-      <div class="field"><label><input type="checkbox" formControlName="featured" /> Featured</label></div>
-      <div class="field"><label><input type="checkbox" formControlName="newArrival" /> New arrival</label></div>
-      <div class="field"><label><input type="checkbox" formControlName="bestSeller" /> Best seller</label></div>
-      <div class="field full"><label>Description</label><textarea formControlName="description"></textarea></div>
+      <div class="field checks">
+        <label><input type="checkbox" formControlName="showPrice" /> Show price</label>
+        <label><input type="checkbox" formControlName="featured" /> Featured</label>
+        <label><input type="checkbox" formControlName="newArrival" /> New</label>
+        <label><input type="checkbox" formControlName="bestSeller" /> Best seller</label>
+      </div>
+      <div class="field full"><label>Description</label><textarea formControlName="description" rows="3"></textarea></div>
       <div class="field full"><label>Tags</label><input formControlName="tags" placeholder="comma separated" /></div>
     </div>
 
     <div class="presets">
-      <span>Specification presets</span>
-      <button type="button" class="btn btn-ghost" (click)="applyPreset('ring')">Ring</button>
-      <button type="button" class="btn btn-ghost" (click)="applyPreset('earrings')">Earrings</button>
-      <button type="button" class="btn btn-ghost" (click)="applyPreset('watch')">Watch</button>
-      <button type="button" class="btn btn-ghost" (click)="addSpec()">Add field</button>
+      <span>Spec presets</span>
+      <button type="button" class="chip" (click)="applyPreset('ring')">Ring</button>
+      <button type="button" class="chip" (click)="applyPreset('earrings')">Earrings</button>
+      <button type="button" class="chip" (click)="applyPreset('watch')">Watch</button>
+      <button type="button" class="chip" (click)="addSpec()">Add field</button>
     </div>
 
     <div formArrayName="specs" class="specs">
@@ -86,6 +90,11 @@
     <app-media-uploader kind="image" [items]="images()" (itemsChange)="images.set($event)" />
     <app-media-uploader kind="video" [items]="videos()" (itemsChange)="videos.set($event)" />
 
-    <button class="btn" type="submit">Save product</button>
+    <div class="actions">
+      <button class="btn btn-ghost" type="button" (click)="cancel()">Cancel</button>
+      <button class="btn" type="submit" [disabled]="saving()">
+        {{ saving() ? 'Saving…' : (id ? 'Update product' : 'Create product') }}
+      </button>
+    </div>
   </form>
 </div>

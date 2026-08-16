@@ -1,11 +1,11 @@
 @use 'mixins' as *;
 
 .foot {
-  background: #fff;
-  color: var(--lvj-charcoal);
+  background: var(--lvj-ink);
+  color: #f7f6f4;
   padding: 4.5rem 0 1.5rem;
   margin-top: 0;
-  border-top: 1px solid var(--lvj-line);
+  border-top: 0;
 }
 
 .grid {
@@ -15,17 +15,18 @@
 
 .news-col h2 {
   font-family: var(--font-display);
-  font-size: clamp(1.8rem, 3vw, 2.4rem);
-  font-weight: 600;
-  letter-spacing: -0.03em;
+  font-size: clamp(1.9rem, 3vw, 2.6rem);
+  font-weight: 500;
+  font-style: italic;
+  letter-spacing: -0.015em;
   margin-bottom: 0.75rem;
-  color: var(--lvj-ink);
+  color: #fff;
 }
 
 .about {
-  color: var(--lvj-muted);
+  color: rgba(247, 246, 244, 0.62);
   max-width: 34ch;
-  font-size: 0.95rem;
+  font-size: 0.92rem;
   line-height: 1.65;
   margin-bottom: 1.2rem;
 }
@@ -37,37 +38,38 @@
 }
 
 .news input {
-  background: var(--lvj-cream);
-  border: 1px solid var(--lvj-line-strong);
-  border-radius: 999px;
-  color: var(--lvj-ink);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(247, 246, 244, 0.18);
+  border-radius: 0;
+  color: #fff;
   padding: 0.95rem 1.1rem;
   outline: none;
 }
 
 .news input::placeholder {
-  color: var(--lvj-muted-2);
+  color: rgba(247, 246, 244, 0.45);
 }
 
 .news .btn {
-  background: var(--lvj-ink);
-  color: #fff;
-  border-color: var(--lvj-ink);
+  background: #fff;
+  color: var(--lvj-ink);
+  border-color: #fff;
 }
 
 .news .btn:hover {
-  background: #000;
+  background: transparent;
   color: #fff;
+  border-color: #fff;
 }
 
 h3 {
   font-family: var(--font-body);
-  font-size: 0.72rem;
+  font-size: 0.68rem;
   font-weight: 700;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   margin-bottom: 1rem;
-  color: var(--lvj-ink);
+  color: #fff;
 }
 
 .grid a,
@@ -75,62 +77,54 @@ h3 {
 .hours span,
 .contact-line {
   display: block;
-  color: var(--lvj-muted);
+  color: rgba(247, 246, 244, 0.62);
   margin-bottom: 0.5rem;
-  font-size: 0.92rem;
-  transition: color 0.25s ease, padding-left 0.3s var(--lvj-ease);
+  font-size: 0.9rem;
 }
 
-.grid > div > a:hover {
-  color: var(--lvj-ink);
-  padding-left: 0.2rem;
+.grid a:hover {
+  color: #fff;
 }
 
-.hours {
-  display: grid;
-  gap: 0.3rem;
-  margin-bottom: 1rem;
+.bottom {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 3rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid rgba(247, 246, 244, 0.12);
+  color: rgba(247, 246, 244, 0.45);
+  font-size: 0.78rem;
+}
+
+.legal {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 3rem;
+  padding: 1.25rem 0 0;
+  border-top: 1px solid rgba(247, 246, 244, 0.12);
+  color: rgba(247, 246, 244, 0.45);
+  font-size: 0.78rem;
 }
 
 .social {
   display: flex;
   gap: 0.75rem;
-  margin-top: 0.65rem;
 }
 
 .social a {
-  color: var(--lvj-ink) !important;
-  margin: 0 !important;
-  width: 36px;
-  height: 36px;
-  border-radius: 999px;
-  display: grid;
-  place-items: center;
-  background: var(--lvj-cream);
-  transition: transform 0.3s var(--lvj-ease), background 0.25s ease;
+  color: rgba(247, 246, 244, 0.7);
 }
 
 .social a:hover {
-  transform: translateY(-2px);
-  background: #ebe7e1;
-  padding-left: 0 !important;
-}
-
-.legal {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-  margin-top: 3rem;
-  padding-top: 1.15rem;
-  border-top: 1px solid var(--lvj-line);
-  font-size: 0.75rem;
-  color: var(--lvj-muted-2);
+  color: #fff;
 }
 
 @include mq(md) {
   .grid {
-    grid-template-columns: 1.3fr 0.8fr 0.8fr 1fr;
-    gap: 2rem;
+    grid-template-columns: 1.3fr 1fr 1fr 1fr;
   }
 }

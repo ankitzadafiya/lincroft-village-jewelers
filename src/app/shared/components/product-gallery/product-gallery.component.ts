@@ -1,10 +1,8 @@
 import { Component, effect, input, signal } from '@angular/core';
 import { ProductMedia } from '../../../core/models';
-import { LvjIconsModule } from '../../icons/lvj-icons';
 
 @Component({
   selector: 'app-product-gallery',
-  imports: [LvjIconsModule],
   template: `
     <div class="gallery">
       <div class="thumbs">
@@ -26,10 +24,10 @@ import { LvjIconsModule } from '../../icons/lvj-icons';
       <div class="stage" (mousemove)="onMove($event)" (mouseleave)="zooming.set(false)">
         @if (images().length > 1) {
           <button type="button" class="arrow prev" aria-label="Previous image" (click)="shift(-1)">
-            <lucide-icon name="chevron-left" [size]="20" [strokeWidth]="1.6"></lucide-icon>
+            <i class="pi pi-chevron-left" aria-hidden="true"></i>
           </button>
           <button type="button" class="arrow next" aria-label="Next image" (click)="shift(1)">
-            <lucide-icon name="chevron-right" [size]="20" [strokeWidth]="1.6"></lucide-icon>
+            <i class="pi pi-chevron-right" aria-hidden="true"></i>
           </button>
         }
         @if (mode() === 'video' && activeVideo(); as video) {
@@ -57,7 +55,7 @@ import { LvjIconsModule } from '../../icons/lvj-icons';
     .thumbs button {
       border: 1px solid transparent;
       padding: 0;
-      background: #f5f5f5;
+      background: var(--lvj-cream);
       cursor: pointer;
       height: 92px;
       overflow: hidden;
@@ -81,7 +79,7 @@ import { LvjIconsModule } from '../../icons/lvj-icons';
       position: relative;
       aspect-ratio: 1 / 1.08;
       overflow: hidden;
-      background: #f5f5f5;
+      background: var(--lvj-cream);
     }
     .stage .main,
     .stage video {

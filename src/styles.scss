@@ -15,12 +15,12 @@ html,
 body {
   margin: 0;
   min-height: 100%;
-  background: var(--lvj-ivory);
+  background: var(--lvj-white);
   color: var(--lvj-charcoal);
   font-family: var(--font-body);
-  font-size: 15.5px;
-  line-height: 1.6;
-  letter-spacing: 0.005em;
+  font-size: 15px;
+  line-height: 1.65;
+  letter-spacing: 0.01em;
   font-weight: 400;
   -webkit-font-smoothing: antialiased;
 }
@@ -47,9 +47,9 @@ h2,
 h3,
 h4 {
   font-family: var(--font-display);
-  font-weight: 600;
-  letter-spacing: -0.025em;
-  line-height: 1.1;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  line-height: 1.12;
   margin: 0;
   color: var(--lvj-ink);
 }
@@ -86,20 +86,21 @@ ul {
   align-items: center;
   gap: 0.7rem;
   font-family: var(--font-body);
-  font-size: 0.69rem;
+  font-size: 0.68rem;
   font-weight: 600;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--lvj-gold-deep);
+  color: var(--lvj-muted);
   margin-bottom: 0.75rem;
 }
 
 .display-title {
   font-family: var(--font-display);
   font-size: var(--text-2xl);
-  font-weight: 600;
-  letter-spacing: -0.03em;
-  line-height: 1.05;
+  font-weight: 500;
+  font-style: italic;
+  letter-spacing: -0.015em;
+  line-height: 1.08;
 }
 
 .btn {
@@ -107,15 +108,15 @@ ul {
   align-items: center;
   justify-content: center;
   gap: 0.55rem;
-  min-height: 50px;
-  padding: 0.9rem 1.75rem;
-  border: 1px solid rgba(28, 28, 28, 0.14);
-  border-radius: 999px;
-  background: #fff;
-  color: var(--lvj-ink);
-  letter-spacing: 0.08em;
+  min-height: 48px;
+  padding: 0.85rem 1.85rem;
+  border: 1px solid var(--lvj-ink);
+  border-radius: 0;
+  background: var(--lvj-ink);
+  color: #fff;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  font-size: 0.72rem;
+  font-size: 0.68rem;
   font-weight: 600;
   cursor: pointer;
   box-shadow: none;
@@ -127,11 +128,11 @@ ul {
     box-shadow 0.3s var(--lvj-ease);
 
   &:hover {
-    background: var(--lvj-ink);
+    background: #000;
     color: #fff;
-    border-color: var(--lvj-ink);
+    border-color: #000;
     transform: translateY(-1px);
-    box-shadow: 0 12px 28px rgba(28, 28, 28, 0.1);
+    box-shadow: var(--lvj-shadow-soft);
   }
 
   &:focus-visible {
@@ -163,7 +164,7 @@ ul {
 .btn-ghost {
   background: transparent;
   color: var(--lvj-ink);
-  border-color: rgba(28, 28, 28, 0.22);
+  border-color: var(--lvj-ink);
 
   &:hover {
     background: var(--lvj-ink);
@@ -195,16 +196,24 @@ ul {
   color: inherit;
   cursor: pointer;
   position: relative;
-  border-radius: 999px;
+  border-radius: 0;
   transition: background 0.25s ease, opacity 0.25s ease;
 
   &:hover {
-    background: rgba(28, 28, 28, 0.05);
+    background: rgba(17, 17, 17, 0.04);
   }
 
-  lucide-icon,
+  app-icon,
   lucide-angular {
     display: block;
+  }
+}
+
+.admin-entry {
+  color: var(--lvj-gold-deep);
+
+  &:hover {
+    background: rgba(183, 160, 142, 0.16);
   }
 }
 
@@ -302,6 +311,7 @@ ul {
   margin-bottom: 0.25rem;
   text-align: left;
   border-bottom: 1px solid var(--lvj-line);
+  background: linear-gradient(180deg, var(--lvj-paper), var(--lvj-white));
   @include container;
 
   .eyebrow {
@@ -417,13 +427,17 @@ ul {
 }
 
 .admin-shell {
-  min-height: 100vh;
-  background: #f5f5f5;
+  min-height: 100dvh;
+  height: 100dvh;
+  overflow: hidden;
+  background: var(--lvj-cream);
 }
 
 .storefront-shell {
   min-height: 100vh;
-  background: var(--lvj-ivory);
+  background:
+    radial-gradient(ellipse 70% 35% at 50% 0%, rgba(183, 160, 142, 0.08), transparent 55%),
+    var(--lvj-white);
 }
 
 .p-component {
@@ -443,12 +457,37 @@ ul {
   letter-spacing: 0.02em;
   text-transform: none;
   font-size: 0.85rem !important;
-  border-radius: 999px !important;
+  border-radius: 0 !important;
 }
 
 .p-dialog,
 .p-toast .p-toast-message {
   border-radius: 14px !important;
+}
+
+.product-modal.p-dialog {
+  border-radius: 18px !important;
+  overflow: hidden;
+  border: 1px solid var(--lvj-line) !important;
+  box-shadow: var(--lvj-shadow) !important;
+}
+
+.product-modal .p-dialog-header {
+  background: var(--lvj-panel) !important;
+  border-bottom: 1px solid var(--lvj-line) !important;
+  padding: 1.1rem 1.35rem !important;
+}
+
+.product-modal .p-dialog-title {
+  font-family: var(--font-logo-serif) !important;
+  font-style: italic !important;
+  font-size: 1.55rem !important;
+  font-weight: 600 !important;
+}
+
+.product-modal .p-dialog-content {
+  background: #f7f3ee !important;
+  padding: 1.15rem 1.35rem 1.35rem !important;
 }
 
 .p-paginator {

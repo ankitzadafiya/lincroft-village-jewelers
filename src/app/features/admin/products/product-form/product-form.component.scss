@@ -1,8 +1,121 @@
-h1 { font-style: italic; font-size: 2.2rem; margin: 0.6rem 0 1.4rem; }
-.presets { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; margin: 1.4rem 0; }
-.specs { display: grid; gap: 0.5rem; margin-bottom: 1.6rem; }
-.spec-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.4rem; }
-.spec-row input, .spec-row select { padding: 0.6rem; border: 1px solid var(--lvj-line-strong); }
-app-media-uploader { display: block; margin: 1.4rem 0; }
-button.btn { margin-top: 1rem; }
-@media (max-width: 800px) { .spec-row { grid-template-columns: 1fr 1fr; } }
+.product-form {
+  display: block;
+}
+
+.product-form.loading form {
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+.muted {
+  color: var(--lvj-muted);
+  margin-bottom: 0.75rem;
+}
+
+.form-grid {
+  display: grid;
+  gap: 0.85rem;
+  grid-template-columns: 1fr 1fr;
+
+  @media (max-width: 700px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.field.full {
+  grid-column: 1 / -1;
+}
+
+.field.checks {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.85rem 1.25rem;
+  padding-top: 0.35rem;
+}
+
+.field.checks label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 0.88rem;
+  color: var(--lvj-ink);
+}
+
+.presets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  align-items: center;
+  margin: 1.25rem 0 0.75rem;
+}
+
+.presets > span {
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--lvj-muted);
+  margin-right: 0.25rem;
+}
+
+.chip {
+  border: 1px solid var(--lvj-line-strong);
+  background: var(--lvj-panel);
+  border-radius: 999px;
+  padding: 0.4rem 0.85rem;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.chip:hover {
+  background: var(--lvj-cream);
+  border-color: var(--lvj-gold);
+}
+
+.specs {
+  display: grid;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.spec-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.4rem;
+}
+
+.spec-row input,
+.spec-row select {
+  padding: 0.6rem;
+  border: 1px solid var(--lvj-line-strong);
+  background: #fffefb;
+  border-radius: 8px;
+}
+
+app-media-uploader {
+  display: block;
+  margin: 1.1rem 0;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+  margin-top: 1.25rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--lvj-line);
+  position: sticky;
+  bottom: 0;
+  background: linear-gradient(180deg, transparent, #f7f3ee 28%);
+  padding-bottom: 0.25rem;
+}
+
+@media (max-width: 800px) {
+  .spec-row {
+    grid-template-columns: 1fr 1fr;
+  }
+}

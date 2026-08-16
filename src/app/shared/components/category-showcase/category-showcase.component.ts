@@ -14,22 +14,22 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 import { fromEvent, interval, merge } from 'rxjs';
 import { Category } from '../../../core/models';
-import { LvjIconsModule } from '../../icons/lvj-icons';
+import { AppIconComponent } from '../../icons/lvj-icons';
 
 @Component({
   selector: 'app-category-showcase',
-  imports: [LvjIconsModule],
+  imports: [AppIconComponent],
   template: `
     <section class="wrap" (mouseenter)="paused.set(true)" (mouseleave)="onSectionLeave()">
       <div class="container head">
         <h2>Shop by Categories</h2>
         <div class="pager" aria-label="Category carousel controls">
           <button type="button" class="nav" (click)="prev(); $event.stopPropagation()" aria-label="Previous categories">
-            <lucide-icon name="chevron-left" [size]="18" [strokeWidth]="1.7"></lucide-icon>
+            <app-icon name="chevron-left" [size]="18" [strokeWidth]="1.7"></app-icon>
           </button>
           <span class="count">{{ displayPage() }}/{{ pageCount() }}</span>
           <button type="button" class="nav" (click)="next(); $event.stopPropagation()" aria-label="Next categories">
-            <lucide-icon name="chevron-right" [size]="18" [strokeWidth]="1.7"></lucide-icon>
+            <app-icon name="chevron-right" [size]="18" [strokeWidth]="1.7"></app-icon>
           </button>
         </div>
       </div>
@@ -62,7 +62,7 @@ import { LvjIconsModule } from '../../icons/lvj-icons';
                   <p>{{ itemLabel(category) }}</p>
                 </div>
                 <span class="go" aria-hidden="true">
-                  <lucide-icon name="arrow-right" [size]="16" [strokeWidth]="1.8"></lucide-icon>
+                  <app-icon name="arrow-right" [size]="16" [strokeWidth]="1.8"></app-icon>
                 </span>
               </div>
             </div>

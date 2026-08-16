@@ -39,7 +39,7 @@
 
 .toolbar select {
   border: 1px solid var(--lvj-line-strong);
-  background: #fff;
+  background: var(--lvj-panel);
   padding: 0.55rem 0.75rem;
   letter-spacing: 0;
   text-transform: none;
@@ -56,8 +56,8 @@
 .cols button {
   width: 34px;
   height: 34px;
-  border: 1px solid rgba(0, 0, 0, 0.12);
-  background: #fff;
+  border: 1px solid var(--lvj-line-strong);
+  background: var(--lvj-panel);
   color: #888;
   cursor: pointer;
   font-size: 0.75rem;
@@ -125,7 +125,7 @@
 
   .layout.open app-product-filters {
     display: block;
-    background: #fafafa;
+    background: var(--lvj-panel);
     padding: 1.25rem;
     border: 1px solid var(--lvj-line);
     margin-bottom: 0.5rem;

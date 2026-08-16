@@ -1,11 +1,11 @@
 import { Component, inject } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
-import { LvjIconsModule } from '../../shared/icons/lvj-icons';
+import { AppIconComponent } from '../../shared/icons/lvj-icons';
 
 @Component({
   selector: 'app-admin-layout',
-  imports: [RouterOutlet, RouterLink, RouterLinkActive, LvjIconsModule],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive, AppIconComponent],
   templateUrl: './admin-layout.component.html',
   styleUrl: './admin-layout.component.scss'
 })

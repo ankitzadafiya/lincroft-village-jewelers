@@ -2,15 +2,15 @@
   <div class="promo">
     <div class="promo-inner">
       <button type="button" class="promo-nav" aria-label="Previous announcement" (click)="shiftPromo(-1)">
-        <lucide-icon name="chevron-left" [size]="14" [strokeWidth]="1.75"></lucide-icon>
+        <app-icon name="chevron-left" [size]="14" [strokeWidth]="1.75"></app-icon>
       </button>
       <p>{{ promos[promoIndex()] }}</p>
       <button type="button" class="promo-nav" aria-label="Next announcement" (click)="shiftPromo(1)">
-        <lucide-icon name="chevron-right" [size]="14" [strokeWidth]="1.75"></lucide-icon>
+        <app-icon name="chevron-right" [size]="14" [strokeWidth]="1.75"></app-icon>
       </button>
     </div>
     <button type="button" class="promo-close" aria-label="Dismiss announcement" (click)="promoOpen.set(false)">
-      <lucide-icon name="x" [size]="14" [strokeWidth]="1.75"></lucide-icon>
+      <app-icon name="x" [size]="14" [strokeWidth]="1.75"></app-icon>
     </button>
   </div>
 }
@@ -19,7 +19,7 @@
   <div class="bar container">
     <div class="left">
       <button class="icon-btn menu-btn" type="button" aria-label="Open menu" (click)="mobileOpen.set(true)">
-        <lucide-icon name="menu" [size]="20" [strokeWidth]="1.5"></lucide-icon>
+        <app-icon name="menu" [size]="20" [strokeWidth]="1.5"></app-icon>
       </button>
       <app-logo [compact]="compact()" align="left" />
     </div>
@@ -32,7 +32,7 @@
           (mouseenter)="openMega(item.mega)">
           {{ item.label }}
           @if (item.mega) {
-            <lucide-icon name="chevron-down" [size]="12" [strokeWidth]="1.75"></lucide-icon>
+            <app-icon name="chevron-down" [size]="12" [strokeWidth]="1.75"></app-icon>
           }
         </a>
       }
@@ -40,23 +40,32 @@
 
     <div class="tools">
       <button class="icon-btn icon-tip" type="button" data-tip="Search" aria-label="Search" (click)="searchOpen.set(true)">
-        <lucide-icon name="search" [size]="19" [strokeWidth]="1.5"></lucide-icon>
+        <app-icon name="search" [size]="19" [strokeWidth]="1.5"></app-icon>
       </button>
+      @if (adminAuth.isAuthenticated()) {
+        <a
+          class="icon-btn icon-tip admin-entry"
+          routerLink="/admin"
+          data-tip="Atelier admin"
+          aria-label="Open atelier admin">
+          <app-icon name="shield" [size]="19" [strokeWidth]="1.5"></app-icon>
+        </a>
+      }
       <a
         class="icon-btn icon-tip"
         routerLink="/account"
         [attr.data-tip]="customer.isAuthenticated() ? 'Account' : 'Sign in'"
         [attr.aria-label]="customer.isAuthenticated() ? 'Account' : 'Sign in'">
-        <lucide-icon name="user" [size]="19" [strokeWidth]="1.5"></lucide-icon>
+        <app-icon name="user" [size]="19" [strokeWidth]="1.5"></app-icon>
       </a>
       <a routerLink="/favorites" class="icon-btn icon-tip" data-tip="Wishlist" aria-label="Wishlist">
-        <lucide-icon name="heart" [size]="19" [strokeWidth]="1.5"></lucide-icon>
+        <app-icon name="heart" [size]="19" [strokeWidth]="1.5"></app-icon>
         @if (favorites.count()) {
           <span class="badge-count">{{ favorites.count() }}</span>
         }
       </a>
       <a routerLink="/inquiry" class="icon-btn icon-tip" data-tip="Inquiry bag" aria-label="Inquiry bag">
-        <lucide-icon name="shopping-bag" [size]="19" [strokeWidth]="1.5"></lucide-icon>
+        <app-icon name="shopping-bag" [size]="19" [strokeWidth]="1.5"></app-icon>
         @if (inquiry.count()) {
           <span class="badge-count">{{ inquiry.count() }}</span>
         }
@@ -79,7 +88,7 @@
     <div class="drawer-head">
       <app-logo align="left" />
       <button class="icon-btn" type="button" aria-label="Close menu" (click)="mobileOpen.set(false)">
-        <lucide-icon name="x" [size]="20" [strokeWidth]="1.5"></lucide-icon>
+        <app-icon name="x" [size]="20" [strokeWidth]="1.5"></app-icon>
       </button>
     </div>
     <nav>
@@ -87,6 +96,9 @@
         <a [routerLink]="item.path">{{ item.label }}</a>
       }
       <a routerLink="/account">{{ customer.isAuthenticated() ? 'My Account' : 'Sign In' }}</a>
+      @if (adminAuth.isAuthenticated()) {
+        <a routerLink="/admin">Atelier admin</a>
+      }
       <a routerLink="/contact">Book Appointment</a>
       <a routerLink="/favorites">Wishlist</a>
       <a routerLink="/services">Services</a>

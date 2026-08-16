@@ -17,11 +17,11 @@ import {
   personName,
   staffPassword
 } from '../../../core/utils/auth-validation';
-import { LvjIconsModule } from '../../../shared/icons/lvj-icons';
+import { AppIconComponent } from '../../../shared/icons/lvj-icons';
 
 @Component({
   selector: 'app-admin-users',
-  imports: [ReactiveFormsModule, DatePipe, TitleCasePipe, LvjIconsModule],
+  imports: [ReactiveFormsModule, DatePipe, TitleCasePipe, AppIconComponent],
   templateUrl: './users.component.html',
   styleUrl: './users.component.scss'
 })

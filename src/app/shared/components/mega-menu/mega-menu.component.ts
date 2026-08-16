@@ -1,11 +1,11 @@
 import { Component, input, output } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Category } from '../../../core/models';
-import { LvjIconsModule } from '../../icons/lvj-icons';
+import { AppIconComponent } from '../../icons/lvj-icons';
 
 @Component({
   selector: 'app-mega-menu',
-  imports: [RouterLink, LvjIconsModule],
+  imports: [RouterLink, AppIconComponent],
   template: `
     <div class="mega" (mouseenter)="stay.emit()" (mouseleave)="close.emit()">
       <div class="container inner">
@@ -30,7 +30,7 @@ import { LvjIconsModule } from '../../icons/lvj-icons';
             }
             <a class="view-all" [routerLink]="'/' + parentSlug()" (click)="close.emit()">
               View all {{ parent()?.name }}
-              <lucide-icon name="arrow-right" [size]="14" [strokeWidth]="1.6"></lucide-icon>
+              <app-icon name="arrow-right" [size]="14" [strokeWidth]="1.6"></app-icon>
             </a>
           </div>
         </div>
@@ -46,7 +46,7 @@ import { LvjIconsModule } from '../../icons/lvj-icons';
                 <span class="name">{{ cat.name }}</span>
                 <span class="cta">
                   Shop collection
-                  <lucide-icon name="arrow-right" [size]="14" [strokeWidth]="1.7"></lucide-icon>
+                  <app-icon name="arrow-right" [size]="14" [strokeWidth]="1.7"></app-icon>
                 </span>
               </div>
             </a>

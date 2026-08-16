@@ -7,12 +7,13 @@ import { Category, ProductListItem } from '../../../core/models';
 import { CategoryService } from '../../../core/services/category.service';
 import { ConfigurationService } from '../../../core/services/configuration.service';
 import { CustomerAuthService } from '../../../core/services/customer-auth.service';
+import { AuthService } from '../../../core/services/auth.service';
 import { FavoriteService } from '../../../core/services/favorite.service';
 import { InquiryService } from '../../../core/services/inquiry.service';
 import { SearchService } from '../../../core/services/search.service';
 import { LogoComponent } from '../logo/logo.component';
 import { MegaMenuComponent } from '../mega-menu/mega-menu.component';
-import { LvjIconsModule } from '../../icons/lvj-icons';
+import { AppIconComponent } from '../../icons/lvj-icons';
 
 interface NavItem {
   label: string;
@@ -22,7 +23,7 @@ interface NavItem {
 
 @Component({
   selector: 'app-header',
-  imports: [RouterLink, RouterLinkActive, ReactiveFormsModule, LogoComponent, MegaMenuComponent, LvjIconsModule],
+  imports: [RouterLink, RouterLinkActive, ReactiveFormsModule, LogoComponent, MegaMenuComponent, AppIconComponent],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })
@@ -34,6 +35,7 @@ export class HeaderComponent implements OnInit {
   readonly favorites = inject(FavoriteService);
   readonly inquiry = inject(InquiryService);
   readonly customer = inject(CustomerAuthService);
+  readonly adminAuth = inject(AuthService);
 
   readonly promos = [
     'Free shipping on orders over $500 across the USA',

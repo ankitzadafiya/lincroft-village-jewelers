@@ -14,12 +14,12 @@ import {
   personName,
   registerPayload
 } from '../../core/utils/auth-validation';
-import { LvjIconsModule } from '../../shared/icons/lvj-icons';
+import { AppIconComponent } from '../../shared/icons/lvj-icons';
 import { GoogleSignInComponent } from '../../shared/components/google-sign-in/google-sign-in.component';
 
 @Component({
   selector: 'app-account',
-  imports: [ReactiveFormsModule, RouterLink, LvjIconsModule, GoogleSignInComponent],
+  imports: [ReactiveFormsModule, RouterLink, AppIconComponent, GoogleSignInComponent],
   templateUrl: './account.component.html',
   styleUrl: './account.component.scss'
 })

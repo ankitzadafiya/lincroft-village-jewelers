@@ -1,14 +1,14 @@
 import { Component, inject } from '@angular/core';
 import { ConfigurationService } from '../../../core/services/configuration.service';
 import { buildWhatsAppUrl } from '../../../core/utils/slug';
-import { LvjIconsModule } from '../../icons/lvj-icons';
+import { AppIconComponent } from '../../icons/lvj-icons';
 
 @Component({
   selector: 'app-whatsapp-float',
-  imports: [LvjIconsModule],
+  imports: [AppIconComponent],
   template: `
     <a class="wa" [href]="href()" target="_blank" rel="noreferrer" aria-label="Chat on WhatsApp">
-      <lucide-icon name="message-circle" [size]="22" [strokeWidth]="1.6"></lucide-icon>
+      <app-icon name="message-circle" [size]="22" [strokeWidth]="1.6"></app-icon>
     </a>
   `,
   styles: [`

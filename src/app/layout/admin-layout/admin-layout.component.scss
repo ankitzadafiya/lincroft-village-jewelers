@@ -1,20 +1,27 @@
 :host {
   display: block;
+  height: 100dvh;
+  overflow: hidden;
 }
 
 .admin {
   display: grid;
-  min-height: 100vh;
-  grid-template-columns: 260px 1fr;
+  height: 100dvh;
+  grid-template-columns: 264px 1fr;
+  overflow: hidden;
+  background: #ebe6df;
 }
 
 aside {
-  background: #141210;
+  height: 100dvh;
+  background: linear-gradient(180deg, #1a1612 0%, #12100e 100%);
   color: #f7f3ec;
-  padding: 1.35rem 0.95rem 1.1rem;
+  padding: 1.2rem 0.9rem 1rem;
   display: flex;
   flex-direction: column;
-  gap: 0.35rem;
+  gap: 0.25rem;
+  overflow: hidden;
+  border-right: 1px solid rgba(247, 243, 236, 0.06);
 }
 
 .brand {
@@ -26,10 +33,21 @@ aside {
   text-transform: uppercase;
   font-size: 0.78rem;
   padding: 0.35rem 0.7rem 1rem;
+  flex-shrink: 0;
 }
 
 .brand span {
   color: #c4a574;
+}
+
+.aside-scroll {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-bottom: 0.5rem;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(196, 165, 116, 0.35) transparent;
 }
 
 .group-label {
@@ -53,6 +71,7 @@ nav a {
   color: rgba(247, 243, 236, 0.72);
   border-radius: 10px;
   font-size: 0.9rem;
+  transition: background 0.2s ease, color 0.2s ease;
 }
 
 nav a.on,
@@ -66,10 +85,13 @@ nav a.on {
 }
 
 .aside-foot {
-  margin-top: auto;
+  flex-shrink: 0;
   display: grid;
   gap: 0.7rem;
-  padding: 1rem 0.35rem 0.2rem;
+  padding: 0.85rem 0.35rem 0.15rem;
+  margin-top: 0;
+  border-top: 1px solid rgba(247, 243, 236, 0.1);
+  background: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.2));
 }
 
 .who {
@@ -77,6 +99,7 @@ nav a.on {
   align-items: center;
   gap: 0.7rem;
   padding: 0.2rem 0.35rem;
+  min-width: 0;
 }
 
 .avatar {
@@ -89,11 +112,20 @@ nav a.on {
   color: #141210;
   font-size: 0.78rem;
   font-weight: 700;
+  flex: none;
 }
 
 .who strong,
 .who small {
   display: block;
+}
+
+.who strong {
+  font-size: 0.86rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 10rem;
 }
 
 .who small {
@@ -114,21 +146,35 @@ aside button {
   cursor: pointer;
   border-radius: 999px;
   font-size: 0.8rem;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+aside button:hover {
+  background: rgba(247, 243, 236, 0.08);
+  border-color: rgba(247, 243, 236, 0.32);
 }
 
 section {
-  background: #f4f1eb;
   min-width: 0;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse 50% 30% at 100% 0%, rgba(196, 165, 116, 0.12), transparent 55%),
+    #ebe6df;
 }
 
 header {
+  flex-shrink: 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 1rem;
-  padding: 1rem 1.6rem;
-  border-bottom: 1px solid var(--lvj-line);
-  background: rgba(255, 255, 255, 0.72);
+  padding: 0.95rem 1.5rem;
+  border-bottom: 1px solid rgba(28, 28, 28, 0.08);
+  background: rgba(247, 243, 238, 0.88);
+  backdrop-filter: blur(12px);
 }
 
 header .eyebrow {
@@ -139,28 +185,57 @@ header .eyebrow {
   font-size: 0.82rem;
   font-weight: 600;
   color: var(--lvj-gold-deep);
+  padding: 0.55rem 0.9rem;
+  border: 1px solid rgba(138, 111, 74, 0.28);
+  border-radius: 999px;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.storefront:hover {
+  background: var(--lvj-ink);
+  color: #f7f3ec;
+  border-color: var(--lvj-ink);
 }
 
 .stage {
-  min-height: calc(100vh - 70px);
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 @media (max-width: 960px) {
   .admin {
     grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+    height: 100dvh;
   }
 
   aside {
+    height: auto;
+    max-height: none;
     flex-direction: row;
     flex-wrap: wrap;
     align-items: center;
     gap: 0.5rem;
+    padding: 0.75rem;
+    overflow: visible;
   }
 
-  nav {
-    grid-auto-flow: column;
-    overflow: auto;
-    max-width: 100%;
+  .aside-scroll {
+    display: flex;
+    flex: 1 1 auto;
+    overflow-x: auto;
+    overflow-y: hidden;
+    gap: 0.35rem;
+    align-items: center;
+    min-height: 0;
+    padding: 0;
+  }
+
+  .aside-scroll nav {
+    display: flex;
+    gap: 0.25rem;
   }
 
   .group-label,
@@ -171,5 +246,12 @@ header .eyebrow {
   .aside-foot {
     margin: 0;
     padding: 0;
+    border: 0;
+    background: none;
+  }
+
+  section {
+    height: auto;
+    min-height: 0;
   }
 }

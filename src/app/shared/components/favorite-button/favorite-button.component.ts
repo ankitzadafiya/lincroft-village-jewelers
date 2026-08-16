@@ -1,10 +1,10 @@
 import { Component, inject, input } from '@angular/core';
 import { FavoriteService } from '../../../core/services/favorite.service';
-import { LvjIconsModule } from '../../icons/lvj-icons';
+import { AppIconComponent } from '../../icons/lvj-icons';
 
 @Component({
   selector: 'app-favorite-button',
-  imports: [LvjIconsModule],
+  imports: [AppIconComponent],
   template: `
     <button
       type="button"
@@ -14,7 +14,7 @@ import { LvjIconsModule } from '../../icons/lvj-icons';
       [attr.aria-label]="favorites.isFavorite(id()) ? 'Remove from wishlist' : 'Add to wishlist'"
       [attr.data-tip]="favorites.isFavorite(id()) ? 'Saved' : 'Wishlist'"
       (click)="onToggle($event)">
-      <lucide-icon name="heart" [size]="size()" [strokeWidth]="1.5"></lucide-icon>
+      <app-icon name="heart" [size]="size()" [strokeWidth]="1.5"></app-icon>
     </button>
   `,
   styleUrl: './favorite-button.component.scss'

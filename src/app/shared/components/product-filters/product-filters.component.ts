@@ -164,7 +164,7 @@ import { FacetValue, ProductFilterFacets, ProductListQuery } from '../../../core
       gap: 0.25rem;
       border: 1px solid rgba(0,0,0,0.14);
       padding: 0.45rem 0.55rem;
-      background: #fff;
+      background: var(--lvj-panel);
     }
     .price-row span { color: #888; font-size: 0.8rem; }
     .price-row .to { font-size: 0.75rem; color: #888; }

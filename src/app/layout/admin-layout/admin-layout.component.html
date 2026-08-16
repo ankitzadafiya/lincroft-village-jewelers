@@ -5,29 +5,33 @@
       Atelier
     </a>
 
-    <p class="group-label">Catalog</p>
-    <nav>
-      @for (item of catalogNav; track item.path) {
-        <a [routerLink]="item.path" routerLinkActive="on">
-          <lucide-icon [name]="item.icon" [size]="16" [strokeWidth]="1.7"></lucide-icon>
-          {{ item.label }}
-        </a>
-      }
-    </nav>
+    <div class="aside-scroll">
+      <p class="group-label">Catalog</p>
+      <nav>
+        @for (item of catalogNav; track item.path) {
+          <a [routerLink]="item.path" routerLinkActive="on">
+            <app-icon [name]="item.icon" [size]="16" [strokeWidth]="1.7"></app-icon>
+            {{ item.label }}
+          </a>
+        }
+      </nav>
 
-    <p class="group-label">Studio</p>
-    <nav>
-      @for (item of studioNav; track item.path) {
-        <a [routerLink]="item.path" routerLinkActive="on">
-          <lucide-icon [name]="item.icon" [size]="16" [strokeWidth]="1.7"></lucide-icon>
-          {{ item.label }}
-        </a>
-      }
-      <a routerLink="/admin/users" routerLinkActive="on">
-        <lucide-icon name="users" [size]="16" [strokeWidth]="1.7"></lucide-icon>
-        Staff
-      </a>
-    </nav>
+      <p class="group-label">Studio</p>
+      <nav>
+        @for (item of studioNav; track item.path) {
+          <a [routerLink]="item.path" routerLinkActive="on">
+            <app-icon [name]="item.icon" [size]="16" [strokeWidth]="1.7"></app-icon>
+            {{ item.label }}
+          </a>
+        }
+        @if (auth.canManageUsers()) {
+          <a routerLink="/admin/users" routerLinkActive="on">
+            <app-icon name="users" [size]="16" [strokeWidth]="1.7"></app-icon>
+            Staff
+          </a>
+        }
+      </nav>
+    </div>
 
     <div class="aside-foot">
       <div class="who">
@@ -38,7 +42,7 @@
         </span>
       </div>
       <button type="button" (click)="logout()">
-        <lucide-icon name="log-out" [size]="15" [strokeWidth]="1.7"></lucide-icon>
+        <app-icon name="log-out" [size]="15" [strokeWidth]="1.7"></app-icon>
         Sign out
       </button>
     </div>

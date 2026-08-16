@@ -5,11 +5,11 @@ import { STORE_TOP_CATEGORIES } from '../../../core/catalog/store-categories';
 import { ConfigurationService } from '../../../core/services/configuration.service';
 import { ContentService } from '../../../core/services/content.service';
 import { ToastService } from '../../../core/services/toast.service';
-import { LvjIconsModule } from '../../icons/lvj-icons';
+import { AppIconComponent } from '../../icons/lvj-icons';
 
 @Component({
   selector: 'app-footer',
-  imports: [RouterLink, ReactiveFormsModule, LvjIconsModule],
+  imports: [RouterLink, ReactiveFormsModule, AppIconComponent],
   templateUrl: './footer.component.html',
   styleUrl: './footer.component.scss'
 })
