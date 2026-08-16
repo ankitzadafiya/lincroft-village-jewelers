@@ -50,6 +50,7 @@ export const BACKEND_TARGETS: Record<BackendTarget, ApiBackendConfig> = {
     useMockApi: false,
     extraHeaders: {}
   },
+  /** Same-origin `/api` (reverse proxy). Not for Netlify → separate BE. */
   production: {
     apiUrl: '/api',
     useMockApi: false,
