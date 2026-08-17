@@ -10,6 +10,7 @@ import {
   Facebook,
   FileText,
   Heart,
+  Image,
   Inbox,
   Instagram,
   LayoutDashboard,
@@ -28,12 +29,14 @@ import {
   Shield,
   ShoppingBag,
   Sparkles,
+  Star,
   Store,
   Sun,
   Trash2,
   Upload,
   User,
   Users,
+  Video,
   X
 } from 'lucide-angular';
 
@@ -49,6 +52,7 @@ const ICONS: Record<string, LucideIconData> = {
   facebook: Facebook,
   'file-text': FileText,
   heart: Heart,
+  image: Image,
   inbox: Inbox,
   instagram: Instagram,
   'layout-dashboard': LayoutDashboard,
@@ -66,12 +70,14 @@ const ICONS: Record<string, LucideIconData> = {
   shield: Shield,
   'shopping-bag': ShoppingBag,
   sparkles: Sparkles,
+  star: Star,
   store: Store,
   sun: Sun,
   'trash-2': Trash2,
   upload: Upload,
   user: User,
   users: Users,
+  video: Video,
   x: X
 };
 

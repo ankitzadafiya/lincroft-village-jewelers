@@ -17,19 +17,12 @@
       <header class="brand">
         <p class="eyebrow">Lincroft Village Jewelers</p>
         <h2>Staff sign in</h2>
-        <p class="lead">Use your atelier email, or a Google account that already has admin rights.</p>
+        <p class="lead">Use the staff email and password created in the atelier.</p>
       </header>
 
       @if (error()) {
         <p class="banner" role="alert">{{ error() }}</p>
       }
-
-      <app-google-sign-in
-        label="Continue with Google"
-        [disabled]="submitting()"
-        (credential)="google($event)"
-        (failed)="error.set($event)" />
-      <p class="divider"><span>or staff email</span></p>
 
       <form [formGroup]="form" (ngSubmit)="submit()" novalidate autocomplete="on">
         <div class="field" [class.invalid]="invalid('email')">

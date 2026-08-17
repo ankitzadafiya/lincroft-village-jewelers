@@ -132,7 +132,7 @@
               <span>
                 <strong>{{ user.name }}</strong>
                 <small>{{ user.email }}</small>
-                @if (user.role === 'staff' && user.permissions?.length) {
+                @if (user.role === 'staff' && user.permissions.length) {
                   <small class="perms-preview">{{ user.permissions.join(', ') }}</small>
                 }
               </span>
@@ -140,21 +140,18 @@
               <span class="status" [attr.data-on]="user.isActive">{{ user.isActive ? 'Active' : 'Inactive' }}</span>
               <span>{{ user.lastLoginAt ? (user.lastLoginAt | date:'mediumDate') : 'Never' }}</span>
               <span class="actions">
-                <button type="button" class="icon-btn" (click)="edit(user)" aria-label="Edit">
+                <button type="button" class="icon-btn icon-tip" data-tip="Edit" (click)="edit(user)" aria-label="Edit">
                   <app-icon name="pencil" [size]="15" [strokeWidth]="1.8"></app-icon>
-                  <span class="label">Edit</span>
                 </button>
                 @if (isSelf(user)) {
                   <span class="you">You</span>
                 } @else if (user.isActive) {
-                  <button type="button" class="icon-btn danger" (click)="setActive(user, false)" aria-label="Deactivate">
+                  <button type="button" class="icon-btn icon-tip danger" data-tip="Deactivate" (click)="setActive(user, false)" aria-label="Deactivate">
                     <app-icon name="power" [size]="15" [strokeWidth]="1.8"></app-icon>
-                    <span class="label">Off</span>
                   </button>
                 } @else {
-                  <button type="button" class="icon-btn muted" (click)="setActive(user, true)" aria-label="Reactivate">
+                  <button type="button" class="icon-btn icon-tip muted" data-tip="Reactivate" (click)="setActive(user, true)" aria-label="Reactivate">
                     <app-icon name="power" [size]="15" [strokeWidth]="1.8"></app-icon>
-                    <span class="label">On</span>
                   </button>
                 }
               </span>

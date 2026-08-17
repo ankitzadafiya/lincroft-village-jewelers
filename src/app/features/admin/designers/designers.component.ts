@@ -40,13 +40,11 @@ import { AppIconComponent } from '../../../shared/icons/lvj-icons';
             <td>{{ designer.active ? 'Active' : 'Hidden' }}</td>
             <td>
               <div class="row-actions">
-                <button type="button" class="icon-btn" (click)="edit(designer)" aria-label="Edit">
+                <button type="button" class="icon-btn icon-tip" data-tip="Edit" (click)="edit(designer)" aria-label="Edit">
                   <app-icon name="pencil" [size]="15" [strokeWidth]="1.8"></app-icon>
-                  <span class="label">Edit</span>
                 </button>
-                <button type="button" class="icon-btn danger" (click)="remove(designer)" aria-label="Delete">
+                <button type="button" class="icon-btn icon-tip danger" data-tip="Delete" (click)="remove(designer)" aria-label="Delete">
                   <app-icon name="trash-2" [size]="15" [strokeWidth]="1.8"></app-icon>
-                  <span class="label">Delete</span>
                 </button>
               </div>
             </td>

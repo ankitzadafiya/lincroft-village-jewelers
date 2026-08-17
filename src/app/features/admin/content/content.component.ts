@@ -56,13 +56,11 @@ type ContentTab = 'home' | 'testimonials' | 'services' | 'instagram';
               <td>{{ row.active ? 'Active' : 'Hidden' }}</td>
               <td>
                 <div class="row-actions">
-                  <button type="button" class="icon-btn" (click)="editTestimonial(row)" aria-label="Edit">
+                  <button type="button" class="icon-btn icon-tip" data-tip="Edit" (click)="editTestimonial(row)" aria-label="Edit">
                     <app-icon name="pencil" [size]="15" [strokeWidth]="1.8"></app-icon>
-                    <span class="label">Edit</span>
                   </button>
-                  <button type="button" class="icon-btn danger" (click)="removeTestimonial(row)" aria-label="Delete">
+                  <button type="button" class="icon-btn icon-tip danger" data-tip="Delete" (click)="removeTestimonial(row)" aria-label="Delete">
                     <app-icon name="trash-2" [size]="15" [strokeWidth]="1.8"></app-icon>
-                    <span class="label">Delete</span>
                   </button>
                 </div>
               </td>
@@ -95,13 +93,11 @@ type ContentTab = 'home' | 'testimonials' | 'services' | 'instagram';
               <td>{{ row.active ? 'Active' : 'Hidden' }}</td>
               <td>
                 <div class="row-actions">
-                  <button type="button" class="icon-btn" (click)="editService(row)" aria-label="Edit">
+                  <button type="button" class="icon-btn icon-tip" data-tip="Edit" (click)="editService(row)" aria-label="Edit">
                     <app-icon name="pencil" [size]="15" [strokeWidth]="1.8"></app-icon>
-                    <span class="label">Edit</span>
                   </button>
-                  <button type="button" class="icon-btn danger" (click)="removeService(row)" aria-label="Delete">
+                  <button type="button" class="icon-btn icon-tip danger" data-tip="Delete" (click)="removeService(row)" aria-label="Delete">
                     <app-icon name="trash-2" [size]="15" [strokeWidth]="1.8"></app-icon>
-                    <span class="label">Delete</span>
                   </button>
                 </div>
               </td>
@@ -132,13 +128,11 @@ type ContentTab = 'home' | 'testimonials' | 'services' | 'instagram';
               <td>{{ row.active ? 'Active' : 'Hidden' }}</td>
               <td>
                 <div class="row-actions">
-                  <button type="button" class="icon-btn" (click)="editInstagram(row)" aria-label="Edit">
+                  <button type="button" class="icon-btn icon-tip" data-tip="Edit" (click)="editInstagram(row)" aria-label="Edit">
                     <app-icon name="pencil" [size]="15" [strokeWidth]="1.8"></app-icon>
-                    <span class="label">Edit</span>
                   </button>
-                  <button type="button" class="icon-btn danger" (click)="removeInstagram(row)" aria-label="Delete">
+                  <button type="button" class="icon-btn icon-tip danger" data-tip="Delete" (click)="removeInstagram(row)" aria-label="Delete">
                     <app-icon name="trash-2" [size]="15" [strokeWidth]="1.8"></app-icon>
-                    <span class="label">Delete</span>
                   </button>
                 </div>
               </td>

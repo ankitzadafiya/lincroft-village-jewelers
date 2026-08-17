@@ -57,7 +57,8 @@ import { AppIconComponent } from '../../icons/lvj-icons';
       transition: background 0.25s ease, color 0.25s ease, transform 0.25s var(--lvj-ease);
     }
     .nav:hover {
-      background: var(--lvj-ink);`n      color: var(--lvj-on-ink);
+      background: var(--lvj-ink);
+      color: var(--lvj-on-ink);
       transform: scale(1.04);
     }
     .track {

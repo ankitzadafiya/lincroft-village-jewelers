@@ -44,10 +44,18 @@ import { AdminProductService } from '../../../core/services/admin-product.servic
     .intro { margin-bottom: 1.4rem; }
     .intro p { color: var(--lvj-muted); }
     .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 0.9rem; }
-    article { background: #fff; padding: 1.15rem; border: 1px solid var(--lvj-line); border-radius: 16px; }
+    article { background: var(--lvj-panel); padding: 1.15rem; border: 1px solid var(--lvj-line); border-radius: 16px; }
     span { display: block; font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--lvj-muted); }
-    strong { font-family: var(--font-display); font-size: 2rem; font-weight: 500; }
-    .recent { margin-top: 1.8rem; background: #fff; border: 1px solid var(--lvj-line); border-radius: 16px; padding: 1.1rem 1.2rem; }
+    strong {
+      font-family: var(--font-body);
+      font-style: normal;
+      font-size: 1.85rem;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums lining-nums;
+      letter-spacing: -0.02em;
+      color: var(--lvj-ink);
+    }
+    .recent { margin-top: 1.8rem; background: var(--lvj-panel); border: 1px solid var(--lvj-line); border-radius: 16px; padding: 1.1rem 1.2rem; }
     .recent-head { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; }
     h2 { font-size: 1.25rem; }
     .recent-head a { color: var(--lvj-gold-deep); font-weight: 600; font-size: 0.85rem; }

@@ -260,54 +260,104 @@ section {
   overflow-x: hidden;
 }
 
+.nav-toggle,
+.nav-mask {
+  display: none;
+}
+
 @media (max-width: 960px) {
   .admin {
     grid-template-columns: 1fr;
-    grid-template-rows: auto 1fr;
     height: 100dvh;
   }
 
+  .nav-toggle {
+    display: inline-flex;
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    border: 1px solid var(--lvj-line-strong);
+    border-radius: 10px;
+    background: var(--lvj-panel);
+    color: var(--lvj-ink);
+  }
+
+  .nav-mask {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(12, 10, 8, 0.45);
+    z-index: 80;
+    border: 0;
+  }
+
   aside {
-    height: auto;
-    max-height: none;
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.75rem;
-    overflow: visible;
+    position: fixed;
+    z-index: 90;
+    left: 0;
+    top: 0;
+    width: min(280px, 86vw);
+    height: 100dvh;
+    transform: translateX(-105%);
+    transition: transform 0.28s var(--lvj-ease);
+    flex-direction: column;
+    flex-wrap: nowrap;
+    overflow: hidden;
+    padding: 1.1rem 0.85rem 1rem;
+  }
+
+  .admin.nav-open aside {
+    transform: translateX(0);
   }
 
   .aside-scroll {
-    display: flex;
+    display: block;
     flex: 1 1 auto;
-    overflow-x: auto;
-    overflow-y: hidden;
-    gap: 0.35rem;
-    align-items: center;
-    min-height: 0;
-    padding: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
   }
 
   .aside-scroll nav {
-    display: flex;
-    gap: 0.25rem;
+    display: grid;
   }
 
   .group-label,
   .aside-foot .who {
-    display: none;
+    display: flex;
+  }
+
+  .aside-foot .who {
+    display: flex;
   }
 
   .aside-foot {
-    margin: 0;
-    padding: 0;
-    border: 0;
-    background: none;
+    margin-top: 0;
+    padding: 0.85rem 0.35rem 0.15rem;
+    border-top: 1px solid rgba(247, 243, 236, 0.1);
+    background: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.2));
   }
 
   section {
-    height: auto;
+    height: 100dvh;
     min-height: 0;
+  }
+
+  .topbar {
+    padding: 0.7rem 0.85rem;
+    gap: 0.65rem;
+  }
+
+  .brand-line {
+    display: none;
+  }
+
+  .signed-in {
+    max-width: 42vw;
+    font-size: 0.75rem;
+    padding: 0.28rem 0.55rem 0.28rem 0.4rem;
+  }
+
+  .storefront {
+    display: none;
   }
 }

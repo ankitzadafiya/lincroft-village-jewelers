@@ -45,7 +45,8 @@ h2 {
 }
 
 .nav:hover:not(:disabled) {
-  background: var(--lvj-ink);`n      color: var(--lvj-on-ink);
+  background: var(--lvj-ink);
+  color: var(--lvj-on-ink);
   transform: scale(1.04);
 }
 
@@ -146,7 +147,8 @@ p {
 }
 
 .tile:hover .go {
-  background: var(--lvj-ink);`n      color: var(--lvj-on-ink);
+  background: var(--lvj-ink);
+  color: var(--lvj-on-ink);
   transform: translateX(2px);
 }
 

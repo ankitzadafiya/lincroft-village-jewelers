@@ -3,7 +3,6 @@ import { FormArray, FormBuilder, ReactiveFormsModule, Validators } from '@angula
 import { InputTextModule } from 'primeng/inputtext';
 import { TextareaModule } from 'primeng/textarea';
 import { SelectModule } from 'primeng/select';
-import { CheckboxModule } from 'primeng/checkbox';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { Category, Designer, ProductMedia, ProductSpec, SpecGroup, toMediaWrite } from '../../../../core/models';
 import { AdminProductService } from '../../../../core/services/admin-product.service';
@@ -53,7 +52,6 @@ interface SelectOption {
     InputTextModule,
     TextareaModule,
     SelectModule,
-    CheckboxModule,
     InputNumberModule
   ],
   templateUrl: './product-form.component.html',

@@ -1,4 +1,4 @@
-import { Component, computed, inject } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { StaffPermission } from '../../core/models';
 import { AuthService } from '../../core/services/auth.service';
@@ -16,6 +16,7 @@ type NavItem = { path: string; label: string; icon: string; permission: StaffPer
 export class AdminLayoutComponent {
   readonly auth = inject(AuthService);
   private readonly router = inject(Router);
+  readonly navOpen = signal(false);
 
   private readonly allCatalogNav: NavItem[] = [
     { path: '/admin/dashboard', label: 'Dashboard', icon: 'layout-dashboard', permission: null },
@@ -40,8 +41,13 @@ export class AdminLayoutComponent {
   );
 
   logout(): void {
+    this.navOpen.set(false);
     this.auth.logout();
     void this.router.navigate(['/admin/login']);
+  }
+
+  closeNav(): void {
+    this.navOpen.set(false);
   }
 
   initials(): string {

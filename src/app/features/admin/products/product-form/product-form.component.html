@@ -4,139 +4,164 @@
   }
 
   <form [formGroup]="form" (ngSubmit)="save()">
-    <div class="form-grid">
-      <div class="field">
-        <label for="sku">SKU</label>
-        <input pInputText id="sku" formControlName="sku" class="w-full" />
-      </div>
-      <div class="field">
-        <label for="name">Name</label>
-        <input pInputText id="name" formControlName="name" class="w-full" />
-      </div>
-      <div class="field">
-        <label for="slug">Slug</label>
-        <input pInputText id="slug" formControlName="slug" placeholder="optional" class="w-full" />
-      </div>
-      <div class="field">
-        <label for="categoryId">Category</label>
-        <p-select
-          inputId="categoryId"
-          formControlName="categoryId"
-          [options]="categoryOptions()"
-          optionLabel="label"
-          optionValue="value"
-          placeholder="Select category"
-          styleClass="w-full"
-          [showClear]="false" />
-      </div>
-      <div class="field">
-        <label for="subcategoryId">Subcategory</label>
-        <p-select
-          inputId="subcategoryId"
-          formControlName="subcategoryId"
-          [options]="subcategoryOptions()"
-          optionLabel="label"
-          optionValue="value"
-          placeholder="None"
-          styleClass="w-full"
-          [showClear]="true" />
-      </div>
-      <div class="field">
-        <label for="designerId">Designer</label>
-        <p-select
-          inputId="designerId"
-          formControlName="designerId"
-          [options]="designerOptions()"
-          optionLabel="label"
-          optionValue="value"
-          placeholder="None"
-          styleClass="w-full"
-          [showClear]="true" />
-      </div>
-      <div class="field">
-        <label for="price">Price</label>
-        <p-inputNumber inputId="price" formControlName="price" mode="currency" currency="USD" locale="en-US" styleClass="w-full" inputStyleClass="w-full" />
-      </div>
-      <div class="field">
-        <label for="compareAtPrice">Compare-at price</label>
-        <p-inputNumber inputId="compareAtPrice" formControlName="compareAtPrice" mode="currency" currency="USD" locale="en-US" styleClass="w-full" inputStyleClass="w-full" />
-      </div>
-      <div class="field">
-        <label for="status">Status</label>
-        <p-select
-          inputId="status"
-          formControlName="status"
-          [options]="statusOptions"
-          optionLabel="label"
-          optionValue="value"
-          styleClass="w-full" />
-      </div>
-      <div class="field">
-        <label for="availability">Availability</label>
-        <p-select
-          inputId="availability"
-          formControlName="availability"
-          [options]="availabilityOptions"
-          optionLabel="label"
-          optionValue="value"
-          styleClass="w-full" />
-      </div>
-
-      <div class="field full checks">
-        <label class="check" for="showPrice">
-          <p-checkbox formControlName="showPrice" [binary]="true" inputId="showPrice" />
-          <span>Show price</span>
-        </label>
-        <label class="check" for="featured">
-          <p-checkbox formControlName="featured" [binary]="true" inputId="featured" />
-          <span>Featured</span>
-        </label>
-        <label class="check" for="newArrival">
-          <p-checkbox formControlName="newArrival" [binary]="true" inputId="newArrival" />
-          <span>New</span>
-        </label>
-        <label class="check" for="bestSeller">
-          <p-checkbox formControlName="bestSeller" [binary]="true" inputId="bestSeller" />
-          <span>Best seller</span>
-        </label>
-      </div>
-
-      <div class="field full">
-        <label for="description">Description</label>
-        <textarea pTextarea id="description" formControlName="description" rows="4" class="w-full"></textarea>
-      </div>
-      <div class="field full">
-        <label for="tags">Tags</label>
-        <input pInputText id="tags" formControlName="tags" placeholder="comma separated" class="w-full" />
-      </div>
-    </div>
-
-    <div class="presets">
-      <span>Spec presets</span>
-      <button type="button" class="chip" (click)="applyPreset('ring')">Ring</button>
-      <button type="button" class="chip" (click)="applyPreset('earrings')">Earrings</button>
-      <button type="button" class="chip" (click)="applyPreset('watch')">Watch</button>
-      <button type="button" class="chip" (click)="addSpec()">Add field</button>
-    </div>
-
-    <div formArrayName="specs" class="specs">
-      @for (spec of specs.controls; track $index) {
-        <div [formGroupName]="$index" class="spec-row">
-          <input pInputText formControlName="label" placeholder="Label" />
-          <input pInputText formControlName="key" placeholder="Key" />
-          <input pInputText formControlName="value" placeholder="Value" />
+    <section class="block">
+      <header class="block-head">
+        <p class="eyebrow">Details</p>
+        <h3>Product information</h3>
+      </header>
+      <div class="form-grid">
+        <div class="field">
+          <label for="sku">SKU</label>
+          <input pInputText id="sku" formControlName="sku" class="w-full" />
+        </div>
+        <div class="field">
+          <label for="name">Name</label>
+          <input pInputText id="name" formControlName="name" class="w-full" />
+        </div>
+        <div class="field">
+          <label for="slug">Slug</label>
+          <input pInputText id="slug" formControlName="slug" placeholder="optional" class="w-full" />
+        </div>
+        <div class="field">
+          <label for="categoryId">Category</label>
           <p-select
-            formControlName="group"
-            [options]="groupOptions"
+            inputId="categoryId"
+            formControlName="categoryId"
+            [options]="categoryOptions()"
             optionLabel="label"
             optionValue="value"
-            styleClass="w-full" />
+            placeholder="Select category"
+            styleClass="w-full"
+            [showClear]="false" />
         </div>
-      }
-    </div>
+        <div class="field">
+          <label for="subcategoryId">Subcategory</label>
+          <p-select
+            inputId="subcategoryId"
+            formControlName="subcategoryId"
+            [options]="subcategoryOptions()"
+            optionLabel="label"
+            optionValue="value"
+            placeholder="None"
+            styleClass="w-full"
+            [showClear]="false" />
+        </div>
+        <div class="field">
+          <label for="designerId">Designer</label>
+          <p-select
+            inputId="designerId"
+            formControlName="designerId"
+            [options]="designerOptions()"
+            optionLabel="label"
+            optionValue="value"
+            placeholder="None"
+            styleClass="w-full"
+            [showClear]="false" />
+        </div>
+        <div class="field">
+          <label for="price">Price</label>
+          <p-inputNumber inputId="price" formControlName="price" mode="currency" currency="USD" locale="en-US" styleClass="w-full" inputStyleClass="w-full" />
+        </div>
+        <div class="field">
+          <label for="compareAtPrice">Compare-at price</label>
+          <p-inputNumber inputId="compareAtPrice" formControlName="compareAtPrice" mode="currency" currency="USD" locale="en-US" styleClass="w-full" inputStyleClass="w-full" />
+        </div>
+        <div class="field">
+          <label for="status">Status</label>
+          <p-select
+            inputId="status"
+            formControlName="status"
+            [options]="statusOptions"
+            optionLabel="label"
+            optionValue="value"
+            styleClass="w-full"
+            [showClear]="false" />
+        </div>
+        <div class="field">
+          <label for="availability">Availability</label>
+          <p-select
+            inputId="availability"
+            formControlName="availability"
+            [options]="availabilityOptions"
+            optionLabel="label"
+            optionValue="value"
+            styleClass="w-full"
+            [showClear]="false" />
+        </div>
+        <div class="field full">
+          <label for="description">Description</label>
+          <textarea pTextarea id="description" formControlName="description" rows="4" class="w-full"></textarea>
+        </div>
+        <div class="field full">
+          <label for="tags">Tags</label>
+          <input pInputText id="tags" formControlName="tags" placeholder="comma separated" class="w-full" />
+        </div>
+      </div>
+    </section>
 
-    <app-media-uploader kind="image" [items]="images()" (itemsChange)="images.set($event)" />
-    <app-media-uploader kind="video" [items]="videos()" (itemsChange)="videos.set($event)" />
+    <section class="block">
+      <header class="block-head">
+        <p class="eyebrow">Visibility</p>
+        <h3>Storefront flags</h3>
+      </header>
+      <div class="field full checks">
+        <label class="check" for="showPrice">
+          <input id="showPrice" type="checkbox" formControlName="showPrice" />
+          Show price
+        </label>
+        <label class="check" for="featured">
+          <input id="featured" type="checkbox" formControlName="featured" />
+          Featured
+        </label>
+        <label class="check" for="newArrival">
+          <input id="newArrival" type="checkbox" formControlName="newArrival" />
+          New
+        </label>
+        <label class="check" for="bestSeller">
+          <input id="bestSeller" type="checkbox" formControlName="bestSeller" />
+          Best seller
+        </label>
+      </div>
+    </section>
+
+    <section class="block">
+      <header class="block-head">
+        <p class="eyebrow">Specs</p>
+        <h3>Technical details</h3>
+      </header>
+      <div class="presets">
+        <span>Presets</span>
+        <button type="button" class="chip" (click)="applyPreset('ring')">Ring</button>
+        <button type="button" class="chip" (click)="applyPreset('earrings')">Earrings</button>
+        <button type="button" class="chip" (click)="applyPreset('watch')">Watch</button>
+        <button type="button" class="chip" (click)="addSpec()">Add field</button>
+      </div>
+      <div formArrayName="specs" class="specs">
+        @for (spec of specs.controls; track $index) {
+          <div [formGroupName]="$index" class="spec-row">
+            <input pInputText formControlName="label" placeholder="Label" />
+            <input pInputText formControlName="key" placeholder="Key" />
+            <input pInputText formControlName="value" placeholder="Value" />
+            <p-select
+              formControlName="group"
+              [options]="groupOptions"
+              optionLabel="label"
+              optionValue="value"
+              styleClass="w-full"
+              [showClear]="false" />
+          </div>
+        }
+      </div>
+    </section>
+
+    <section class="block">
+      <header class="block-head">
+        <p class="eyebrow">Media</p>
+        <h3>Images & videos</h3>
+      </header>
+      <app-media-uploader kind="image" [items]="images()" (itemsChange)="images.set($event)" />
+      <app-media-uploader kind="video" [items]="videos()" (itemsChange)="videos.set($event)" />
+    </section>
 
     <div class="form-actions">
       <button class="btn btn-ghost" type="button" (click)="cancel()">Cancel</button>

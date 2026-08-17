@@ -15,6 +15,8 @@ html,
 body {
   margin: 0;
   min-height: 100%;
+  overflow-x: hidden;
+  max-width: 100%;
   background: var(--lvj-white);
   color: var(--lvj-charcoal);
   font-family: var(--font-body);
@@ -277,27 +279,35 @@ ul {
     content: attr(data-tip);
     position: absolute;
     left: 50%;
-    top: calc(100% + 10px);
+    top: calc(100% + 8px);
     transform: translateX(-50%) translateY(4px);
     background: var(--lvj-ink);
-    color: #fff;
+    color: var(--lvj-on-ink);
+    font-family: var(--font-body);
     font-size: 0.58rem;
     font-weight: 600;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    padding: 0.42rem 0.55rem;
+    padding: 0.4rem 0.55rem;
     border-radius: 6px;
     white-space: nowrap;
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.25s ease, transform 0.25s var(--lvj-ease);
-    z-index: 5;
+    transition: opacity 0.2s ease, transform 0.2s var(--lvj-ease);
+    z-index: 20;
   }
 
-  &:hover::after {
+  &:hover::after,
+  &:focus-visible::after {
     opacity: 1;
     transform: translateX(-50%) translateY(0);
   }
+}
+
+.row-actions .icon-tip::after,
+.actions .icon-tip::after {
+  top: auto;
+  bottom: calc(100% + 8px);
 }
 
 .badge-count {
@@ -569,85 +579,63 @@ input[type='checkbox']:checked:hover {
   background: #fff;
 }
 
-/* Admin row icon actions — pencil / trash with hover labels */
-.row-actions {
+/* Admin row icon actions — icons stay the same size; tooltip via .icon-tip */
+.row-actions,
+.actions {
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
   white-space: nowrap;
 }
 
-.icon-btn {
+.row-actions .icon-btn,
+.actions .icon-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0;
-  min-width: 2.05rem;
-  height: 2.05rem;
-  padding: 0 0.55rem;
-  border: 1px solid rgba(17, 17, 17, 0.1);
+  width: 2.15rem;
+  min-width: 2.15rem;
+  height: 2.15rem;
+  padding: 0;
+  border: 1px solid var(--lvj-line-strong);
   border-radius: 10px;
-  background: #fff;
+  background: var(--lvj-panel);
   color: var(--lvj-muted);
   cursor: pointer;
-  font-family: var(--font-body);
-  font-size: 0.68rem;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  overflow: visible;
   transition:
-    background 0.22s var(--lvj-ease),
-    color 0.22s ease,
-    border-color 0.22s ease,
-    gap 0.22s ease,
-    min-width 0.22s ease,
-    box-shadow 0.22s ease,
-    transform 0.2s ease;
-}
+    background 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
 
-.icon-btn .label {
-  max-width: 0;
-  overflow: hidden;
-  opacity: 0;
-  white-space: nowrap;
-  transition: max-width 0.22s ease, opacity 0.18s ease, margin 0.22s ease;
-}
+  .label {
+    @include visually-hidden;
+  }
 
-.icon-btn:hover {
-  gap: 0.4rem;
-  min-width: 0;
-  color: var(--lvj-ink);
-  border-color: rgba(17, 17, 17, 0.22);
-  background: var(--lvj-paper);
-  box-shadow: 0 4px 12px rgba(17, 17, 17, 0.06);
-  transform: translateY(-1px);
-}
+  &:hover {
+    color: var(--lvj-ink);
+    border-color: var(--lvj-ink);
+    background: var(--lvj-paper);
+    box-shadow: var(--lvj-shadow-soft);
+  }
 
-.icon-btn:hover .label {
-  max-width: 4.5rem;
-  opacity: 1;
-}
+  &.danger {
+    color: var(--lvj-danger);
+    border-color: color-mix(in srgb, var(--lvj-danger) 35%, transparent);
+  }
 
-.icon-btn.danger {
-  color: #a35a52;
-  border-color: rgba(154, 59, 50, 0.18);
-}
+  &.danger:hover {
+    color: #fff;
+    background: var(--lvj-danger);
+    border-color: var(--lvj-danger);
+  }
 
-.icon-btn.danger:hover {
-  color: #fff;
-  background: #9a3b32;
-  border-color: #9a3b32;
-  box-shadow: 0 6px 16px rgba(154, 59, 50, 0.28);
-}
-
-.icon-btn.danger:hover .label {
-  color: #fff;
-}
-
-.icon-btn.muted:hover {
-  color: #fff;
-  background: var(--lvj-ink);
-  border-color: var(--lvj-ink);
+  &.muted:hover {
+    color: var(--lvj-on-ink);
+    background: var(--lvj-ink);
+    border-color: var(--lvj-ink);
+  }
 }
 
 .skip-link {
@@ -710,12 +698,15 @@ input[type='checkbox']:checked:hover {
   overflow: hidden;
   border: 1px solid var(--lvj-line) !important;
   box-shadow: var(--lvj-shadow) !important;
+  background: var(--lvj-paper) !important;
 }
 
 .product-modal .p-dialog-header {
-  background: #fff !important;
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--lvj-champagne) 14%, var(--lvj-panel)), var(--lvj-panel)) !important;
   border-bottom: 1px solid var(--lvj-line) !important;
   padding: 1.15rem 1.4rem !important;
+  color: var(--lvj-ink) !important;
 }
 
 .product-modal .p-dialog-title {
@@ -723,11 +714,16 @@ input[type='checkbox']:checked:hover {
   font-style: italic !important;
   font-size: 1.55rem !important;
   font-weight: 500 !important;
+  color: var(--lvj-ink) !important;
 }
 
 .product-modal .p-dialog-content {
-  background: #fafaf8 !important;
-  padding: 1.2rem 1.4rem 1.4rem !important;
+  background: var(--lvj-paper) !important;
+  padding: 1.15rem 1.25rem 1.35rem !important;
+}
+
+.p-select-clear-icon {
+  display: none !important;
 }
 
 .p-paginator {
@@ -931,5 +927,74 @@ input[type='checkbox']:checked:hover {
   app-services-help h2,
   app-custom-design-feature h2 {
     color: var(--lvj-ink) !important;
+  }
+}
+
+.admin-page table,
+.admin-page .table-card,
+.users .table {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+@media (max-width: 640px) {
+  .admin-page {
+    padding: 1rem 0.85rem 2.2rem;
+  }
+
+  .admin-page .head {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .admin-page .head .btn {
+    width: 100%;
+  }
+
+  .product-modal.p-dialog {
+    width: 100vw !important;
+    max-width: 100vw !important;
+    height: 100dvh !important;
+    max-height: 100dvh !important;
+    border-radius: 0 !important;
+    margin: 0 !important;
+  }
+
+  .product-modal .p-dialog-content {
+    max-height: calc(100dvh - 72px) !important;
+  }
+
+  .users .layout {
+    grid-template-columns: 1fr !important;
+  }
+
+  .promo {
+    padding-inline: 2.6rem 2.1rem;
+  }
+
+  .promo p {
+    font-size: 0.62rem;
+    letter-spacing: 0.06em;
+  }
+
+  .header .bar {
+    gap: 0.4rem;
+    min-height: 64px;
+  }
+}
+
+@media (max-width: 480px) {
+  .grid-products {
+    gap: 1.2rem 0.7rem;
+  }
+
+  .btn {
+    width: 100%;
+  }
+
+  .form-actions .btn,
+  .form-actions .btn-ghost {
+    width: auto;
+    flex: 1;
   }
 }

@@ -1,6 +1,9 @@
-<div class="admin">
+<div class="admin" [class.nav-open]="navOpen()">
+  @if (navOpen()) {
+    <button type="button" class="nav-mask" aria-label="Close menu" (click)="closeNav()"></button>
+  }
   <aside>
-    <a routerLink="/" class="brand">
+    <a routerLink="/" class="brand" (click)="closeNav()">
       <span>LVJ</span>
       Atelier
     </a>
@@ -10,7 +13,7 @@
         <p class="group-label">Catalog</p>
         <nav>
           @for (item of catalogNav(); track item.path) {
-            <a [routerLink]="item.path" routerLinkActive="on">
+            <a [routerLink]="item.path" routerLinkActive="on" (click)="closeNav()">
               <app-icon [name]="item.icon" [size]="16" [strokeWidth]="1.7"></app-icon>
               {{ item.label }}
             </a>
@@ -22,13 +25,13 @@
         <p class="group-label">Studio</p>
         <nav>
           @for (item of studioNav(); track item.path) {
-            <a [routerLink]="item.path" routerLinkActive="on">
+            <a [routerLink]="item.path" routerLinkActive="on" (click)="closeNav()">
               <app-icon [name]="item.icon" [size]="16" [strokeWidth]="1.7"></app-icon>
               {{ item.label }}
             </a>
           }
           @if (auth.canManageUsers()) {
-            <a routerLink="/admin/users" routerLinkActive="on">
+            <a routerLink="/admin/users" routerLinkActive="on" (click)="closeNav()">
               <app-icon name="users" [size]="16" [strokeWidth]="1.7"></app-icon>
               Staff
             </a>
@@ -54,12 +57,15 @@
 
   <section>
     <header class="topbar">
+      <button type="button" class="nav-toggle icon-btn" aria-label="Open menu" (click)="navOpen.set(!navOpen())">
+        <app-icon name="menu" [size]="18" [strokeWidth]="1.7"></app-icon>
+      </button>
       <div class="identity">
         <p class="brand-line">Lincroft Village Jewelers</p>
         <p class="signed-in">{{ auth.user()?.email }}</p>
       </div>
       <div class="topbar-actions">
-        <app-theme-toggle [compact]="false" [showLabel]="true" [size]="16" />
+        <app-theme-toggle [compact]="true" [showLabel]="false" [size]="16" />
         <a routerLink="/" class="storefront">View storefront</a>
       </div>
     </header>

@@ -16,12 +16,38 @@
   width: 100%;
 }
 
+.block {
+  background: var(--lvj-panel);
+  border: 1px solid var(--lvj-line);
+  border-radius: 16px;
+  padding: 1.1rem 1.15rem 1.25rem;
+  margin-bottom: 1rem;
+}
+
+.block-head {
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--lvj-line);
+}
+
+.block-head .eyebrow {
+  margin-bottom: 0.25rem;
+}
+
+.block-head h3 {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 500;
+  font-size: 1.35rem;
+  color: var(--lvj-ink);
+}
+
 .presets {
   display: flex;
   flex-wrap: wrap;
   gap: 0.45rem;
   align-items: center;
-  margin: 1.25rem 0 0.75rem;
+  margin: 0 0 0.85rem;
 }
 
 .presets > span {
@@ -33,7 +59,7 @@
 }
 
 .chip {
-  border: 1px solid transparent;
+  border: 1px solid var(--lvj-line-strong);
   background: var(--lvj-paper);
   border-radius: var(--lvj-radius-pill);
   padding: 0.45rem 0.95rem;
@@ -42,19 +68,19 @@
   letter-spacing: 0.06em;
   text-transform: uppercase;
   cursor: pointer;
+  color: var(--lvj-ink);
   transition: background 0.25s var(--lvj-ease), color 0.25s ease, transform 0.25s var(--lvj-ease);
 }
 
 .chip:hover {
   background: var(--lvj-ink);
-  color: #fff;
+  color: var(--lvj-on-ink);
   transform: translateY(-1px);
 }
 
 .specs {
   display: grid;
   gap: 0.55rem;
-  margin-bottom: 1.25rem;
 }
 
 .spec-row {
@@ -67,9 +93,9 @@
   justify-content: flex-end;
   position: sticky;
   bottom: 0;
-  background: linear-gradient(180deg, transparent, #fff 30%);
-  padding-bottom: 0.35rem;
-  margin-top: 1.25rem;
+  background: linear-gradient(180deg, transparent, var(--lvj-panel) 28%);
+  padding: 0.85rem 0 0.2rem;
+  margin-top: 0.35rem;
   z-index: 2;
 }
 
@@ -88,56 +114,23 @@
     display: flex;
   }
 
-  .p-checkbox {
-    width: 1.2rem;
-    height: 1.2rem;
-  }
-
-  .p-checkbox-box {
-    border-radius: 6px !important;
-    width: 1.2rem !important;
-    height: 1.2rem !important;
-    border: 1.5px solid rgba(17, 17, 17, 0.22) !important;
-    background: #fff !important;
-    transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease !important;
-  }
-
-  .p-checkbox-box:hover {
-    border-color: rgba(17, 17, 17, 0.45) !important;
-  }
-
-  .p-checkbox-checked .p-checkbox-box,
-  .p-checkbox-box.p-highlight {
-    background: var(--lvj-ink) !important;
-    border-color: var(--lvj-ink) !important;
-  }
-
-  .p-checkbox-checked .p-checkbox-box .p-checkbox-icon,
-  .p-checkbox-box .p-icon {
-    color: #fff !important;
-  }
-
-  .checks {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.35rem 0.5rem;
-    padding: 0.55rem;
-    border: 1px dashed rgba(17, 17, 17, 0.12);
-    border-radius: var(--lvj-radius-sm);
-    background: transparent;
-  }
-
-  .checks .check {
-    background: #fff;
-    border: 1px solid rgba(17, 17, 17, 0.08);
-    border-radius: 10px;
-    padding: 0.45rem 0.75rem 0.45rem 0.5rem;
-    box-shadow: 0 1px 2px rgba(17, 17, 17, 0.03);
+  .p-select-clear-icon {
+    display: none !important;
   }
 }
 
 @media (max-width: 800px) {
   .spec-row {
     grid-template-columns: 1fr 1fr;
+  }
+
+  .block {
+    padding: 0.95rem 0.9rem 1.05rem;
+  }
+}
+
+@media (max-width: 520px) {
+  .spec-row {
+    grid-template-columns: 1fr;
   }
 }

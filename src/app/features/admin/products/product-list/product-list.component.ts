@@ -55,17 +55,14 @@ import { ProductFormComponent } from '../product-form/product-form.component';
               <td>{{ row.showPrice ? 'Yes' : 'No' }}</td>
               <td>
                 <div class="row-actions">
-                  <button type="button" class="icon-btn" (click)="openEdit(row)" aria-label="Edit">
+                  <button type="button" class="icon-btn icon-tip" data-tip="Edit" (click)="openEdit(row)" aria-label="Edit">
                     <app-icon name="pencil" [size]="15" [strokeWidth]="1.8"></app-icon>
-                    <span class="label">Edit</span>
                   </button>
-                  <button type="button" class="icon-btn muted" (click)="toggle(row)" [attr.aria-label]="row.status === 'active' ? 'Turn off' : 'Turn on'">
+                  <button type="button" class="icon-btn icon-tip muted" (click)="toggle(row)" [attr.data-tip]="row.status === 'active' ? 'Turn off' : 'Turn on'" [attr.aria-label]="row.status === 'active' ? 'Turn off' : 'Turn on'">
                     <app-icon name="power" [size]="15" [strokeWidth]="1.8"></app-icon>
-                    <span class="label">{{ row.status === 'active' ? 'Off' : 'On' }}</span>
                   </button>
-                  <button type="button" class="icon-btn danger" (click)="archive(row)" aria-label="Archive">
+                  <button type="button" class="icon-btn icon-tip danger" data-tip="Archive" (click)="archive(row)" aria-label="Archive">
                     <app-icon name="trash-2" [size]="15" [strokeWidth]="1.8"></app-icon>
-                    <span class="label">Archive</span>
                   </button>
                 </div>
               </td>
@@ -82,7 +79,8 @@ import { ProductFormComponent } from '../product-form/product-form.component';
       [modal]="true"
       [draggable]="false"
       [resizable]="false"
-      [style]="{ width: 'min(920px, 96vw)' }"
+      [style]="{ width: 'min(960px, 96vw)' }"
+      [breakpoints]="{ '960px': '96vw', '640px': '100vw' }"
       [contentStyle]="{ 'max-height': 'min(78vh, 820px)', overflow: 'auto' }"
       styleClass="product-modal"
       [closable]="true"

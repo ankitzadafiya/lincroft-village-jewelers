@@ -234,7 +234,8 @@ import { AppIconComponent } from '../../icons/lvj-icons';
     }
 
     .card:hover .go {
-      background: var(--lvj-ink);`n      color: var(--lvj-on-ink);
+      background: var(--lvj-ink);
+      color: var(--lvj-on-ink);
       border-color: var(--lvj-ink);
       transform: translateX(2px);
     }

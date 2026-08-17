@@ -3,13 +3,12 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 import { emailAddress, loginPayload } from '../../../core/utils/auth-validation';
-import { GoogleSignInComponent } from '../../../shared/components/google-sign-in/google-sign-in.component';
 import { ThemeToggleComponent } from '../../../shared/components/theme-toggle/theme-toggle.component';
 import { AppIconComponent } from '../../../shared/icons/lvj-icons';
 
 @Component({
   selector: 'app-login',
-  imports: [ReactiveFormsModule, AppIconComponent, GoogleSignInComponent, ThemeToggleComponent],
+  imports: [ReactiveFormsModule, AppIconComponent, ThemeToggleComponent],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
@@ -59,15 +58,6 @@ export class LoginComponent {
     this.auth.login(payload).subscribe({
       next: () => this.enter(),
       error: err => this.fail(err, 'Unable to sign in.')
-    });
-  }
-
-  google(idToken: string): void {
-    this.error.set('');
-    this.submitting.set(true);
-    this.auth.loginWithGoogle(idToken).subscribe({
-      next: () => this.enter(),
-      error: err => this.fail(err, 'This Google account does not have atelier access.')
     });
   }
 
