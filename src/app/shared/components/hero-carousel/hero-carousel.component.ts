@@ -1,6 +1,9 @@
-import { Component, ElementRef, OnDestroy, OnInit, inject, signal } from '@angular/core';
+import { AfterViewChecked, Component, DestroyRef, ElementRef, OnDestroy, OnInit, QueryList, ViewChildren, inject, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
-import { IMG } from '../../../core/mock/image-catalog';
+import { fromEvent } from 'rxjs';
+import { auditTime } from 'rxjs/operators';
+import { IMG, VIDEO } from '../../../core/mock/image-catalog';
 
 interface HeroSlide {
   eyebrow: string;
@@ -10,7 +13,8 @@ interface HeroSlide {
   primaryPath: string;
   secondaryCta: string;
   secondaryPath: string;
-  image: string;
+  poster: string;
+  video: string;
 }
 
 @Component({
@@ -21,7 +25,16 @@ interface HeroSlide {
       <div class="poster">
         @for (slide of slides; track slide.title; let i = $index) {
           <article class="slide" [class.active]="i === index()">
-            <img [src]="slide.image" [alt]="slide.title" [attr.loading]="i === 0 ? 'eager' : 'lazy'" decoding="async" />
+            <video
+              #clip
+              class="media"
+              [poster]="slide.poster"
+              [attr.data-i]="i"
+              muted
+              loop
+              playsinline
+              preload="metadata"
+              aria-hidden="true"></video>
             <div class="shade"></div>
             <div class="copy">
               <p class="eyebrow">{{ slide.eyebrow }}</p>
@@ -45,13 +58,13 @@ interface HeroSlide {
   `,
   styles: [`
     .hero-wrap {
-      padding: 0.85rem 1rem 0;
+      padding: 0.85rem var(--lvj-gutter) 0;
       background: var(--lvj-ivory);
     }
 
     @media (min-width: 1280px) {
       .hero-wrap {
-        padding-inline: max(1rem, calc((100vw - 1360px) / 2));
+        padding-inline: max(var(--lvj-gutter-xl), calc((100vw - var(--lvj-content-max-xl)) / 2));
       }
     }
 
@@ -77,16 +90,21 @@ interface HeroSlide {
       pointer-events: auto;
     }
 
-    .slide img {
+    .media {
       width: 100%;
-      height: 100%;
+      height: 112%;
       object-fit: cover;
+      display: block;
+      background: #1a1a1a;
+      transform: translate3d(0, var(--parallax, 0px), 0);
+      will-change: transform;
     }
 
     .shade {
       position: absolute;
       inset: 0;
-      background: linear-gradient(90deg, rgba(20, 18, 16, 0.45) 0%, rgba(20, 18, 16, 0.12) 55%, rgba(20, 18, 16, 0.05) 100%);
+      background: linear-gradient(90deg, rgba(20, 18, 16, 0.5) 0%, rgba(20, 18, 16, 0.18) 55%, rgba(20, 18, 16, 0.08) 100%);
+      pointer-events: none;
     }
 
     .copy {
@@ -98,6 +116,7 @@ interface HeroSlide {
       gap: 0.75rem;
       max-width: min(520px, 92%);
       color: #fff;
+      z-index: 1;
     }
 
     .eyebrow {
@@ -107,11 +126,11 @@ interface HeroSlide {
 
     h1 {
       margin: 0;
-      font-family: var(--font-logo-serif);
-      font-style: italic;
-      font-size: clamp(2.1rem, 5vw, 3.6rem);
-      font-weight: 500;
-      letter-spacing: -0.02em;
+      font-family: var(--font-body);
+      font-style: normal;
+      font-size: clamp(2rem, 4.8vw, 3.35rem);
+      font-weight: 550;
+      letter-spacing: -0.03em;
       line-height: 1.08;
       color: #fff;
       max-width: 14ch;
@@ -177,8 +196,11 @@ interface HeroSlide {
     }
   `]
 })
-export class HeroCarouselComponent implements OnInit, OnDestroy {
+export class HeroCarouselComponent implements OnInit, OnDestroy, AfterViewChecked {
   private readonly host = inject(ElementRef<HTMLElement>);
+  private readonly destroyRef = inject(DestroyRef);
+
+  @ViewChildren('clip') private readonly clips!: QueryList<ElementRef<HTMLVideoElement>>;
 
   readonly slides: HeroSlide[] = [
     {
@@ -189,7 +211,8 @@ export class HeroCarouselComponent implements OnInit, OnDestroy {
       primaryPath: '/shop',
       secondaryCta: 'Shop rings',
       secondaryPath: '/ring',
-      image: IMG.hero
+      poster: IMG.hero,
+      video: VIDEO.hero1
     },
     {
       eyebrow: 'New in',
@@ -199,7 +222,8 @@ export class HeroCarouselComponent implements OnInit, OnDestroy {
       primaryPath: '/bracelet',
       secondaryCta: 'Shop earrings',
       secondaryPath: '/earring',
-      image: IMG.elise.tennisLab
+      poster: IMG.elise.tennisLab,
+      video: VIDEO.hero2
     },
     {
       eyebrow: 'Everyday shine',
@@ -209,7 +233,8 @@ export class HeroCarouselComponent implements OnInit, OnDestroy {
       primaryPath: '/ring',
       secondaryCta: 'Shop pendants',
       secondaryPath: '/pendant',
-      image: IMG.elise.marquiseLabY
+      poster: IMG.elise.marquiseLabY,
+      video: VIDEO.hero3
     }
   ];
 
@@ -218,10 +243,17 @@ export class HeroCarouselComponent implements OnInit, OnDestroy {
   private paused = false;
   private onScreen = true;
   private observer?: IntersectionObserver;
+  private lastSynced = -1;
 
   ngOnInit(): void {
     this.watchVisibility();
     this.start();
+    this.watchParallax();
+  }
+
+  ngAfterViewChecked(): void {
+    if (this.lastSynced === this.index()) return;
+    this.syncVideos();
   }
 
   ngOnDestroy(): void {
@@ -231,6 +263,7 @@ export class HeroCarouselComponent implements OnInit, OnDestroy {
 
   go(i: number): void {
     this.index.set(i);
+    this.syncVideos();
   }
 
   pause(): void {
@@ -241,13 +274,51 @@ export class HeroCarouselComponent implements OnInit, OnDestroy {
     this.paused = false;
   }
 
+  private syncVideos(): void {
+    const active = this.index();
+    this.lastSynced = active;
+    this.clips?.forEach((ref, i) => {
+      const el = ref.nativeElement;
+      if (!el.src) {
+        el.src = this.slides[i].video;
+      }
+      if (i === active && this.onScreen) {
+        void el.play().catch(() => undefined);
+      } else {
+        el.pause();
+        try { el.currentTime = 0; } catch { /* ignore */ }
+      }
+    });
+  }
+
+  private watchParallax(): void {
+    if (typeof window === 'undefined') return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    const apply = () => {
+      const rect = this.host.nativeElement.getBoundingClientRect();
+      const offset = Math.min(36, Math.max(0, -rect.top * 0.18));
+      this.host.nativeElement.style.setProperty('--parallax', `${offset}px`);
+    };
+
+    apply();
+    fromEvent(window, 'scroll', { passive: true })
+      .pipe(auditTime(16), takeUntilDestroyed(this.destroyRef))
+      .subscribe(apply);
+  }
+
   private watchVisibility(): void {
     if (typeof IntersectionObserver === 'undefined') return;
     this.observer = new IntersectionObserver(
       ([entry]) => {
         this.onScreen = entry.isIntersecting;
-        if (this.onScreen) this.start();
-        else this.stop();
+        if (this.onScreen) {
+          this.start();
+          this.syncVideos();
+        } else {
+          this.stop();
+          this.clips?.forEach(ref => ref.nativeElement.pause());
+        }
       },
       { threshold: 0.05 }
     );
@@ -260,7 +331,8 @@ export class HeroCarouselComponent implements OnInit, OnDestroy {
     this.timer = setInterval(() => {
       if (this.paused) return;
       this.index.set((this.index() + 1) % this.slides.length);
-    }, 5000);
+      this.syncVideos();
+    }, 7000);
   }
 
   private stop(): void {

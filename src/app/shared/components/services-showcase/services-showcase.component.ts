@@ -45,13 +45,13 @@ import { ServiceOffering } from '../../../core/models';
     .wrap { background: var(--lvj-white); padding-top: 5rem; padding-bottom: 5rem; }
     .layout { display: grid; gap: 2.5rem; }
     h2 {
-      font-family: var(--font-display);
-      font-style: italic;
-      font-size: clamp(2.1rem, 4vw, 3.2rem);
-      font-weight: 500;
-      letter-spacing: -0.015em;
+      font-family: var(--font-body);
+      font-style: normal;
+      font-size: clamp(1.85rem, 3.4vw, 2.6rem);
+      font-weight: 550;
+      letter-spacing: -0.03em;
       margin-bottom: 1.75rem;
-      line-height: 1.1;
+      line-height: 1.12;
     }
     .list { display: grid; margin-bottom: 1.75rem; }
     .item {

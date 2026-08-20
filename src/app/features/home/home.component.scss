@@ -23,7 +23,7 @@
   box-shadow: var(--lvj-shadow-soft);
 }
 
-.banner img {
+.banner .media {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -32,7 +32,7 @@
   transition: transform 0.45s var(--lvj-ease-out);
 }
 
-.banner:hover img {
+.banner:hover .media {
   transform: scale(1.04);
 }
 
@@ -57,11 +57,12 @@
 
 .banner-copy h2 {
   color: #fff;
-  font-family: var(--font-logo-serif);
-  font-style: italic;
-  font-size: clamp(1.7rem, 2.8vw, 2.35rem);
-  font-weight: 500;
+  font-family: var(--font-body);
+  font-style: normal;
+  font-size: clamp(1.35rem, 2.4vw, 1.75rem);
+  font-weight: 560;
   letter-spacing: -0.02em;
+  line-height: 1.2;
 }
 
 .banner-copy span {
@@ -97,10 +98,11 @@
 }
 
 .occ-head h2 {
-  font-family: var(--font-display);
-  font-style: italic;
-  font-size: clamp(1.9rem, 3.2vw, 2.7rem);
-  font-weight: 500;
+  font-family: var(--font-body);
+  font-style: normal;
+  font-size: clamp(1.65rem, 3vw, 2.35rem);
+  font-weight: 550;
+  letter-spacing: -0.03em;
 }
 
 .occ-grid {

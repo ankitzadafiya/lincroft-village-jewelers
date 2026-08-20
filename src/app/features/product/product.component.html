@@ -16,7 +16,7 @@
     </section>
 
     <section class="pdp container">
-      <app-product-gallery [images]="p.images" [videos]="p.videos" />
+      <app-product-gallery [images]="p.images || []" [videos]="p.videos || []" />
       <div class="info">
         <p class="eyebrow">{{ p.designerName || 'Lincroft Atelier' }}</p>
         <div class="title-row">

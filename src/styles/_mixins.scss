@@ -13,11 +13,11 @@
 }
 
 @mixin container {
-  width: min(1280px, calc(100% - 2rem));
+  width: min(var(--lvj-content-max), calc(100% - (2 * var(--lvj-gutter))));
   margin-inline: auto;
 
   @include mq(xl) {
-    width: min(1360px, calc(100% - 4rem));
+    width: min(var(--lvj-content-max-xl), calc(100% - (2 * var(--lvj-gutter-xl))));
   }
 }
 

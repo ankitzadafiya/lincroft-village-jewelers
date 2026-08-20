@@ -1,8 +1,10 @@
 <app-hero-carousel />
 
-<app-category-showcase [categories]="heroCategories()" />
+<div appReveal="soft">
+  <app-category-showcase [categories]="heroCategories()" />
+</div>
 
-<section class="section container" appReveal>
+<section class="section container" appReveal="up" [appRevealStagger]="true">
   <app-section-header
     eyebrow="Trending"
     title="Best sellers"
@@ -17,17 +19,35 @@
 </section>
 
 <section class="editorial">
-  <div class="container editorial-grid">
-    <a class="banner" routerLink="/ring" appReveal>
-      <img [src]="bannerLeft" alt="Engagement and wedding rings" />
+  <div class="container editorial-grid" appReveal="clip" [appRevealStagger]="true">
+    <a class="banner" routerLink="/ring">
+      <video
+        class="media"
+        [src]="bannerLeftVideo"
+        [poster]="bannerLeft"
+        muted
+        loop
+        playsinline
+        autoplay
+        preload="metadata"
+        aria-hidden="true"></video>
       <div class="banner-copy">
         <p>Rings</p>
         <h2>Lab-grown & natural</h2>
         <span>Shop rings</span>
       </div>
     </a>
-    <a class="banner" routerLink="/silver-jewelry-with-24k-gold-plating" appReveal [appRevealDelay]="120">
-      <img [src]="bannerRight" alt="Silver jewelry with 24k gold plating" />
+    <a class="banner" routerLink="/silver-jewelry-with-24k-gold-plating">
+      <video
+        class="media"
+        [src]="bannerRightVideo"
+        [poster]="bannerRight"
+        muted
+        loop
+        playsinline
+        autoplay
+        preload="metadata"
+        aria-hidden="true"></video>
       <div class="banner-copy">
         <p>Everyday</p>
         <h2>Silver + 24k gold</h2>
@@ -37,7 +57,7 @@
   </div>
 </section>
 
-<section class="section container soft-band" appReveal>
+<section class="section container soft-band" appReveal="soft" [appRevealStagger]="true">
   <app-section-header
     eyebrow="Fresh from the atelier"
     title="Just arrived"
@@ -46,29 +66,29 @@
   <app-product-grid [products]="arrivals()" />
 </section>
 
-<div appReveal>
+<div appReveal="left">
   <app-services-help />
 </div>
 
-<div appReveal>
+<div appReveal="scale">
   <app-custom-design-feature />
 </div>
 
 <section class="occasions container">
-  <div class="occ-head" appReveal>
+  <div class="occ-head" appReveal="fade">
     <p class="eyebrow">Shop for occasions</p>
     <h2>Jewelry for every moment</h2>
   </div>
-  <div class="occ-grid">
-    <a routerLink="/ring" class="occ" appReveal>
+  <div class="occ-grid" appReveal="up" [appRevealStagger]="true">
+    <a routerLink="/ring" class="occ">
       <img [src]="occBridal" alt="Bridal jewelry" />
       <span>Bridal</span>
     </a>
-    <a routerLink="/earring" class="occ" appReveal [appRevealDelay]="100">
+    <a routerLink="/earring" class="occ">
       <img [src]="occEveryday" alt="Everyday earrings" />
       <span>Everyday</span>
     </a>
-    <a routerLink="/pendant" class="occ" appReveal [appRevealDelay]="200">
+    <a routerLink="/pendant" class="occ">
       <img [src]="occGifts" alt="Gift pendants" />
       <span>Gifting</span>
     </a>

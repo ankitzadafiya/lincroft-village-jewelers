@@ -16,8 +16,11 @@ import { Component, input } from '@angular/core';
       padding: 4rem 1rem;
     }
     h3 {
-      font-size: 2rem;
-      font-style: italic;
+      font-family: var(--font-body);
+      font-size: 1.55rem;
+      font-style: normal;
+      font-weight: 550;
+      letter-spacing: -0.02em;
       margin-bottom: 0.6rem;
     }
   `]

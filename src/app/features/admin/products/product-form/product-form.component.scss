@@ -35,10 +35,11 @@
 }
 
 .block-head h3 {
-  font-family: var(--font-display);
-  font-style: italic;
-  font-weight: 500;
-  font-size: 1.35rem;
+  font-family: var(--font-body);
+  font-style: normal;
+  font-weight: 550;
+  font-size: 1.15rem;
+  letter-spacing: -0.02em;
   color: var(--lvj-ink);
 }
 

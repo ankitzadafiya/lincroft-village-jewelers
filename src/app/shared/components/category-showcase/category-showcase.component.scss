@@ -16,10 +16,13 @@
 }
 
 h2 {
-  font-family: var(--font-display);
-  font-size: var(--text-xl);
-  font-weight: 500;
-  letter-spacing: 0.01em;
+  font-family: var(--font-body);
+  font-style: normal;
+  font-size: clamp(1.65rem, 3vw, 2.35rem);
+  font-weight: 550;
+  letter-spacing: -0.03em;
+  line-height: 1.12;
+  color: var(--lvj-ink);
 }
 
 .pager {
@@ -63,7 +66,7 @@ h2 {
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   scroll-behavior: smooth;
-  padding: 0 max(1rem, calc((100vw - 1360px) / 2 + 1rem));
+  padding: 0 max(var(--lvj-gutter), calc((100vw - var(--lvj-content-max-xl)) / 2 + var(--lvj-gutter)));
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
   cursor: grab;

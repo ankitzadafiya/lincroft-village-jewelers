@@ -46,11 +46,21 @@
   --lvj-ease: cubic-bezier(0.22, 1, 0.36, 1);
   --lvj-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 
+  /* Content width — balanced side padding */
+  --lvj-content-max: 1320px;
+  --lvj-content-max-xl: 1420px;
+  --lvj-gutter: calc(1.125rem + 15px);
+  --lvj-gutter-xl: calc(1.875rem + 15px);
+
+  /* Typography:
+     logo*     → brand mark only (Cormorant + Great Vibes)
+     body/product/display → storefront UI (Outfit) */
   --font-logo: 'Outfit', 'Segoe UI', sans-serif;
   --font-logo-serif: 'Cormorant Garamond', Georgia, serif;
   --font-logo-script: 'Great Vibes', cursive;
-  --font-display: 'Cormorant Garamond', Georgia, serif;
+  --font-display: 'Outfit', 'Segoe UI', sans-serif;
   --font-body: 'Outfit', 'Segoe UI', sans-serif;
+  --font-product: 'Outfit', 'Segoe UI', sans-serif;
 
   --text-xs: 0.7rem;
   --text-sm: 0.84rem;

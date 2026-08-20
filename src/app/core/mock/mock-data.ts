@@ -26,12 +26,18 @@ function media(id: string, url: string, alt: string, order: number, primary = fa
   };
 }
 
-function video(id: string, order: number): ProductMedia {
+function video(
+  id: string,
+  order: number,
+  url = 'https://assets.mixkit.co/videos/34611/34611-720.mp4',
+  thumbUrl = 'https://assets.mixkit.co/videos/34611/34611-thumb-720-0.jpg',
+  alt = 'Product video'
+): ProductMedia {
   return {
     id,
-    url: 'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4',
-    thumbnailUrl: IMG.diamond,
-    alt: 'Product video',
+    url,
+    thumbnailUrl: thumbUrl,
+    alt,
     sortOrder: order,
     type: 'video',
     isPrimary: false
@@ -293,7 +299,7 @@ export const MOCK_PRODUCTS: Product[] = [
       spec('carat', 'Carat', '2.00 ctw', 'diamond'), spec('length', 'Length', '7 in', 'dimensions')
     ],
     images: [media('p13-1', IMG.elise.tennis7ct, '7ct Lab-Grown Diamond Tennis Bracelet', 0, true), media('p13-2', IMG.elise.tennisLab, '7ct Lab-Grown Diamond Tennis Bracelet', 1, false)],
-    videos: []
+    videos: [video('p13-v1', 1)]
   }),
   product({
     id: 'p14', sku: 'LVJ-BR-5166', slug: 'dune-cuff', name: 'Flexible Diamond Bracelet',
@@ -307,6 +313,31 @@ export const MOCK_PRODUCTS: Product[] = [
     ],
     images: [media('p14-1', IMG.elise.flexBracelet1, 'Flexible Diamond Bracelet', 0, true), media('p14-2', IMG.elise.flexBracelet2, 'Flexible Diamond Bracelet', 1, false)],
     videos: []
+  }),
+  product({
+    id: 'p14b', sku: 'LVJ-BRC-002', slug: 'lune-bezel-bracelet', name: 'Lune Bezel Bracelet',
+    description: 'Round bezels linked edge to edge in rose gold. Sits closer to a chain than a tennis bracelet, and is the easier of the two to wear with a watch.',
+    categoryId: 'cat-bracelets', subcategoryId: 'sub-lg-bracelets', designerId: 'des-atelier', designerName: 'Lincroft Atelier',
+    price: 1680, compareAtPrice: null, showPrice: true, availability: 'in_stock', featured: true, newArrival: true, bestSeller: true,
+    tags: ['bezel', 'everyday', 'rose-gold'],
+    specs: [
+      spec('metal', 'Metal', 'Rose Gold', 'metal'), spec('karat', 'Karat', '14k', 'metal'),
+      spec('diamondType', 'Diamond', 'Lab-Grown', 'diamond'), spec('shape', 'Shape', 'Round', 'diamond'),
+      spec('carat', 'Carat', '0.85 ctw', 'diamond')
+    ],
+    images: [
+      media('p14b-1', IMG.elise.flexBracelet2, 'Lune Bezel Bracelet', 0, true),
+      media('p14b-2', IMG.elise.flexBracelet1, 'Lune Bezel Bracelet', 1, false)
+    ],
+    videos: [
+      video(
+        '8a3c765f-4ff4-4282-b7c2-ab7e2b920b64',
+        1,
+        'https://assets.mixkit.co/videos/34611/34611-720.mp4',
+        'https://assets.mixkit.co/videos/34611/34611-thumb-720-0.jpg',
+        'Lune Bezel Bracelet shown in motion'
+      )
+    ]
   }),
   product({
     id: 'p15', sku: 'LVJ-SG-7001', slug: 'gilded-silver-signet-ring', name: 'Gold-Plated Cross Bracelet',

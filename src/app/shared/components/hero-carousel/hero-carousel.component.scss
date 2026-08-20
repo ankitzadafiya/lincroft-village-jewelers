@@ -50,12 +50,13 @@
 }
 
 h1 {
-  font-family: var(--font-display);
+  font-family: var(--font-body);
+  font-style: normal;
   font-size: var(--text-3xl);
-  font-weight: 500;
-  letter-spacing: 0.01em;
+  font-weight: 550;
+  letter-spacing: -0.03em;
   max-width: 14ch;
-  line-height: 1.02;
+  line-height: 1.05;
   color: #fff;
   animation: heroRise 0.9s var(--lvj-ease) both;
 }

@@ -29,7 +29,7 @@ import { SeoService } from '../../core/services/seo.service';
     .grid { display: grid; gap: 1.5rem; padding-bottom: 4rem; }
     .card { display: grid; gap: 0.7rem; }
     img { width: 100%; height: 280px; object-fit: cover; }
-    h2 { font-size: 2rem; font-style: italic; }
+    h2 { font-size: 1.85rem; font-style: normal; font-weight: 550; letter-spacing: -0.025em; }
     p { color: var(--lvj-muted); }
     @media (min-width: 768px) { .grid { grid-template-columns: 1fr 1fr; } }
   `]

@@ -5,7 +5,7 @@ import { Category, ProductListItem } from '../../core/models';
 import { CategoryService } from '../../core/services/category.service';
 import { ProductService } from '../../core/services/product.service';
 import { SeoService } from '../../core/services/seo.service';
-import { IMG } from '../../core/mock/image-catalog';
+import { IMG, VIDEO } from '../../core/mock/image-catalog';
 import { CategoryShowcaseComponent } from '../../shared/components/category-showcase/category-showcase.component';
 import { ProductGridComponent } from '../../shared/components/product-grid/product-grid.component';
 import { SectionHeaderComponent } from '../../shared/components/section-header/section-header.component';
@@ -43,6 +43,8 @@ export class HomeComponent implements OnInit {
 
   readonly bannerLeft = IMG.elise.marquiseLabY;
   readonly bannerRight = IMG.elise.tennis7ct;
+  readonly bannerLeftVideo = VIDEO.bannerRings;
+  readonly bannerRightVideo = VIDEO.bannerEveryday;
   readonly occBridal = IMG.elise.enchanted;
   readonly occEveryday = IMG.elise.hoopInOut;
   readonly occGifts = IMG.elise.crossBracelet;

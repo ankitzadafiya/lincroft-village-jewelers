@@ -40,12 +40,12 @@ import { AppIconComponent } from '../../icons/lvj-icons';
       align-items: center;
     }
     h2 {
-      font-family: var(--font-logo-serif);
-      font-style: italic;
-      font-size: clamp(1.85rem, 3.4vw, 2.7rem);
-      font-weight: 500;
-      letter-spacing: -0.02em;
-      max-width: 16ch;
+      font-family: var(--font-body);
+      font-style: normal;
+      font-size: clamp(1.65rem, 3vw, 2.35rem);
+      font-weight: 550;
+      letter-spacing: -0.03em;
+      max-width: 18ch;
       line-height: 1.12;
       color: var(--lvj-ink);
     }

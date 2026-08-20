@@ -132,11 +132,11 @@ import { AppIconComponent } from '../../shared/icons/lvj-icons';
     }
 
     .intro h1 {
-      font-family: var(--font-logo-serif);
-      font-style: italic;
-      font-size: clamp(2.2rem, 4.6vw, 3.2rem);
-      font-weight: 500;
-      letter-spacing: -0.02em;
+      font-family: var(--font-body);
+      font-style: normal;
+      font-size: clamp(2rem, 4vw, 2.85rem);
+      font-weight: 550;
+      letter-spacing: -0.03em;
       line-height: 1.12;
       color: var(--lvj-ink);
     }

@@ -104,6 +104,15 @@ export const IMG = {
   elise: E
 };
 
+/** Local HD jewelry loops for hero + editorial banners (Mixkit free license). */
+export const VIDEO = {
+  hero1: '/videos/hero-1.mp4',
+  hero2: '/videos/hero-2.mp4',
+  hero3: '/videos/hero-3.mp4',
+  bannerRings: '/videos/banner-rings.mp4',
+  bannerEveryday: '/videos/banner-everyday.mp4'
+};
+
 export function thumb(url: string): string {
   if (url.includes('etsystatic.com')) {
     return url
