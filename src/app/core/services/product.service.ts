@@ -15,8 +15,10 @@ export class ProductService {
     });
   }
 
-  facets(): Observable<ProductFilterFacets> {
-    return this.http.get<ProductFilterFacets>(`${this.api}/products/facets`);
+  facets(query: Pick<ProductListQuery, 'category' | 'subcategory' | 'designer' | 'q'> = {}): Observable<ProductFilterFacets> {
+    return this.http.get<ProductFilterFacets>(`${this.api}/products/facets`, {
+      params: this.toParams(query)
+    });
   }
 
   bySlug(slug: string): Observable<Product> {

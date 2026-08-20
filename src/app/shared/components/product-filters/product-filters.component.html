@@ -1,0 +1,75 @@
+<aside class="filters">
+  <div class="head">
+    <h2>Filters</h2>
+    <button type="button" class="clear" (click)="reset()">Clear</button>
+  </div>
+
+  @if (facets(); as f) {
+    <p-accordion [multiple]="true" [(value)]="openPanels" styleClass="filter-acc">
+      <p-accordion-panel value="price">
+        <p-accordion-header>Price</p-accordion-header>
+        <p-accordion-content>
+          <div class="price">
+            <p-slider
+              [ngModel]="priceRangeModel"
+              [range]="true"
+              [min]="sliderMin"
+              [max]="sliderMax"
+              [step]="sliderStep"
+              (ngModelChange)="onSliderChange($event)" />
+            <div class="price-row">
+              <p-inputNumber
+                [(ngModel)]="localMin"
+                mode="currency"
+                currency="USD"
+                locale="en-US"
+                [minFractionDigits]="0"
+                [maxFractionDigits]="0"
+                [min]="0"
+                [max]="sliderMax"
+                styleClass="price-input"
+                inputStyleClass="price-input-el"
+                (onInput)="onPriceInput()" />
+              <span class="to">to</span>
+              <p-inputNumber
+                [(ngModel)]="localMax"
+                mode="currency"
+                currency="USD"
+                locale="en-US"
+                [minFractionDigits]="0"
+                [maxFractionDigits]="0"
+                [min]="0"
+                [max]="sliderMax"
+                styleClass="price-input"
+                inputStyleClass="price-input-el"
+                (onInput)="onPriceInput()" />
+            </div>
+          </div>
+        </p-accordion-content>
+      </p-accordion-panel>
+
+      @for (section of sections; track section.key) {
+        <p-accordion-panel [value]="section.key">
+          <p-accordion-header>{{ section.label }}</p-accordion-header>
+          <p-accordion-content>
+            <div class="options">
+              @for (item of section.items; track item.value) {
+                <label class="opt" [for]="section.key + '-' + item.value">
+                  <p-checkbox
+                    [inputId]="section.key + '-' + item.value"
+                    [binary]="true"
+                    [ngModel]="isSelected(section.key, item)"
+                    (onChange)="onCheck(section.key, item, $event.checked)" />
+                  <span class="opt-label">
+                    {{ item.label }}
+                    <em>({{ item.count }})</em>
+                  </span>
+                </label>
+              }
+            </div>
+          </p-accordion-content>
+        </p-accordion-panel>
+      }
+    </p-accordion>
+  }
+</aside>

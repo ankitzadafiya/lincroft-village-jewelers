@@ -62,8 +62,13 @@
           }
         </div>
 
-        <button class="btn btn-gold" type="submit" [disabled]="submitting()">
-          {{ submitting() ? 'Opening console…' : 'Open atelier admin' }}
+        <button class="btn btn-gold submit" type="submit" [disabled]="submitting()">
+          @if (submitting()) {
+            <span class="btn-spin" aria-hidden="true"></span>
+            Opening console…
+          } @else {
+            Open atelier admin
+          }
         </button>
       </form>
     </div>

@@ -17,25 +17,29 @@ import { Testimonial } from '../../../core/models';
   `,
   styles: [`
     .card {
-      background: #fff;
+      background: var(--lvj-panel);
+      border: 1px solid var(--lvj-line);
+      border-radius: 16px;
       padding: 1.6rem 1.5rem 1.75rem;
       height: 100%;
-      box-shadow: 0 1px 0 rgba(0,0,0,0.04);
-      transition: transform 0.35s var(--lvj-ease), box-shadow 0.35s ease;
+      box-shadow: var(--lvj-shadow-soft);
+      transition: transform 0.35s var(--lvj-ease), box-shadow 0.35s ease, border-color 0.35s ease;
     }
     .card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 16px 36px rgba(0,0,0,0.08);
+      transform: translateY(-4px);
+      box-shadow: var(--lvj-shadow);
+      border-color: var(--lvj-champagne);
     }
     strong {
       display: block;
       font-family: var(--font-body);
       font-size: 0.95rem;
       font-weight: 700;
+      color: var(--lvj-ink);
       margin-bottom: 0.35rem;
     }
     .stars {
-      color: #c2a15a;
+      color: var(--lvj-gold);
       letter-spacing: 0.08em;
       font-size: 0.85rem;
       margin-bottom: 0.7rem;
@@ -46,9 +50,10 @@ import { Testimonial } from '../../../core/models';
       font-weight: 600;
       margin-bottom: 0.55rem;
       letter-spacing: -0.01em;
+      color: var(--lvj-ink);
     }
     p {
-      color: #666;
+      color: var(--lvj-muted);
       font-size: 0.9rem;
       line-height: 1.65;
     }

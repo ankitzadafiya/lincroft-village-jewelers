@@ -1,0 +1,143 @@
+:host {
+  display: block;
+}
+
+.filters {
+  display: grid;
+  gap: 0;
+  align-content: start;
+}
+
+.head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.35rem;
+}
+
+h2 {
+  font-size: 1.2rem;
+  font-family: var(--font-body);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.clear {
+  border: 0;
+  background: transparent;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-size: 0.65rem;
+  font-weight: 700;
+  cursor: pointer;
+  color: var(--lvj-gold-deep);
+  transition: color 0.2s ease, opacity 0.2s ease;
+}
+
+.clear:hover {
+  color: var(--lvj-ink);
+}
+
+.price {
+  display: grid;
+  gap: 1rem;
+  padding: 0.15rem 0 0.35rem;
+}
+
+.price-row {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.to {
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--lvj-muted);
+}
+
+.options {
+  display: grid;
+  gap: 0.15rem;
+  padding: 0.1rem 0 0.35rem;
+}
+
+.opt {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin: 0;
+  padding: 0.4rem 0.35rem;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.opt:hover {
+  background: color-mix(in srgb, var(--lvj-champagne) 12%, transparent);
+}
+
+.opt-label {
+  font-size: 0.88rem;
+  color: var(--lvj-charcoal);
+  line-height: 1.35;
+}
+
+.opt-label em {
+  font-style: normal;
+  color: var(--lvj-muted-2);
+  font-size: 0.8rem;
+}
+
+:host ::ng-deep {
+  .filter-acc,
+  .filter-acc .p-accordionpanel {
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .filter-acc .p-accordionpanel {
+    border-top: 1px solid var(--lvj-line);
+  }
+
+  .filter-acc .p-accordionpanel:last-child {
+    border-bottom: 1px solid var(--lvj-line);
+  }
+
+  .filter-acc .p-accordionheader {
+    padding: 1rem 0;
+    background: transparent;
+    box-shadow: none;
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    font-weight: 650;
+    color: var(--lvj-ink);
+  }
+
+  .filter-acc .p-accordioncontent-content {
+    padding: 0 0 1rem;
+  }
+
+  .p-slider {
+    width: 100%;
+  }
+
+  .price-input,
+  .price-input.p-inputnumber,
+  .price-input .p-inputnumber-input,
+  .price-input-el {
+    width: 100%;
+  }
+
+  .price-input .p-inputtext,
+  .price-input-el {
+    width: 100%;
+    min-height: 42px;
+    border-radius: 10px;
+    font-size: 0.88rem;
+  }
+}

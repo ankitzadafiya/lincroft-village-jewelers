@@ -81,7 +81,7 @@
 }
 
 .list a:hover {
-  color: var(--lvj-ink);
+  color: var(--lvj-gold-deep);
   transform: translateX(4px);
 }
 
@@ -109,7 +109,7 @@
   display: grid;
   gap: 0.65rem;
   align-content: start;
-  background: #fbfaf8;
+  background: var(--lvj-cream);
 }
 
 .label {
@@ -139,7 +139,7 @@
 .media {
   position: relative;
   overflow: hidden;
-  background: #f0eeea;
+  background: var(--lvj-soft);
   aspect-ratio: 1;
 }
 

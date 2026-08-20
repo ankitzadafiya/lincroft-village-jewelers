@@ -7,11 +7,21 @@
 
 .media {
   position: relative;
-  aspect-ratio: 1 / 1.15;
+  aspect-ratio: 4 / 5;
   overflow: hidden;
-  background: var(--lvj-paper);
+  background:
+    radial-gradient(circle at 50% 18%, color-mix(in srgb, var(--lvj-gold) 22%, transparent), transparent 48%),
+    linear-gradient(180deg, var(--lvj-panel), var(--lvj-cream));
   display: block;
-  border-radius: var(--lvj-radius-sm);
+  border-radius: 18px;
+  border: 1px solid color-mix(in srgb, var(--lvj-gold) 22%, var(--lvj-line));
+  transition: box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.card:hover .media {
+  transform: none;
+  border-color: var(--lvj-gold);
+  box-shadow: var(--lvj-shadow-soft);
 }
 
 .img {
@@ -48,11 +58,18 @@
   height: 100%;
   display: grid;
   place-items: center;
-  color: var(--lvj-muted);
-  letter-spacing: 0.14em;
+  gap: 0.65rem;
+  color: var(--lvj-gold-deep);
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   font-size: 0.62rem;
-  font-weight: 600;
+  font-weight: 700;
+  text-align: center;
+  padding: 1rem;
+}
+
+.placeholder svg {
+  color: var(--lvj-champagne);
 }
 
 .actions {
@@ -79,23 +96,23 @@
 }
 
 .body {
-  padding: 1rem 0.1rem 0;
+  padding: 1.05rem 0.2rem 0;
   display: grid;
   gap: 0.28rem;
   text-align: left;
 }
 
 .brand {
-  color: var(--lvj-muted-2);
+  color: var(--lvj-gold-deep);
   font-size: 0.64rem;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
-  font-weight: 600;
+  font-weight: 700;
 }
 
 h3 {
   font-family: var(--font-display);
-  font-size: 1.15rem;
+  font-size: 1.22rem;
   font-weight: 500;
   font-style: italic;
   letter-spacing: -0.01em;
@@ -104,13 +121,25 @@ h3 {
 }
 
 h3 a {
-  transition: opacity 0.25s ease;
+  transition: color 0.25s ease;
 }
 
 .card:hover h3 a {
-  opacity: 0.55;
+  color: var(--lvj-gold-deep);
 }
 
 .meta {
   margin-top: 0.2rem;
+}
+
+.price {
+  font-weight: 650;
+  letter-spacing: 0.01em;
+}
+
+.price-compare {
+  margin-left: 0.45rem;
+  color: var(--lvj-muted-2);
+  text-decoration: line-through;
+  font-size: 0.85rem;
 }

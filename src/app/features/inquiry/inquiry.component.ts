@@ -6,11 +6,13 @@ import { InquiryService } from '../../core/services/inquiry.service';
 import { SeoService } from '../../core/services/seo.service';
 import { ToastService } from '../../core/services/toast.service';
 import { buildMailto, buildWhatsAppUrl } from '../../core/utils/slug';
+import { InputTextModule } from 'primeng/inputtext';
+import { TextareaModule } from 'primeng/textarea';
 import { EmptyStateComponent } from '../../shared/components/empty-state/empty-state.component';
 
 @Component({
   selector: 'app-inquiry',
-  imports: [ReactiveFormsModule, RouterLink, EmptyStateComponent],
+  imports: [ReactiveFormsModule, RouterLink, EmptyStateComponent, InputTextModule, TextareaModule],
   templateUrl: './inquiry.component.html',
   styleUrl: './inquiry.component.scss'
 })

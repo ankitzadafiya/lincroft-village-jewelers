@@ -122,7 +122,7 @@ import { AppIconComponent } from '../../icons/lvj-icons';
     }
 
     .nav:hover {
-      background: #efece7;
+      background: var(--lvj-champagne);
     }
 
     .viewport {
@@ -143,8 +143,11 @@ import { AppIconComponent } from '../../icons/lvj-icons';
 
     .track {
       display: flex;
+      transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .viewport.dragging .track {
       will-change: transform;
-      transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
     .track.no-anim {
@@ -165,10 +168,11 @@ import { AppIconComponent } from '../../icons/lvj-icons';
 
     .media {
       aspect-ratio: 4 / 5;
-      border-radius: 4px;
+      border-radius: 10px;
       overflow: hidden;
-      background: #f0eeea;
+      background: var(--lvj-panel-alt);
       pointer-events: none;
+      box-shadow: var(--lvj-shadow-soft);
     }
 
     .media img {
@@ -221,15 +225,17 @@ import { AppIconComponent } from '../../icons/lvj-icons';
       width: 38px;
       height: 38px;
       border-radius: 999px;
-      border: 1px solid rgba(28, 28, 28, 0.12);
+      border: 1px solid var(--lvj-line-strong);
       background: var(--lvj-panel);
       display: grid;
       place-items: center;
       color: var(--lvj-ink);
+      box-shadow: var(--lvj-shadow-soft);
       transition:
         background 0.28s ease,
         color 0.28s ease,
         border-color 0.28s ease,
+        box-shadow 0.28s ease,
         transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
@@ -237,7 +243,8 @@ import { AppIconComponent } from '../../icons/lvj-icons';
       background: var(--lvj-ink);
       color: var(--lvj-on-ink);
       border-color: var(--lvj-ink);
-      transform: translateX(2px);
+      transform: translateX(3px) scale(1.05);
+      box-shadow: var(--lvj-shadow);
     }
 
     @media (max-width: 520px) {

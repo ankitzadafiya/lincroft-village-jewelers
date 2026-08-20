@@ -1,7 +1,8 @@
 @use 'mixins' as *;
 
 .wrap {
-  background: var(--lvj-white);
+  background:
+    linear-gradient(180deg, transparent, color-mix(in srgb, var(--lvj-cream) 55%, transparent) 40%, transparent);
   padding-top: 3rem;
   padding-bottom: 1.25rem;
 }
@@ -45,8 +46,9 @@ h2 {
 }
 
 .nav:hover:not(:disabled) {
-  background: var(--lvj-ink);
-  color: var(--lvj-on-ink);
+  background: var(--lvj-jewel);
+  color: var(--lvj-gold-bright);
+  border-color: var(--lvj-jewel);
   transform: scale(1.04);
 }
 
@@ -89,6 +91,8 @@ h2 {
   scroll-snap-align: start;
   overflow: hidden;
   text-decoration: none;
+  border-radius: 18px;
+  border: 1px solid color-mix(in srgb, var(--lvj-gold) 18%, transparent);
 }
 
 .media {
@@ -147,8 +151,8 @@ p {
 }
 
 .tile:hover .go {
-  background: var(--lvj-ink);
-  color: var(--lvj-on-ink);
+  background: var(--lvj-jewel);
+  color: var(--lvj-gold-bright);
   transform: translateX(2px);
 }
 

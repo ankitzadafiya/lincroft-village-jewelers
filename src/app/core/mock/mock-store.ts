@@ -110,8 +110,17 @@ export class MockStore {
     }
 
     if (query.designer) {
-      const designer = this.designers.find(d => d.slug === query.designer || d.id === query.designer);
-      if (designer) list = list.filter(p => p.designerId === designer.id);
+      const wanted = query.designer.toLowerCase();
+      const designer = this.designers.find(d =>
+        d.slug.toLowerCase() === wanted ||
+        d.id.toLowerCase() === wanted ||
+        d.name.toLowerCase() === wanted
+      );
+      if (designer) {
+        list = list.filter(p => p.designerId === designer.id);
+      } else {
+        list = list.filter(p => (p.designerName ?? '').toLowerCase() === wanted);
+      }
     }
 
     const specMatch = (product: Product, key: string, value: string) =>

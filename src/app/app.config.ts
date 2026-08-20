@@ -9,6 +9,7 @@ import { routes } from './app.routes';
 import { apiHeadersInterceptor } from './core/interceptors/api-headers.interceptor';
 import { authInterceptor } from './core/interceptors/auth.interceptor';
 import { errorInterceptor } from './core/interceptors/error.interceptor';
+import { loadingInterceptor } from './core/interceptors/loading.interceptor';
 import { mockApiInterceptor } from './core/interceptors/mock-api.interceptor';
 import { AuthService } from './core/services/auth.service';
 import { ConfigurationService } from './core/services/configuration.service';
@@ -25,6 +26,7 @@ export const appConfig: ApplicationConfig = {
       withInMemoryScrolling({ scrollPositionRestoration: 'top', anchorScrolling: 'enabled' })
     ),
     provideHttpClient(withInterceptors([
+      loadingInterceptor,
       apiHeadersInterceptor,
       authInterceptor,
       mockApiInterceptor,
@@ -32,6 +34,7 @@ export const appConfig: ApplicationConfig = {
     ])),
     provideAnimationsAsync(),
     providePrimeNG({
+      ripple: true,
       theme: {
         preset: LincroftPreset,
         options: { darkModeSelector: '[data-theme="dark"]' }

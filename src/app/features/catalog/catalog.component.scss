@@ -2,7 +2,7 @@
 
 .catalog {
   padding: 1.25rem 0 5rem;
-  background: var(--lvj-white);
+  background: transparent;
 }
 
 .layout {
@@ -20,56 +20,56 @@
   flex-wrap: wrap;
 }
 
+.count {
+  font-size: 0.92rem;
+  color: var(--lvj-muted);
+  letter-spacing: 0.02em;
+}
+
 .tools {
   display: flex;
   align-items: center;
-  gap: 1.25rem;
+  gap: 1rem;
   flex-wrap: wrap;
 }
 
-.toolbar label {
+.sort {
   display: inline-flex;
   align-items: center;
-  gap: 0.55rem;
-  font-size: 0.72rem;
-  letter-spacing: 0.08em;
+  gap: 0.65rem;
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--lvj-muted);
-}
-
-.toolbar select {
-  border: 1px solid var(--lvj-line-strong);
-  background: var(--lvj-panel);
-  padding: 0.55rem 0.75rem;
-  letter-spacing: 0;
-  text-transform: none;
-  font-size: 0.88rem;
-  color: var(--lvj-charcoal);
-  min-width: 10rem;
+  font-weight: 700;
 }
 
 .cols {
   display: inline-flex;
-  gap: 0.3rem;
+  gap: 0.35rem;
+  padding: 0.22rem;
+  border: 1px solid var(--lvj-line-strong);
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--lvj-panel) 82%, var(--lvj-cream));
 }
 
 .cols button {
-  width: 34px;
+  width: 36px;
   height: 34px;
-  border: 1px solid var(--lvj-line-strong);
-  background: var(--lvj-panel);
+  border: 0;
+  border-radius: 9px;
+  background: transparent;
   color: var(--lvj-muted);
   cursor: pointer;
-  font-size: 0.75rem;
-  font-weight: 600;
-  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  display: grid;
+  place-items: center;
+  transition: background 0.2s ease, color 0.2s ease;
 }
 
 .cols button.on,
 .cols button:hover {
-  background: var(--lvj-ink);
-  color: var(--lvj-on-ink);
-  border-color: var(--lvj-ink);
+  background: var(--lvj-jewel);
+  color: var(--lvj-gold-bright);
 }
 
 .grid-products.cols-2 {
@@ -109,7 +109,7 @@
 
 @include mq(lg) {
   .layout {
-    grid-template-columns: 240px 1fr;
+    grid-template-columns: 260px 1fr;
     gap: 3.25rem;
   }
 
@@ -125,9 +125,16 @@
 
   .layout.open app-product-filters {
     display: block;
-    background: var(--lvj-panel);
-    padding: 1.25rem;
+    background:
+      linear-gradient(180deg, var(--lvj-panel), var(--lvj-paper));
+    padding: 1.1rem 1.15rem 0.4rem;
     border: 1px solid var(--lvj-line);
+    border-radius: 18px;
     margin-bottom: 0.5rem;
+    box-shadow: var(--lvj-shadow-soft);
   }
+}
+
+:host ::ng-deep .catalog-sort {
+  min-width: 13.5rem;
 }

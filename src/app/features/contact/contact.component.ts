@@ -178,8 +178,8 @@ import { AppIconComponent } from '../../shared/icons/lvj-icons';
 
     .float input:focus,
     .float textarea:focus {
-      border-color: var(--lvj-ink);
-      box-shadow: 0 0 0 3px rgba(28, 28, 28, 0.06);
+      border-color: var(--lvj-gold);
+      box-shadow: 0 0 0 4px color-mix(in srgb, var(--lvj-champagne) 32%, transparent);
     }
 
     .float textarea {

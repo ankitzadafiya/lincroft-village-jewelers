@@ -39,12 +39,18 @@ import { AfterViewInit, Component, ElementRef, HostListener, ViewChild, input, s
     .compare {
       position: relative;
       width: 100%;
-      aspect-ratio: 5 / 4;
+      aspect-ratio: 1;
+      max-height: 480px;
       overflow: hidden;
-      background: #f3f3f3;
+      background: #f4f7fb;
+      border: 1px solid rgba(15, 35, 60, 0.16);
+      box-shadow:
+        0 1px 2px rgba(15, 35, 60, 0.05),
+        0 14px 36px rgba(15, 35, 60, 0.12);
       cursor: ew-resize;
       touch-action: none;
       user-select: none;
+      border-radius: 12px;
     }
 
     .base {
@@ -55,20 +61,15 @@ import { AfterViewInit, Component, ElementRef, HostListener, ViewChild, input, s
       object-fit: contain;
       object-position: center;
       pointer-events: none;
-      background: #f2f2f0;
+      background: #fff;
     }
 
     .base.after {
-      object-fit: cover;
-      background: #eee;
       z-index: 0;
     }
 
     .base.before {
-      object-fit: contain;
-      padding: 1.25rem;
-      box-sizing: border-box;
-      background: #f2f2f0;
+      /* same framing as after */
     }
 
     .clip {
@@ -87,20 +88,20 @@ import { AfterViewInit, Component, ElementRef, HostListener, ViewChild, input, s
     .label {
       position: absolute;
       z-index: 3;
-      background: rgba(255,255,255,0.94);
-      color: var(--lvj-ink);
+      background: #fff;
+      color: #111;
+      font-family: var(--font-body);
       font-size: 0.68rem;
       font-weight: 600;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      padding: 0.38rem 0.7rem;
-      border-radius: 999px;
+      letter-spacing: 0.04em;
+      padding: 0.28rem 0.55rem;
+      border-radius: 2px;
       pointer-events: none;
-      box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
     }
 
-    .before-label { top: 1rem; left: 1rem; }
-    .after-label { bottom: 1rem; right: 1rem; }
+    .before-label { top: 0.75rem; left: 0.75rem; }
+    .after-label { bottom: 0.75rem; right: 0.75rem; }
 
     .divider {
       position: absolute;
@@ -118,11 +119,11 @@ import { AfterViewInit, Component, ElementRef, HostListener, ViewChild, input, s
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      width: 48px;
-      height: 48px;
+      width: 38px;
+      height: 38px;
       border-radius: 999px;
       background: #fff;
-      box-shadow: 0 10px 28px rgba(0,0,0,0.2);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -131,15 +132,15 @@ import { AfterViewInit, Component, ElementRef, HostListener, ViewChild, input, s
 
     .handle span {
       width: 2px;
-      height: 14px;
-      background: #9a9a9a;
+      height: 11px;
+      background: #6b6b6b;
       border-radius: 2px;
     }
 
     @media (min-width: 900px) {
       .compare {
-        aspect-ratio: 1 / 1.02;
-        min-height: 540px;
+        min-height: 0;
+        max-height: 520px;
       }
     }
   `]

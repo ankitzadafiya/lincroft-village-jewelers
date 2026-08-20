@@ -22,7 +22,13 @@ import { PricePipe } from '../../pipes/price.pipe';
             <img class="img hover" [src]="hover" [alt]="product().name" loading="lazy" />
           }
         } @else {
-          <div class="placeholder">Image forthcoming</div>
+          <div class="placeholder">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M12 3 4.5 7.5v9L12 21l7.5-4.5v-9L12 3Z" stroke="currentColor" stroke-width="1.4" />
+              <path d="M12 3v18M4.5 7.5 12 12l7.5-4.5" stroke="currentColor" stroke-width="1.4" />
+            </svg>
+            Photography coming soon
+          </div>
         }
         <div class="actions">
           <app-favorite-button [id]="product().id" />

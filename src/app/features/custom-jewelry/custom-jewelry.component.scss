@@ -95,8 +95,8 @@ li strong {
 .url-row input {
   width: 100%;
   min-width: 0;
-  border: 1px solid rgba(17, 17, 17, 0.12);
-  background: #fff;
+  border: 1px solid var(--lvj-line-strong);
+  background: var(--lvj-panel);
   padding: 0.7rem 0.9rem;
   color: var(--lvj-charcoal);
   outline: none;
@@ -105,8 +105,8 @@ li strong {
 }
 
 .url-row input:focus {
-  border-color: var(--lvj-ink);
-  box-shadow: 0 0 0 3px rgba(17, 17, 17, 0.06);
+  border-color: var(--lvj-gold);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--lvj-champagne) 28%, transparent);
 }
 
 .url-row .btn {

@@ -13,6 +13,7 @@ import { LoadingSkeletonComponent } from '../../shared/components/loading-skelet
 import { HeroCarouselComponent } from '../../shared/components/hero-carousel/hero-carousel.component';
 import { ServicesHelpComponent } from '../../shared/components/services-help/services-help.component';
 import { CustomDesignFeatureComponent } from '../../shared/components/custom-design-feature/custom-design-feature.component';
+import { RevealDirective } from '../../shared/directives/reveal.directive';
 
 @Component({
   selector: 'app-home',
@@ -24,7 +25,8 @@ import { CustomDesignFeatureComponent } from '../../shared/components/custom-des
     LoadingSkeletonComponent,
     HeroCarouselComponent,
     ServicesHelpComponent,
-    CustomDesignFeatureComponent
+    CustomDesignFeatureComponent,
+    RevealDirective
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'

@@ -8,6 +8,7 @@ import { SeoService } from '../../core/services/seo.service';
 import { ToastService } from '../../core/services/toast.service';
 import { buildMailto, buildWhatsAppUrl } from '../../core/utils/slug';
 import { FavoriteButtonComponent } from '../../shared/components/favorite-button/favorite-button.component';
+import { LoadingSkeletonComponent } from '../../shared/components/loading-skeleton/loading-skeleton.component';
 import { ProductGalleryComponent } from '../../shared/components/product-gallery/product-gallery.component';
 import { ProductSpecificationsComponent } from '../../shared/components/product-specifications/product-specifications.component';
 import { ProductGridComponent } from '../../shared/components/product-grid/product-grid.component';
@@ -19,6 +20,7 @@ import { PricePipe } from '../../shared/pipes/price.pipe';
   imports: [
     RouterLink,
     FavoriteButtonComponent,
+    LoadingSkeletonComponent,
     ProductGalleryComponent,
     ProductSpecificationsComponent,
     ProductGridComponent,
@@ -39,22 +41,31 @@ export class ProductComponent implements OnInit {
   readonly product = signal<Product | null>(null);
   readonly related = signal<ProductListItem[]>([]);
   readonly error = signal('');
+  readonly loading = signal(true);
   readonly tab = signal<'desc' | 'details' | 'ship'>('desc');
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
       const slug = params.get('slug');
       if (!slug) return;
+      this.loading.set(true);
+      this.error.set('');
+      this.product.set(null);
+      this.related.set([]);
       this.productsApi.bySlug(slug).subscribe({
         next: product => {
           this.product.set(product);
+          this.loading.set(false);
           this.seo.set({
             title: product.name,
             description: product.description || `${product.name} · ${product.sku}`,
             image: product.images[0]?.url
           });
         },
-        error: () => this.error.set('This piece is no longer listed.')
+        error: () => {
+          this.loading.set(false);
+          this.error.set('This piece is no longer listed.');
+        }
       });
       this.productsApi.related(slug).subscribe(list => this.related.set(list));
     });

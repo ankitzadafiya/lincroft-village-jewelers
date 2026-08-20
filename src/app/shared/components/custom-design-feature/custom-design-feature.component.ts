@@ -14,25 +14,25 @@ import { IMG } from '../../../core/mock/image-catalog';
           our expert team is here to guide you. Book a private appointment and enjoy personalized attention
           in a relaxed, welcoming environment.
         </p>
-        <a routerLink="/contact" class="btn btn-ghost">Book an Appointment</a>
+        <a routerLink="/contact" class="btn btn-gold">Book an Appointment</a>
       </div>
     </section>
 
     <section class="custom">
       <div class="container grid">
         <div class="compare" aria-label="CAD prototype versus finished ring of the same design">
-          <!-- Finished ring (after) -->
           <img
             class="layer after"
             [src]="after"
             alt="Finished diamond ring — same design as the CAD prototype"
-            draggable="false" />
-          <!-- CAD of the SAME ring (before) -->
+            draggable="false"
+            decoding="async" />
           <img
             class="layer before"
             [src]="before"
             alt="CAD prototype of the same diamond ring"
             draggable="false"
+            decoding="async"
             [style.clip-path]="'inset(0 ' + (100 - position()) + '% 0 0)'" />
           <span class="badge before-badge">Before</span>
           <span class="badge after-badge">After</span>
@@ -56,75 +56,89 @@ import { IMG } from '../../../core/mock/image-catalog';
           <h2>If you can dream it, we can build it</h2>
           <p class="lead">
             Our skilled custom jewelry design artisans relish the chance to work with you to create
-            your own unique, personal piece of custom jewelry — from CAD prototype to the finished ring.
+            your own unique, personal piece of custom jewelry.
           </p>
-          <a routerLink="/custom-jewelry" class="btn btn-gold">Start Your Design</a>
+          <a routerLink="/contact" class="btn btn-gold">Book an Appointment</a>
         </div>
       </div>
     </section>
   `,
   styles: [`
     .consult {
-      padding: 4.5rem 1rem 2rem;
+      padding: 3.25rem 1rem 1.75rem;
       text-align: center;
-      background: var(--lvj-panel);
+      background: var(--lvj-sky);
     }
 
     .consult-inner {
-      max-width: 640px;
+      max-width: 580px;
       display: grid;
-      gap: 1rem;
+      gap: 0.85rem;
       justify-items: center;
     }
 
     .consult h2 {
-      font-family: var(--font-logo-serif);
-      font-style: italic;
-      font-size: clamp(1.85rem, 3.4vw, 2.7rem);
-      font-weight: 500;
+      font-family: var(--font-body);
+      font-style: normal;
+      font-size: clamp(1.55rem, 2.8vw, 2.1rem);
+      font-weight: 600;
       letter-spacing: -0.02em;
-      line-height: 1.15;
+      line-height: 1.2;
       color: var(--lvj-ink);
     }
 
     .consult p {
       color: var(--lvj-muted);
       line-height: 1.65;
-      font-size: 0.98rem;
-      max-width: 54ch;
+      font-size: 0.94rem;
+      max-width: 52ch;
     }
 
     .consult .btn {
-      margin-top: 0.5rem;
+      margin-top: 0.35rem;
     }
 
     .custom {
-      padding: 2rem 0 5rem;
-      background: var(--lvj-panel);
+      padding: 1.5rem 0 3.5rem;
+      background: var(--lvj-white);
     }
 
     .grid {
       display: grid;
-      gap: 2.5rem;
+      gap: 1.75rem;
       align-items: center;
     }
 
     @media (min-width: 960px) {
       .grid {
-        grid-template-columns: 1.1fr 0.9fr;
-        gap: 3.5rem;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 0.9fr);
+        gap: 2.75rem;
       }
     }
 
     .compare {
       position: relative;
+      width: 100%;
+      max-width: 520px;
       aspect-ratio: 1;
-      border-radius: 2px;
+      margin-inline: auto;
+      border-radius: 12px;
       overflow: hidden;
-      background: #f2f2f0;
+      background: #f4f7fb;
+      border: 1px solid rgba(15, 35, 60, 0.16);
+      box-shadow:
+        0 1px 2px rgba(15, 35, 60, 0.05),
+        0 14px 36px rgba(15, 35, 60, 0.12);
       cursor: ew-resize;
       touch-action: none;
       user-select: none;
+    }
+
+    @media (min-width: 960px) {
+      .compare {
+        margin-inline: 0;
+        max-width: none;
+      }
     }
 
     .layer {
@@ -132,39 +146,41 @@ import { IMG } from '../../../core/mock/image-catalog';
       inset: 0;
       width: 100%;
       height: 100%;
-      object-fit: cover;
-      object-position: center 42%;
+      object-fit: contain;
+      object-position: center;
       display: block;
       pointer-events: none;
+      background: #fff;
     }
 
     .before {
       z-index: 1;
-      background: #f2f2f0;
     }
 
     .badge {
       position: absolute;
-      top: 0.85rem;
       z-index: 3;
+      font-family: var(--font-body);
       font-size: 0.68rem;
-      font-weight: 650;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      background: rgba(255, 255, 255, 0.94);
-      color: var(--lvj-ink);
-      padding: 0.35rem 0.55rem;
-      border-radius: 999px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      background: #fff;
+      color: #111;
+      padding: 0.28rem 0.55rem;
+      border-radius: 2px;
       pointer-events: none;
-      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
     }
 
     .before-badge {
-      left: 0.85rem;
+      top: 0.75rem;
+      left: 0.75rem;
     }
 
     .after-badge {
-      right: 0.85rem;
+      right: 0.75rem;
+      bottom: 0.75rem;
+      top: auto;
     }
 
     .handle {
@@ -172,7 +188,7 @@ import { IMG } from '../../../core/mock/image-catalog';
       top: 0;
       bottom: 0;
       width: 2px;
-      background: var(--lvj-panel);
+      background: #fff;
       transform: translateX(-50%);
       z-index: 4;
       pointer-events: none;
@@ -184,11 +200,11 @@ import { IMG } from '../../../core/mock/image-catalog';
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      width: 42px;
-      height: 42px;
+      width: 38px;
+      height: 38px;
       border-radius: 999px;
-      background: var(--lvj-panel);
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+      background: #fff;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
       display: grid;
       grid-auto-flow: column;
       gap: 3px;
@@ -198,10 +214,9 @@ import { IMG } from '../../../core/mock/image-catalog';
 
     .knob span {
       width: 2px;
-      height: 12px;
-      background: var(--lvj-ink);
+      height: 11px;
+      background: #6b6b6b;
       border-radius: 2px;
-      opacity: 0.7;
     }
 
     .range {
@@ -216,27 +231,27 @@ import { IMG } from '../../../core/mock/image-catalog';
     }
 
     .copy .eyebrow {
-      margin-bottom: 0.65rem;
+      margin-bottom: 0.55rem;
     }
 
     .copy h2 {
-      font-family: var(--font-logo-serif);
-      font-style: italic;
-      font-size: clamp(1.85rem, 3.4vw, 2.7rem);
-      font-weight: 500;
+      font-family: var(--font-body);
+      font-style: normal;
+      font-size: clamp(1.55rem, 2.8vw, 2.15rem);
+      font-weight: 600;
       letter-spacing: -0.02em;
-      line-height: 1.12;
-      margin-bottom: 1rem;
+      line-height: 1.2;
+      margin-bottom: 0.85rem;
       color: var(--lvj-ink);
-      max-width: 16ch;
+      max-width: 18ch;
     }
 
     .lead {
       color: var(--lvj-muted);
-      line-height: 1.7;
-      font-size: 0.98rem;
+      line-height: 1.65;
+      font-size: 0.94rem;
       max-width: 40ch;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1.25rem;
     }
   `]
 })

@@ -5,12 +5,13 @@ import { CustomerAuthService } from '../../core/services/customer-auth.service';
 import { FavoriteService } from '../../core/services/favorite.service';
 import { ProductService } from '../../core/services/product.service';
 import { SeoService } from '../../core/services/seo.service';
-import { ProductGridComponent } from '../../shared/components/product-grid/product-grid.component';
 import { EmptyStateComponent } from '../../shared/components/empty-state/empty-state.component';
+import { LoadingSkeletonComponent } from '../../shared/components/loading-skeleton/loading-skeleton.component';
+import { ProductGridComponent } from '../../shared/components/product-grid/product-grid.component';
 
 @Component({
   selector: 'app-favorites',
-  imports: [RouterLink, ProductGridComponent, EmptyStateComponent],
+  imports: [RouterLink, ProductGridComponent, EmptyStateComponent, LoadingSkeletonComponent],
   template: `
     <section class="page-hero">
       <p class="eyebrow">Saved</p>
@@ -25,7 +26,9 @@ import { EmptyStateComponent } from '../../shared/components/empty-state/empty-s
       }
     </section>
     <section class="container section">
-      @if (!products().length) {
+      @if (loading()) {
+        <app-loading-skeleton [count]="4" [columns]="4" />
+      } @else if (!products().length) {
         <app-empty-state title="No favorites yet." message="Tap the heart on any piece to save it. Sign in anytime to sync across devices.">
           <div class="empty-actions">
             <a routerLink="/shop" class="btn btn-gold">View jewelry</a>
@@ -49,13 +52,22 @@ export class FavoritesComponent implements OnInit {
   private readonly seo = inject(SeoService);
   readonly customer = inject(CustomerAuthService);
   readonly products = signal<ProductListItem[]>([]);
+  readonly loading = signal(true);
 
   ngOnInit(): void {
     this.seo.set({ title: 'Favorites', description: 'Pieces you have saved at Lincroft Village Jewelers.' });
     const ids = this.favorites.favoriteIds();
-    if (!ids.length) return;
-    this.productsApi.list({ pageSize: 100 }).subscribe(res => {
-      this.products.set(res.data.filter(p => ids.includes(p.id)));
+    if (!ids.length) {
+      this.loading.set(false);
+      return;
+    }
+    this.loading.set(true);
+    this.productsApi.list({ pageSize: 100 }).subscribe({
+      next: res => {
+        this.products.set(res.data.filter(p => ids.includes(p.id)));
+        this.loading.set(false);
+      },
+      error: () => this.loading.set(false)
     });
   }
 }

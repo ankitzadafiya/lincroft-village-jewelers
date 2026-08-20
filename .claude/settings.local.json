@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls -la D:\\\\\\\\Lincroft\\\\\\\\src\\\\\\\\styles.scss)",
+      "Bash(find D:\\\\\\\\Lincroft\\\\\\\\src\\\\\\\\app -type d)",
+      "Bash(npx ng *)",
+      "mcp__Claude_Preview__preview_start",
+      "WebFetch(domain:willisfinejewelry.com)",
+      "mcp__Claude_in_Chrome__tabs_context_mcp"
+    ]
+  }
+}

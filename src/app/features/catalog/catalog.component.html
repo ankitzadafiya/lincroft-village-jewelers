@@ -7,28 +7,37 @@
 </section>
 
 <section class="catalog container">
-  <button class="btn btn-ghost filter-toggle" type="button" (click)="mobileFilters.set(!mobileFilters())">Filters</button>
+  <button class="btn btn-ghost filter-toggle" type="button" (click)="mobileFilters.set(!mobileFilters())">
+    {{ mobileFilters() ? 'Hide filters' : 'Show filters' }}
+  </button>
 
   <div class="layout" [class.open]="mobileFilters()">
     <app-product-filters [facets]="facets()" [query]="query()" (queryChange)="onFilter($event)" />
     <div>
       <div class="toolbar">
-        <p class="muted">{{ total() }} pieces</p>
+        <p class="count">{{ total() }} {{ total() === 1 ? 'piece' : 'pieces' }}</p>
         <div class="tools">
-          <label>
-            Sort
-            <select [ngModel]="query().sort" (ngModelChange)="onSort($event)">
-              <option value="newest">Newest</option>
-              <option value="featured">Best selling</option>
-              <option value="name_asc">Name A–Z</option>
-              <option value="name_desc">Name Z–A</option>
-              <option value="price_asc">Price · low to high</option>
-              <option value="price_desc">Price · high to low</option>
-            </select>
+          <label class="sort">
+            <span>Sort</span>
+            <p-select
+              [options]="sortOptions"
+              optionLabel="label"
+              optionValue="value"
+              [ngModel]="query().sort || 'newest'"
+              (ngModelChange)="onSort($event)"
+              appendTo="body"
+              styleClass="catalog-sort" />
           </label>
           <div class="cols" aria-label="Grid density">
-            @for (n of [2,3,4]; track n) {
-              <button type="button" [class.on]="columns() === n" (click)="columns.set(n)" [attr.aria-label]="n + ' columns'">{{ n }}</button>
+            @for (opt of densityOptions; track opt.cols) {
+              <button
+                type="button"
+                [class.on]="columns() === opt.cols"
+                (click)="columns.set(opt.cols)"
+                [attr.aria-label]="opt.label"
+                [attr.aria-pressed]="columns() === opt.cols">
+                <app-icon [name]="opt.icon" [size]="16" [strokeWidth]="1.75" />
+              </button>
             }
           </div>
         </div>
@@ -48,6 +57,8 @@
           [rows]="query().pageSize || 12"
           [totalRecords]="total()"
           [first]="((query().page || 1) - 1) * (query().pageSize || 12)"
+          [showCurrentPageReport]="total() > 12"
+          currentPageReportTemplate="{first}–{last} of {totalRecords}"
           (onPageChange)="onPage($event)" />
       }
     </div>

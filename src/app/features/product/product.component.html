@@ -1,88 +1,90 @@
-@if (error()) {
+@if (loading()) {
+  <app-loading-skeleton variant="product" />
+} @else if (error()) {
   <section class="page-hero">
     <h1>{{ error() }}</h1>
     <a routerLink="/shop" class="btn btn-gold">View jewelry</a>
   </section>
-}
-
-@if (product(); as p) {
-  <section class="crumbs container">
-    <a routerLink="/">Home</a>
-    <span>/</span>
-    <a routerLink="/shop">Shop</a>
-    <span>/</span>
-    <span>{{ p.name }}</span>
-  </section>
-
-  <section class="pdp container">
-    <app-product-gallery [images]="p.images" [videos]="p.videos" />
-    <div class="info">
-      <p class="eyebrow">{{ p.designerName || 'Lincroft Atelier' }}</p>
-      <div class="title-row">
-        <h1>{{ p.name }}</h1>
-        <app-favorite-button [id]="p.id" variant="ghost" />
-      </div>
-      <p class="sku">SKU {{ p.sku }}</p>
-      <p class="price">{{ p.price | lvjPrice: p.showPrice }}
-        @if (config.isPriceVisible(p) && p.compareAtPrice) {
-          <span class="price-compare">{{ p.compareAtPrice | lvjPrice: true }}</span>
-        }
-      </p>
-      @if (p.description) {
-        <p class="desc">{{ p.description }}</p>
-      }
-      <p class="avail">{{ p.availability.replaceAll('_', ' ') }}</p>
-      <div class="actions">
-        <button class="btn btn-gold" type="button" (click)="addInquiry()">Call For Price / Inquire</button>
-      </div>
-      <div class="alt">
-        <a class="btn btn-ghost" [href]="whatsapp()" target="_blank" rel="noreferrer">WhatsApp inquiry</a>
-        <a class="btn btn-ghost" [href]="emailHref()">Email inquiry</a>
-        <a class="btn btn-ghost" routerLink="/custom-jewelry">Customization request</a>
-      </div>
-      <div class="perks">
-        <p>Estimated delivery · Ask our team for timing</p>
-        <p>Complimentary local pickup in Lincroft</p>
-      </div>
-    </div>
-  </section>
-
-  <div class="tabs container">
-    <div class="tab-nav">
-      <button type="button" [class.on]="tab() === 'desc'" (click)="tab.set('desc')">Product description</button>
-      <button type="button" [class.on]="tab() === 'details'" (click)="tab.set('details')">Product Details</button>
-      <button type="button" [class.on]="tab() === 'ship'" (click)="tab.set('ship')">Shipping & Return</button>
-    </div>
-    <div class="tab-body">
-      @if (tab() === 'desc') {
-        <p>{{ p.description || 'A carefully selected piece from the Lincroft Village Jewelers collection.' }}</p>
-      } @else if (tab() === 'details') {
-        <app-product-specifications [specs]="p.specs" />
-      } @else {
-        <p>In-store pickup is complimentary. Shipping options and return guidance are confirmed when you inquire — every piece is handled personally by our team.</p>
-      }
-    </div>
-  </div>
-
-  @if (related().length) {
-    <section class="section container">
-      <app-section-header title="You may also like" eyebrow="Related" />
-      <app-product-grid [products]="related()" />
+} @else {
+  @if (product(); as p) {
+    <section class="crumbs container">
+      <a routerLink="/">Home</a>
+      <span>/</span>
+      <a routerLink="/shop">Shop</a>
+      <span>/</span>
+      <span>{{ p.name }}</span>
     </section>
-  }
 
-  <div class="sticky-bar">
-    <div class="sticky-inner container">
-      <div class="sticky-meta">
-        @if (p.images[0]; as img) {
-          <img [src]="img.thumbnailUrl || img.url" [alt]="p.name" />
+    <section class="pdp container">
+      <app-product-gallery [images]="p.images" [videos]="p.videos" />
+      <div class="info">
+        <p class="eyebrow">{{ p.designerName || 'Lincroft Atelier' }}</p>
+        <div class="title-row">
+          <h1>{{ p.name }}</h1>
+          <app-favorite-button [id]="p.id" variant="ghost" />
+        </div>
+        <p class="sku">SKU {{ p.sku }}</p>
+        <p class="price">{{ p.price | lvjPrice: p.showPrice }}
+          @if (config.isPriceVisible(p) && p.compareAtPrice) {
+            <span class="price-compare">{{ p.compareAtPrice | lvjPrice: true }}</span>
+          }
+        </p>
+        @if (p.description) {
+          <p class="desc">{{ p.description }}</p>
         }
-        <div>
-          <strong>{{ p.name }}</strong>
-          <span>{{ p.price | lvjPrice: p.showPrice }}</span>
+        <p class="avail">{{ p.availability.replaceAll('_', ' ') }}</p>
+        <div class="actions">
+          <button class="btn btn-gold" type="button" (click)="addInquiry()">Call For Price / Inquire</button>
+        </div>
+        <div class="alt">
+          <a class="btn btn-ghost" [href]="whatsapp()" target="_blank" rel="noreferrer">WhatsApp inquiry</a>
+          <a class="btn btn-ghost" [href]="emailHref()">Email inquiry</a>
+          <a class="btn btn-ghost" routerLink="/custom-jewelry">Customization request</a>
+        </div>
+        <div class="perks">
+          <p>Estimated delivery · Ask our team for timing</p>
+          <p>Complimentary local pickup in Lincroft</p>
         </div>
       </div>
-      <button class="btn btn-gold" type="button" (click)="addInquiry()">Add to inquiry</button>
+    </section>
+
+    <div class="tabs container">
+      <div class="tab-nav">
+        <button type="button" [class.on]="tab() === 'desc'" (click)="tab.set('desc')">Product description</button>
+        <button type="button" [class.on]="tab() === 'details'" (click)="tab.set('details')">Product Details</button>
+        <button type="button" [class.on]="tab() === 'ship'" (click)="tab.set('ship')">Shipping & Return</button>
+      </div>
+      <div class="tab-body">
+        @if (tab() === 'desc') {
+          <p>{{ p.description || 'A carefully selected piece from the Lincroft Village Jewelers collection.' }}</p>
+        } @else if (tab() === 'details') {
+          <app-product-specifications [specs]="p.specs" />
+        } @else {
+          <p>In-store pickup is complimentary. Shipping options and return guidance are confirmed when you inquire — every piece is handled personally by our team.</p>
+        }
+      </div>
     </div>
-  </div>
+
+    @if (related().length) {
+      <section class="section container">
+        <app-section-header title="You may also like" eyebrow="Related" />
+        <app-product-grid [products]="related()" />
+      </section>
+    }
+
+    <div class="sticky-bar">
+      <div class="sticky-inner container">
+        <div class="sticky-meta">
+          @if (p.images[0]; as img) {
+            <img [src]="img.thumbnailUrl || img.url" [alt]="p.name" />
+          }
+          <div>
+            <strong>{{ p.name }}</strong>
+            <span>{{ p.price | lvjPrice: p.showPrice }}</span>
+          </div>
+        </div>
+        <button class="btn btn-gold" type="button" (click)="addInquiry()">Add to inquiry</button>
+      </div>
+    </div>
+  }
 }

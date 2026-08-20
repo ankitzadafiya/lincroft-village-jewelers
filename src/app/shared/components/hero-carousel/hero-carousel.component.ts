@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, signal } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { IMG } from '../../../core/mock/image-catalog';
 
@@ -21,15 +21,15 @@ interface HeroSlide {
       <div class="poster">
         @for (slide of slides; track slide.title; let i = $index) {
           <article class="slide" [class.active]="i === index()">
-            <img [src]="slide.image" [alt]="slide.title" />
+            <img [src]="slide.image" [alt]="slide.title" [attr.loading]="i === 0 ? 'eager' : 'lazy'" decoding="async" />
             <div class="shade"></div>
             <div class="copy">
               <p class="eyebrow">{{ slide.eyebrow }}</p>
               <h1>{{ slide.title }}</h1>
               <p class="sub">{{ slide.subtitle }}</p>
               <div class="ctas">
-                <a class="btn btn-light" [routerLink]="slide.primaryPath">{{ slide.primaryCta }}</a>
-                <a class="btn btn-light" [routerLink]="slide.secondaryPath">{{ slide.secondaryCta }}</a>
+                <a class="btn btn-gold" [routerLink]="slide.primaryPath">{{ slide.primaryCta }}</a>
+                <a class="btn btn-ghost hero-ghost" [routerLink]="slide.secondaryPath">{{ slide.secondaryCta }}</a>
               </div>
             </div>
           </article>
@@ -60,7 +60,8 @@ interface HeroSlide {
       min-height: clamp(380px, 58vh, 620px);
       border-radius: 22px;
       overflow: hidden;
-      background: #ebe7e1;
+      background: var(--lvj-panel-alt);
+      box-shadow: var(--lvj-shadow);
     }
 
     .slide {
@@ -68,7 +69,7 @@ interface HeroSlide {
       inset: 0;
       opacity: 0;
       pointer-events: none;
-      transition: opacity 1s cubic-bezier(0.22, 1, 0.36, 1);
+      transition: opacity 0.45s ease;
     }
 
     .slide.active {
@@ -80,13 +81,6 @@ interface HeroSlide {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      transform: scale(1.06);
-      transition: transform 8s linear;
-      animation: ken 14s ease-in-out infinite alternate;
-    }
-
-    .slide.active img {
-      transform: scale(1);
     }
 
     .shade {
@@ -138,16 +132,16 @@ interface HeroSlide {
       margin-top: 0.35rem;
     }
 
-    .btn-light {
-      background: rgba(255,255,255,0.92);
-      color: #111;
-      border-color: rgba(255,255,255,0.92);
-    }
-
-    .btn-light:hover {
+    .hero-ghost {
       background: transparent;
       color: #fff;
-      border-color: #fff;
+      border-color: rgba(255, 255, 255, 0.7);
+    }
+
+    .hero-ghost:hover {
+      background: rgba(255, 255, 255, 0.12);
+      color: var(--lvj-gold-bright);
+      border-color: var(--lvj-gold-bright);
     }
 
     .dots {
@@ -164,7 +158,7 @@ interface HeroSlide {
       height: 8px;
       border-radius: 99px;
       border: 0;
-      background: rgba(255,255,255,0.45);
+      background: rgba(255, 255, 255, 0.45);
       cursor: pointer;
       padding: 0;
       transition: width 0.35s ease, background 0.25s ease;
@@ -172,12 +166,7 @@ interface HeroSlide {
 
     .dots button.on {
       width: 22px;
-      background: #fff;
-    }
-
-    @keyframes ken {
-      from { transform: scale(1); }
-      to { transform: scale(1.08); }
+      background: var(--lvj-gold-bright);
     }
 
     @media (max-width: 720px) {
@@ -189,6 +178,8 @@ interface HeroSlide {
   `]
 })
 export class HeroCarouselComponent implements OnInit, OnDestroy {
+  private readonly host = inject(ElementRef<HTMLElement>);
+
   readonly slides: HeroSlide[] = [
     {
       eyebrow: 'Just dropped',
@@ -225,16 +216,17 @@ export class HeroCarouselComponent implements OnInit, OnDestroy {
   readonly index = signal(0);
   private timer: ReturnType<typeof setInterval> | null = null;
   private paused = false;
+  private onScreen = true;
+  private observer?: IntersectionObserver;
 
   ngOnInit(): void {
-    this.timer = setInterval(() => {
-      if (this.paused) return;
-      this.index.set((this.index() + 1) % this.slides.length);
-    }, 5000);
+    this.watchVisibility();
+    this.start();
   }
 
   ngOnDestroy(): void {
-    if (this.timer) clearInterval(this.timer);
+    this.stop();
+    this.observer?.disconnect();
   }
 
   go(i: number): void {
@@ -247,5 +239,34 @@ export class HeroCarouselComponent implements OnInit, OnDestroy {
 
   resume(): void {
     this.paused = false;
+  }
+
+  private watchVisibility(): void {
+    if (typeof IntersectionObserver === 'undefined') return;
+    this.observer = new IntersectionObserver(
+      ([entry]) => {
+        this.onScreen = entry.isIntersecting;
+        if (this.onScreen) this.start();
+        else this.stop();
+      },
+      { threshold: 0.05 }
+    );
+    this.observer.observe(this.host.nativeElement);
+  }
+
+  private start(): void {
+    this.stop();
+    if (!this.onScreen) return;
+    this.timer = setInterval(() => {
+      if (this.paused) return;
+      this.index.set((this.index() + 1) % this.slides.length);
+    }, 5000);
+  }
+
+  private stop(): void {
+    if (this.timer) {
+      clearInterval(this.timer);
+      this.timer = null;
+    }
   }
 }

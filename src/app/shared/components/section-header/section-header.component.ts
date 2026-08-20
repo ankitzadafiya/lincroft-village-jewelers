@@ -63,7 +63,7 @@ import { AppIconComponent } from '../../icons/lvj-icons';
       font-weight: 700;
       letter-spacing: 0.14em;
       text-transform: uppercase;
-      color: var(--lvj-ink);
+      color: var(--lvj-gold-deep);
       border-bottom: 1px solid currentColor;
       padding-bottom: 2px;
       transition: gap 0.3s var(--lvj-ease), opacity 0.25s ease;

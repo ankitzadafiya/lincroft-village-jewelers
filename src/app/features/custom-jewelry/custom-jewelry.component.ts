@@ -1,6 +1,7 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
+import { SelectModule } from 'primeng/select';
 import { ConfigurationService } from '../../core/services/configuration.service';
 import { ContentService } from '../../core/services/content.service';
 import { SeoService } from '../../core/services/seo.service';
@@ -11,7 +12,7 @@ import { ImageCompareComponent } from '../../shared/components/image-compare/ima
 
 @Component({
   selector: 'app-custom-jewelry',
-  imports: [ReactiveFormsModule, RouterLink, ImageCompareComponent],
+  imports: [ReactiveFormsModule, RouterLink, ImageCompareComponent, SelectModule],
   templateUrl: './custom-jewelry.component.html',
   styleUrl: './custom-jewelry.component.scss'
 })
@@ -23,6 +24,23 @@ export class CustomJewelryComponent {
   private readonly toast = inject(ToastService);
   private readonly fb = inject(FormBuilder);
   readonly referenceUrls = signal<string[]>(['']);
+
+  readonly jewelryTypeOptions = [
+    { label: 'Engagement ring', value: 'Engagement ring' },
+    { label: 'Wedding band', value: 'Wedding band' },
+    { label: 'Earrings', value: 'Earrings' },
+    { label: 'Necklace', value: 'Necklace' },
+    { label: 'Bracelet', value: 'Bracelet' },
+    { label: 'Other', value: 'Other' }
+  ];
+
+  readonly metalOptions = [
+    { label: 'Yellow gold', value: 'Yellow gold' },
+    { label: 'White gold', value: 'White gold' },
+    { label: 'Rose gold', value: 'Rose gold' },
+    { label: 'Platinum', value: 'Platinum' },
+    { label: 'Undecided', value: 'Undecided' }
+  ];
 
   readonly form = this.fb.nonNullable.group({
     name: ['', Validators.required],

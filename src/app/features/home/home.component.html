@@ -2,7 +2,7 @@
 
 <app-category-showcase [categories]="heroCategories()" />
 
-<section class="section container">
+<section class="section container" appReveal>
   <app-section-header
     eyebrow="Trending"
     title="Best sellers"
@@ -18,7 +18,7 @@
 
 <section class="editorial">
   <div class="container editorial-grid">
-    <a class="banner" routerLink="/ring">
+    <a class="banner" routerLink="/ring" appReveal>
       <img [src]="bannerLeft" alt="Engagement and wedding rings" />
       <div class="banner-copy">
         <p>Rings</p>
@@ -26,7 +26,7 @@
         <span>Shop rings</span>
       </div>
     </a>
-    <a class="banner" routerLink="/silver-jewelry-with-24k-gold-plating">
+    <a class="banner" routerLink="/silver-jewelry-with-24k-gold-plating" appReveal [appRevealDelay]="120">
       <img [src]="bannerRight" alt="Silver jewelry with 24k gold plating" />
       <div class="banner-copy">
         <p>Everyday</p>
@@ -37,7 +37,7 @@
   </div>
 </section>
 
-<section class="section container soft-band">
+<section class="section container soft-band" appReveal>
   <app-section-header
     eyebrow="Fresh from the atelier"
     title="Just arrived"
@@ -46,25 +46,29 @@
   <app-product-grid [products]="arrivals()" />
 </section>
 
-<app-services-help />
+<div appReveal>
+  <app-services-help />
+</div>
 
-<app-custom-design-feature />
+<div appReveal>
+  <app-custom-design-feature />
+</div>
 
 <section class="occasions container">
-  <div class="occ-head">
+  <div class="occ-head" appReveal>
     <p class="eyebrow">Shop for occasions</p>
     <h2>Jewelry for every moment</h2>
   </div>
   <div class="occ-grid">
-    <a routerLink="/ring" class="occ">
+    <a routerLink="/ring" class="occ" appReveal>
       <img [src]="occBridal" alt="Bridal jewelry" />
       <span>Bridal</span>
     </a>
-    <a routerLink="/earring" class="occ">
+    <a routerLink="/earring" class="occ" appReveal [appRevealDelay]="100">
       <img [src]="occEveryday" alt="Everyday earrings" />
       <span>Everyday</span>
     </a>
-    <a routerLink="/pendant" class="occ">
+    <a routerLink="/pendant" class="occ" appReveal [appRevealDelay]="200">
       <img [src]="occGifts" alt="Gift pendants" />
       <span>Gifting</span>
     </a>

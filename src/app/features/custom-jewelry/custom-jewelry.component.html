@@ -33,27 +33,28 @@
       <div class="field"><label>Name</label><input formControlName="name" /></div>
       <div class="field"><label>Email</label><input formControlName="email" /></div>
       <div class="field"><label>Phone</label><input formControlName="phone" /></div>
-      <div class="field">
-        <label>Jewelry type</label>
-        <select formControlName="jewelryType">
-          <option>Engagement ring</option>
-          <option>Wedding band</option>
-          <option>Earrings</option>
-          <option>Necklace</option>
-          <option>Bracelet</option>
-          <option>Other</option>
-        </select>
-      </div>
-      <div class="field">
-        <label>Preferred metal</label>
-        <select formControlName="preferredMetal">
-          <option>Yellow gold</option>
-          <option>White gold</option>
-          <option>Rose gold</option>
-          <option>Platinum</option>
-          <option>Undecided</option>
-        </select>
-      </div>
+        <div class="field">
+          <label>Jewelry type</label>
+          <p-select
+            formControlName="jewelryType"
+            [options]="jewelryTypeOptions"
+            optionLabel="label"
+            optionValue="value"
+            appendTo="body"
+            styleClass="w-full"
+            [showClear]="false" />
+        </div>
+        <div class="field">
+          <label>Preferred metal</label>
+          <p-select
+            formControlName="preferredMetal"
+            [options]="metalOptions"
+            optionLabel="label"
+            optionValue="value"
+            appendTo="body"
+            styleClass="w-full"
+            [showClear]="false" />
+        </div>
       <div class="field"><label>Gemstone / diamond</label><input formControlName="gemstone" placeholder="Optional" /></div>
       <div class="field"><label>Budget</label><input formControlName="budget" placeholder="Optional" /></div>
       <div class="field full"><label>Describe the piece</label><textarea formControlName="description"></textarea></div>

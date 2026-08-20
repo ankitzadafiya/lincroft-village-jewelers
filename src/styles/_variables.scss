@@ -1,49 +1,56 @@
 :root,
 [data-theme='light'] {
-  /* LUMALUME-inspired: crisp pearl ground, ink type, soft rose-metal accent */
-  --lvj-ivory: #f7f6f4;
-  --lvj-cream: #f0eeeb;
+  /* Clean white + ice blue, navy accent */
+  --lvj-ivory: #f4f9fd;
+  --lvj-cream: #eaf4fb;
   --lvj-white: #ffffff;
-  --lvj-paper: #f3f2f0;
-  --lvj-soft: #e8e6e2;
+  --lvj-paper: #f7fbfe;
+  --lvj-soft: #d7ebf6;
   --lvj-panel: #ffffff;
+  --lvj-panel-alt: #eef6fc;
 
-  --lvj-charcoal: #1a1a1a;
-  --lvj-ink: #111111;
-  --lvj-muted: #6b6b6b;
-  --lvj-muted-2: #949494;
+  --lvj-charcoal: #1a2c40;
+  --lvj-ink: #102033;
+  --lvj-muted: #5b7188;
+  --lvj-muted-2: #8aa0b4;
 
-  /* Soft rose-metal — fashion jewelry, not yellow gold */
-  --lvj-champagne: #b7a08e;
-  --lvj-gold: #a89280;
-  --lvj-gold-deep: #7d6a5c;
+  --lvj-champagne: #7eabc8;
+  --lvj-gold: #1a4d7a;
+  --lvj-gold-deep: #0f3558;
+  --lvj-gold-bright: #4d8fbf;
+  --lvj-jewel: #123a5c;
+  --lvj-jewel-soft: #1e547c;
+  --lvj-sky: #eaf4fb;
+  --lvj-sky-mid: #d5ebf6;
+  --lvj-sky-ink: #e8f4fc;
+  --lvj-navy: #0e2f4d;
 
-  --lvj-line: rgba(17, 17, 17, 0.08);
-  --lvj-line-strong: rgba(17, 17, 17, 0.14);
-  --lvj-shadow: 0 18px 48px rgba(17, 17, 17, 0.07);
-  --lvj-shadow-soft: 0 8px 24px rgba(17, 17, 17, 0.05);
+  --lvj-line: rgba(16, 50, 80, 0.1);
+  --lvj-line-strong: rgba(16, 50, 80, 0.18);
+  --lvj-shadow: 0 22px 50px rgba(16, 50, 80, 0.1);
+  --lvj-shadow-soft: 0 10px 26px rgba(16, 50, 80, 0.07);
 
-  --lvj-header-bg: rgba(255, 255, 255, 0.94);
-  --lvj-admin-canvas: #ebe6df;
-  --lvj-admin-topbar: rgba(247, 243, 238, 0.92);
-  --lvj-on-ink: #f7f6f4;
-  --lvj-inverse: #111111;
-  --lvj-on-inverse: #f7f6f4;
+  --lvj-header-bg: rgba(255, 255, 255, 0.9);
+  --lvj-admin-canvas: #eaf4fb;
+  --lvj-admin-topbar: rgba(255, 255, 255, 0.94);
+  --lvj-on-ink: #ffffff;
+  --lvj-inverse: #0e2f4d;
+  --lvj-on-inverse: #eaf4fb;
   --lvj-danger: #9a3b32;
-  --lvj-success: #3d6b4f;
+  --lvj-success: #2d6b5a;
 
-  --lvj-radius: 14px;
-  --lvj-radius-sm: 10px;
+  --lvj-radius: 16px;
+  --lvj-radius-sm: 12px;
   --lvj-radius-pill: 999px;
   --lvj-header-h: 72px;
   --lvj-ease: cubic-bezier(0.22, 1, 0.36, 1);
   --lvj-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 
-  --font-logo: 'Manrope', 'Segoe UI', sans-serif;
+  --font-logo: 'Outfit', 'Segoe UI', sans-serif;
   --font-logo-serif: 'Cormorant Garamond', Georgia, serif;
   --font-logo-script: 'Great Vibes', cursive;
   --font-display: 'Cormorant Garamond', Georgia, serif;
-  --font-body: 'Manrope', 'Segoe UI', sans-serif;
+  --font-body: 'Outfit', 'Segoe UI', sans-serif;
 
   --text-xs: 0.7rem;
   --text-sm: 0.84rem;
@@ -65,33 +72,41 @@
 }
 
 [data-theme='dark'] {
-  --lvj-ivory: #141210;
-  --lvj-cream: #1a1714;
-  --lvj-white: #12100e;
-  --lvj-paper: #1c1916;
-  --lvj-soft: #26221e;
-  --lvj-panel: #1e1b18;
+  --lvj-ivory: #0c1620;
+  --lvj-cream: #101c28;
+  --lvj-white: #0a121a;
+  --lvj-paper: #101c28;
+  --lvj-soft: #1a2c3c;
+  --lvj-panel: #12202c;
+  --lvj-panel-alt: #173044;
 
-  --lvj-charcoal: #f0ebe4;
-  --lvj-ink: #f7f3ec;
-  --lvj-muted: #a39a90;
-  --lvj-muted-2: #7d756c;
+  --lvj-charcoal: #e6eef6;
+  --lvj-ink: #f4f8fc;
+  --lvj-muted: #9ab0c4;
+  --lvj-muted-2: #6e8598;
 
-  --lvj-champagne: #c4a574;
-  --lvj-gold: #c4a574;
-  --lvj-gold-deep: #d4b896;
+  --lvj-champagne: #7eabc8;
+  --lvj-gold: #6aa3d0;
+  --lvj-gold-deep: #9bc4e3;
+  --lvj-gold-bright: #b7d6ee;
+  --lvj-jewel: #4d8fbf;
+  --lvj-jewel-soft: #6aa3d0;
+  --lvj-sky: #152433;
+  --lvj-sky-mid: #1c3348;
+  --lvj-sky-ink: #d5ebf6;
+  --lvj-navy: #071824;
 
-  --lvj-line: rgba(247, 243, 236, 0.1);
-  --lvj-line-strong: rgba(247, 243, 236, 0.18);
-  --lvj-shadow: 0 18px 48px rgba(0, 0, 0, 0.45);
-  --lvj-shadow-soft: 0 8px 24px rgba(0, 0, 0, 0.35);
+  --lvj-line: rgba(180, 210, 230, 0.12);
+  --lvj-line-strong: rgba(180, 210, 230, 0.2);
+  --lvj-shadow: 0 18px 48px rgba(0, 0, 0, 0.5);
+  --lvj-shadow-soft: 0 8px 24px rgba(0, 0, 0, 0.38);
 
-  --lvj-header-bg: rgba(18, 16, 14, 0.92);
-  --lvj-admin-canvas: #161310;
-  --lvj-admin-topbar: rgba(28, 25, 22, 0.94);
-  --lvj-on-ink: #12100e;
-  --lvj-inverse: #0c0b0a;
-  --lvj-on-inverse: #f7f3ec;
+  --lvj-header-bg: rgba(10, 18, 26, 0.9);
+  --lvj-admin-canvas: #0c1620;
+  --lvj-admin-topbar: rgba(18, 32, 44, 0.94);
+  --lvj-on-ink: #0a121a;
+  --lvj-inverse: #071824;
+  --lvj-on-inverse: #eaf4fb;
   --lvj-danger: #d47a72;
-  --lvj-success: #7cb891;
+  --lvj-success: #7cc9a0;
 }

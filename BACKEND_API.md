@@ -362,11 +362,12 @@ Computed on **frontend** from config + product:
 }
 ```
 
-Facet sources (from **active** products):
+Facet sources (from **active** products, optionally scoped by the same `category` / `subcategory` / `designer` / `q` query params as the product list):
 - metals / karats / gemstones / diamondTypes → matching `specs[].key`
 - diamondShapes → spec key `shape` **or** `diamondShape`
-- designers → designer names
+- designers → `value` must be **slug** (or id) so it matches `GET /products?designer=`
 - availability → product availability enum
+- priceRange → min/max of priced products in that scoped set
 
 ### 6.5 Config
 
@@ -637,7 +638,7 @@ Suggested token lifetime: **30 days** (customer).
 
 | Method | Path | Auth | Success | Errors |
 |--------|------|------|---------|--------|
-| GET | `/api/products/facets` | Public | `ProductFilterFacets` | — |
+| GET | `/api/products/facets` | Public | `ProductFilterFacets` | same category/subcategory/designer/q as list (optional) |
 | GET | `/api/products` | Public | `PaginatedResponse<ProductListItem>` | — |
 | GET | `/api/products/{slugOrId}` | Public | full `Product` (active) | `404` |
 | GET | `/api/products/{slugOrId}/related` | Public | up to **4** `ProductListItem` same category | `404` |

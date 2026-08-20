@@ -7,9 +7,9 @@
   display: grid;
   place-items: center;
   background:
-    radial-gradient(ellipse 70% 55% at 12% 8%, rgba(196, 165, 116, 0.28), transparent 55%),
-    radial-gradient(ellipse 50% 40% at 88% 92%, rgba(138, 111, 74, 0.22), transparent 50%),
-    linear-gradient(165deg, #1a1612 0%, #12100e 48%, #0e0c0a 100%);
+    radial-gradient(ellipse 70% 55% at 12% 8%, rgba(90, 130, 210, 0.24), transparent 55%),
+    radial-gradient(ellipse 50% 40% at 88% 92%, rgba(45, 74, 124, 0.22), transparent 50%),
+    linear-gradient(165deg, #0f1729 0%, #0b0e18 48%, #070a12 100%);
   padding: 2rem 1rem;
 }
 
@@ -30,13 +30,13 @@
 }
 
 aside {
-  color: #f7f3ec;
+  color: #f5f7fb;
   padding: 0.4rem 0.2rem 0;
 
   @media (min-width: 840px) {
     padding: 2.4rem 2rem;
     background:
-      linear-gradient(160deg, rgba(196, 165, 116, 0.12), transparent 55%),
+      linear-gradient(160deg, rgba(90, 130, 210, 0.14), transparent 55%),
       transparent;
   }
 }
@@ -45,13 +45,13 @@ aside h1 {
   font-family: var(--font-logo-serif);
   font-style: italic;
   font-size: clamp(2.2rem, 4vw, 3.1rem);
-  color: #f7f3ec;
+  color: #f5f7fb;
   margin: 0.35rem 0 0.8rem;
 }
 
 aside p,
 aside li {
-  color: rgba(247, 243, 236, 0.72);
+  color: rgba(245, 247, 251, 0.72);
   line-height: 1.55;
 }
 
@@ -114,9 +114,9 @@ form {
 }
 
 .field input:focus {
-  background: #fffefb;
+  background: var(--lvj-panel);
   border-color: var(--lvj-gold);
-  box-shadow: 0 0 0 3px rgba(184, 149, 106, 0.18);
+  box-shadow: 0 0 0 3px rgba(58, 95, 189, 0.18);
 }
 
 .field.invalid input {
@@ -158,6 +158,26 @@ form {
 .btn-gold {
   width: 100%;
   margin-top: 0.35rem;
+}
+
+.submit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+}
+
+.btn-spin {
+  width: 1rem;
+  height: 1rem;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-top-color: #fff;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
 }
 
 .btn:disabled {

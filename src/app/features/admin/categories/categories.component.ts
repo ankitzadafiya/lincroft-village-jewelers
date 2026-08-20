@@ -79,9 +79,9 @@ import { AppIconComponent } from '../../../shared/icons/lvj-icons';
       gap: 1rem;
       margin-bottom: 1rem;
     }
-    table { width: 100%; margin-top: 0.5rem; border-collapse: collapse; background: #fff; border-radius: var(--lvj-radius); overflow: hidden; }
+    table { width: 100%; margin-top: 0.5rem; border-collapse: collapse; background: var(--lvj-panel); border-radius: var(--lvj-radius); overflow: hidden; }
     th, td { text-align: left; padding: 0.85rem 0.7rem; border-bottom: 1px solid var(--lvj-line); }
-    tr.editing { background: rgba(183, 160, 142, 0.12); }
+    tr.editing { background: rgba(58, 95, 189, 0.1); }
   `]
 })
 export class AdminCategoriesComponent implements OnInit {

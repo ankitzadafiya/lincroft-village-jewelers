@@ -1,7 +1,7 @@
 @use 'mixins' as *;
 
 .foot {
-  background: var(--lvj-inverse);
+  background: var(--lvj-navy);
   color: var(--lvj-on-inverse);
   padding: 4.5rem 0 1.5rem;
   margin-top: 0;
@@ -52,7 +52,7 @@
 
 .news .btn {
   background: #fff;
-  color: var(--lvj-ink);
+  color: var(--lvj-navy);
   border-color: #fff;
 }
 
@@ -83,7 +83,7 @@ h3 {
 }
 
 .grid a:hover {
-  color: #fff;
+  color: var(--lvj-gold-bright);
 }
 
 .bottom {

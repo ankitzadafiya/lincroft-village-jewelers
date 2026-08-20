@@ -236,33 +236,46 @@ function queryParams(req: HttpRequest<unknown>): ProductListQuery {
   };
 }
 
-function facets(): ProductFilterFacets {
-  const active = mockStore.products.filter(p => p.status === 'active');
+function titleCase(value: string): string {
+  return value.replaceAll('_', ' ').replace(/\b\w/g, ch => ch.toUpperCase());
+}
+
+function facets(query: ProductListQuery): ProductFilterFacets {
+  const scoped = mockStore.queryProducts({
+    category: query.category,
+    subcategory: query.subcategory,
+    designer: query.designer,
+    q: query.q,
+    page: 1,
+    pageSize: 5000
+  }, true).items;
   const collect = (key: string) => {
     const map = new Map<string, number>();
-    active.forEach(p => {
+    scoped.forEach(p => {
       const spec = p.specs.find(s => s.key === key);
       if (spec?.value) map.set(spec.value, (map.get(spec.value) ?? 0) + 1);
     });
     return [...map.entries()].map(([value, count]) => ({ value, label: value, count }));
   };
-  const prices = active.map(p => p.price).filter((n): n is number => n != null);
+  const prices = scoped.map(p => p.price).filter((n): n is number => n != null);
   return {
     metals: collect('metal'),
     karats: collect('karat'),
     gemstones: collect('gemstone'),
     diamondTypes: collect('diamondType'),
-    diamondShapes: collect('shape'),
+    diamondShapes: [...collect('shape'), ...collect('diamondShape')].filter(
+      (item, index, all) => all.findIndex(x => x.value === item.value) === index
+    ),
     designers: mockStore.designers.map(d => ({
       value: d.slug,
       label: d.name,
-      count: active.filter(p => p.designerId === d.id).length
+      count: scoped.filter(p => p.designerId === d.id).length
     })).filter(d => d.count > 0),
     availability: ['in_stock', 'made_to_order', 'sold'].map(value => ({
       value,
-      label: value.replaceAll('_', ' '),
-      count: active.filter(p => p.availability === value).length
-    })),
+      label: titleCase(value),
+      count: scoped.filter(p => p.availability === value).length
+    })).filter(d => d.count > 0),
     priceRange: {
       min: prices.length ? Math.min(...prices) : 0,
       max: prices.length ? Math.max(...prices) : 0
@@ -409,7 +422,7 @@ export function handleMockRequest(req: HttpRequest<unknown>): Observable<HttpRes
   }
 
   if (method === 'GET' && path.endsWith('/products/facets')) {
-    return ok(facets());
+    return ok(facets(queryParams(req)));
   }
 
   if (method === 'GET' && path.endsWith('/products')) {

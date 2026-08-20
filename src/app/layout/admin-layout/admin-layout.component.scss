@@ -14,14 +14,14 @@
 
 aside {
   height: 100dvh;
-  background: linear-gradient(180deg, #1a1612 0%, #12100e 100%);
-  color: #f7f3ec;
+  background: linear-gradient(180deg, #0f1729 0%, #0b0e18 100%);
+  color: #f5f7fb;
   padding: 1.2rem 0.9rem 1rem;
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
   overflow: hidden;
-  border-right: 1px solid rgba(247, 243, 236, 0.06);
+  border-right: 1px solid rgba(245, 247, 251, 0.06);
 }
 
 .brand {
@@ -37,7 +37,7 @@ aside {
 }
 
 .brand span {
-  color: #c4a574;
+  color: #7d9bd1;
 }
 
 .aside-scroll {
@@ -47,7 +47,7 @@ aside {
   overflow-x: hidden;
   padding-bottom: 0.5rem;
   scrollbar-width: thin;
-  scrollbar-color: rgba(196, 165, 116, 0.35) transparent;
+  scrollbar-color: rgba(125, 155, 209, 0.35) transparent;
 }
 
 .group-label {
@@ -55,7 +55,7 @@ aside {
   font-size: 0.62rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: rgba(247, 243, 236, 0.38);
+  color: rgba(245, 247, 251, 0.38);
 }
 
 nav {
@@ -68,7 +68,7 @@ nav a {
   align-items: center;
   gap: 0.65rem;
   padding: 0.68rem 0.8rem;
-  color: rgba(247, 243, 236, 0.72);
+  color: rgba(245, 247, 251, 0.72);
   border-radius: 10px;
   font-size: 0.9rem;
   transition: background 0.2s ease, color 0.2s ease;
@@ -76,12 +76,12 @@ nav a {
 
 nav a.on,
 nav a:hover {
-  color: #f7f3ec;
-  background: rgba(247, 243, 236, 0.07);
+  color: #f5f7fb;
+  background: rgba(245, 247, 251, 0.07);
 }
 
 nav a.on {
-  color: #c4a574;
+  color: #7d9bd1;
 }
 
 .aside-foot {
@@ -90,8 +90,8 @@ nav a.on {
   gap: 0.7rem;
   padding: 0.85rem 0.35rem 0.15rem;
   margin-top: 0;
-  border-top: 1px solid rgba(247, 243, 236, 0.1);
-  background: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.2));
+  border-top: 1px solid rgba(245, 247, 251, 0.1);
+  background: linear-gradient(180deg, transparent, rgba(0, 0, 10, 0.2));
 }
 
 .who {
@@ -108,8 +108,8 @@ nav a.on {
   border-radius: 50%;
   display: grid;
   place-items: center;
-  background: #c4a574;
-  color: #141210;
+  background: #7d9bd1;
+  color: #0b0e18;
   font-size: 0.78rem;
   font-weight: 700;
   flex: none;
@@ -129,7 +129,7 @@ nav a.on {
 }
 
 .who small {
-  color: rgba(247, 243, 236, 0.5);
+  color: rgba(245, 247, 251, 0.5);
   text-transform: capitalize;
   font-size: 0.72rem;
 }
@@ -141,7 +141,7 @@ aside button {
   gap: 0.45rem;
   background: transparent;
   color: inherit;
-  border: 1px solid rgba(247, 243, 236, 0.18);
+  border: 1px solid rgba(245, 247, 251, 0.18);
   padding: 0.7rem;
   cursor: pointer;
   border-radius: 999px;
@@ -150,8 +150,8 @@ aside button {
 }
 
 aside button:hover {
-  background: rgba(247, 243, 236, 0.08);
-  border-color: rgba(247, 243, 236, 0.32);
+  background: rgba(245, 247, 251, 0.08);
+  border-color: rgba(245, 247, 251, 0.32);
 }
 
 section {
@@ -161,7 +161,7 @@ section {
   flex-direction: column;
   overflow: hidden;
   background:
-    radial-gradient(ellipse 50% 30% at 100% 0%, rgba(196, 165, 116, 0.12), transparent 55%),
+    radial-gradient(ellipse 50% 30% at 100% 0%, rgba(58, 95, 189, 0.12), transparent 55%),
     var(--lvj-admin-canvas);
 }
 
@@ -242,14 +242,14 @@ section {
   text-transform: uppercase;
   color: var(--lvj-gold-deep);
   padding: 0.55rem 1rem;
-  border: 1px solid rgba(138, 111, 74, 0.28);
+  border: 1px solid rgba(45, 74, 124, 0.28);
   border-radius: 999px;
   transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
 }
 
 .storefront:hover {
   background: var(--lvj-ink);
-  color: #f7f3ec;
+  color: #ffffff;
   border-color: var(--lvj-ink);
 }
 
@@ -286,7 +286,7 @@ section {
     display: block;
     position: fixed;
     inset: 0;
-    background: rgba(12, 10, 8, 0.45);
+    background: rgba(8, 10, 16, 0.45);
     z-index: 80;
     border: 0;
   }

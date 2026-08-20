@@ -1,19 +1,30 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import { PaginatorModule, PaginatorState } from 'primeng/paginator';
+import { SelectModule } from 'primeng/select';
 import { Category, ProductFilterFacets, ProductListItem, ProductListQuery } from '../../core/models';
 import { CategoryService } from '../../core/services/category.service';
 import { ProductService } from '../../core/services/product.service';
 import { SeoService } from '../../core/services/seo.service';
-import { ProductFiltersComponent } from '../../shared/components/product-filters/product-filters.component';
-import { ProductCardComponent } from '../../shared/components/product-card/product-card.component';
-import { LoadingSkeletonComponent } from '../../shared/components/loading-skeleton/loading-skeleton.component';
 import { EmptyStateComponent } from '../../shared/components/empty-state/empty-state.component';
+import { LoadingSkeletonComponent } from '../../shared/components/loading-skeleton/loading-skeleton.component';
+import { ProductCardComponent } from '../../shared/components/product-card/product-card.component';
+import { ProductFiltersComponent } from '../../shared/components/product-filters/product-filters.component';
+import { AppIconComponent } from '../../shared/icons/lvj-icons';
 
 @Component({
   selector: 'app-catalog',
-  imports: [FormsModule, PaginatorModule, ProductFiltersComponent, ProductCardComponent, LoadingSkeletonComponent, EmptyStateComponent],
+  imports: [
+    FormsModule,
+    PaginatorModule,
+    SelectModule,
+    ProductFiltersComponent,
+    ProductCardComponent,
+    LoadingSkeletonComponent,
+    EmptyStateComponent,
+    AppIconComponent
+  ],
   templateUrl: './catalog.component.html',
   styleUrl: './catalog.component.scss'
 })
@@ -35,9 +46,24 @@ export class CatalogComponent implements OnInit {
   readonly mobileFilters = signal(false);
   readonly category = signal<Category | null>(null);
   readonly columns = signal(3);
+  private facetKey = '';
+
+  readonly sortOptions = [
+    { label: 'Newest', value: 'newest' },
+    { label: 'Best selling', value: 'featured' },
+    { label: 'Name A–Z', value: 'name_asc' },
+    { label: 'Name Z–A', value: 'name_desc' },
+    { label: 'Price · low to high', value: 'price_asc' },
+    { label: 'Price · high to low', value: 'price_desc' }
+  ];
+
+  readonly densityOptions = [
+    { cols: 2, icon: 'columns-2', label: 'Two columns' },
+    { cols: 3, icon: 'layout-grid', label: 'Three columns' },
+    { cols: 4, icon: 'columns-4', label: 'Four columns' }
+  ];
 
   ngOnInit(): void {
-    this.productsApi.facets().subscribe(f => this.facets.set(f));
     this.route.data.subscribe(data => {
       if (data['title']) this.title.set(data['title']);
     });
@@ -47,6 +73,7 @@ export class CatalogComponent implements OnInit {
         this.query.update(q => ({ ...q, designer, page: 1 }));
         this.eyebrow.set('Designer');
         this.title.set('Designer collection');
+        this.loadFacets({ designer });
         this.load();
       }
     });
@@ -57,7 +84,9 @@ export class CatalogComponent implements OnInit {
     const data = this.route.snapshot.data;
     const qp = this.route.snapshot.queryParamMap;
     const category = data['category'] as string | undefined;
-    const designerSlug = this.router.url.startsWith('/designers/') ? this.route.snapshot.paramMap.get('slug') || undefined : qp.get('designer') || undefined;
+    const designerSlug = this.router.url.startsWith('/designers/')
+      ? this.route.snapshot.paramMap.get('slug') || undefined
+      : qp.get('designer') || undefined;
     const next: ProductListQuery = {
       category,
       subcategory: qp.get('subcategory') || undefined,
@@ -75,6 +104,7 @@ export class CatalogComponent implements OnInit {
       pageSize: 12
     };
     this.query.set(next);
+    this.loadFacets(next);
     if (category) {
       this.categoriesApi.bySlug(category).subscribe({
         next: cat => {
@@ -89,7 +119,7 @@ export class CatalogComponent implements OnInit {
         error: () => this.seo.set({ title: this.title(), description: this.description() })
       });
     } else {
-      this.eyebrow.set('Shop');
+      this.eyebrow.set(this.router.url.startsWith('/designers/') ? 'Designer' : 'Shop');
       this.title.set(data['title'] || 'Shop');
       this.description.set('Browse the Lincroft Village Jewelers collection.');
       this.seo.set({ title: this.title(), description: this.description() });
@@ -111,7 +141,10 @@ export class CatalogComponent implements OnInit {
 
   onFilter(query: ProductListQuery): void {
     this.query.set(query);
-    void this.router.navigate([], { relativeTo: this.route, queryParams: this.toParams(query), queryParamsHandling: 'merge' });
+    void this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: this.toParams(query)
+    });
   }
 
   onSort(sort: string): void {
@@ -120,6 +153,18 @@ export class CatalogComponent implements OnInit {
 
   onPage(event: PaginatorState): void {
     this.onFilter({ ...this.query(), page: (event.page ?? 0) + 1, pageSize: event.rows ?? 12 });
+  }
+
+  private loadFacets(query: ProductListQuery): void {
+    const onDesigner = this.router.url.startsWith('/designers/');
+    const key = `${query.category ?? ''}|${query.subcategory ?? ''}|${onDesigner ? query.designer ?? '' : ''}`;
+    if (key === this.facetKey && this.facets()) return;
+    this.facetKey = key;
+    this.productsApi.facets({
+      category: query.category,
+      subcategory: query.subcategory,
+      designer: onDesigner ? query.designer : undefined
+    }).subscribe(f => this.facets.set(f));
   }
 
   private toParams(query: ProductListQuery): Record<string, string | null> {
@@ -142,6 +187,9 @@ export class CatalogComponent implements OnInit {
       const value = query[key];
       params[key] = value == null || value === '' ? null : String(value);
     });
+    if (this.router.url.startsWith('/designers/')) {
+      params['designer'] = null;
+    }
     return params;
   }
 }
