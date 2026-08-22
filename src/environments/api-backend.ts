@@ -10,7 +10,7 @@
 export type BackendTarget = 'mock' | 'ngrok' | 'local' | 'production';
 
 /** <<< switch backends here during `ng serve` >>> */
-export const ACTIVE_BACKEND: BackendTarget = 'ngrok';
+export const ACTIVE_BACKEND: BackendTarget = 'production';
 
 /**
  * Current ngrok origin from the backend team.
@@ -20,6 +20,9 @@ export const NGROK_ORIGIN = 'https://boss-caravan-unpaved.ngrok-free.dev';
 
 /** Backend on the same machine (launchSettings / Kestrel). */
 export const LOCAL_ORIGIN = 'https://localhost:5024';
+
+/** Permanent production API (Render). */
+export const PRODUCTION_ORIGIN = 'https://lincroftjewelers.onrender.com';
 
 export interface ApiBackendConfig {
   /** Full API root, including `/api`, no trailing slash. */
@@ -50,9 +53,8 @@ export const BACKEND_TARGETS: Record<BackendTarget, ApiBackendConfig> = {
     useMockApi: false,
     extraHeaders: {}
   },
-  /** Same-origin `/api` (reverse proxy). Not for Netlify → separate BE. */
   production: {
-    apiUrl: '/api',
+    apiUrl: apiUrl(PRODUCTION_ORIGIN),
     useMockApi: false,
     extraHeaders: {}
   }

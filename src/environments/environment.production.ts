@@ -1,15 +1,7 @@
 import { BACKEND_TARGETS } from './api-backend';
 
-/**
- * Netlify production build target.
- *
- * Temporary: use `ngrok` so the deployed site talks to the live BE tunnel
- * (https://boss-caravan-unpaved.ngrok-free.dev/api/...).
- *
- * When the real production API is ready, switch back to `BACKEND_TARGETS.production`
- * (or set that target’s apiUrl to the permanent host).
- */
-const backend = BACKEND_TARGETS.ngrok;
+/** Netlify production build — live API on Render. */
+const backend = BACKEND_TARGETS.production;
 
 export const environment = {
   production: true,
