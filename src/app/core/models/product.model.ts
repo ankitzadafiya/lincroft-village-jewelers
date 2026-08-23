@@ -49,6 +49,8 @@ export interface Product {
   subcategoryId?: string | null;
   designerId?: string | null;
   designerName?: string | null;
+  /** Storefront card/PDP label — free text from admin or Excel Brand column. */
+  brandName?: string | null;
   price?: number | null;
   compareAtPrice?: number | null;
   showPrice: boolean;
@@ -73,6 +75,7 @@ export interface ProductListItem {
   categoryId: string;
   categoryName: string;
   subcategoryName?: string | null;
+  brandName?: string | null;
   designerName?: string | null;
   price?: number | null;
   compareAtPrice?: number | null;
@@ -125,6 +128,7 @@ export interface ProductWritePayload {
   categoryId: string;
   subcategoryId?: string | null;
   designerId?: string | null;
+  brandName?: string | null;
   price?: number | null;
   compareAtPrice?: number | null;
   showPrice?: boolean;
@@ -139,8 +143,16 @@ export interface ProductWritePayload {
   videos?: ProductMediaWrite[];
 }
 
-export interface ProductStatusUpdate {
-  status: ProductStatus;
+export function productDisplayBrand(item: {
+  brandName?: string | null;
+  designerName?: string | null;
+  categoryName?: string;
+}): string {
+  const brand = item.brandName?.trim();
+  if (brand) return brand;
+  const designer = item.designerName?.trim();
+  if (designer) return designer;
+  return item.categoryName?.trim() ?? '';
 }
 
 /** Identity on write is `url` (and `sourceUrl` if present). `id` is round-tripped but not used to attach. */

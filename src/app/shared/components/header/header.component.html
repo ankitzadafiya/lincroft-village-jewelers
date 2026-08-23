@@ -1,16 +1,23 @@
 @if (promoOpen()) {
-  <div class="promo">
-    <div class="promo-inner">
-      <button type="button" class="promo-nav" aria-label="Previous announcement" (click)="shiftPromo(-1)">
-        <app-icon name="chevron-left" [size]="14" [strokeWidth]="1.75"></app-icon>
-      </button>
-      <p>{{ promos[promoIndex()] }}</p>
-      <button type="button" class="promo-nav" aria-label="Next announcement" (click)="shiftPromo(1)">
-        <app-icon name="chevron-right" [size]="14" [strokeWidth]="1.75"></app-icon>
-      </button>
+  <div class="promo" aria-label="Store announcements">
+    <div class="promo-marquee">
+      <div class="promo-track">
+        @for (item of promos; track item) {
+          <span class="promo-item">
+            {{ item }}
+            <span class="promo-sep" aria-hidden="true">◆</span>
+          </span>
+        }
+        @for (item of promos; track item + '-dup') {
+          <span class="promo-item" aria-hidden="true">
+            {{ item }}
+            <span class="promo-sep">◆</span>
+          </span>
+        }
+      </div>
     </div>
     <button type="button" class="promo-close" aria-label="Dismiss announcement" (click)="promoOpen.set(false)">
-      <app-icon name="x" [size]="14" [strokeWidth]="1.75"></app-icon>
+      <app-icon name="x" [size]="12" [strokeWidth]="1.75"></app-icon>
     </button>
   </div>
 }
@@ -29,6 +36,7 @@
         <a
           [routerLink]="item.path"
           routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: item.exact ?? false }"
           (mouseenter)="openMega(item.mega)">
           {{ item.label }}
           @if (item.mega) {
@@ -39,7 +47,6 @@
     </nav>
 
     <div class="tools">
-      <app-theme-toggle />
       <button class="icon-btn icon-tip" type="button" data-tip="Search" aria-label="Search" (click)="searchOpen.set(true)">
         <app-icon name="search" [size]="19" [strokeWidth]="1.5"></app-icon>
       </button>
@@ -103,9 +110,6 @@
       <a routerLink="/contact">Book Appointment</a>
       <a routerLink="/favorites">Wishlist</a>
       <a routerLink="/services">Services</a>
-      <div class="drawer-theme">
-        <app-theme-toggle [compact]="false" [showLabel]="true" />
-      </div>
     </nav>
   </div>
 }

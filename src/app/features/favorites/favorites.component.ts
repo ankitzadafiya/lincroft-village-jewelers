@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, OnInit, effect, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ProductListItem } from '../../core/models';
 import { CustomerAuthService } from '../../core/services/customer-auth.service';
@@ -15,24 +15,29 @@ import { ProductGridComponent } from '../../shared/components/product-grid/produ
   template: `
     <section class="page-hero">
       <p class="eyebrow">Saved</p>
-      <h1>Favorites</h1>
-      @if (!customer.isAuthenticated()) {
-        <p class="muted save-note">
-          Saving on this device only.
-          <a routerLink="/account">Sign in</a> to keep favorites across visits.
-        </p>
-      } @else {
+      <h1>Wishlist</h1>
+      @if (customer.isAuthenticated()) {
         <p class="muted save-note">Synced to {{ customer.user()?.email }}</p>
       }
     </section>
     <section class="container section">
-      @if (loading()) {
+      @if (!customer.isAuthenticated()) {
+        <app-empty-state
+          title="Sign in to view your wishlist"
+          message="Wishlist is saved to your account so your pieces stay with you on any device.">
+          <div class="empty-actions">
+            <a routerLink="/account" [queryParams]="{ returnUrl: '/favorites' }" class="btn btn-gold">Sign in</a>
+            <a routerLink="/shop" class="btn btn-ghost">Browse jewelry</a>
+          </div>
+        </app-empty-state>
+      } @else if (loading()) {
         <app-loading-skeleton [count]="4" [columns]="4" />
       } @else if (!products().length) {
-        <app-empty-state title="No favorites yet." message="Tap the heart on any piece to save it. Sign in anytime to sync across devices.">
+        <app-empty-state
+          title="No saved pieces yet"
+          message="Tap the heart on any piece to save it to your wishlist.">
           <div class="empty-actions">
             <a routerLink="/shop" class="btn btn-gold">View jewelry</a>
-            <a routerLink="/account" class="btn btn-ghost">Sign in</a>
           </div>
         </app-empty-state>
       } @else {
@@ -42,7 +47,6 @@ import { ProductGridComponent } from '../../shared/components/product-grid/produ
   `,
   styles: [`
     .save-note { margin-top: 0.75rem; }
-    .save-note a { text-decoration: underline; text-underline-offset: 3px; color: var(--lvj-ink); }
     .empty-actions { display: flex; gap: 0.6rem; justify-content: center; flex-wrap: wrap; margin-top: 1.2rem; }
   `]
 })
@@ -53,14 +57,35 @@ export class FavoritesComponent implements OnInit {
   readonly customer = inject(CustomerAuthService);
   readonly products = signal<ProductListItem[]>([]);
   readonly loading = signal(true);
+  private lastIdsKey = '';
+
+  constructor() {
+    effect(() => {
+      if (!this.customer.isAuthenticated()) {
+        this.products.set([]);
+        this.loading.set(false);
+        this.lastIdsKey = '';
+        return;
+      }
+      const ids = this.favorites.favoriteIds();
+      const key = ids.slice().sort().join(',');
+      if (key === this.lastIdsKey) return;
+      this.lastIdsKey = key;
+      this.loadProducts(ids);
+    });
+  }
 
   ngOnInit(): void {
-    this.seo.set({ title: 'Favorites', description: 'Pieces you have saved at Lincroft Village Jewelers.' });
-    const ids = this.favorites.favoriteIds();
+    this.seo.set({ title: 'Wishlist', description: 'Pieces you have saved at Lincroft Village Jewelers.' });
+  }
+
+  private loadProducts(ids: string[]): void {
     if (!ids.length) {
+      this.products.set([]);
       this.loading.set(false);
       return;
     }
+
     this.loading.set(true);
     this.productsApi.list({ pageSize: 100 }).subscribe({
       next: res => {

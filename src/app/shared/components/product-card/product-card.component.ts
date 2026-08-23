@@ -1,6 +1,6 @@
 import { Component, inject, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { ProductListItem } from '../../../core/models';
+import { ProductListItem, productDisplayBrand } from '../../../core/models';
 import { ConfigurationService } from '../../../core/services/configuration.service';
 import { FavoriteButtonComponent } from '../favorite-button/favorite-button.component';
 import { PricePipe } from '../../pipes/price.pipe';
@@ -35,10 +35,8 @@ import { PricePipe } from '../../pipes/price.pipe';
         </div>
       </a>
       <div class="body">
-        @if (product().designerName) {
-          <p class="brand">{{ product().designerName }}</p>
-        } @else {
-          <p class="brand">{{ product().categoryName }}</p>
+        @if (displayBrand()) {
+          <p class="brand">{{ displayBrand() }}</p>
         }
         <h3><a [routerLink]="['/product', product().slug]">{{ product().name }}</a></h3>
         <div class="meta">
@@ -64,5 +62,9 @@ export class ProductCardComponent {
   hoverSrc(): string {
     const img = this.product().hoverImage;
     return img?.thumbnailUrl || img?.url || '';
+  }
+
+  displayBrand(): string {
+    return productDisplayBrand(this.product());
   }
 }

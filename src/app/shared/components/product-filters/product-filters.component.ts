@@ -1,25 +1,33 @@
-import { Component, effect, input, output, signal } from '@angular/core';
+import { Component, effect, inject, input, output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AccordionModule } from 'primeng/accordion';
-import { CheckboxModule } from 'primeng/checkbox';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { SliderModule } from 'primeng/slider';
 import { FacetValue, ProductFilterFacets, ProductListQuery } from '../../../core/models';
+import { ConfigurationService } from '../../../core/services/configuration.service';
 
-type FilterKey = 'designer' | 'metal' | 'gemstone' | 'diamondType' | 'availability';
+type FilterKey = 'designer' | 'metal' | 'gemstone' | 'diamondType';
+
+const HIDDEN_METALS = ['platinum', 'sterling silver'];
+
+function isHiddenMetal(item: FacetValue): boolean {
+  const haystack = `${item.label} ${item.value}`.toLowerCase().replace(/[_-]+/g, ' ');
+  return HIDDEN_METALS.some(name => haystack.includes(name));
+}
 
 @Component({
   selector: 'app-product-filters',
-  imports: [FormsModule, AccordionModule, CheckboxModule, InputNumberModule, SliderModule],
+  imports: [FormsModule, AccordionModule, InputNumberModule, SliderModule],
   templateUrl: './product-filters.component.html',
   styleUrl: './product-filters.component.scss'
 })
 export class ProductFiltersComponent {
+  private readonly config = inject(ConfigurationService);
   readonly facets = input<ProductFilterFacets | null>(null);
   readonly query = input.required<ProductListQuery>();
   readonly queryChange = output<ProductListQuery>();
 
-  openPanels: string[] = ['price', 'designer'];
+  openPanels: string[] = ['price'];
   priceRangeModel: number[] = [0, 0];
   localMin = 0;
   localMax = 0;
@@ -35,7 +43,7 @@ export class ProductFiltersComponent {
     effect(() => {
       const f = this.facets();
       const q = this.query();
-      this.sections = this.buildSections(f);
+      this.sections = this.buildSections(f, this.config.showBrandFilter());
       if (!f) return;
       this.syncing = true;
       const extent = this.sliderExtent(f.priceRange);
@@ -57,10 +65,11 @@ export class ProductFiltersComponent {
     return current === item.value.toLowerCase() || current === item.label.toLowerCase();
   }
 
-  onCheck(key: FilterKey, item: FacetValue, checked: boolean): void {
+  toggleFilter(key: FilterKey, item: FacetValue): void {
+    const selected = this.isSelected(key, item);
     this.queryChange.emit({
       ...this.query(),
-      [key]: checked ? item.value : undefined,
+      [key]: selected ? undefined : item.value,
       page: 1
     });
   }
@@ -113,14 +122,16 @@ export class ProductFiltersComponent {
     this.queryChange.emit({ ...current, priceMin, priceMax, page: 1 });
   }
 
-  private buildSections(f: ProductFilterFacets | null): { key: FilterKey; label: string; items: FacetValue[] }[] {
+  private buildSections(
+    f: ProductFilterFacets | null,
+    showBrand: boolean
+  ): { key: FilterKey; label: string; items: FacetValue[] }[] {
     if (!f) return [];
     return [
-      { key: 'designer' as const, label: 'Brand', items: f.designers },
-      { key: 'metal' as const, label: 'Metal', items: f.metals },
+      ...(showBrand ? [{ key: 'designer' as const, label: 'Brand', items: f.designers }] : []),
+      { key: 'metal' as const, label: 'Metal', items: f.metals.filter(item => !isHiddenMetal(item)) },
       { key: 'gemstone' as const, label: 'Gemstone Type', items: f.gemstones },
-      { key: 'diamondType' as const, label: 'Diamond Type', items: f.diamondTypes },
-      { key: 'availability' as const, label: 'Availability', items: f.availability }
+      { key: 'diamondType' as const, label: 'Diamond Type', items: f.diamondTypes }
     ].filter(s => s.items.length);
   }
 

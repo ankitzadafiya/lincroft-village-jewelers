@@ -1,6 +1,6 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { Product, ProductListItem } from '../../core/models';
+import { Product, ProductListItem, productDisplayBrand } from '../../core/models';
 import { ProductService } from '../../core/services/product.service';
 import { ConfigurationService } from '../../core/services/configuration.service';
 import { InquiryService } from '../../core/services/inquiry.service';
@@ -43,6 +43,13 @@ export class ProductComponent implements OnInit {
   readonly error = signal('');
   readonly loading = signal(true);
   readonly tab = signal<'desc' | 'details' | 'ship'>('desc');
+
+  displayBrand(product: Product): string {
+    return productDisplayBrand({
+      brandName: product.brandName,
+      designerName: product.designerName
+    }) || 'Lincroft Atelier';
+  }
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {

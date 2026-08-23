@@ -52,19 +52,19 @@
         <p-accordion-panel [value]="section.key">
           <p-accordion-header>{{ section.label }}</p-accordion-header>
           <p-accordion-content>
-            <div class="options">
+            <div class="filter-list" role="group" [attr.aria-label]="section.label">
               @for (item of section.items; track item.value) {
-                <label class="opt" [for]="section.key + '-' + item.value">
-                  <p-checkbox
-                    [inputId]="section.key + '-' + item.value"
-                    [binary]="true"
-                    [ngModel]="isSelected(section.key, item)"
-                    (onChange)="onCheck(section.key, item, $event.checked)" />
-                  <span class="opt-label">
+                <button
+                  type="button"
+                  class="filter-item"
+                  [class.on]="isSelected(section.key, item)"
+                  [attr.aria-pressed]="isSelected(section.key, item)"
+                  (click)="toggleFilter(section.key, item)">
+                  <span class="filter-item-label">
                     {{ item.label }}
-                    <em>({{ item.count }})</em>
+                    <span class="count">({{ item.count }})</span>
                   </span>
-                </label>
+                </button>
               }
             </div>
           </p-accordion-content>

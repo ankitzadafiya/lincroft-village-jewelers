@@ -1,6 +1,6 @@
 import { Component, inject, signal } from '@angular/core';
 import { AbstractControl, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { IMG } from '../../core/mock/image-catalog';
 import { CustomerAuthService } from '../../core/services/customer-auth.service';
 import { FavoriteService } from '../../core/services/favorite.service';
@@ -30,6 +30,7 @@ export class AccountComponent {
   private readonly fb = inject(FormBuilder);
   private readonly toast = inject(ToastService);
   private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
   readonly mode = signal<'login' | 'register'>('login');
   readonly error = signal('');
   readonly submitting = signal(false);
@@ -57,8 +58,13 @@ export class AccountComponent {
   constructor() {
     inject(SeoService).set({
       title: 'Account',
-      description: 'Sign in to Lincroft Village Jewelers to save favorites across devices.'
+      description: 'Sign in to Lincroft Village Jewelers to save your wishlist to your account.'
     });
+
+    const wishlist = this.route.snapshot.queryParamMap.get('wishlist');
+    if (wishlist) {
+      this.favorites.setPending(wishlist);
+    }
   }
 
   setMode(mode: 'login' | 'register'): void {
@@ -108,7 +114,7 @@ export class AccountComponent {
     this.customer.loginWithGoogle(idToken).subscribe({
       next: session => {
         this.submitting.set(false);
-        this.toast.success('Welcome. Your favorites are synced.', 'Signed in');
+        this.toast.success('Welcome. Your wishlist is ready.', 'Signed in');
         this.afterAuth(session.user.role);
       },
       error: err => {
@@ -131,7 +137,7 @@ export class AccountComponent {
     this.customer.login(payload).subscribe({
       next: session => {
         this.submitting.set(false);
-        this.toast.success('Welcome back. Your favorites are synced.', 'Signed in');
+        this.toast.success('Welcome back. Your wishlist is synced.', 'Signed in');
         this.afterAuth(session.user.role);
       },
       error: err => {
@@ -154,7 +160,7 @@ export class AccountComponent {
     this.customer.register(payload).subscribe({
       next: session => {
         this.submitting.set(false);
-        this.toast.success('Account created. Favorites will sync on this device.', 'Welcome');
+        this.toast.success('Account created. Your wishlist will save to this account.', 'Welcome');
         this.afterAuth(session.user.role);
       },
       error: err => {
@@ -172,6 +178,11 @@ export class AccountComponent {
   private afterAuth(role: string): void {
     if (role === 'admin' || role === 'staff') {
       void this.router.navigate(['/account']);
+      return;
+    }
+    const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl');
+    if (returnUrl?.startsWith('/') && !returnUrl.startsWith('//')) {
+      void this.router.navigateByUrl(returnUrl);
       return;
     }
     void this.router.navigate(['/favorites']);

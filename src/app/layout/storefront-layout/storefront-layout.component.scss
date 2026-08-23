@@ -1,0 +1,14 @@
+:host {
+  display: block;
+}
+
+.storefront-shell {
+  min-height: 100vh;
+}
+
+/* Wide monitors only — tint side gutters; content width stays the same */
+@media (min-width: 1680px) {
+  :host {
+    background: var(--lvj-ivory);
+  }
+}

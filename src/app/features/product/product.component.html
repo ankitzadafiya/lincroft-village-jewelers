@@ -16,34 +16,40 @@
     </section>
 
     <section class="pdp container">
-      <app-product-gallery [images]="p.images || []" [videos]="p.videos || []" />
-      <div class="info">
-        <p class="eyebrow">{{ p.designerName || 'Lincroft Atelier' }}</p>
-        <div class="title-row">
-          <h1>{{ p.name }}</h1>
-          <app-favorite-button [id]="p.id" variant="ghost" />
+      <div class="pdp-layout">
+        <div class="gallery-col">
+          <app-product-gallery [images]="p.images || []" [videos]="p.videos || []" />
         </div>
-        <p class="sku">SKU {{ p.sku }}</p>
-        <p class="price">{{ p.price | lvjPrice: p.showPrice }}
-          @if (config.isPriceVisible(p) && p.compareAtPrice) {
-            <span class="price-compare">{{ p.compareAtPrice | lvjPrice: true }}</span>
+
+        <div class="info">
+          <p class="eyebrow">{{ displayBrand(p) }}</p>
+          <div class="title-row">
+            <h1>{{ p.name }}</h1>
+            <app-favorite-button [id]="p.id" variant="ghost" />
+          </div>
+          <p class="sku">SKU {{ p.sku }}</p>
+          <p class="price">
+            {{ p.price | lvjPrice: p.showPrice }}
+            @if (config.isPriceVisible(p) && p.compareAtPrice) {
+              <span class="price-compare">{{ p.compareAtPrice | lvjPrice: true }}</span>
+            }
+          </p>
+          @if (p.description) {
+            <p class="desc">{{ p.description }}</p>
           }
-        </p>
-        @if (p.description) {
-          <p class="desc">{{ p.description }}</p>
-        }
-        <p class="avail">{{ p.availability.replaceAll('_', ' ') }}</p>
-        <div class="actions">
-          <button class="btn btn-gold" type="button" (click)="addInquiry()">Call For Price / Inquire</button>
-        </div>
-        <div class="alt">
-          <a class="btn btn-ghost" [href]="whatsapp()" target="_blank" rel="noreferrer">WhatsApp inquiry</a>
-          <a class="btn btn-ghost" [href]="emailHref()">Email inquiry</a>
-          <a class="btn btn-ghost" routerLink="/custom-jewelry">Customization request</a>
-        </div>
-        <div class="perks">
-          <p>Estimated delivery · Ask our team for timing</p>
-          <p>Complimentary local pickup in Lincroft</p>
+          <p class="avail">{{ p.availability.replaceAll('_', ' ') }}</p>
+          <div class="actions">
+            <button class="btn btn-gold" type="button" (click)="addInquiry()">Call For Price / Inquire</button>
+          </div>
+          <div class="alt">
+            <a class="btn btn-ghost" [href]="whatsapp()" target="_blank" rel="noreferrer">WhatsApp inquiry</a>
+            <a class="btn btn-ghost" [href]="emailHref()">Email inquiry</a>
+            <a class="btn btn-ghost" routerLink="/custom-jewelry">Customization request</a>
+          </div>
+          <div class="perks">
+            <p>Estimated delivery · Ask our team for timing</p>
+            <p>Complimentary local pickup in Lincroft</p>
+          </div>
         </div>
       </div>
     </section>

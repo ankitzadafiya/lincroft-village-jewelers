@@ -5,6 +5,7 @@ import { PaginatorModule, PaginatorState } from 'primeng/paginator';
 import { SelectModule } from 'primeng/select';
 import { Category, ProductFilterFacets, ProductListItem, ProductListQuery } from '../../core/models';
 import { CategoryService } from '../../core/services/category.service';
+import { ConfigurationService } from '../../core/services/configuration.service';
 import { ProductService } from '../../core/services/product.service';
 import { SeoService } from '../../core/services/seo.service';
 import { EmptyStateComponent } from '../../shared/components/empty-state/empty-state.component';
@@ -33,6 +34,7 @@ export class CatalogComponent implements OnInit {
   private readonly router = inject(Router);
   private readonly productsApi = inject(ProductService);
   private readonly categoriesApi = inject(CategoryService);
+  private readonly config = inject(ConfigurationService);
   private readonly seo = inject(SeoService);
 
   readonly title = signal('Shop');
@@ -51,8 +53,6 @@ export class CatalogComponent implements OnInit {
   readonly sortOptions = [
     { label: 'Newest', value: 'newest' },
     { label: 'Best selling', value: 'featured' },
-    { label: 'Name A–Z', value: 'name_asc' },
-    { label: 'Name Z–A', value: 'name_desc' },
     { label: 'Price · low to high', value: 'price_asc' },
     { label: 'Price · high to low', value: 'price_desc' }
   ];
@@ -86,7 +86,9 @@ export class CatalogComponent implements OnInit {
     const category = data['category'] as string | undefined;
     const designerSlug = this.router.url.startsWith('/designers/')
       ? this.route.snapshot.paramMap.get('slug') || undefined
-      : qp.get('designer') || undefined;
+      : this.config.showBrandFilter()
+        ? qp.get('designer') || undefined
+        : undefined;
     const next: ProductListQuery = {
       category,
       subcategory: qp.get('subcategory') || undefined,
@@ -95,11 +97,10 @@ export class CatalogComponent implements OnInit {
       karat: qp.get('karat') || undefined,
       gemstone: qp.get('gemstone') || undefined,
       diamondType: qp.get('diamondType') || undefined,
-      availability: qp.get('availability') || undefined,
       priceMin: qp.get('priceMin') ? Number(qp.get('priceMin')) : undefined,
       priceMax: qp.get('priceMax') ? Number(qp.get('priceMax')) : undefined,
       q: qp.get('q') || undefined,
-      sort: (qp.get('sort') as ProductListQuery['sort']) || 'newest',
+      sort: this.resolveSort(qp.get('sort')),
       page: Number(qp.get('page') || 1),
       pageSize: 12
     };
@@ -148,7 +149,12 @@ export class CatalogComponent implements OnInit {
   }
 
   onSort(sort: string): void {
-    this.onFilter({ ...this.query(), sort: sort as ProductListQuery['sort'], page: 1 });
+    this.onFilter({ ...this.query(), sort: this.resolveSort(sort), page: 1 });
+  }
+
+  private resolveSort(sort: string | null | undefined): ProductListQuery['sort'] {
+    const allowed = new Set(this.sortOptions.map(option => option.value));
+    return sort && allowed.has(sort) ? (sort as ProductListQuery['sort']) : 'newest';
   }
 
   onPage(event: PaginatorState): void {
@@ -175,7 +181,6 @@ export class CatalogComponent implements OnInit {
       'karat',
       'gemstone',
       'diamondType',
-      'availability',
       'priceMin',
       'priceMax',
       'q',
@@ -187,9 +192,10 @@ export class CatalogComponent implements OnInit {
       const value = query[key];
       params[key] = value == null || value === '' ? null : String(value);
     });
-    if (this.router.url.startsWith('/designers/')) {
+    if (this.router.url.startsWith('/designers/') || !this.config.showBrandFilter()) {
       params['designer'] = null;
     }
+    params['availability'] = null;
     return params;
   }
 }

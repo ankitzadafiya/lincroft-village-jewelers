@@ -10,11 +10,10 @@ import { IMG } from '../../../core/mock/image-catalog';
       <div class="container consult-inner">
         <h2>Book Your Personal Jewelry Consultation</h2>
         <p>
-          Whether you're shopping for engagement rings, designing a custom piece, or browsing fine jewelry,
-          our expert team is here to guide you. Book a private appointment and enjoy personalized attention
-          in a relaxed, welcoming environment.
+          Whether you're dreaming of a custom engagement ring, redesigning a cherished heirloom, or
+          browsing our fine jewelry collection, our expert team is here to guide you — from first
+          sketch to finished piece, with personalized attention in a relaxed, welcoming environment.
         </p>
-        <a routerLink="/contact" class="btn btn-gold">Book an Appointment</a>
       </div>
     </section>
 
@@ -55,8 +54,8 @@ import { IMG } from '../../../core/mock/image-catalog';
           <p class="eyebrow">Custom Jewelry Design</p>
           <h2>If you can dream it, we can build it</h2>
           <p class="lead">
-            Our skilled custom jewelry design artisans relish the chance to work with you to create
-            your own unique, personal piece of custom jewelry.
+            Our skilled custom jewelry artisans relish the chance to work with you — slide to compare
+            sketch and finished piece, then book a private appointment to start yours.
           </p>
           <a routerLink="/contact" class="btn btn-gold">Book an Appointment</a>
         </div>
@@ -65,22 +64,23 @@ import { IMG } from '../../../core/mock/image-catalog';
   `,
   styles: [`
     .consult {
-      padding: 3.25rem 1rem 1.75rem;
+      padding: 2.35rem 1rem 1.35rem;
       text-align: center;
-      background: var(--lvj-sky);
+      background:
+        linear-gradient(180deg, var(--lvj-sky), color-mix(in srgb, var(--lvj-sky) 55%, var(--lvj-white)));
     }
 
     .consult-inner {
       max-width: 580px;
       display: grid;
-      gap: 0.85rem;
+      gap: 0.75rem;
       justify-items: center;
     }
 
     .consult h2 {
       font-family: var(--font-body);
       font-style: normal;
-      font-size: clamp(1.55rem, 2.8vw, 2.1rem);
+      font-size: clamp(1.5rem, 2.7vw, 2.05rem);
       font-weight: 600;
       letter-spacing: -0.02em;
       line-height: 1.2;
@@ -88,18 +88,14 @@ import { IMG } from '../../../core/mock/image-catalog';
     }
 
     .consult p {
-      color: var(--lvj-muted);
+      color: var(--lvj-charcoal);
       line-height: 1.65;
       font-size: 0.94rem;
       max-width: 52ch;
     }
 
-    .consult .btn {
-      margin-top: 0.35rem;
-    }
-
     .custom {
-      padding: 1.5rem 0 3.5rem;
+      padding: 1.35rem 0 3.5rem;
       background: var(--lvj-white);
     }
 

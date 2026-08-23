@@ -63,6 +63,7 @@ export class CustomerAuthService {
     localStorage.removeItem(USER_KEY);
     this.sessionToken.set(null);
     this.sessionUser.set(null);
+    this.favorites.clearSession();
   }
 
   private persist(session: AuthSession): void {

@@ -109,18 +109,59 @@ If the seed currently uses SQL Server LocalDB names but this environment is **Po
 
 ### 1.4 `PUT /api/admin/config` must not wipe omitted fields
 
-Admin Settings UI only edits a subset (`showPricesGlobally`, `allowProductPriceOverride`, `email`, `phoneDisplay`, `whatsApp`). Frontend **merges** those into the last `GET /api/config` object and PUTs the **full** `AppConfiguration` (including `hours`, address, social URLs).
+Admin Settings UI only edits a subset (`showPricesGlobally`, `allowProductPriceOverride`, `showBrandFilter`, `darkModeEnabled`, `email`, `phoneDisplay`, `whatsApp`). Frontend **merges** those into the last `GET /api/config` object and PUTs the **full** `AppConfiguration` (including `hours`, address, social URLs).
 
 **Please confirm one of these and document it:**
 
 - **A (preferred):** PUT is a **full replace** of the singleton. Frontend will always send the complete object from GET + edits. Missing `hours` would wipe the week — we are sending `hours` from GET.
 - **B:** PUT is a **merge**; omitted properties keep previous values. Safer if a client sends a partial by mistake.
 
-If the C# model uses non-nullable `string` for `email` / `whatsApp` / address fields, sending JSON `null` vs omitting the property vs `""` must be defined. Frontend sends `undefined` (omitted) for empty optional strings, and always includes `showPricesGlobally`, `allowProductPriceOverride`, `storeName`, `hours`.
+If the C# model uses non-nullable `string` for `email` / `whatsApp` / address fields, sending JSON `null` vs omitting the property vs `""` must be defined. Frontend sends `undefined` (omitted) for empty optional strings, and always includes `showPricesGlobally`, `allowProductPriceOverride`, `showBrandFilter`, `darkModeEnabled`, `storeName`, `hours`.
 
 ---
 
-### 1.5 Admin inbox for the other lead types
+### 1.5 `AppConfiguration.showBrandFilter` (storefront catalog filters)
+
+**Added 2026-08-24.** Admin → Settings now has **Show brand filter on the storefront**. When enabled, the shop sidebar shows the **Brand** facet (`designer` query param). When disabled (default), the Brand section is hidden and any `?designer=` query param is cleared.
+
+**Required on `GET /api/config` and `PUT /api/admin/config`:**
+
+```json
+{
+  "showBrandFilter": false
+}
+```
+
+- Type: `boolean`
+- Default: `false` when unset (frontend treats missing/`null` as hidden)
+- Persist on the singleton settings row; return the saved value after PUT
+
+Production Render API currently omits this field, so the Brand filter stays hidden even after an admin toggles it on until the backend stores and returns it.
+
+---
+
+### 1.6 `AppConfiguration.darkModeEnabled` (storefront theme)
+
+**Added 2026-08-24.** Admin → Settings → **Enable dark mode on the storefront**. The visitor-facing header **no longer** has a light/dark toggle. Theme is controlled site-wide by this boolean.
+
+**Required on `GET /api/config` and `PUT /api/admin/config`:**
+
+```json
+{
+  "darkModeEnabled": false
+}
+```
+
+- Type: `boolean`
+- Default: `false` when unset (light theme)
+- When `true`: frontend sets `data-theme="dark"` on `<html>`
+- When `false`: `data-theme="light"`
+- Persist on the singleton settings row; return the saved value after PUT
+- Do **not** rely on browser `localStorage` for theme — admin config is the source of truth
+
+---
+
+### 1.7 Admin inbox for the other lead types
 
 The storefront posts three lead types besides product inquiries. Admin UI today can only list **inquiries**.
 
@@ -415,7 +456,7 @@ These HTTP calls are now live in Angular services. Paths are relative to `{apiUr
 - Optional fields match §3 of the API doc
 - `ProductWritePayload` media sent as `ProductMediaWrite` (`id`, `url`, `sortOrder`, `isPrimary`, …)
 - Category/designer write: empty slug omitted
-- Config PUT sends the full merged `AppConfiguration`
+- Config PUT sends the full merged `AppConfiguration` (includes `showBrandFilter`)
 
 ---
 
@@ -427,10 +468,12 @@ A short reply (or an updated API doc) covering:
 2. **§1.2** CORS header list — confirm `ngrok-skip-browser-warning` is allowed.
 3. **§1.3** Seed emails + passwords for this Postgres environment.
 4. **§1.4** Config PUT replace vs merge.
-5. **§1.5** Will you add admin list APIs for custom jewelry, contact, and newsletter? If yes, ship the TypeScript shapes above (or yours) in `API_ENDPOINTS_AND_MODELS.md`.
-6. **§2.1** `GET /api/customer/me` — yes/no.
-7. **§2.2** Content CMS — yes for v1 / seed-only.
-8. **§3** Yes/no on each confirmation.
+5. **§1.5** `showBrandFilter` on `AppConfiguration` — persist + return on GET/PUT config.
+6. **§1.6** `darkModeEnabled` on `AppConfiguration` — persist + return on GET/PUT config.
+7. **§1.7** Will you add admin list APIs for custom jewelry, contact, and newsletter? If yes, ship the TypeScript shapes above (or yours) in `API_ENDPOINTS_AND_MODELS.md`.
+8. **§2.1** `GET /api/customer/me` — yes/no.
+9. **§2.2** Content CMS — yes for v1 / seed-only.
+10. **§3** Yes/no on each confirmation.
 
 Until **§1.1, §1.2, and §1.3** are confirmed, frontend can call the API but catalog images, CORS preflight, and admin login may still fail in the browser.
 

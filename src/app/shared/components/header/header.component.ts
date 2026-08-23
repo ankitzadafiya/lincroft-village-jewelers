@@ -13,18 +13,18 @@ import { InquiryService } from '../../../core/services/inquiry.service';
 import { SearchService } from '../../../core/services/search.service';
 import { LogoComponent } from '../logo/logo.component';
 import { MegaMenuComponent } from '../mega-menu/mega-menu.component';
-import { ThemeToggleComponent } from '../theme-toggle/theme-toggle.component';
 import { AppIconComponent } from '../../icons/lvj-icons';
 
 interface NavItem {
   label: string;
   path: string;
   mega?: string;
+  exact?: boolean;
 }
 
 @Component({
   selector: 'app-header',
-  imports: [RouterLink, RouterLinkActive, ReactiveFormsModule, LogoComponent, MegaMenuComponent, AppIconComponent, ThemeToggleComponent],
+  imports: [RouterLink, RouterLinkActive, ReactiveFormsModule, LogoComponent, MegaMenuComponent, AppIconComponent],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })
@@ -45,6 +45,7 @@ export class HeaderComponent implements OnInit {
   ];
 
   readonly nav: NavItem[] = [
+    { label: 'Home', path: '/', exact: true },
     ...STORE_TOP_CATEGORIES.map(category => ({
       label: category.navLabel,
       path: '/' + category.slug,
@@ -59,7 +60,6 @@ export class HeaderComponent implements OnInit {
   readonly mobileOpen = signal(false);
   readonly searchOpen = signal(false);
   readonly promoOpen = signal(true);
-  readonly promoIndex = signal(0);
   readonly megaKey = signal<string | null>(null);
   readonly results = signal<ProductListItem[]>([]);
   readonly searching = signal(false);
@@ -101,11 +101,6 @@ export class HeaderComponent implements OnInit {
 
   openMega(slug?: string): void {
     this.megaKey.set(slug ?? null);
-  }
-
-  shiftPromo(dir: number): void {
-    const next = (this.promoIndex() + dir + this.promos.length) % this.promos.length;
-    this.promoIndex.set(next);
   }
 
   goSearch(): void {

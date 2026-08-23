@@ -8,6 +8,10 @@ export interface StoreHours {
 export interface AppConfiguration {
   showPricesGlobally: boolean;
   allowProductPriceOverride: boolean;
+  /** When true, the storefront filter sidebar shows the Brand section. */
+  showBrandFilter?: boolean;
+  /** When true, the storefront uses dark theme (admin-controlled; no visitor toggle). */
+  darkModeEnabled?: boolean;
   storeName: string;
   tagline?: string;
   phone?: string;

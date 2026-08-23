@@ -58,37 +58,74 @@ h2 {
   color: var(--lvj-muted);
 }
 
-.options {
+.filter-list {
   display: grid;
-  gap: 0.15rem;
+  gap: 0.2rem;
   padding: 0.1rem 0 0.35rem;
 }
 
-.opt {
+.filter-item {
   display: flex;
-  align-items: center;
-  gap: 0.65rem;
+  align-items: stretch;
+  width: 100%;
   margin: 0;
-  padding: 0.4rem 0.35rem;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: background 0.2s ease;
-}
-
-.opt:hover {
-  background: color-mix(in srgb, var(--lvj-champagne) 12%, transparent);
-}
-
-.opt-label {
-  font-size: 0.88rem;
+  padding: 0.62rem 0.85rem 0.62rem 0.55rem;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
   color: var(--lvj-charcoal);
-  line-height: 1.35;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  position: relative;
+  transition: background 0.18s ease, color 0.18s ease;
+
+  &::before {
+    content: '';
+    flex: 0 0 3px;
+    align-self: stretch;
+    margin-right: 0.85rem;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--lvj-champagne) 55%, var(--lvj-line));
+    transition: background 0.18s ease, width 0.18s ease;
+  }
 }
 
-.opt-label em {
-  font-style: normal;
+.filter-item:hover {
+  background: color-mix(in srgb, var(--lvj-champagne) 10%, transparent);
+}
+
+.filter-item:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--lvj-jewel) 45%, white);
+  outline-offset: 2px;
+}
+
+.filter-item.on {
+  background: color-mix(in srgb, var(--lvj-champagne) 22%, var(--lvj-panel));
+}
+
+.filter-item.on::before {
+  background: var(--lvj-jewel);
+  flex-basis: 4px;
+}
+
+.filter-item-label {
+  flex: 1;
+  min-width: 0;
+  font-size: 0.9rem;
+  line-height: 1.35;
+  font-weight: 500;
+  color: var(--lvj-charcoal);
+}
+
+.filter-item.on .filter-item-label {
+  color: var(--lvj-ink);
+  font-weight: 600;
+}
+
+.count {
   color: var(--lvj-muted-2);
-  font-size: 0.8rem;
+  font-weight: 450;
 }
 
 :host ::ng-deep {

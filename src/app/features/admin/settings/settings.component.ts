@@ -18,6 +18,12 @@ import { ToastService } from '../../../core/services/toast.service';
         <div class="field checks">
           <label class="check"><input type="checkbox" formControlName="allowProductPriceOverride" /> Allow a product to show price when global hide is on</label>
         </div>
+        <div class="field checks">
+          <label class="check"><input type="checkbox" formControlName="showBrandFilter" /> Show brand filter on the storefront</label>
+        </div>
+        <div class="field checks">
+          <label class="check"><input type="checkbox" formControlName="darkModeEnabled" /> Enable dark mode on the storefront</label>
+        </div>
         <div class="field"><label>Store email</label><input formControlName="email" /></div>
         <div class="field"><label>Phone display</label><input formControlName="phoneDisplay" /></div>
         <div class="field"><label>WhatsApp number</label><input formControlName="whatsApp" /></div>
@@ -37,6 +43,8 @@ export class AdminSettingsComponent implements OnInit {
   readonly form = this.fb.nonNullable.group({
     showPricesGlobally: [true],
     allowProductPriceOverride: [true],
+    showBrandFilter: [false],
+    darkModeEnabled: [false],
     email: [''],
     phoneDisplay: [''],
     whatsApp: ['']
@@ -48,6 +56,8 @@ export class AdminSettingsComponent implements OnInit {
       this.form.patchValue({
         showPricesGlobally: cfg.showPricesGlobally,
         allowProductPriceOverride: cfg.allowProductPriceOverride,
+        showBrandFilter: cfg.showBrandFilter === true,
+        darkModeEnabled: cfg.darkModeEnabled === true,
         email: cfg.email ?? '',
         phoneDisplay: cfg.phoneDisplay ?? '',
         whatsApp: cfg.whatsApp ?? ''
@@ -66,6 +76,8 @@ export class AdminSettingsComponent implements OnInit {
       ...current,
       showPricesGlobally: v.showPricesGlobally,
       allowProductPriceOverride: v.allowProductPriceOverride,
+      showBrandFilter: v.showBrandFilter,
+      darkModeEnabled: v.darkModeEnabled,
       email: v.email || undefined,
       phoneDisplay: v.phoneDisplay || undefined,
       whatsApp: v.whatsApp || undefined

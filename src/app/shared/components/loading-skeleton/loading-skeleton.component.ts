@@ -57,20 +57,21 @@ import { Component, input } from '@angular/core';
 
     .sk-pdp {
       display: grid;
-      gap: 1.75rem;
-      padding: 1.5rem 1rem 3rem;
+      gap: 1.5rem;
+      padding: 1rem 1rem 3rem;
     }
     @media (min-width: 900px) {
       .sk-pdp {
-        grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
-        gap: 2.5rem;
+        grid-template-columns: minmax(0, 1.5fr) minmax(280px, 0.65fr);
+        gap: 1.75rem;
         align-items: start;
       }
     }
     .sk-gallery {
       aspect-ratio: 1;
-      border-radius: 16px;
-      min-height: 280px;
+      border-radius: 14px;
+      width: min(100%, 82vh, 880px);
+      max-height: min(82vh, 880px);
     }
     .sk-info {
       display: grid;

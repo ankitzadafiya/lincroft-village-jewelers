@@ -73,6 +73,7 @@ export class MockStore {
       categoryId: product.categoryId,
       categoryName: category?.name ?? '',
       subcategoryName: subcategory?.name ?? null,
+      brandName: product.brandName ?? null,
       designerName: product.designerName,
       price: product.price,
       compareAtPrice: product.compareAtPrice,
@@ -145,6 +146,7 @@ export class MockStore {
         p.sku.toLowerCase().includes(q) ||
         p.description.toLowerCase().includes(q) ||
         (p.designerName ?? '').toLowerCase().includes(q) ||
+        (p.brandName ?? '').toLowerCase().includes(q) ||
         p.specs.some(s => s.value.toLowerCase().includes(q))
       );
     }
@@ -200,6 +202,7 @@ export class MockStore {
       subcategoryId: payload.subcategoryId ?? null,
       designerId: payload.designerId ?? null,
       designerName: designer?.name ?? null,
+      brandName: payload.brandName?.trim() || null,
       price: payload.price ?? null,
       compareAtPrice: payload.compareAtPrice ?? null,
       showPrice: payload.showPrice ?? true,

@@ -8,6 +8,7 @@ import { WhatsAppFloatComponent } from '../../shared/components/whatsapp-float/w
 @Component({
   selector: 'app-storefront-layout',
   imports: [RouterOutlet, HeaderComponent, FooterComponent, ScrollTopComponent, WhatsAppFloatComponent],
+  styleUrl: './storefront-layout.component.scss',
   template: `
     <div class="storefront-shell">
       <app-header />

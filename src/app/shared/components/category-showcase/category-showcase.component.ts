@@ -1,6 +1,5 @@
 import {
   Component,
-  DestroyRef,
   ElementRef,
   HostListener,
   OnInit,
@@ -10,9 +9,8 @@ import {
   signal,
   viewChild
 } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
-import { fromEvent, interval, merge } from 'rxjs';
+import { fromEvent, merge } from 'rxjs';
 import { Category } from '../../../core/models';
 import { AppIconComponent } from '../../icons/lvj-icons';
 
@@ -20,7 +18,7 @@ import { AppIconComponent } from '../../icons/lvj-icons';
   selector: 'app-category-showcase',
   imports: [AppIconComponent],
   template: `
-    <section class="wrap" (mouseenter)="paused.set(true)" (mouseleave)="onSectionLeave()">
+    <section class="wrap">
       <div class="container head">
         <h2>Shop by Categories</h2>
         <div class="pager" aria-label="Category carousel controls">
@@ -257,14 +255,12 @@ import { AppIconComponent } from '../../icons/lvj-icons';
 export class CategoryShowcaseComponent implements OnInit {
   readonly categories = input.required<Category[]>();
   readonly index = signal(0);
-  readonly paused = signal(false);
   readonly jumping = signal(false);
   readonly dragging = signal(false);
   /** Live pixel offset applied to the track (includes drag). */
   readonly offsetPx = signal(0);
   readonly visible = signal(4);
 
-  private readonly destroyRef = inject(DestroyRef);
   private readonly router = inject(Router);
   private readonly viewport = viewChild<ElementRef<HTMLElement>>('viewport');
 
@@ -294,23 +290,12 @@ export class CategoryShowcaseComponent implements OnInit {
     this.updateVisible();
     // Defer initial offset until layout exists
     requestAnimationFrame(() => this.snapToIndex(this.index(), false));
-
-    interval(4200)
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(() => {
-        if (this.paused() || this.dragging() || this.categories().length <= 1) return;
-        this.next();
-      });
   }
 
   @HostListener('window:resize')
   onResize(): void {
     this.updateVisible();
     this.snapToIndex(this.index(), false);
-  }
-
-  onSectionLeave(): void {
-    if (!this.dragging()) this.paused.set(false);
   }
 
   trackKey(category: Category, i: number): string {
@@ -359,7 +344,6 @@ export class CategoryShowcaseComponent implements OnInit {
 
   private beginDrag(clientX: number): void {
     this.dragging.set(true);
-    this.paused.set(true);
     this.startX = clientX;
     this.startOffset = this.offsetPx();
     this.dragDistance = 0;

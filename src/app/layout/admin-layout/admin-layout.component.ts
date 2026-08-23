@@ -2,14 +2,13 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { StaffPermission } from '../../core/models';
 import { AuthService } from '../../core/services/auth.service';
-import { ThemeToggleComponent } from '../../shared/components/theme-toggle/theme-toggle.component';
 import { AppIconComponent } from '../../shared/icons/lvj-icons';
 
 type NavItem = { path: string; label: string; icon: string; permission: StaffPermission | null };
 
 @Component({
   selector: 'app-admin-layout',
-  imports: [RouterOutlet, RouterLink, RouterLinkActive, AppIconComponent, ThemeToggleComponent],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive, AppIconComponent],
   templateUrl: './admin-layout.component.html',
   styleUrl: './admin-layout.component.scss'
 })

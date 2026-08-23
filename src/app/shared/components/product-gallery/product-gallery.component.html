@@ -1,0 +1,142 @@
+<div class="gallery">
+  @if (items().length) {
+    <div class="thumbs" role="tablist" aria-label="Product media">
+      @for (item of items(); track item.media.id; let i = $index) {
+        <button
+          type="button"
+          role="tab"
+          [class.on]="activeIndex() === i"
+          [attr.aria-selected]="activeIndex() === i"
+          [attr.aria-label]="thumbLabel(item)"
+          (click)="select(i)">
+          @if (item.kind === 'video') {
+            <img
+              class="thumb-img"
+              [src]="item.media.thumbnailUrl || item.media.url"
+              [alt]="item.media.alt || 'Video'" />
+            <span class="play-badge" aria-hidden="true">
+              <i class="pi pi-play"></i>
+            </span>
+          } @else {
+            <img
+              class="thumb-img"
+              [src]="item.media.thumbnailUrl || item.media.url"
+              [alt]="item.media.alt || ''" />
+          }
+        </button>
+      }
+    </div>
+  }
+
+  <div class="stage-wrap">
+    <div class="stage" (click)="openLightbox()">
+      @if (items().length > 1) {
+        <button
+          type="button"
+          class="arrow prev"
+          aria-label="Previous media"
+          (click)="shift(-1); $event.stopPropagation()">
+          <i class="pi pi-chevron-left" aria-hidden="true"></i>
+        </button>
+        <button
+          type="button"
+          class="arrow next"
+          aria-label="Next media"
+          (click)="shift(1); $event.stopPropagation()">
+          <i class="pi pi-chevron-right" aria-hidden="true"></i>
+        </button>
+      }
+
+      @if (current(); as cur) {
+        @if (cur.kind === 'video') {
+          <video
+            class="main-video"
+            [src]="cur.media.url"
+            [poster]="cur.media.thumbnailUrl || undefined"
+            [attr.aria-label]="cur.media.alt || 'Product video'"
+            controls
+            playsinline
+            preload="metadata"
+            (click)="$event.stopPropagation()"></video>
+        } @else {
+          <img class="main" [src]="cur.media.url" [alt]="cur.media.alt || ''" />
+        }
+
+        <button
+          type="button"
+          class="expand-btn"
+          aria-label="View full screen gallery"
+          (click)="openLightbox(); $event.stopPropagation()">
+          <i class="pi pi-expand" aria-hidden="true"></i>
+        </button>
+      } @else {
+        <div class="empty">No media available</div>
+      }
+    </div>
+  </div>
+</div>
+
+@if (lightboxOpen()) {
+  <div
+    class="lightbox"
+    role="dialog"
+    aria-modal="true"
+    [attr.aria-label]="'Product gallery, image ' + (activeIndex() + 1) + ' of ' + items().length"
+    (click)="closeLightbox()">
+    <div
+      class="lightbox-shell"
+      (click)="$event.stopPropagation()"
+      (touchstart)="onTouchStart($event)"
+      (touchend)="onTouchEnd($event)">
+      <header class="lightbox-head">
+        <span class="lightbox-count">{{ activeIndex() + 1 }} / {{ items().length }}</span>
+        <button type="button" class="lightbox-close" aria-label="Close gallery" (click)="closeLightbox()">
+          <i class="pi pi-times" aria-hidden="true"></i>
+        </button>
+      </header>
+
+      <div class="lightbox-stage">
+        @if (items().length > 1) {
+          <button type="button" class="lb-arrow prev" aria-label="Previous" (click)="shift(-1)">
+            <i class="pi pi-chevron-left" aria-hidden="true"></i>
+          </button>
+          <button type="button" class="lb-arrow next" aria-label="Next" (click)="shift(1)">
+            <i class="pi pi-chevron-right" aria-hidden="true"></i>
+          </button>
+        }
+
+        @if (current(); as cur) {
+          @if (cur.kind === 'video') {
+            <video
+              class="lb-video"
+              [src]="cur.media.url"
+              [poster]="cur.media.thumbnailUrl || undefined"
+              controls
+              playsinline
+              autoplay></video>
+          } @else {
+            <img class="lb-image" [src]="cur.media.url" [alt]="cur.media.alt || ''" />
+          }
+        }
+      </div>
+
+      @if (items().length > 1) {
+        <div class="lightbox-thumbs" role="tablist" aria-label="Gallery thumbnails">
+          @for (item of items(); track item.media.id; let i = $index) {
+            <button
+              type="button"
+              role="tab"
+              [class.on]="activeIndex() === i"
+              [attr.aria-label]="thumbLabel(item)"
+              (click)="select(i)">
+              <img [src]="item.media.thumbnailUrl || item.media.url" [alt]="" />
+              @if (item.kind === 'video') {
+                <span class="lb-play" aria-hidden="true"><i class="pi pi-play"></i></span>
+              }
+            </button>
+          }
+        </div>
+      }
+    </div>
+  </div>
+}

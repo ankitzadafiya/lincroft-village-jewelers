@@ -905,6 +905,7 @@ export function handleMockRequest(req: HttpRequest<unknown>): Observable<HttpRes
         categoryId: category?.id ?? 'cat-rings',
         subcategoryId: subcategory?.id ?? null,
         designerId: designer?.id ?? null,
+        brandName: d['brandName'] || null,
         price: d['price'] ? Number(d['price']) : null,
         compareAtPrice: null,
         showPrice: (d['showPrice'] ?? 'true').toLowerCase() !== 'false',

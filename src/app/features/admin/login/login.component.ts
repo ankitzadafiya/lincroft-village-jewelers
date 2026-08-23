@@ -3,12 +3,11 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 import { emailAddress, loginPayload } from '../../../core/utils/auth-validation';
-import { ThemeToggleComponent } from '../../../shared/components/theme-toggle/theme-toggle.component';
 import { AppIconComponent } from '../../../shared/icons/lvj-icons';
 
 @Component({
   selector: 'app-login',
-  imports: [ReactiveFormsModule, AppIconComponent, ThemeToggleComponent],
+  imports: [ReactiveFormsModule, AppIconComponent],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
