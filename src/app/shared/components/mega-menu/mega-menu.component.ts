@@ -8,50 +8,50 @@ import { AppIconComponent } from '../../icons/lvj-icons';
   imports: [RouterLink, AppIconComponent],
   template: `
     <div class="mega" (mouseenter)="stay.emit()" (mouseleave)="close.emit()">
-      <div class="container inner">
-        <div class="browse">
-          @if (parent(); as cat) {
-            <div class="watermark" aria-hidden="true">
-              <img [src]="cat.imageUrl" [alt]="" />
-            </div>
-          }
-          <div class="list">
-            <h4>{{ parent()?.name || 'Shop' }}</h4>
-            @for (item of children(); track item.id) {
-              <a
-                [routerLink]="'/' + parentSlug()"
-                [queryParams]="{ subcategory: item.slug }"
-                (click)="close.emit()">
-                {{ item.name }}
-              </a>
-            }
-            @if (!children().length && parent(); as cat) {
-              <a [routerLink]="'/' + cat.slug" (click)="close.emit()">Shop All</a>
-            }
+      <div class="panel">
+        @if (parent(); as cat) {
+          <div class="links">
+            <p class="cat-label">{{ cat.name }}</p>
+            <nav [attr.aria-label]="cat.name + ' subcategories'">
+              @for (item of children(); track item.id) {
+                <a
+                  class="sub-link"
+                  [routerLink]="'/' + parentSlug()"
+                  [queryParams]="{ subcategory: item.slug }"
+                  (click)="close.emit()">
+                  {{ item.name }}
+                </a>
+              }
+              @if (!children().length) {
+                <a class="sub-link" [routerLink]="'/' + cat.slug" (click)="close.emit()">
+                  Shop all {{ cat.name }}
+                </a>
+              }
+            </nav>
             <a class="view-all" [routerLink]="'/' + parentSlug()" (click)="close.emit()">
-              View all {{ parent()?.name }}
-              <app-icon name="arrow-right" [size]="14" [strokeWidth]="1.6"></app-icon>
+              View all {{ cat.name }}
+              <app-icon name="arrow-right" [size]="14" [strokeWidth]="1.75"></app-icon>
             </a>
           </div>
-        </div>
 
-        <div class="featured">
-          @if (parent(); as cat) {
-            <p class="label">Featured</p>
-            <a class="card" [routerLink]="'/' + cat.slug" (click)="close.emit()">
-              <div class="media">
-                <img [src]="cat.imageUrl" [alt]="cat.name" />
-              </div>
-              <div class="meta">
-                <span class="name">{{ cat.name }}</span>
-                <span class="cta">
-                  Shop collection
-                  <app-icon name="arrow-right" [size]="14" [strokeWidth]="1.7"></app-icon>
-                </span>
-              </div>
-            </a>
+          @if (cat.imageUrl) {
+            <div class="featured">
+              <p class="featured-label">Featured</p>
+              <a class="featured-card" [routerLink]="'/' + cat.slug" (click)="close.emit()">
+                <div class="featured-media">
+                  <img [src]="cat.imageUrl" [alt]="cat.name" loading="lazy" decoding="async" />
+                </div>
+                <div class="featured-foot">
+                  <span class="featured-name">{{ cat.name }}</span>
+                  <span class="featured-cta">
+                    Shop collection
+                    <app-icon name="arrow-right" [size]="13" [strokeWidth]="1.75"></app-icon>
+                  </span>
+                </div>
+              </a>
+            </div>
           }
-        </div>
+        }
       </div>
     </div>
   `,

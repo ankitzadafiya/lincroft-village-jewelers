@@ -54,7 +54,12 @@ export class SearchPageComponent implements OnInit {
   readonly loading = signal(false);
 
   ngOnInit(): void {
-    inject(SeoService).set({ title: 'Search', description: 'Search the Lincroft Village Jewelers collection by name, SKU, or specification.' });
+    inject(SeoService).set({
+      title: 'Search',
+      description: 'Search the Lincroft Village Jewelers collection by name, SKU, or specification.',
+      path: '/search',
+      noIndex: true
+    });
     this.route.queryParamMap.subscribe(params => {
       const q = params.get('q') ?? '';
       this.query.setValue(q);

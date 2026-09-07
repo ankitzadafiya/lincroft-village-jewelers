@@ -2,7 +2,28 @@
   command = "npm run build"
   publish = "dist/lincroft-village-jewelers/browser"
 
+# SPA routing — client handles unknown paths with an in-app 404 (noindex).
+# Note: Netlify still returns HTTP 200 for client routes under this fallback.
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    X-Frame-Options = "SAMEORIGIN"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+
+[[headers]]
+  for = "/robots.txt"
+  [headers.values]
+    Content-Type = "text/plain; charset=utf-8"
+
+[[headers]]
+  for = "/sitemap.xml"
+  [headers.values]
+    Content-Type = "application/xml; charset=utf-8"
+    Cache-Control = "public, max-age=3600"

@@ -59,7 +59,14 @@
             preload="metadata"
             (click)="$event.stopPropagation()"></video>
         } @else {
-          <img class="main" [src]="cur.media.url" [alt]="cur.media.alt || ''" />
+          <img
+            class="main"
+            [src]="cur.media.url"
+            [alt]="cur.media.alt || 'Product photo'"
+            width="800"
+            height="800"
+            [attr.loading]="activeIndex() === 0 ? 'eager' : 'lazy'"
+            decoding="async" />
         }
 
         <button

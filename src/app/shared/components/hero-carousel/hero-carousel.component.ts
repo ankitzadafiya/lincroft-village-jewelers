@@ -38,7 +38,11 @@ interface HeroSlide {
             <div class="shade"></div>
             <div class="copy">
               <p class="eyebrow">{{ slide.eyebrow }}</p>
-              <h1>{{ slide.title }}</h1>
+              @if (i === index()) {
+                <h1>{{ slide.title }}</h1>
+              } @else {
+                <p class="hero-title" aria-hidden="true">{{ slide.title }}</p>
+              }
               <p class="sub">{{ slide.subtitle }}</p>
               <div class="ctas">
                 <a class="btn btn-gold" [routerLink]="slide.primaryPath">{{ slide.primaryCta }}</a>
@@ -124,7 +128,8 @@ interface HeroSlide {
       color: rgba(255,255,255,0.85);
     }
 
-    h1 {
+    h1,
+    .hero-title {
       margin: 0;
       font-family: var(--font-body);
       font-style: normal;

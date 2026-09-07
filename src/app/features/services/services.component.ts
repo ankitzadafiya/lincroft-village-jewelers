@@ -19,11 +19,22 @@ import { CustomDesignFeatureComponent } from '../../shared/components/custom-des
   `
 })
 export class ServicesComponent implements OnInit {
+  private readonly seo = inject(SeoService);
+
   ngOnInit(): void {
-    inject(SeoService).set({
-      title: 'Jewelry Services',
+    this.seo.set({
+      title: 'Jewelry Repair & Atelier Services',
       description:
-        'Custom design, repair, cleaning, watch service, appraisal, gold and diamond buying, and engraving in Lincroft, NJ.'
+        'Jewelry repair, cleaning, appraisals, watch care, and custom design at Lincroft Village Jewelers in Lincroft, NJ.',
+      path: '/services',
+      jsonLd: {
+        '@context': 'https://schema.org',
+        '@type': 'CollectionPage',
+        name: 'Jewelry Services',
+        description:
+          'Repair, cleaning, appraisals, watch care, and custom design at Lincroft Village Jewelers.',
+        url: this.seo.absoluteUrl('/services')
+      }
     });
   }
 }

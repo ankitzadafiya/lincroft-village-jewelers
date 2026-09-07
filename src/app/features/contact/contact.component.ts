@@ -297,8 +297,10 @@ export class ContactComponent {
 
   constructor() {
     inject(SeoService).set({
-      title: 'Contact',
-      description: 'Contact Lincroft Village Jewelers in Lincroft, New Jersey. Book a private appointment for lab-grown and natural diamond jewelry.'
+      title: 'Contact & Appointments',
+      description:
+        'Contact Lincroft Village Jewelers in Lincroft, New Jersey. Book a private appointment for lab-grown and natural diamond jewelry.',
+      path: '/contact'
     });
   }
 

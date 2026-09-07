@@ -96,11 +96,19 @@ export class HeaderComponent implements OnInit {
   children(slug: string): Category[] {
     const parent = this.parent(slug);
     if (!parent) return [];
-    return this.categories().filter(c => c.parentId === parent.id);
+    return this.categories()
+      .filter(c => c.parentId === parent.id)
+      .sort((a, b) => a.sortOrder - b.sortOrder);
   }
 
   openMega(slug?: string): void {
     this.megaKey.set(slug ?? null);
+  }
+
+  closeMega(slug?: string): void {
+    if (!slug || this.megaKey() === slug) {
+      this.megaKey.set(null);
+    }
   }
 
   goSearch(): void {

@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { ConfigurationService } from '../../core/services/configuration.service';
+import { SeoService } from '../../core/services/seo.service';
 import { HeaderComponent } from '../../shared/components/header/header.component';
 import { FooterComponent } from '../../shared/components/footer/footer.component';
 import { ScrollTopComponent } from '../../shared/components/scroll-top/scroll-top.component';
@@ -21,4 +23,11 @@ import { WhatsAppFloatComponent } from '../../shared/components/whatsapp-float/w
     </div>
   `
 })
-export class StorefrontLayoutComponent {}
+export class StorefrontLayoutComponent implements OnInit {
+  private readonly config = inject(ConfigurationService);
+  private readonly seo = inject(SeoService);
+
+  ngOnInit(): void {
+    this.seo.setBusinessJsonLd(this.config.config());
+  }
+}

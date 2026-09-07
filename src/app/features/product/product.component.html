@@ -7,13 +7,13 @@
   </section>
 } @else {
   @if (product(); as p) {
-    <section class="crumbs container">
+    <nav class="crumbs container" aria-label="Breadcrumb">
       <a routerLink="/">Home</a>
       <span>/</span>
       <a routerLink="/shop">Shop</a>
       <span>/</span>
       <span>{{ p.name }}</span>
-    </section>
+    </nav>
 
     <section class="pdp container">
       <div class="pdp-layout">

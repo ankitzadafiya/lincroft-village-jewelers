@@ -58,7 +58,9 @@ export class AccountComponent {
   constructor() {
     inject(SeoService).set({
       title: 'Account',
-      description: 'Sign in to Lincroft Village Jewelers to save your wishlist to your account.'
+      description: 'Sign in to Lincroft Village Jewelers to save your wishlist to your account.',
+      path: '/account',
+      noIndex: true
     });
 
     const wishlist = this.route.snapshot.queryParamMap.get('wishlist');

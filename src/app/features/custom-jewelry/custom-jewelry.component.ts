@@ -54,9 +54,21 @@ export class CustomJewelryComponent {
   });
 
   constructor() {
-    inject(SeoService).set({
-      title: 'Custom Jewelry',
-      description: 'Commission a custom piece with Lincroft Village Jewelers — from heirloom reset to entirely new design.'
+    const seo = inject(SeoService);
+    seo.set({
+      title: 'Custom Jewelry Design',
+      description:
+        'Commission a custom piece with Lincroft Village Jewelers in Lincroft, NJ — from heirloom reset to an entirely new design.',
+      path: '/custom-jewelry',
+      jsonLd: {
+        '@context': 'https://schema.org',
+        '@type': 'Service',
+        name: 'Custom Jewelry Design',
+        serviceType: 'Custom jewelry design',
+        provider: { '@id': `${seo.siteUrl}/#store` },
+        areaServed: 'Lincroft, New Jersey',
+        url: seo.absoluteUrl('/custom-jewelry')
+      }
     });
   }
 

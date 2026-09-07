@@ -39,7 +39,11 @@ export class DesignersComponent implements OnInit {
   readonly designers = signal<Designer[]>([]);
 
   ngOnInit(): void {
-    inject(SeoService).set({ title: 'Designers', description: 'Lincroft Atelier and the houses we represent.' });
+    inject(SeoService).set({
+      title: 'Jewelry Designers & Houses',
+      description: 'Browse designer collections stocked at Lincroft Village Jewelers in Lincroft, New Jersey.',
+      path: '/designers'
+    });
     this.categories.designers().subscribe(list => this.designers.set(list));
   }
 }

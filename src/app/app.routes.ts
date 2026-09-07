@@ -61,8 +61,15 @@ export const routes: Routes = [
       { path: 'favorites', loadComponent: () => import('./features/favorites/favorites.component').then(m => m.FavoritesComponent) },
       { path: 'account', loadComponent: () => import('./features/account/account.component').then(m => m.AccountComponent) },
       { path: 'inquiry', loadComponent: () => import('./features/inquiry/inquiry.component').then(m => m.InquiryComponent) },
-      { path: 'search', loadComponent: () => import('./features/search/search.component').then(m => m.SearchPageComponent) }
+      { path: 'search', loadComponent: () => import('./features/search/search.component').then(m => m.SearchPageComponent) },
+      {
+        path: '404',
+        loadComponent: () => import('./features/not-found/not-found.component').then(m => m.NotFoundComponent)
+      },
+      {
+        path: '**',
+        loadComponent: () => import('./features/not-found/not-found.component').then(m => m.NotFoundComponent)
+      }
     ]
-  },
-  { path: '**', redirectTo: '' }
+  }
 ];

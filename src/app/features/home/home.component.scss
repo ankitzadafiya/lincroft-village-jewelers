@@ -89,12 +89,15 @@
 }
 
 .occasions {
-  padding: 1rem 0 5rem;
+  padding: 2.5rem 0 5rem;
 }
 
 .occ-head {
   text-align: center;
-  margin-bottom: 1.75rem;
+  margin-bottom: 2rem;
+  display: grid;
+  justify-items: center;
+  gap: 0.45rem;
 }
 
 .occ-head h2 {
@@ -103,51 +106,108 @@
   font-size: clamp(1.65rem, 3vw, 2.35rem);
   font-weight: 550;
   letter-spacing: -0.03em;
+  max-width: 18ch;
 }
 
 .occ-grid {
   display: grid;
-  gap: 1rem;
+  gap: 1.15rem;
+  grid-template-columns: 1fr;
 
   @include mq(md) {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+  }
+
+  @include mq(lg) {
+    grid-template-columns: repeat(4, 1fr);
   }
 }
 
-.occ {
-  position: relative;
-  border-radius: 20px;
-  overflow: hidden;
-  min-height: 280px;
-  background: var(--lvj-paper);
-  box-shadow: var(--lvj-shadow-soft);
+.occ-card {
+  display: grid;
+  gap: 0.95rem;
+  color: inherit;
+  text-decoration: none;
 }
 
-.occ img {
+.occ-media {
+  aspect-ratio: 4 / 5;
+  border-radius: 14px;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 50% 18%, #fff 0%, transparent 58%),
+    var(--lvj-panel-alt);
+  box-shadow: var(--lvj-shadow-soft);
+  border: 1px solid color-mix(in srgb, var(--lvj-line) 70%, transparent);
+}
+
+.occ-media img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  position: absolute;
-  inset: 0;
-  transition: transform 0.45s var(--lvj-ease-out);
+  object-fit: contain;
+  object-position: center;
+  padding: 1.35rem 1.1rem;
+  box-sizing: border-box;
+  transition: transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.occ:hover img {
-  transform: scale(1.04);
+.occ-card:hover .occ-media img {
+  transform: scale(1.06);
 }
 
-.occ span {
-  position: absolute;
-  left: 1.1rem;
-  bottom: 1.1rem;
-  z-index: 1;
-  background: var(--lvj-panel);
-  padding: 0.55rem 0.95rem;
-  border-radius: 999px;
-  border: 1px solid color-mix(in srgb, var(--lvj-gold) 45%, transparent);
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
+.occ-foot {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0 0.1rem;
+}
+
+.occ-copy {
+  display: grid;
+  gap: 0.2rem;
+  min-width: 0;
+}
+
+.occ-copy h3 {
+  font-family: var(--font-body);
+  font-size: clamp(0.88rem, 1.6vw, 0.98rem);
+  font-weight: 600;
+  letter-spacing: -0.015em;
   color: var(--lvj-ink);
+  line-height: 1.3;
+}
+
+.occ-copy p {
+  font-size: 0.78rem;
+  color: var(--lvj-muted);
+  letter-spacing: 0.02em;
+}
+
+.occ-go {
+  flex-shrink: 0;
+  width: 38px;
+  height: 38px;
+  border-radius: 999px;
+  border: 1px solid var(--lvj-line-strong);
+  background: var(--lvj-panel);
+  display: grid;
+  place-items: center;
+  color: var(--lvj-ink);
+  box-shadow: var(--lvj-shadow-soft);
+  transition:
+    background 0.28s ease,
+    color 0.28s ease,
+    border-color 0.28s ease,
+    box-shadow 0.28s ease,
+    transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.occ-card:hover .occ-go {
+  background: var(--lvj-ink);
+  color: var(--lvj-on-ink);
+  border-color: var(--lvj-ink);
+  transform: translateX(3px) scale(1.05);
+  box-shadow: var(--lvj-shadow);
 }

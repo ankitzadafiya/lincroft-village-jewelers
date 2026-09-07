@@ -31,7 +31,12 @@ export class InquiryComponent {
   });
 
   constructor() {
-    this.seo.set({ title: 'Inquiry bag', description: 'Request information on selected jewelry from Lincroft Village Jewelers.' });
+    this.seo.set({
+      title: 'Inquiry bag',
+      description: 'Request information on selected jewelry from Lincroft Village Jewelers.',
+      path: '/inquiry',
+      noIndex: true
+    });
   }
 
   submit(): void {

@@ -14,7 +14,7 @@ import { IMG } from '../../core/mock/image-catalog';
     </section>
     <section class="container story">
       <div class="media">
-        <img [src]="store" alt="Lincroft Village Jewelers atelier" />
+        <img [src]="store" alt="Interior of Lincroft Village Jewelers atelier in Lincroft, New Jersey" width="800" height="600" loading="lazy" decoding="async" />
       </div>
       <div class="copy">
         <p>Lincroft Village Jewelers is a local fine jewelry studio. We keep a considered collection on the floor and build the rest with you — one appointment at a time.</p>
@@ -61,8 +61,10 @@ export class AboutComponent {
   readonly store = IMG.store;
   constructor() {
     inject(SeoService).set({
-      title: 'About',
-      description: 'Lincroft Village Jewelers is a local fine jewelry atelier in Lincroft, New Jersey — engagement, custom design, and lasting service.'
+      title: 'About Our Atelier',
+      description:
+        'Lincroft Village Jewelers is a local fine jewelry atelier in Lincroft, New Jersey — a considered collection on the floor, custom work by appointment.',
+      path: '/about'
     });
   }
 }

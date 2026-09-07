@@ -1,0 +1,17 @@
+User-agent: *
+Allow: /
+
+# Private / non-indexable app areas
+Disallow: /admin
+Disallow: /admin/
+Disallow: /account
+Disallow: /account/
+Disallow: /inquiry
+Disallow: /inquiry/
+Disallow: /favorites
+Disallow: /favorites/
+Disallow: /search?
+Disallow: /404
+
+# Prefer HTTPS production host
+Sitemap: https://lincroft-village-jewelers.netlify.app/sitemap.xml

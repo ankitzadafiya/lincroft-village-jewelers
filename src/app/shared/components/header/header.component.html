@@ -22,7 +22,7 @@
   </div>
 }
 
-<header class="header" [class.compact]="compact()" (mouseleave)="megaKey.set(null)">
+<header class="header" [class.compact]="compact()">
   <div class="bar container">
     <div class="left">
       <button class="icon-btn menu-btn" type="button" aria-label="Open menu" (click)="mobileOpen.set(true)">
@@ -33,16 +33,30 @@
 
     <nav class="nav-desktop" aria-label="Primary">
       @for (item of nav; track item.path) {
-        <a
-          [routerLink]="item.path"
-          routerLinkActive="active"
-          [routerLinkActiveOptions]="{ exact: item.exact ?? false }"
-          (mouseenter)="openMega(item.mega)">
-          {{ item.label }}
-          @if (item.mega) {
-            <app-icon name="chevron-down" [size]="12" [strokeWidth]="1.75"></app-icon>
+        <div
+          class="nav-item"
+          [class.mega-open]="item.mega && megaKey() === item.mega"
+          (mouseenter)="openMega(item.mega)"
+          (mouseleave)="closeMega(item.mega)">
+          <a
+            [routerLink]="item.path"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: item.exact ?? false }">
+            {{ item.label }}
+            @if (item.mega) {
+              <app-icon name="chevron-down" [size]="12" [strokeWidth]="1.75"></app-icon>
+            }
+          </a>
+
+          @if (item.mega && megaKey() === item.mega) {
+            <app-mega-menu
+              [parent]="parent(item.mega)"
+              [children]="children(item.mega)"
+              [parentSlug]="item.mega"
+              (close)="megaKey.set(null)"
+              (stay)="megaKey.set(item.mega)" />
           }
-        </a>
+        </div>
       }
     </nav>
 
@@ -80,15 +94,6 @@
       </a>
     </div>
   </div>
-
-  @if (megaKey(); as key) {
-    <app-mega-menu
-      [parent]="parent(key)"
-      [children]="children(key)"
-      [parentSlug]="key"
-      (close)="megaKey.set(null)"
-      (stay)="megaKey.set(key)" />
-  }
 </header>
 
 @if (mobileOpen()) {

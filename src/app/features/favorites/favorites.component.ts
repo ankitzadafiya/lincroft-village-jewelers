@@ -76,7 +76,12 @@ export class FavoritesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.seo.set({ title: 'Wishlist', description: 'Pieces you have saved at Lincroft Village Jewelers.' });
+    this.seo.set({
+      title: 'Wishlist',
+      description: 'Pieces you have saved at Lincroft Village Jewelers.',
+      path: '/favorites',
+      noIndex: true
+    });
   }
 
   private loadProducts(ids: string[]): void {

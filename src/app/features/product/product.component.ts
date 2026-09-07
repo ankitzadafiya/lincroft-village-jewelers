@@ -65,17 +65,80 @@ export class ProductComponent implements OnInit {
           this.loading.set(false);
           this.seo.set({
             title: product.name,
-            description: product.description || `${product.name} · ${product.sku}`,
-            image: product.images[0]?.url
+            description:
+              product.description ||
+              `${product.name} available at Lincroft Village Jewelers in Lincroft, NJ.`,
+            path: `/product/${product.slug}`,
+            image: product.images[0]?.url,
+            type: 'product',
+            jsonLd: this.productJsonLd(product)
           });
         },
         error: () => {
           this.loading.set(false);
           this.error.set('This piece is no longer listed.');
+          this.seo.set({
+            title: 'Piece not found',
+            description: 'This jewelry piece is no longer listed at Lincroft Village Jewelers.',
+            path: `/product/${slug}`,
+            noIndex: true
+          });
         }
       });
       this.productsApi.related(slug).subscribe(list => this.related.set(list));
     });
+  }
+
+  private productJsonLd(product: Product): Record<string, unknown> {
+    const url = this.seo.absoluteUrl(`/product/${product.slug}`);
+    const images = (product.images || []).map(i => i.url).filter(Boolean);
+    const brand = this.displayBrand(product);
+    const availability =
+      product.availability === 'in_stock'
+        ? 'https://schema.org/InStock'
+        : product.availability === 'sold'
+          ? 'https://schema.org/SoldOut'
+          : 'https://schema.org/PreOrder';
+
+    const productNode: Record<string, unknown> = {
+      '@type': 'Product',
+      name: product.name,
+      description: product.description || undefined,
+      sku: product.sku,
+      url,
+      image: images.length ? images : undefined,
+      brand: brand ? { '@type': 'Brand', name: brand } : undefined
+    };
+
+    if (this.config.isPriceVisible(product) && product.price != null && product.price > 0) {
+      productNode['offers'] = {
+        '@type': 'Offer',
+        url,
+        priceCurrency: 'USD',
+        price: product.price,
+        availability,
+        itemCondition: 'https://schema.org/NewCondition',
+        seller: { '@id': `${this.seo.siteUrl}/#store` }
+      };
+    }
+
+    const breadcrumb = {
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: this.seo.absoluteUrl('/') },
+        { '@type': 'ListItem', position: 2, name: 'Shop', item: this.seo.absoluteUrl('/shop') },
+        { '@type': 'ListItem', position: 3, name: product.name, item: url }
+      ]
+    };
+
+    return {
+      '@context': 'https://schema.org',
+      '@graph': [this.stripUndefined(productNode), breadcrumb]
+    };
+  }
+
+  private stripUndefined(obj: Record<string, unknown>): Record<string, unknown> {
+    return Object.fromEntries(Object.entries(obj).filter(([, v]) => v !== undefined && v !== null));
   }
 
   addInquiry(): void {

@@ -16,10 +16,20 @@ import { PricePipe } from '../../pipes/price.pipe';
             class="img primary"
             [class.has-hover]="!!hoverSrc()"
             [src]="primarySrc()"
-            [alt]="product().name"
-            loading="lazy" />
+            [alt]="product().primaryImage?.alt || product().name"
+            width="600"
+            height="600"
+            loading="lazy"
+            decoding="async" />
           @if (hoverSrc(); as hover) {
-            <img class="img hover" [src]="hover" [alt]="product().name" loading="lazy" />
+            <img
+              class="img hover"
+              [src]="hover"
+              [alt]="product().hoverImage?.alt || product().name"
+              width="600"
+              height="600"
+              loading="lazy"
+              decoding="async" />
           }
         } @else {
           <div class="placeholder">

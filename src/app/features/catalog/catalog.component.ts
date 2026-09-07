@@ -115,15 +115,49 @@ export class CatalogComponent implements OnInit {
           this.description.set(
             cat.description || 'Selected for the floor — browse, save, and inquire from the atelier.'
           );
-          this.seo.set({ title: cat.name, description: cat.description ?? cat.name, image: cat.imageUrl });
+          this.seo.set({
+            title: `${cat.name} Jewelry`,
+            description:
+              cat.description ||
+              `Shop ${cat.name.toLowerCase()} jewelry at Lincroft Village Jewelers in Lincroft, NJ.`,
+            path: `/${cat.slug}`,
+            image: cat.imageUrl,
+            jsonLd: {
+              '@context': 'https://schema.org',
+              '@type': 'CollectionPage',
+              name: cat.name,
+              description: cat.description || undefined,
+              url: this.seo.absoluteUrl(`/${cat.slug}`),
+              breadcrumb: {
+                '@type': 'BreadcrumbList',
+                itemListElement: [
+                  { '@type': 'ListItem', position: 1, name: 'Home', item: this.seo.absoluteUrl('/') },
+                  { '@type': 'ListItem', position: 2, name: 'Shop', item: this.seo.absoluteUrl('/shop') },
+                  {
+                    '@type': 'ListItem',
+                    position: 3,
+                    name: cat.name,
+                    item: this.seo.absoluteUrl(`/${cat.slug}`)
+                  }
+                ]
+              }
+            }
+          });
         },
-        error: () => this.seo.set({ title: this.title(), description: this.description() })
+        error: () =>
+          this.seo.set({ title: this.title(), description: this.description(), path: this.router.url.split('?')[0] })
       });
     } else {
       this.eyebrow.set(this.router.url.startsWith('/designers/') ? 'Designer' : 'Shop');
       this.title.set(data['title'] || 'Shop');
       this.description.set('Browse the Lincroft Village Jewelers collection.');
-      this.seo.set({ title: this.title(), description: this.description() });
+      const path = this.router.url.split('?')[0] || '/shop';
+      this.seo.set({
+        title: this.title() === 'Shop' ? 'Shop Fine Jewelry' : this.title(),
+        description: this.description(),
+        path,
+        noIndex: path.startsWith('/designers/') ? false : !!next.q
+      });
     }
     this.load();
   }
@@ -166,7 +200,7 @@ export class CatalogComponent implements OnInit {
     const key = `${query.category ?? ''}|${query.subcategory ?? ''}|${onDesigner ? query.designer ?? '' : ''}`;
     if (key === this.facetKey && this.facets()) return;
     this.facetKey = key;
-    this.productsApi.facets({
+    this.productsApi.facetsWithAccurateCounts({
       category: query.category,
       subcategory: query.subcategory,
       designer: onDesigner ? query.designer : undefined

@@ -79,20 +79,29 @@
 <section class="occasions container">
   <div class="occ-head" appReveal="fade">
     <p class="eyebrow">Shop for occasions</p>
-    <h2>Jewelry for every moment</h2>
+    <h2>Jewelry for every moment, every day</h2>
   </div>
   <div class="occ-grid" appReveal="up" [appRevealStagger]="true">
-    <a routerLink="/ring" class="occ">
-      <img [src]="occBridal" alt="Bridal jewelry" />
-      <span>Bridal</span>
-    </a>
-    <a routerLink="/earring" class="occ">
-      <img [src]="occEveryday" alt="Everyday earrings" />
-      <span>Everyday</span>
-    </a>
-    <a routerLink="/pendant" class="occ">
-      <img [src]="occGifts" alt="Gift pendants" />
-      <span>Gifting</span>
-    </a>
+    @for (item of occasionPicks; track item.subcategory) {
+      <a class="occ-card" [routerLink]="item.route" [queryParams]="{ subcategory: item.subcategory }">
+        <div class="occ-media">
+          <img
+            [src]="item.image"
+            [alt]="item.alt"
+            loading="lazy"
+            decoding="async"
+            [style.object-position]="item.imagePosition" />
+        </div>
+        <div class="occ-foot">
+          <div class="occ-copy">
+            <h3>{{ item.label }}</h3>
+            <p>{{ item.hint }}</p>
+          </div>
+          <span class="occ-go" aria-hidden="true">
+            <app-icon name="arrow-right" [size]="16" [strokeWidth]="1.8"></app-icon>
+          </span>
+        </div>
+      </a>
+    }
   </div>
 </section>
