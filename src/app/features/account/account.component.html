@@ -101,7 +101,7 @@
           </div>
 
           @if (mode() === 'login') {
-            <form [formGroup]="loginForm" (ngSubmit)="login()" class="panel" novalidate autocomplete="on">
+            <form [formGroup]="loginForm" class="panel" novalidate autocomplete="on" (keydown.enter)="$event.preventDefault(); login()">
               <div class="field" [class.invalid]="invalid(loginForm.controls.email)">
                 <label for="login-email">Email</label>
                 <input
@@ -126,6 +126,7 @@
                     id="login-password"
                     formControlName="password"
                     [type]="showLoginPassword() ? 'text' : 'password'"
+                    name="password"
                     maxlength="128"
                     autocomplete="current-password"
                     spellcheck="false"
@@ -144,7 +145,7 @@
                 }
               </div>
 
-              <button class="btn btn-gold submit" type="submit" [disabled]="submitting()">
+              <button class="btn btn-gold submit" type="button" (click)="login()" [disabled]="submitting()">
                 @if (submitting()) {
                   <span class="btn-spin" aria-hidden="true"></span>
                   Signing in…
@@ -154,7 +155,7 @@
               </button>
             </form>
           } @else {
-            <form [formGroup]="registerForm" (ngSubmit)="register()" class="panel" novalidate autocomplete="on">
+            <form [formGroup]="registerForm" class="panel" novalidate autocomplete="on" (keydown.enter)="$event.preventDefault(); register()">
               <div class="field" [class.invalid]="invalid(registerForm.controls.name)">
                 <label for="reg-name">Full name</label>
                 <input
@@ -208,6 +209,7 @@
                     id="reg-password"
                     formControlName="password"
                     [type]="showRegisterPassword() ? 'text' : 'password'"
+                    name="password"
                     maxlength="128"
                     autocomplete="new-password"
                     spellcheck="false"
@@ -235,6 +237,7 @@
                     id="reg-confirm"
                     formControlName="confirmPassword"
                     [type]="showConfirmPassword() ? 'text' : 'password'"
+                    name="confirmPassword"
                     maxlength="128"
                     autocomplete="new-password"
                     spellcheck="false"
@@ -255,7 +258,7 @@
                 }
               </div>
 
-              <button class="btn btn-gold submit" type="submit" [disabled]="submitting()">
+              <button class="btn btn-gold submit" type="button" (click)="register()" [disabled]="submitting()">
                 @if (submitting()) {
                   <span class="btn-spin" aria-hidden="true"></span>
                   Creating account…

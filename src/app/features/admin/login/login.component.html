@@ -21,7 +21,7 @@
         <p class="banner" role="alert">{{ error() }}</p>
       }
 
-      <form [formGroup]="form" (ngSubmit)="submit()" novalidate autocomplete="on">
+      <form [formGroup]="form" novalidate autocomplete="on" (keydown.enter)="$event.preventDefault(); submit()">
         <div class="field" [class.invalid]="invalid('email')">
           <label for="admin-email">Email</label>
           <input
@@ -46,6 +46,7 @@
               id="admin-password"
               formControlName="password"
               [type]="showPassword() ? 'text' : 'password'"
+              name="password"
               maxlength="128"
               autocomplete="current-password"
               spellcheck="false"
@@ -59,7 +60,7 @@
           }
         </div>
 
-        <button class="btn btn-gold submit" type="submit" [disabled]="submitting()">
+        <button class="btn btn-gold submit" type="button" (click)="submit()" [disabled]="submitting()">
           @if (submitting()) {
             <span class="btn-spin" aria-hidden="true"></span>
             Opening console…

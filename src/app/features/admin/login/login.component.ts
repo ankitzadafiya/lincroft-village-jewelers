@@ -52,7 +52,6 @@ export class LoginComponent {
     }
     const { email, password } = this.form.getRawValue();
     const payload = loginPayload(email, password);
-    this.form.controls.password.reset('');
     this.submitting.set(true);
     this.auth.login(payload).subscribe({
       next: () => this.enter(),

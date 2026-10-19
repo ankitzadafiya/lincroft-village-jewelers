@@ -134,7 +134,6 @@ export class AccountComponent {
     }
     const { email, password } = this.loginForm.getRawValue();
     const payload = loginPayload(email, password);
-    this.loginForm.controls.password.reset('');
     this.submitting.set(true);
     this.customer.login(payload).subscribe({
       next: session => {
@@ -157,7 +156,6 @@ export class AccountComponent {
     }
     const value = this.registerForm.getRawValue();
     const payload = registerPayload(value);
-    this.registerForm.patchValue({ password: '', confirmPassword: '' });
     this.submitting.set(true);
     this.customer.register(payload).subscribe({
       next: session => {
