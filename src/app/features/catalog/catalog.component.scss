@@ -1,92 +1,323 @@
 @use 'mixins' as *;
 
-.catalog {
-  padding: 1.25rem 0 5rem;
-  background: transparent;
+:host {
+  --cat-ease: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.layout {
-  display: grid;
-  gap: 2rem;
-  padding-top: 0.5rem;
+/* ── Hero: centred title, breadcrumb, no eyebrow ─── */
+.page-hero.hero-center {
+  text-align: center;
+  padding-top: clamp(2rem, 4vw, 3.2rem);
+  padding-bottom: clamp(1.6rem, 3vw, 2.4rem);
+
+  h1 {
+    margin-inline: auto;
+    max-width: 20ch;
+  }
+
+  .lede {
+    margin-inline: auto;
+    max-width: 52ch;
+  }
+}
+
+.crumbs {
+  display: inline-flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.45rem;
+  margin-bottom: 0.75rem;
+  font-size: 0.78rem;
+  color: var(--lvj-muted);
+
+  a {
+    color: var(--lvj-muted);
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: var(--lvj-ink);
+    }
+  }
+
+  span[aria-hidden] {
+    color: var(--lvj-muted-2);
+  }
+
+  [aria-current] {
+    color: var(--lvj-ink);
+  }
+}
+
+.catalog {
+  padding: 0 0 5rem;
+}
+
+/* ── Sticky toolbar ───────────────────────────────── */
+.toolbar-wrap {
+  position: sticky;
+  top: 66px;
+  z-index: 30;
+  margin-bottom: clamp(1.25rem, 2.4vw, 2rem);
+  padding: 0.9rem 0 0.8rem;
+  /* solid (no backdrop-filter: it would trap the phone bottom-sheets) */
+  background: #fff;
+  border-bottom: 1px solid var(--lvj-line);
+
+  /* While a filter/sort dropdown is open, sit above the floating buttons
+     so the phone bottom-sheet isn't covered. */
+  &:has(.pop),
+  &:has(.sort-pop) {
+    z-index: 120;
+  }
+
+  /* full-bleed white behind the sticky bar */
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0 calc(50% - 50vw);
+    z-index: -1;
+    background: inherit;
+    border-bottom: inherit;
+  }
 }
 
 .toolbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 1rem;
-  margin-bottom: 1.75rem;
-  flex-wrap: wrap;
+  gap: 0.75rem 1.25rem;
 }
 
-.count {
-  font-size: 0.92rem;
-  color: var(--lvj-muted);
-  letter-spacing: 0.02em;
+app-product-filters {
+  flex: 1;
+  min-width: 0;
 }
 
 .tools {
   display: flex;
   align-items: center;
-  gap: 1rem;
-  flex-wrap: wrap;
+  gap: 0.75rem;
+  flex-shrink: 0;
 }
 
-.sort {
+.count {
+  margin: 0 0.25rem 0 0;
+  font-size: 0.86rem;
+  color: var(--lvj-muted);
+  white-space: nowrap;
+
+  strong {
+    color: var(--lvj-ink);
+    font-weight: 600;
+  }
+}
+
+/* Sort pill + dropdown */
+.sort-wrap {
+  position: relative;
+}
+
+.sort-pill {
   display: inline-flex;
   align-items: center;
-  gap: 0.65rem;
-  font-size: 0.68rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--lvj-muted);
-  font-weight: 700;
-}
-
-.cols {
-  display: inline-flex;
-  gap: 0.35rem;
-  padding: 0.22rem;
+  gap: 0.4rem;
+  height: 38px;
+  padding: 0 0.85rem 0 1rem;
   border: 1px solid var(--lvj-line-strong);
-  border-radius: 14px;
-  background: color-mix(in srgb, var(--lvj-panel) 82%, var(--lvj-cream));
+  border-radius: 999px;
+  background: #fff;
+  color: var(--lvj-ink);
+  font-size: 0.86rem;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+
+  &:hover {
+    border-color: var(--lvj-navy);
+  }
+
+  .chev {
+    display: inline-flex;
+    color: var(--lvj-muted);
+    transition: transform 0.35s var(--cat-ease);
+  }
 }
 
-.cols button {
-  width: 36px;
-  height: 34px;
+.sort-k {
+  color: var(--lvj-muted);
+}
+
+.sort-v {
+  font-weight: 500;
+}
+
+.sort-wrap.open .sort-pill {
+  border-color: var(--lvj-navy);
+  box-shadow: 0 0 0 3px var(--lvj-accent-soft);
+
+  .chev {
+    transform: rotate(180deg);
+  }
+}
+
+.sort-pop {
+  position: absolute;
+  z-index: 40;
+  top: calc(100% + 8px);
+  right: 0;
+  width: 220px;
+  padding: 0.4rem;
+  background: #fff;
+  border: 1px solid var(--lvj-line);
+  border-radius: 14px;
+  box-shadow: 0 24px 48px -20px rgba(var(--lvj-overlay), 0.3);
+  animation: pop-in 0.28s var(--cat-ease);
+}
+
+.sort-opt {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0.6rem 0.75rem;
   border: 0;
   border-radius: 9px;
   background: transparent;
-  color: var(--lvj-muted);
+  color: var(--lvj-charcoal);
+  font-size: 0.88rem;
+  text-align: left;
+  cursor: pointer;
+
+  &:hover {
+    background: var(--lvj-panel-alt);
+  }
+
+  &.on {
+    color: var(--lvj-navy);
+    font-weight: 500;
+  }
+
+  app-icon {
+    display: inline-flex;
+  }
+}
+
+/* Density: icon-only, minimal */
+.cols {
+  display: inline-flex;
+  gap: 2px;
+}
+
+.cols button {
+  width: 34px;
+  height: 34px;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--lvj-muted-2);
   cursor: pointer;
   display: grid;
   place-items: center;
-  transition: background 0.2s ease, color 0.2s ease;
+  transition: color 0.2s ease, background 0.2s ease;
+
+  &:hover {
+    color: var(--lvj-ink);
+    background: var(--lvj-panel-alt);
+  }
+
+  &.on {
+    color: var(--lvj-navy);
+    background: var(--lvj-accent-soft);
+  }
 }
 
-.cols button.on,
-.cols button:hover {
-  background: var(--lvj-jewel);
-  color: var(--lvj-gold-bright);
+/* Active filter chips */
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.75rem;
 }
 
-.grid-products.cols-2 {
-  grid-template-columns: 1fr 1fr;
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  height: 30px;
+  padding: 0 0.55rem 0 0.8rem;
+  border: 0;
+  border-radius: 999px;
+  background: var(--lvj-navy);
+  color: #fff;
+  font-size: 0.78rem;
+  cursor: pointer;
+  animation: pop-in 0.3s var(--cat-ease);
+  transition: background 0.2s ease;
+
+  app-icon {
+    display: inline-flex;
+    opacity: 0.75;
+  }
+
+  &:hover {
+    background: var(--lvj-accent);
+
+    app-icon {
+      opacity: 1;
+    }
+  }
 }
 
-.grid-products.cols-3 {
-  grid-template-columns: repeat(3, 1fr);
+.chip-clear {
+  height: 30px;
+  padding: 0 0.5rem;
+  border: 0;
+  background: none;
+  color: var(--lvj-muted);
+  font-size: 0.78rem;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+
+  &:hover {
+    color: var(--lvj-ink);
+  }
 }
 
-.grid-products.cols-4 {
-  grid-template-columns: repeat(4, 1fr);
+@keyframes pop-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
+
+/* ── Grid density ────────────────────────────────── */
+.grid-products.cols-2 { grid-template-columns: 1fr 1fr; }
+.grid-products.cols-3 { grid-template-columns: repeat(3, 1fr); }
+.grid-products.cols-4 { grid-template-columns: repeat(4, 1fr); }
 
 @media (max-width: 1100px) {
-  .grid-products.cols-4 {
-    grid-template-columns: repeat(3, 1fr);
+  .grid-products.cols-4 { grid-template-columns: repeat(3, 1fr); }
+}
+
+/* Tablet / phone */
+@media (max-width: 900px) {
+  .toolbar {
+    flex-wrap: wrap;
+  }
+
+  app-product-filters {
+    flex-basis: 100%;
+  }
+
+  .tools {
+    width: 100%;
+    justify-content: space-between;
   }
 }
 
@@ -100,41 +331,36 @@
   .cols {
     display: none;
   }
-}
 
-.filter-toggle {
-  margin: 0 0 1rem;
-  display: inline-flex;
-}
-
-@include mq(lg) {
-  .layout {
-    grid-template-columns: 260px 1fr;
-    gap: 3.25rem;
-  }
-
-  .filter-toggle {
-    display: none;
-  }
-}
-
-@media (max-width: 1023px) {
-  .layout app-product-filters {
+  .sort-k {
     display: none;
   }
 
-  .layout.open app-product-filters {
-    display: block;
-    background:
-      linear-gradient(180deg, var(--lvj-panel), var(--lvj-paper));
-    padding: 1.1rem 1.15rem 0.4rem;
-    border: 1px solid var(--lvj-line);
-    border-radius: 18px;
-    margin-bottom: 0.5rem;
-    box-shadow: var(--lvj-shadow-soft);
+  .toolbar-wrap {
+    top: 60px;
   }
 }
 
-:host ::ng-deep .catalog-sort {
-  min-width: 13.5rem;
+/* Paginator: soft round pages */
+:host ::ng-deep {
+  .p-paginator {
+    margin-top: 2.5rem;
+    background: transparent;
+  }
+
+  .p-paginator .p-paginator-page,
+  .p-paginator .p-paginator-next,
+  .p-paginator .p-paginator-prev,
+  .p-paginator .p-paginator-first,
+  .p-paginator .p-paginator-last {
+    border-radius: 999px !important;
+    min-width: 2.4rem;
+    height: 2.4rem;
+  }
+
+  .p-paginator .p-paginator-page.p-paginator-page-selected {
+    background: var(--lvj-navy) !important;
+    color: #fff !important;
+    border-color: var(--lvj-navy) !important;
+  }
 }

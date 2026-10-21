@@ -30,7 +30,7 @@ import { AppIconComponent } from '../../icons/lvj-icons';
       justify-content: space-between;
       gap: 1.25rem;
       align-items: end;
-      margin-bottom: 2.5rem;
+      margin-bottom: 1.9rem;
       flex-wrap: wrap;
     }
     .head.center {
@@ -40,11 +40,12 @@ import { AppIconComponent } from '../../icons/lvj-icons';
       align-items: center;
     }
     h2 {
-      font-family: var(--font-body);
+      font-family: var(--font-logo-serif);
       font-style: normal;
-      font-size: clamp(1.65rem, 3vw, 2.35rem);
-      font-weight: 550;
-      letter-spacing: -0.03em;
+      font-size: clamp(2rem, 3.6vw, 2.9rem);
+      font-weight: 600;
+      letter-spacing: -0.005em;
+      line-height: 1.08;
       max-width: 18ch;
       line-height: 1.12;
       color: var(--lvj-ink);

@@ -15,6 +15,7 @@ import { AppIconComponent } from '../../icons/lvj-icons';
       class="fav"
       [class.on]="favorites.isFavorite(id())"
       [class.ghost]="variant() === 'ghost'"
+      [class.tile]="variant() === 'tile'"
       [attr.aria-label]="favorites.isFavorite(id()) ? 'Remove from wishlist' : 'Add to wishlist'"
       [attr.data-tip]="favorites.isFavorite(id()) ? 'Saved' : 'Wishlist'"
       (click)="onToggle($event)">
@@ -25,7 +26,8 @@ import { AppIconComponent } from '../../icons/lvj-icons';
 })
 export class FavoriteButtonComponent {
   readonly id = input.required<string>();
-  readonly variant = input<'solid' | 'ghost'>('solid');
+  /** `tile` = square white button used in the product-card action rail. */
+  readonly variant = input<'solid' | 'ghost' | 'tile'>('solid');
   readonly size = input(18);
   readonly favorites = inject(FavoriteService);
   private readonly customer = inject(CustomerAuthService);

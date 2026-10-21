@@ -1,75 +1,124 @@
-<aside class="filters">
-  <div class="head">
-    <h2>Filters</h2>
-    <button type="button" class="clear" (click)="reset()">Clear</button>
-  </div>
-
+<div class="bar" role="toolbar" aria-label="Filter products">
   @if (facets(); as f) {
-    <p-accordion [multiple]="true" [(value)]="openPanels" styleClass="filter-acc">
-      <p-accordion-panel value="price">
-        <p-accordion-header>Price</p-accordion-header>
-        <p-accordion-content>
-          <div class="price">
-            <p-slider
-              [ngModel]="priceRangeModel"
-              [range]="true"
-              [min]="sliderMin"
-              [max]="sliderMax"
-              [step]="sliderStep"
-              (ngModelChange)="onSliderChange($event)" />
-            <div class="price-row">
-              <p-inputNumber
-                [(ngModel)]="localMin"
-                mode="currency"
-                currency="USD"
-                locale="en-US"
-                [minFractionDigits]="0"
-                [maxFractionDigits]="0"
-                [min]="0"
-                [max]="sliderMax"
-                styleClass="price-input"
-                inputStyleClass="price-input-el"
-                (onInput)="onPriceInput()" />
-              <span class="to">to</span>
-              <p-inputNumber
-                [(ngModel)]="localMax"
-                mode="currency"
-                currency="USD"
-                locale="en-US"
-                [minFractionDigits]="0"
-                [maxFractionDigits]="0"
-                [min]="0"
-                [max]="sliderMax"
-                styleClass="price-input"
-                inputStyleClass="price-input-el"
-                (onInput)="onPriceInput()" />
-            </div>
-          </div>
-        </p-accordion-content>
-      </p-accordion-panel>
+    <!-- Price -->
+    <div class="pill-wrap" [class.open]="openKey() === 'price'">
+      <button
+        type="button"
+        class="pill"
+        [class.active]="priceActive()"
+        [attr.aria-expanded]="openKey() === 'price'"
+        aria-haspopup="dialog"
+        (click)="toggle('price')">
+        <span class="pill-k">Price</span>
+        @if (priceActive()) {
+          <span class="pill-v">{{ priceLabel() }}</span>
+        }
+        <app-icon class="chev" name="chevron-down" [size]="14" [strokeWidth]="1.75" />
+      </button>
 
-      @for (section of sections; track section.key) {
-        <p-accordion-panel [value]="section.key">
-          <p-accordion-header>{{ section.label }}</p-accordion-header>
-          <p-accordion-content>
-            <div class="filter-list" role="group" [attr.aria-label]="section.label">
+      @if (openKey() === 'price') {
+        <div class="pop pop-price" role="dialog" aria-label="Price range">
+          <div class="pop-head">
+            <span>Price range</span>
+            <button type="button" class="pop-close" aria-label="Close" (click)="close()">
+              <app-icon name="x" [size]="16" [strokeWidth]="1.6" />
+            </button>
+          </div>
+          <p-slider
+            [ngModel]="priceRangeModel"
+            [range]="true"
+            [min]="sliderMin"
+            [max]="sliderMax"
+            [step]="sliderStep"
+            (ngModelChange)="onSliderChange($event)" />
+          <div class="price-row">
+            <p-inputNumber
+              [(ngModel)]="localMin"
+              mode="currency"
+              currency="USD"
+              locale="en-US"
+              [minFractionDigits]="0"
+              [maxFractionDigits]="0"
+              [min]="0"
+              [max]="sliderMax"
+              ariaLabel="Minimum price"
+              styleClass="price-input"
+              inputStyleClass="price-input-el"
+              (onInput)="onPriceInput()" />
+            <span class="to" aria-hidden="true">to</span>
+            <p-inputNumber
+              [(ngModel)]="localMax"
+              mode="currency"
+              currency="USD"
+              locale="en-US"
+              [minFractionDigits]="0"
+              [maxFractionDigits]="0"
+              [min]="0"
+              [max]="sliderMax"
+              ariaLabel="Maximum price"
+              styleClass="price-input"
+              inputStyleClass="price-input-el"
+              (onInput)="onPriceInput()" />
+          </div>
+          @if (priceActive()) {
+            <button type="button" class="pop-reset" (click)="clearPrice()">Reset price</button>
+          }
+        </div>
+      }
+    </div>
+
+    <!-- Facets -->
+    @for (section of sections; track section.key) {
+      <div class="pill-wrap" [class.open]="openKey() === section.key">
+        <button
+          type="button"
+          class="pill"
+          [class.active]="!!selectedLabel(section.key, section.items)"
+          [attr.aria-expanded]="openKey() === section.key"
+          aria-haspopup="listbox"
+          (click)="toggle(section.key)">
+          <span class="pill-k">{{ section.label }}</span>
+          @if (selectedLabel(section.key, section.items); as sel) {
+            <span class="pill-v">{{ sel }}</span>
+          }
+          <app-icon class="chev" name="chevron-down" [size]="14" [strokeWidth]="1.75" />
+        </button>
+
+        @if (openKey() === section.key) {
+          <div class="pop" role="listbox" [attr.aria-label]="section.label">
+            <div class="pop-head">
+              <span>{{ section.label }}</span>
+              <button type="button" class="pop-close" aria-label="Close" (click)="close()">
+                <app-icon name="x" [size]="16" [strokeWidth]="1.6" />
+              </button>
+            </div>
+            <div class="opts">
               @for (item of section.items; track item.value) {
                 <button
                   type="button"
-                  class="filter-item"
+                  class="opt"
+                  role="option"
                   [class.on]="isSelected(section.key, item)"
-                  [attr.aria-pressed]="isSelected(section.key, item)"
+                  [attr.aria-selected]="isSelected(section.key, item)"
                   (click)="toggleFilter(section.key, item)">
-                  <span class="filter-item-label">
-                    {{ item.label }}
-                    <span class="count">({{ item.count }})</span>
-                  </span>
+                  <span class="opt-dot" aria-hidden="true"></span>
+                  <span class="opt-label">{{ item.label }}</span>
+                  <span class="opt-count">{{ item.count }}</span>
                 </button>
               }
             </div>
-          </p-accordion-content>
-        </p-accordion-panel>
-      }
-    </p-accordion>
+            @if (selectedLabel(section.key, section.items)) {
+              <button type="button" class="pop-reset" (click)="clearKey(section.key)">Clear {{ section.label | lowercase }}</button>
+            }
+          </div>
+        }
+      </div>
+    }
+  } @else {
+    <span class="ghost"></span><span class="ghost"></span><span class="ghost"></span>
   }
-</aside>
+</div>
+
+@if (openKey()) {
+  <div class="scrim" aria-hidden="true" (click)="close()"></div>
+}

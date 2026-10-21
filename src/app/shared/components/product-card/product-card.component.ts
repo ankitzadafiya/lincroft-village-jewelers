@@ -1,80 +1,71 @@
-import { Component, inject, input } from '@angular/core';
+import { Component, computed, inject, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ProductListItem, productDisplayBrand } from '../../../core/models';
 import { ConfigurationService } from '../../../core/services/configuration.service';
+import { InquiryService } from '../../../core/services/inquiry.service';
+import { ToastService } from '../../../core/services/toast.service';
 import { FavoriteButtonComponent } from '../favorite-button/favorite-button.component';
+import { AppIconComponent } from '../../icons/lvj-icons';
 import { PricePipe } from '../../pipes/price.pipe';
 
+interface CardBadge {
+  label: string;
+  tone: 'sale' | 'new' | 'sold';
+}
+
+/**
+ * Storefront product card (used by every product grid).
+ * Hover: second photo cross-fades in, action rail (wishlist / inquiry bag /
+ * view) slides in from the right. Badges are derived from real product data
+ * only — sold, % off (when prices are visible), or new arrival.
+ */
 @Component({
   selector: 'app-product-card',
-  imports: [RouterLink, FavoriteButtonComponent, PricePipe],
-  template: `
-    <article class="card">
-      <a [routerLink]="['/product', product().slug]" class="media">
-        @if (primarySrc()) {
-          <img
-            class="img primary"
-            [class.has-hover]="!!hoverSrc()"
-            [src]="primarySrc()"
-            [alt]="product().primaryImage?.alt || product().name"
-            width="600"
-            height="600"
-            loading="lazy"
-            decoding="async" />
-          @if (hoverSrc(); as hover) {
-            <img
-              class="img hover"
-              [src]="hover"
-              [alt]="product().hoverImage?.alt || product().name"
-              width="600"
-              height="600"
-              loading="lazy"
-              decoding="async" />
-          }
-        } @else {
-          <div class="placeholder">
-            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <path d="M12 3 4.5 7.5v9L12 21l7.5-4.5v-9L12 3Z" stroke="currentColor" stroke-width="1.4" />
-              <path d="M12 3v18M4.5 7.5 12 12l7.5-4.5" stroke="currentColor" stroke-width="1.4" />
-            </svg>
-            Photography coming soon
-          </div>
-        }
-        <div class="actions">
-          <app-favorite-button [id]="product().id" />
-        </div>
-      </a>
-      <div class="body">
-        @if (displayBrand()) {
-          <p class="brand">{{ displayBrand() }}</p>
-        }
-        <h3><a [routerLink]="['/product', product().slug]">{{ product().name }}</a></h3>
-        <div class="meta">
-          <span class="price">{{ product().price | lvjPrice: product().showPrice }}</span>
-          @if (config.isPriceVisible(product()) && product().compareAtPrice) {
-            <span class="price-compare">{{ product().compareAtPrice | lvjPrice: true }}</span>
-          }
-        </div>
-      </div>
-    </article>
-  `,
+  imports: [RouterLink, FavoriteButtonComponent, AppIconComponent, PricePipe],
+  templateUrl: './product-card.component.html',
   styleUrl: './product-card.component.scss'
 })
 export class ProductCardComponent {
   readonly product = input.required<ProductListItem>();
   readonly config = inject(ConfigurationService);
+  private readonly inquiry = inject(InquiryService);
+  private readonly toast = inject(ToastService);
 
-  primarySrc(): string {
+  readonly primarySrc = computed(() => {
     const img = this.product().primaryImage;
     return img?.thumbnailUrl || img?.url || '';
-  }
+  });
 
-  hoverSrc(): string {
+  readonly hoverSrc = computed(() => {
     const img = this.product().hoverImage;
-    return img?.thumbnailUrl || img?.url || '';
-  }
+    const src = img?.thumbnailUrl || img?.url || '';
+    return src && src !== this.primarySrc() ? src : '';
+  });
 
-  displayBrand(): string {
-    return productDisplayBrand(this.product());
+  readonly displayBrand = computed(() => productDisplayBrand(this.product()));
+
+  readonly priceVisible = computed(() => this.config.isPriceVisible(this.product()));
+
+  /** Whole-number discount, only when both prices are visible and genuinely lower. */
+  readonly discountPct = computed(() => {
+    const p = this.product();
+    if (!this.priceVisible() || p.price == null || p.compareAtPrice == null) return 0;
+    if (p.price <= 0 || p.compareAtPrice <= p.price) return 0;
+    return Math.round((1 - p.price / p.compareAtPrice) * 100);
+  });
+
+  readonly badge = computed<CardBadge | null>(() => {
+    const p = this.product();
+    if (p.availability === 'sold') return { label: 'Sold', tone: 'sold' };
+    if (this.discountPct() >= 1) return { label: `${this.discountPct()}% off`, tone: 'sale' };
+    if (p.newArrival) return { label: 'New in', tone: 'new' };
+    return null;
+  });
+
+  addToBag(event: Event): void {
+    event.preventDefault();
+    event.stopPropagation();
+    this.inquiry.add(this.product());
+    this.toast.success(`${this.product().name} added to your inquiry bag.`, 'Inquiry bag');
   }
 }

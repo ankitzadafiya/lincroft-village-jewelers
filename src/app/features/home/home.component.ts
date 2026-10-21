@@ -7,13 +7,14 @@ import { CategoryService } from '../../core/services/category.service';
 import { ProductService } from '../../core/services/product.service';
 import { SeoService } from '../../core/services/seo.service';
 import { IMG, VIDEO } from '../../core/mock/image-catalog';
-import { CategoryShowcaseComponent } from '../../shared/components/category-showcase/category-showcase.component';
+import { CategoryMosaicComponent } from '../../shared/components/category-mosaic/category-mosaic.component';
 import { ProductGridComponent } from '../../shared/components/product-grid/product-grid.component';
 import { SectionHeaderComponent } from '../../shared/components/section-header/section-header.component';
 import { LoadingSkeletonComponent } from '../../shared/components/loading-skeleton/loading-skeleton.component';
-import { HeroCarouselComponent } from '../../shared/components/hero-carousel/hero-carousel.component';
+import { HeroTriptychComponent } from '../../shared/components/hero-triptych/hero-triptych.component';
 import { ServicesHelpComponent } from '../../shared/components/services-help/services-help.component';
-import { CustomDesignFeatureComponent } from '../../shared/components/custom-design-feature/custom-design-feature.component';
+// import { CustomDesignFeatureComponent } from '../../shared/components/custom-design-feature/custom-design-feature.component';
+import { RingJourneyComponent } from '../../shared/components/ring-journey/ring-journey.component';
 import { RevealDirective } from '../../shared/directives/reveal.directive';
 import { AppIconComponent } from '../../shared/icons/lvj-icons';
 
@@ -21,13 +22,14 @@ import { AppIconComponent } from '../../shared/icons/lvj-icons';
   selector: 'app-home',
   imports: [
     RouterLink,
-    CategoryShowcaseComponent,
+    CategoryMosaicComponent,
     ProductGridComponent,
     SectionHeaderComponent,
     LoadingSkeletonComponent,
-    HeroCarouselComponent,
+    HeroTriptychComponent,
     ServicesHelpComponent,
-    CustomDesignFeatureComponent,
+    // CustomDesignFeatureComponent,
+    RingJourneyComponent,
     RevealDirective,
     AppIconComponent
   ],

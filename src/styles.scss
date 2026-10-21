@@ -9,23 +9,43 @@
 
 html {
   scroll-behavior: smooth;
+  /* Fluid root size: rem-based spacing and type scale up on 2K / 4K monitors. */
+  font-size: 100%;
+
+  @media (min-width: 1920px) {
+    font-size: 106.25%; /* 17px */
+  }
+
+  @media (min-width: 2400px) {
+    font-size: 118.75%; /* 19px */
+  }
+
+  @media (min-width: 3200px) {
+    font-size: 137.5%; /* 22px — 4K at 100% scaling */
+  }
 }
 
 html,
 body {
   margin: 0;
   min-height: 100%;
+  /* hidden → fallback; clip stops sideways overflow without creating a scroll
+     container, so position: sticky (header, pinned scroll sections) keeps working. */
   overflow-x: hidden;
+  overflow-x: clip;
   max-width: 100%;
   background: var(--lvj-white);
   color: var(--lvj-charcoal);
   font-family: var(--font-body);
-  font-size: 15.5px;
   line-height: 1.65;
   letter-spacing: 0.01em;
   font-weight: 400;
   -webkit-font-smoothing: antialiased;
   transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+body {
+  font-size: 0.97rem; /* 15.5px at the default root; scales with the root on large screens */
 }
 
 img {
@@ -107,42 +127,36 @@ ul {
 }
 
 .reveal-up {
-  transform: translateY(40px);
+  transform: translateY(22px);
 }
 
 .reveal-fade {
   transform: translateY(10px);
-  filter: blur(4px);
 }
 
 .reveal-scale {
-  transform: translateY(24px) scale(0.94);
+  transform: translateY(18px) scale(0.985);
 }
 
 .reveal-left {
-  transform: translateX(-40px);
-  filter: blur(2px);
+  transform: translateX(-22px);
 }
 
 .reveal-right {
-  transform: translateX(40px);
-  filter: blur(2px);
+  transform: translateX(22px);
 }
 
 .reveal-zoom {
-  transform: scale(1.06);
-  filter: blur(3px);
+  transform: scale(1.02);
 }
 
 .reveal-soft {
-  transform: translateY(28px) scale(0.985);
-  filter: blur(6px);
+  transform: translateY(18px);
 }
 
 .reveal-clip {
   transform: none;
-  clip-path: inset(12% 8% 12% 8% round 18px);
-  filter: blur(2px);
+  clip-path: inset(6% 4% 6% 4%);
 }
 
 .reveal-in {
@@ -169,7 +183,7 @@ ul {
   .reveal-stagger.reveal-in .grid-products > *:nth-child(#{$i}),
   .reveal-stagger.reveal-in .occ-grid > *:nth-child(#{$i}),
   .reveal-stagger.reveal-in .editorial-grid > *:nth-child(#{$i}) {
-    animation-delay: #{($i - 1) * 90}ms;
+    animation-delay: #{($i - 1) * 70}ms;
   }
 }
 
@@ -187,8 +201,7 @@ ul {
 @keyframes lvj-card-in {
   from {
     opacity: 0;
-    transform: translateY(32px) scale(0.96);
-    filter: blur(4px);
+    transform: translateY(18px);
   }
   to {
     opacity: 1;
@@ -543,44 +556,60 @@ ul {
 
   @include mq(md) {
     grid-template-columns: repeat(3, 1fr);
-    gap: 2.5rem 1.5rem;
+    gap: 2.5rem 1.25rem;
   }
 
   @include mq(xl) {
     grid-template-columns: repeat(4, 1fr);
+    gap: 2.75rem 1.5rem;
   }
 }
 
 .page-hero {
-  padding-top: clamp(2.6rem, 5.5vw, 4.1rem);
-  padding-bottom: clamp(2rem, 3.4vw, 2.9rem);
+  padding-top: clamp(2.2rem, 4.5vw, 3.6rem);
+  padding-bottom: clamp(1.8rem, 3vw, 2.6rem);
   margin-bottom: 0.25rem;
   text-align: left;
-  border-bottom: 1px solid var(--lvj-line);
   position: relative;
-  background:
-    radial-gradient(ellipse 70% 80% at 0% 0%, color-mix(in srgb, var(--lvj-sky-mid) 55%, transparent), transparent 55%),
-    linear-gradient(180deg, var(--lvj-sky), var(--lvj-white));
+  isolation: isolate;
   @include container;
 
+  /* Full-bleed band behind the contained content */
+  &::after {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    bottom: 0;
+    left: calc(50% - 50vw);
+    right: calc(50% - 50vw);
+    background:
+      radial-gradient(ellipse 50% 90% at 85% 0%, rgba(74, 128, 194, 0.12), transparent 65%),
+      linear-gradient(180deg, #eef4fb 0%, #f7faff 100%);
+    border-bottom: 1px solid var(--lvj-line);
+  }
+
   .eyebrow {
-    margin-bottom: 0.9rem;
+    margin-bottom: 0.7rem;
+    font-size: 0.7rem;
+    letter-spacing: 0.22em;
+    color: var(--lvj-accent);
 
     &::before {
       content: '';
       width: 1.6rem;
       height: 1px;
-      background: linear-gradient(90deg, var(--lvj-gold-deep), var(--lvj-gold-bright));
+      background: var(--lvj-accent);
     }
   }
 
   h1 {
-    font-family: var(--font-body);
+    font-family: var(--font-logo-serif);
     font-style: normal;
-    font-weight: 550;
-    font-size: clamp(2rem, 4.5vw, 3.1rem);
-    letter-spacing: -0.03em;
-    line-height: 1.12;
+    font-weight: 600;
+    font-size: clamp(2.1rem, 4.2vw, 3.2rem);
+    letter-spacing: -0.005em;
+    line-height: 1.06;
     max-width: min(16em, 100%);
     color: var(--lvj-ink);
   }
@@ -1362,4 +1391,56 @@ input[type='checkbox']:checked:hover {
     width: auto;
     flex: 1;
   }
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   Site-wide scroll reveal (ScrollRevealService adds these).
+   Minimal: short rise + fade, once per element. Elements stay
+   fully visible without JS / IntersectionObserver / reduced motion.
+   ───────────────────────────────────────────────────────────── */
+.sr {
+  opacity: 0;
+  transform: translate3d(0, 18px, 0);
+  transition:
+    opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1) var(--sr-delay, 0ms),
+    transform 0.9s cubic-bezier(0.22, 1, 0.36, 1) var(--sr-delay, 0ms);
+}
+
+.sr.sr-in {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sr {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+::selection {
+  background: var(--lvj-navy);
+  color: #fff;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Light-blue section band — alternate with white sections so each
+   block reads as its own chapter. Media inside goes white so product
+   photography lifts off the tint.
+   ───────────────────────────────────────────────────────────── */
+.band-tint {
+  --lvj-media-bg: #ffffff;
+  position: relative;
+  background:
+    radial-gradient(ellipse 60% 70% at 100% 0%, rgba(74, 128, 194, 0.08), transparent 60%),
+    linear-gradient(180deg, #f1f6fc 0%, #e9f1fa 100%);
+  border-top: 1px solid rgba(var(--lvj-overlay), 0.05);
+  border-bottom: 1px solid rgba(var(--lvj-overlay), 0.05);
+}
+
+[data-theme='dark'] .band-tint {
+  --lvj-media-bg: #12202c;
+  background: linear-gradient(180deg, #0f1c29 0%, #0c1722 100%);
 }

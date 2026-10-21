@@ -1,0 +1,232 @@
+<section class="rj" data-no-reveal [class.is-static]="reduced()" aria-labelledby="rj-title">
+  <div class="rj-track" #track>
+    <div class="rj-sticky">
+      <div class="container rj-grid">
+        <!-- ── Copy ─────────────────────────────────────── -->
+        <div class="rj-copy">
+          <p class="rj-kicker">Custom jewelry design</p>
+          <h2 id="rj-title">If you can dream it, we can build it</h2>
+          <p class="rj-lede">
+            Our skilled custom jewelry artisans relish the chance to work with you. Whether you're dreaming of a
+            custom engagement ring, redesigning a cherished heirloom, or browsing our fine jewelry collection,
+            our expert team is here to guide you — from first sketch to finished piece, with personalized
+            attention in a relaxed, welcoming environment.
+          </p>
+
+          <ol class="rj-steps" aria-label="How a custom ring is made">
+            @for (s of steps; track s.n; let i = $index) {
+              <li [class.on]="step() === i || reduced()" [class.done]="step() > i">
+                <button type="button" class="rj-step" [attr.aria-current]="step() === i ? 'step' : null" (click)="goTo(i)">
+                  <span class="rj-num">{{ s.n }}</span>
+                  <span class="rj-step-title">{{ s.title }}</span>
+                  <span class="rj-step-bar" aria-hidden="true"></span>
+                </button>
+                <span class="rj-step-text"><span>{{ s.text }}</span></span>
+              </li>
+            }
+          </ol>
+
+          <div class="rj-actions">
+            <a routerLink="/contact" class="rj-cta">
+              Book your consultation
+              <app-icon name="arrow-right" [size]="15" [strokeWidth]="1.5"></app-icon>
+            </a>
+            <a routerLink="/custom-jewelry" class="rj-link">Start a custom piece</a>
+          </div>
+        </div>
+
+        <!-- ── Stage ────────────────────────────────────── -->
+        <div class="rj-stage">
+          <div class="rj-stage-head" aria-hidden="true">
+            <span class="rj-caption-n">{{ steps[step()].n }} <span>/ 04</span></span>
+            <span class="rj-caption-t">{{ steps[step()].title }}</span>
+          </div>
+
+          <svg
+            class="rj-svg"
+            viewBox="0 0 480 500"
+            preserveAspectRatio="xMidYMid meet"
+            role="img"
+            aria-label="A diamond ring being sketched, modelled in wax, cast in gold and set with a diamond">
+            <defs>
+              <pattern id="rj-grid" width="20" height="20" patternUnits="userSpaceOnUse">
+                <path d="M20 0H0V20" fill="none" stroke="rgba(159,192,230,0.08)" stroke-width="1" />
+              </pattern>
+              <!-- Metal: lit from top-left, darker lower-right, with a bright rim -->
+              <linearGradient id="rj-gold" x1="0.1" y1="0" x2="0.9" y2="1">
+                <stop offset="0" stop-color="#fff2c4" />
+                <stop offset="0.22" stop-color="#f3d17a" />
+                <stop offset="0.5" stop-color="#d9a640" />
+                <stop offset="0.78" stop-color="#a8741f" />
+                <stop offset="1" stop-color="#e2b75a" />
+              </linearGradient>
+              <linearGradient id="rj-gold-inner" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#8a5c17" />
+                <stop offset="1" stop-color="#c99636" />
+              </linearGradient>
+              <linearGradient id="rj-hot" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#fff4cf" />
+                <stop offset="0.4" stop-color="#ffb24a" />
+                <stop offset="1" stop-color="#ff5a22" />
+              </linearGradient>
+              <linearGradient id="rj-wax" x1="0.1" y1="0" x2="0.9" y2="1">
+                <stop offset="0" stop-color="#a6cdf0" />
+                <stop offset="0.55" stop-color="#5d93cf" />
+                <stop offset="1" stop-color="#2f5f9e" />
+              </linearGradient>
+              <linearGradient id="rj-stream" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#ffe7a3" />
+                <stop offset="1" stop-color="#ff8a33" />
+              </linearGradient>
+              <linearGradient id="rj-crucible" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#d9dee6" />
+                <stop offset="1" stop-color="#8a95a6" />
+              </linearGradient>
+              <linearGradient id="rj-polish" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0" stop-color="#fff" stop-opacity="0" />
+                <stop offset="0.5" stop-color="#fff" stop-opacity="0.85" />
+                <stop offset="1" stop-color="#fff" stop-opacity="0" />
+              </linearGradient>
+              <!-- Diamond facets -->
+              <linearGradient id="rj-dia-a" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#ffffff" />
+                <stop offset="1" stop-color="#dbe9f8" />
+              </linearGradient>
+              <linearGradient id="rj-dia-b" x1="1" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#eef5fd" />
+                <stop offset="1" stop-color="#a9c6e6" />
+              </linearGradient>
+              <linearGradient id="rj-dia-c" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#c9ddf3" />
+                <stop offset="1" stop-color="#7fa3cd" />
+              </linearGradient>
+              <radialGradient id="rj-glow" cx="0.5" cy="0.5" r="0.5">
+                <stop offset="0" stop-color="#ffb24d" stop-opacity="0.85" />
+                <stop offset="1" stop-color="#ff7a2e" stop-opacity="0" />
+              </radialGradient>
+              <radialGradient id="rj-floor" cx="0.5" cy="0.5" r="0.5">
+                <stop offset="0" stop-color="#000" stop-opacity="0.45" />
+                <stop offset="1" stop-color="#000" stop-opacity="0" />
+              </radialGradient>
+              <clipPath id="rj-wax-clip"><rect #waxRect x="0" y="480" width="480" height="520" /></clipPath>
+              <clipPath id="rj-gold-clip"><rect #goldRect x="0" y="480" width="480" height="520" /></clipPath>
+              <!-- Band: thicker at the shoulders, tapering toward the bottom -->
+              <path id="rj-band"
+                fill-rule="evenodd"
+                d="M110 318a130 128 0 1 0 260 0a130 128 0 1 0-260 0Z M133 326a107 104 0 1 1 214 0a107 104 0 1 1-214 0Z" />
+              <!-- Cathedral shoulders + under-gallery basket -->
+              <path id="rj-head" d="M196 200 C210 196 218 184 224 162 L256 162 C262 184 270 196 284 200 C268 206 254 206 240 206 C226 206 212 206 196 200 Z" />
+              <clipPath id="rj-band-clip"><use href="#rj-band" /><use href="#rj-head" /></clipPath>
+            </defs>
+
+            <rect class="rj-paper" width="480" height="500" fill="url(#rj-grid)" />
+            <ellipse class="rj-floor" cx="240" cy="458" rx="150" ry="16" fill="url(#rj-floor)" />
+
+            <!-- 01 · Sketch -->
+            <g class="rj-sketch" fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <g class="rj-guides">
+                <line x1="240" y1="36" x2="240" y2="470" />
+                <line x1="80" y1="318" x2="400" y2="318" />
+                <ellipse cx="240" cy="318" rx="150" ry="148" />
+                <line x1="190" y1="122" x2="140" y2="122" />
+                <line x1="290" y1="122" x2="340" y2="122" />
+              </g>
+              <ellipse class="rj-draw rj-d1" cx="240" cy="318" rx="130" ry="128" pathLength="1" />
+              <ellipse class="rj-draw rj-d2" cx="240" cy="326" rx="107" ry="104" pathLength="1" />
+              <path class="rj-draw rj-d3" d="M196 200 C210 196 218 184 224 162 L256 162 C262 184 270 196 284 200" pathLength="1" />
+              <path class="rj-draw rj-d4" d="M212 92 L268 92 L290 122 L240 172 L190 122 Z" pathLength="1" />
+              <path class="rj-draw rj-d5"
+                d="M190 122 L290 122 M212 92 L202 122 M268 92 L278 122 M212 92 L226 122 L240 92 L254 122 L268 92 M202 122 L240 172 L278 122 M226 122 L240 172 L254 122"
+                pathLength="1" />
+              <g class="rj-notes">
+                <text x="344" y="118">1.00 ct round</text>
+                <text x="92" y="118">Ø 6.5 mm</text>
+                <text x="300" y="478">Size 6 · 18k gold</text>
+              </g>
+            </g>
+
+            <!-- 02 · Wax model -->
+            <g class="rj-wax" clip-path="url(#rj-wax-clip)">
+              <use href="#rj-band" fill="url(#rj-wax)" />
+              <use href="#rj-head" fill="url(#rj-wax)" />
+              <path class="rj-rim" d="M128 270 A130 128 0 0 1 214 194" />
+            </g>
+
+            <!-- 03 · Casting in gold -->
+            <g class="rj-crucible">
+              <path d="M300 30 L372 18 L380 58 L314 74 Z" fill="url(#rj-crucible)" />
+              <path d="M300 30 L314 74 L262 92 Z" fill="#c9d1dc" />
+              <ellipse cx="338" cy="26" rx="38" ry="8" transform="rotate(-10 338 26)" fill="#ff9c3d" />
+            </g>
+            <path class="rj-stream" pathLength="1" d="M262 92 C252 120 244 140 242 162" stroke="url(#rj-stream)" stroke-width="9" stroke-linecap="round" fill="none" />
+            <ellipse class="rj-splash" cx="240" cy="166" rx="54" ry="20" fill="url(#rj-glow)" />
+            <g class="rj-gold" clip-path="url(#rj-gold-clip)">
+              <use href="#rj-band" fill="url(#rj-gold)" />
+              <use href="#rj-head" fill="url(#rj-gold)" />
+              <!-- inner wall of the band (depth) -->
+              <path d="M133 326a107 104 0 0 1 214 0" fill="none" stroke="url(#rj-gold-inner)" stroke-width="5" opacity="0.65" />
+              <path class="rj-rim" d="M128 270 A130 128 0 0 1 214 194" />
+              <g class="rj-hot">
+                <use href="#rj-band" fill="url(#rj-hot)" />
+                <use href="#rj-head" fill="url(#rj-hot)" />
+              </g>
+            </g>
+
+            <!-- Final polish: a highlight sweeps across the metal -->
+            <g clip-path="url(#rj-band-clip)">
+              <rect class="rj-polish" x="-160" y="150" width="120" height="320" fill="url(#rj-polish)" transform="skewX(-14)" />
+            </g>
+
+            <!-- 04 · Setting -->
+            <g class="rj-prongs-back" fill="none" stroke="url(#rj-gold)" stroke-width="5" stroke-linecap="round">
+              <path class="rj-prong rj-prong-l" d="M228 168 C224 150 218 136 214 122" />
+              <path class="rj-prong rj-prong-r" d="M252 168 C256 150 262 136 266 122" />
+            </g>
+            <g class="rj-diamond">
+              <!-- pavilion -->
+              <path d="M190 122 L240 172 L202 122 Z" fill="url(#rj-dia-c)" />
+              <path d="M202 122 L240 172 L226 122 Z" fill="url(#rj-dia-b)" />
+              <path d="M226 122 L240 172 L254 122 Z" fill="url(#rj-dia-a)" />
+              <path d="M254 122 L240 172 L278 122 Z" fill="url(#rj-dia-c)" />
+              <path d="M278 122 L240 172 L290 122 Z" fill="url(#rj-dia-b)" />
+              <!-- crown -->
+              <path d="M212 92 L190 122 L202 122 Z" fill="url(#rj-dia-b)" />
+              <path d="M212 92 L202 122 L226 122 Z" fill="url(#rj-dia-a)" />
+              <path d="M212 92 L226 122 L240 92 Z" fill="url(#rj-dia-c)" />
+              <path d="M240 92 L226 122 L254 122 Z" fill="url(#rj-dia-a)" />
+              <path d="M240 92 L254 122 L268 92 Z" fill="url(#rj-dia-b)" />
+              <path d="M268 92 L254 122 L278 122 Z" fill="url(#rj-dia-a)" />
+              <path d="M268 92 L278 122 L290 122 Z" fill="url(#rj-dia-c)" />
+              <!-- girdle + outline -->
+              <path d="M190 122 L290 122" stroke="#ffffff" stroke-width="1.6" />
+              <path d="M212 92 L268 92 L290 122 L240 172 L190 122 Z" fill="none" stroke="#f3f8ff" stroke-width="1.2" stroke-linejoin="round" />
+              <!-- fire: subtle spectral flashes -->
+              <path d="M231 128 L237 128 L238 142 Z" fill="#ffb3c7" opacity="0.55" />
+              <path d="M246 126 L252 126 L246 140 Z" fill="#9fe3ff" opacity="0.6" />
+              <path d="M216 96 L230 96 L222 106 Z" fill="#ffffff" opacity="0.9" />
+            </g>
+            <g class="rj-prongs-front" fill="none" stroke="url(#rj-gold)" stroke-width="5.5" stroke-linecap="round">
+              <path class="rj-prong rj-prong-fl" d="M220 176 C210 156 198 136 194 118" />
+              <path class="rj-prong rj-prong-fr" d="M260 176 C270 156 282 136 286 118" />
+            </g>
+            <g class="rj-sparks" fill="#ffffff">
+              <path class="rj-spark" d="M312 70 l4 12 l12 4 l-12 4 l-4 12 l-4-12 l-12-4 l12-4z" />
+              <path class="rj-spark rj-spark-2" d="M168 66 l3 8 l8 3 l-8 3 l-3 8 l-3-8 l-8-3 l8-3z" />
+              <path class="rj-spark rj-spark-3" d="M276 104 l2 6 l6 2 l-6 2 l-2 6 l-2-6 l-6-2 l6-2z" />
+            </g>
+          </svg>
+
+          <div class="rj-stage-foot">
+            <div class="rj-progress" aria-hidden="true"><span></span></div>
+            @if (!reduced()) {
+              <button type="button" class="rj-skip" (click)="skip()">
+                {{ done() ? 'Continue' : 'Skip' }}
+                <app-icon name="arrow-right" [size]="14" [strokeWidth]="1.5"></app-icon>
+              </button>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

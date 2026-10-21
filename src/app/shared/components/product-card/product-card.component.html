@@ -1,0 +1,75 @@
+<article class="card" [class.has-hover]="!!hoverSrc()" [class.is-sold]="product().availability === 'sold'">
+  <div class="media">
+    <a class="media-link" [routerLink]="['/product', product().slug]" tabindex="-1" aria-hidden="true">
+      @if (primarySrc()) {
+        <img
+          class="img primary"
+          [src]="primarySrc()"
+          [alt]="product().primaryImage?.alt || product().name"
+          width="600"
+          height="720"
+          loading="lazy"
+          decoding="async" />
+        @if (hoverSrc(); as hover) {
+          <img
+            class="img alt"
+            [src]="hover"
+            [alt]="product().hoverImage?.alt || product().name"
+            width="600"
+            height="720"
+            loading="lazy"
+            decoding="async" />
+        }
+      } @else {
+        <span class="placeholder">
+          <svg width="34" height="34" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M12 3 4.5 7.5v9L12 21l7.5-4.5v-9L12 3Z" stroke="currentColor" stroke-width="1.2" />
+            <path d="M12 3v18M4.5 7.5 12 12l7.5-4.5" stroke="currentColor" stroke-width="1.2" />
+          </svg>
+          Photography coming soon
+        </span>
+      }
+    </a>
+
+    @if (badge(); as b) {
+      <span class="badge" [class]="'badge badge-' + b.tone">{{ b.label }}</span>
+    }
+
+    <div class="rail" role="group" [attr.aria-label]="'Quick actions for ' + product().name">
+      <app-favorite-button class="rail-item rail-fav" [id]="product().id" variant="tile" [size]="18" />
+      <button
+        type="button"
+        class="rail-item rail-btn"
+        data-tip="Add to inquiry bag"
+        [attr.aria-label]="'Add ' + product().name + ' to inquiry bag'"
+        (click)="addToBag($event)">
+        <app-icon name="shopping-bag" [size]="18" [strokeWidth]="1.5"></app-icon>
+      </button>
+      <a
+        class="rail-item rail-btn"
+        data-tip="View details"
+        [routerLink]="['/product', product().slug]"
+        [attr.aria-label]="'View ' + product().name">
+        <app-icon name="eye" [size]="18" [strokeWidth]="1.5"></app-icon>
+      </a>
+    </div>
+  </div>
+
+  <div class="body">
+    @if (displayBrand()) {
+      <p class="brand">{{ displayBrand() }}</p>
+    }
+    <h3 class="name"><a [routerLink]="['/product', product().slug]">{{ product().name }}</a></h3>
+    <p class="prices">
+      <span class="price" [class.is-sale]="discountPct() > 0">{{ product().price | lvjPrice: product().showPrice }}</span>
+      @if (discountPct() > 0) {
+        <span class="price-compare">
+          <span class="sr-only">Was </span>{{ product().compareAtPrice | lvjPrice: true }}
+        </span>
+      }
+    </p>
+    @if (product().availability === 'made_to_order') {
+      <p class="avail">Made to order</p>
+    }
+  </div>
+</article>

@@ -1,0 +1,48 @@
+<section class="cats" aria-labelledby="cats-title">
+  <header class="head container">
+    <h2 id="cats-title">{{ titleAccent() }} {{ title() }}</h2>
+    @if (subtitle()) {
+      <p>{{ subtitle() }}</p>
+    }
+  </header>
+
+  @if (hasCards()) {
+    <div class="mosaic">
+      @for (col of columns(); track $index; let c = $index) {
+        <div class="col" [class.col-mid]="c === 1">
+          @for (card of col; track card.id) {
+            <a class="card" [class.featured]="card.featured" [routerLink]="'/' + card.slug">
+              <div class="media">
+                @if (card.image) {
+                  <img [src]="card.image" [alt]="card.alt" loading="lazy" decoding="async" draggable="false" />
+                }
+                <span class="sheen" aria-hidden="true"></span>
+              </div>
+              <div class="foot">
+                <span class="name">
+                  <span class="roll">
+                    <span class="label">{{ card.label }}</span>
+                    <span class="label label-alt" aria-hidden="true">Shop {{ card.label }}</span>
+                  </span>
+                  @if (showCount()) {
+                    <span class="meta">{{ card.meta }}</span>
+                  }
+                </span>
+                <span class="go" aria-hidden="true">
+                  <app-icon class="go-icon" name="arrow-up-right" [size]="13" [strokeWidth]="1.6"></app-icon>
+                  <app-icon class="go-icon go-next" name="arrow-up-right" [size]="13" [strokeWidth]="1.6"></app-icon>
+                </span>
+              </div>
+            </a>
+          }
+        </div>
+      }
+    </div>
+  } @else {
+    <div class="mosaic is-loading" aria-hidden="true">
+      <div class="col"><span class="ghost"></span><span class="ghost"></span></div>
+      <div class="col col-mid"><span class="ghost"></span></div>
+      <div class="col"><span class="ghost"></span><span class="ghost"></span></div>
+    </div>
+  }
+</section>

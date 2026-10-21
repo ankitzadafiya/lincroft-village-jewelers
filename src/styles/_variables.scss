@@ -1,41 +1,52 @@
 :root,
 [data-theme='light'] {
-  /* Clean white + ice blue, navy accent */
-  --lvj-ivory: #f4f9fd;
-  --lvj-cream: #eaf4fb;
+  /* Dark blue + white — storefront palette.
+     Names are historical: "gold" tokens are the brand blues. */
+  --lvj-ivory: #f5f8fc;
+  --lvj-cream: #eef3f9;
   --lvj-white: #ffffff;
-  --lvj-paper: #f7fbfe;
-  --lvj-soft: #d7ebf6;
+  --lvj-paper: #f8fafd;
+  --lvj-soft: #e2eaf4;
   --lvj-panel: #ffffff;
-  --lvj-panel-alt: #eef6fc;
+  --lvj-panel-alt: #f2f6fb;
 
-  --lvj-charcoal: #1a2c40;
-  --lvj-ink: #102033;
-  --lvj-muted: #5b7188;
-  --lvj-muted-2: #8aa0b4;
+  --lvj-charcoal: #1a2b45;
+  --lvj-ink: #0b1d36;
+  --lvj-muted: #5b6d85;
+  --lvj-muted-2: #8e9db2;
 
-  --lvj-champagne: #7eabc8;
-  --lvj-gold: #1a4d7a;
-  --lvj-gold-deep: #0f3558;
-  --lvj-gold-bright: #4d8fbf;
-  --lvj-jewel: #123a5c;
-  --lvj-jewel-soft: #1e547c;
-  --lvj-sky: #eaf4fb;
-  --lvj-sky-mid: #d5ebf6;
-  --lvj-sky-ink: #e8f4fc;
-  --lvj-navy: #0e2f4d;
+  --lvj-champagne: #9db4d2;
+  --lvj-gold: #1e4c84;
+  --lvj-gold-deep: #0c2648;
+  --lvj-gold-bright: #4a80c2;
+  --lvj-jewel: #10305a;
+  --lvj-jewel-soft: #1e4c84;
+  --lvj-sky: #eef3f9;
+  --lvj-sky-mid: #dbe6f3;
+  --lvj-sky-ink: #e9f0f9;
+  --lvj-navy: #0a1d3a;
 
-  --lvj-line: rgba(16, 50, 80, 0.1);
-  --lvj-line-strong: rgba(16, 50, 80, 0.18);
-  --lvj-shadow: 0 22px 50px rgba(16, 50, 80, 0.1);
-  --lvj-shadow-soft: 0 10px 26px rgba(16, 50, 80, 0.07);
+  /* Theme roles (new) */
+  --lvj-accent: #2d64a8;
+  --lvj-accent-soft: #e6eef8;
+  --lvj-media-bg: #f2f5f9;
+  --lvj-sale: #1f5fae;
+  --lvj-badge-sale: #0a1d3a;
+  --lvj-badge-new: #2d64a8;
+  --lvj-badge-sold: #5b6d85;
+  --lvj-overlay: 10, 29, 58; /* rgb triplet for rgba(var(--lvj-overlay), a) */
 
-  --lvj-header-bg: rgba(255, 255, 255, 0.9);
-  --lvj-admin-canvas: #eaf4fb;
+  --lvj-line: rgba(10, 29, 58, 0.1);
+  --lvj-line-strong: rgba(10, 29, 58, 0.18);
+  --lvj-shadow: 0 22px 50px rgba(10, 29, 58, 0.1);
+  --lvj-shadow-soft: 0 10px 26px rgba(10, 29, 58, 0.07);
+
+  --lvj-header-bg: rgba(255, 255, 255, 0.94);
+  --lvj-admin-canvas: #eef3f9;
   --lvj-admin-topbar: rgba(255, 255, 255, 0.94);
   --lvj-on-ink: #ffffff;
-  --lvj-inverse: #0e2f4d;
-  --lvj-on-inverse: #eaf4fb;
+  --lvj-inverse: #0a1d3a;
+  --lvj-on-inverse: #eef3f9;
   --lvj-danger: #9a3b32;
   --lvj-success: #2d6b5a;
 
@@ -82,6 +93,15 @@
 }
 
 [data-theme='dark'] {
+  --lvj-accent: #6aa3d0;
+  --lvj-accent-soft: #173044;
+  --lvj-media-bg: #12202c;
+  --lvj-sale: #8fc0e6;
+  --lvj-badge-sale: #2d64a8;
+  --lvj-badge-new: #4a80c2;
+  --lvj-badge-sold: #4d6074;
+  --lvj-overlay: 4, 12, 22;
+
   --lvj-ivory: #0c1620;
   --lvj-cream: #101c28;
   --lvj-white: #0a121a;
@@ -119,4 +139,24 @@
   --lvj-on-inverse: #eaf4fb;
   --lvj-danger: #d47a72;
   --lvj-success: #7cc9a0;
+}
+
+/* Wider content on large monitors (gutters stay proportional). */
+@media (min-width: 1920px) {
+  :root {
+    --lvj-content-max-xl: 1640px;
+    --lvj-gutter-xl: calc(2.5rem + 15px);
+  }
+}
+
+@media (min-width: 2400px) {
+  :root {
+    --lvj-content-max-xl: 1880px;
+  }
+}
+
+@media (min-width: 3200px) {
+  :root {
+    --lvj-content-max-xl: 2400px;
+  }
 }

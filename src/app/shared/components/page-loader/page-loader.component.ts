@@ -32,7 +32,7 @@ import { LoadingService } from '../../../core/services/loading.service';
       height: 100%;
       width: 32%;
       border-radius: 999px;
-      background: linear-gradient(90deg, var(--lvj-navy), #5a9bc8, var(--lvj-navy));
+      background: linear-gradient(90deg, var(--lvj-navy), var(--lvj-gold-bright), var(--lvj-navy));
       background-size: 200% 100%;
       animation: bar-slide 1s var(--lvj-ease) infinite, bar-shimmer 1.35s linear infinite;
       box-shadow: 0 0 10px rgba(14, 47, 77, 0.3);

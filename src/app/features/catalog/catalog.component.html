@@ -1,5 +1,13 @@
-<section class="page-hero">
-  <p class="eyebrow">{{ eyebrow() }}</p>
+<section class="page-hero hero-center">
+  <nav class="crumbs" aria-label="Breadcrumb">
+    <a routerLink="/">Home</a>
+    <span aria-hidden="true">/</span>
+    @if (category()) {
+      <a routerLink="/shop">Shop</a>
+      <span aria-hidden="true">/</span>
+    }
+    <span aria-current="page">{{ title() }}</span>
+  </nav>
   <h1>{{ title() }}</h1>
   @if (description()) {
     <p class="lede">{{ description() }}</p>
@@ -7,60 +15,93 @@
 </section>
 
 <section class="catalog container">
-  <button class="btn btn-ghost filter-toggle" type="button" (click)="mobileFilters.set(!mobileFilters())">
-    {{ mobileFilters() ? 'Hide filters' : 'Show filters' }}
-  </button>
+  <!-- Sticky filter + sort bar -->
+  <div class="toolbar-wrap">
+    <div class="toolbar">
+      <app-product-filters [facets]="facets()" [query]="query()" (queryChange)="onFilter($event)" />
 
-  <div class="layout" [class.open]="mobileFilters()">
-    <app-product-filters [facets]="facets()" [query]="query()" (queryChange)="onFilter($event)" />
-    <div>
-      <div class="toolbar">
-        <p class="count">{{ total() }} {{ total() === 1 ? 'piece' : 'pieces' }}</p>
-        <div class="tools">
-          <label class="sort">
-            <span>Sort</span>
-            <p-select
-              [options]="sortOptions"
-              optionLabel="label"
-              optionValue="value"
-              [ngModel]="query().sort || 'newest'"
-              (ngModelChange)="onSort($event)"
-              appendTo="body"
-              styleClass="catalog-sort" />
-          </label>
-          <div class="cols" aria-label="Grid density">
-            @for (opt of densityOptions; track opt.cols) {
-              <button
-                type="button"
-                [class.on]="columns() === opt.cols"
-                (click)="columns.set(opt.cols)"
-                [attr.aria-label]="opt.label"
-                [attr.aria-pressed]="columns() === opt.cols">
-                <app-icon [name]="opt.icon" [size]="16" [strokeWidth]="1.75" />
-              </button>
-            }
-          </div>
-        </div>
-      </div>
+      <div class="tools">
+        <p class="count" aria-live="polite">
+          <strong>{{ total() }}</strong> {{ total() === 1 ? 'piece' : 'pieces' }}
+        </p>
 
-      @if (loading()) {
-        <app-loading-skeleton />
-      } @else if (!products().length) {
-        <app-empty-state title="No pieces matched these filters." message="Clear filters or try another category. The floor collection changes often." />
-      } @else {
-        <div [class]="'grid-products cols-' + columns()">
-          @for (product of products(); track product.id) {
-            <app-product-card [product]="product" />
+        <div class="sort-wrap" [class.open]="sortOpen()">
+          <button
+            type="button"
+            class="sort-pill"
+            aria-haspopup="listbox"
+            [attr.aria-expanded]="sortOpen()"
+            (click)="sortOpen.set(!sortOpen())">
+            <span class="sort-k">Sort</span>
+            <span class="sort-v">{{ sortLabel() }}</span>
+            <app-icon class="chev" name="chevron-down" [size]="14" [strokeWidth]="1.75" />
+          </button>
+          @if (sortOpen()) {
+            <div class="sort-pop" role="listbox" aria-label="Sort products">
+              @for (opt of sortOptions; track opt.value) {
+                <button
+                  type="button"
+                  role="option"
+                  class="sort-opt"
+                  [class.on]="(query().sort || 'newest') === opt.value"
+                  [attr.aria-selected]="(query().sort || 'newest') === opt.value"
+                  (click)="onSort(opt.value); sortOpen.set(false)">
+                  {{ opt.label }}
+                  @if ((query().sort || 'newest') === opt.value) {
+                    <app-icon name="check" [size]="14" [strokeWidth]="2" />
+                  }
+                </button>
+              }
+            </div>
           }
         </div>
-        <p-paginator
-          [rows]="query().pageSize || 12"
-          [totalRecords]="total()"
-          [first]="((query().page || 1) - 1) * (query().pageSize || 12)"
-          [showCurrentPageReport]="total() > 12"
-          currentPageReportTemplate="{first}–{last} of {totalRecords}"
-          (onPageChange)="onPage($event)" />
-      }
+
+        <div class="cols" role="group" aria-label="Grid density">
+          @for (opt of densityOptions; track opt.cols) {
+            <button
+              type="button"
+              [class.on]="columns() === opt.cols"
+              (click)="columns.set(opt.cols)"
+              [attr.aria-label]="opt.label"
+              [attr.aria-pressed]="columns() === opt.cols">
+              <app-icon [name]="opt.icon" [size]="16" [strokeWidth]="1.6" />
+            </button>
+          }
+        </div>
+      </div>
     </div>
+
+    @if (chips().length) {
+      <div class="chips" aria-label="Active filters">
+        @for (chip of chips(); track chip.key) {
+          <button type="button" class="chip" (click)="removeChip(chip.key)" [attr.aria-label]="'Remove filter ' + chip.label">
+            {{ chip.label }}
+            <app-icon name="x" [size]="12" [strokeWidth]="2" />
+          </button>
+        }
+        <button type="button" class="chip-clear" (click)="clearAll()">Clear all</button>
+      </div>
+    }
+  </div>
+
+  <div class="results">
+    @if (loading()) {
+      <app-loading-skeleton />
+    } @else if (!products().length) {
+      <app-empty-state title="No pieces matched these filters." message="Clear filters or try another category. The floor collection changes often." />
+    } @else {
+      <div [class]="'grid-products cols-' + columns()">
+        @for (product of products(); track product.id) {
+          <app-product-card [product]="product" />
+        }
+      </div>
+      <p-paginator
+        [rows]="query().pageSize || 12"
+        [totalRecords]="total()"
+        [first]="((query().page || 1) - 1) * (query().pageSize || 12)"
+        [showCurrentPageReport]="total() > 12"
+        currentPageReportTemplate="{first}–{last} of {totalRecords}"
+        (onPageChange)="onPage($event)" />
+    }
   </div>
 </section>

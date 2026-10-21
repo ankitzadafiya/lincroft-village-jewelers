@@ -1,0 +1,35 @@
+<section class="triptych" aria-labelledby="triptych-title">
+  <h1 id="triptych-title" class="sr-only">Lincroft Village Jewelers — fine jewelry in Lincroft, New Jersey</h1>
+
+  <div class="track">
+    @for (panel of panels(); track panel.slug; let i = $index) {
+      <a class="panel" [routerLink]="panel.path" [attr.aria-label]="panel.eyebrow + ': ' + panel.title + ' ' + panel.accent + ' — shop now'">
+        <div class="media">
+          <img
+            [src]="panel.image"
+            [alt]="panel.alt"
+            loading="eager"
+            decoding="async"
+            [attr.fetchpriority]="i === 0 ? 'high' : null"
+            draggable="false" />
+        </div>
+        <span class="veil" aria-hidden="true"></span>
+
+        <span class="rest" aria-hidden="true">
+          <span class="rest-index">0{{ i + 1 }}</span>
+          <span class="rest-rule"></span>
+          <span class="rest-label">{{ panel.label }}</span>
+        </span>
+
+        <span class="copy" aria-hidden="true">
+          <span class="eyebrow-line">{{ panel.eyebrow }}</span>
+          <span class="title">{{ panel.title }} {{ panel.accent }}</span>
+          <span class="cta">
+            Shop now
+            <app-icon name="arrow-right" [size]="16" [strokeWidth]="1.5"></app-icon>
+          </span>
+        </span>
+      </a>
+    }
+  </div>
+</section>

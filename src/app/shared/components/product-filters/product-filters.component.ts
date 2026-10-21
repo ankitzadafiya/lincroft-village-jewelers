@@ -1,10 +1,11 @@
-import { Component, effect, inject, input, output } from '@angular/core';
+import { Component, ElementRef, HostListener, computed, effect, inject, input, output, signal } from '@angular/core';
+import { LowerCasePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { AccordionModule } from 'primeng/accordion';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { SliderModule } from 'primeng/slider';
 import { FacetValue, ProductFilterFacets, ProductListQuery } from '../../../core/models';
 import { ConfigurationService } from '../../../core/services/configuration.service';
+import { AppIconComponent } from '../../icons/lvj-icons';
 
 type FilterKey = 'designer' | 'metal' | 'gemstone' | 'diamondType';
 
@@ -15,19 +16,40 @@ function isHiddenMetal(item: FacetValue): boolean {
   return HIDDEN_METALS.some(name => haystack.includes(name));
 }
 
+const usd = (n: number) =>
+  new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(n);
+
+/**
+ * Minimal horizontal filter bar: one pill per facet (Price, Brand, Metal,
+ * Gemstone, Diamond type). A pill opens a small dropdown (a bottom sheet on
+ * phones). Same query contract as before — emits `queryChange`.
+ */
 @Component({
   selector: 'app-product-filters',
-  imports: [FormsModule, AccordionModule, InputNumberModule, SliderModule],
+  imports: [LowerCasePipe, FormsModule, InputNumberModule, SliderModule, AppIconComponent],
   templateUrl: './product-filters.component.html',
   styleUrl: './product-filters.component.scss'
 })
 export class ProductFiltersComponent {
   private readonly config = inject(ConfigurationService);
+  private readonly host = inject(ElementRef<HTMLElement>);
+
   readonly facets = input<ProductFilterFacets | null>(null);
   readonly query = input.required<ProductListQuery>();
   readonly queryChange = output<ProductListQuery>();
 
-  openPanels: string[] = ['price'];
+  /** Which dropdown is open: 'price' | FilterKey | null. */
+  readonly openKey = signal<string | null>(null);
+
+  readonly priceActive = computed(() => this.query().priceMin != null || this.query().priceMax != null);
+  readonly priceLabel = computed(() => {
+    const q = this.query();
+    if (q.priceMin != null && q.priceMax != null) return `${usd(q.priceMin)} – ${usd(q.priceMax)}`;
+    if (q.priceMin != null) return `From ${usd(q.priceMin)}`;
+    if (q.priceMax != null) return `Up to ${usd(q.priceMax)}`;
+    return '';
+  });
+
   priceRangeModel: number[] = [0, 0];
   localMin = 0;
   localMax = 0;
@@ -59,6 +81,35 @@ export class ProductFiltersComponent {
     });
   }
 
+  // ── Dropdown state ─────────────────────────────────
+  toggle(key: string): void {
+    this.openKey.set(this.openKey() === key ? null : key);
+  }
+
+  close(): void {
+    this.openKey.set(null);
+  }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent): void {
+    if (!this.openKey()) return;
+    const target = event.target as Node | null;
+    // PrimeNG renders nothing outside the host here, so a host check is enough.
+    if (target && !this.host.nativeElement.contains(target)) this.close();
+  }
+
+  @HostListener('document:keydown.escape')
+  onEscape(): void {
+    this.close();
+  }
+
+  // ── Facets ─────────────────────────────────────────
+  selectedLabel(key: FilterKey, items: FacetValue[]): string {
+    const current = String(this.query()[key] ?? '').toLowerCase();
+    if (!current) return '';
+    return items.find(i => i.value.toLowerCase() === current || i.label.toLowerCase() === current)?.label ?? String(this.query()[key]);
+  }
+
   isSelected(key: FilterKey, item: FacetValue): boolean {
     const current = String(this.query()[key] ?? '').toLowerCase();
     if (!current) return false;
@@ -72,8 +123,15 @@ export class ProductFiltersComponent {
       [key]: selected ? undefined : item.value,
       page: 1
     });
+    this.close();
   }
 
+  clearKey(key: FilterKey): void {
+    this.queryChange.emit({ ...this.query(), [key]: undefined, page: 1 });
+    this.close();
+  }
+
+  // ── Price ──────────────────────────────────────────
   onSliderChange(values: number | number[]): void {
     if (!Array.isArray(values) || values.length < 2) return;
     this.localMin = values[0];
@@ -90,22 +148,15 @@ export class ProductFiltersComponent {
     this.schedulePrice();
   }
 
-  reset(): void {
-    const { category, subcategory, q } = this.query();
-    this.queryChange.emit({
-      category,
-      subcategory,
-      q,
-      page: 1,
-      pageSize: this.query().pageSize,
-      sort: this.query().sort
-    });
+  clearPrice(): void {
+    this.queryChange.emit({ ...this.query(), priceMin: undefined, priceMax: undefined, page: 1 });
+    this.close();
   }
 
   private schedulePrice(): void {
     if (this.syncing) return;
     if (this.priceTimer) clearTimeout(this.priceTimer);
-    this.priceTimer = setTimeout(() => this.commitPrice(), 220);
+    this.priceTimer = setTimeout(() => this.commitPrice(), 260);
   }
 
   private commitPrice(): void {
@@ -113,10 +164,8 @@ export class ProductFiltersComponent {
     if (!f) return;
     const min = Math.min(this.localMin, this.localMax);
     const max = Math.max(this.localMin, this.localMax);
-    const fullMin = f.priceRange.min;
-    const fullMax = f.priceRange.max;
-    const priceMin = min > fullMin ? min : undefined;
-    const priceMax = max < fullMax ? max : undefined;
+    const priceMin = min > f.priceRange.min ? min : undefined;
+    const priceMax = max < f.priceRange.max ? max : undefined;
     const current = this.query();
     if (current.priceMin === priceMin && current.priceMax === priceMax) return;
     this.queryChange.emit({ ...current, priceMin, priceMax, page: 1 });
@@ -130,8 +179,8 @@ export class ProductFiltersComponent {
     return [
       ...(showBrand ? [{ key: 'designer' as const, label: 'Brand', items: f.designers }] : []),
       { key: 'metal' as const, label: 'Metal', items: f.metals.filter(item => !isHiddenMetal(item)) },
-      { key: 'gemstone' as const, label: 'Gemstone Type', items: f.gemstones },
-      { key: 'diamondType' as const, label: 'Diamond Type', items: f.diamondTypes }
+      { key: 'gemstone' as const, label: 'Gemstone', items: f.gemstones },
+      { key: 'diamondType' as const, label: 'Diamond type', items: f.diamondTypes }
     ].filter(s => s.items.length);
   }
 

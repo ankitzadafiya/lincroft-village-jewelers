@@ -2,6 +2,8 @@ import { NgModule, Component, computed, input } from '@angular/core';
 import {
   ArrowRight,
   ArrowUp,
+  ArrowUpRight,
+  Check,
   ChevronDown,
   ChevronLeft,
   ChevronRight,
@@ -30,6 +32,7 @@ import {
   Power,
   Search,
   Settings,
+  SlidersHorizontal,
   Shield,
   ShoppingBag,
   Sparkles,
@@ -48,6 +51,8 @@ import {
 const ICONS: Record<string, LucideIconData> = {
   'arrow-right': ArrowRight,
   'arrow-up': ArrowUp,
+  'arrow-up-right': ArrowUpRight,
+  check: Check,
   'chevron-down': ChevronDown,
   'chevron-left': ChevronLeft,
   'chevron-right': ChevronRight,
@@ -75,6 +80,7 @@ const ICONS: Record<string, LucideIconData> = {
   power: Power,
   search: Search,
   settings: Settings,
+  'sliders-horizontal': SlidersHorizontal,
   shield: Shield,
   'shopping-bag': ShoppingBag,
   sparkles: Sparkles,

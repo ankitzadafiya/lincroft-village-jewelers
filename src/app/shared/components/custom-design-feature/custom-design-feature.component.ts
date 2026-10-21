@@ -78,11 +78,11 @@ import { IMG } from '../../../core/mock/image-catalog';
     }
 
     .consult h2 {
-      font-family: var(--font-body);
+      font-family: var(--font-logo-serif);
       font-style: normal;
-      font-size: clamp(1.5rem, 2.7vw, 2.05rem);
+      font-size: clamp(1.72rem, 3.1vw, 2.36rem);
       font-weight: 600;
-      letter-spacing: -0.02em;
+      letter-spacing: -0.005em;
       line-height: 1.2;
       color: var(--lvj-ink);
     }
@@ -231,11 +231,11 @@ import { IMG } from '../../../core/mock/image-catalog';
     }
 
     .copy h2 {
-      font-family: var(--font-body);
+      font-family: var(--font-logo-serif);
       font-style: normal;
-      font-size: clamp(1.55rem, 2.8vw, 2.15rem);
+      font-size: clamp(1.78rem, 3.22vw, 2.47rem);
       font-weight: 600;
-      letter-spacing: -0.02em;
+      letter-spacing: -0.005em;
       line-height: 1.2;
       margin-bottom: 0.85rem;
       color: var(--lvj-ink);

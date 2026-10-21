@@ -1,20 +1,54 @@
 <footer class="foot">
-  <div class="grid container">
-    <div class="news-col">
+  <!-- ── Newsletter strip ─────────────────────────── -->
+  <div class="container news">
+    <div class="news-copy">
       <h2>Let’s get in touch</h2>
-      <p class="about">Sign up for new arrivals, atelier notes, and private events across the USA.</p>
-      <form class="news" (submit)="$event.preventDefault(); subscribe()">
-        <input type="email" [formControl]="email" placeholder="Enter your email" />
-        <button class="btn btn-gold" type="submit">Subscribe Now</button>
-      </form>
+      <p>Sign up for new arrivals, atelier notes, and private events across the USA.</p>
     </div>
-    <div>
+    <form class="news-form" (submit)="$event.preventDefault(); subscribe()" novalidate>
+      <label class="sr-only" for="footer-email">Email address</label>
+      <input
+        id="footer-email"
+        type="email"
+        autocomplete="email"
+        [formControl]="email"
+        placeholder="Your email address"
+        [attr.aria-invalid]="email.invalid && email.touched" />
+      <button type="submit" [disabled]="submitting()">
+        {{ submitting() ? 'Subscribing…' : 'Subscribe' }}
+        <app-icon name="arrow-right" [size]="15" [strokeWidth]="1.5"></app-icon>
+      </button>
+      @if (email.invalid && email.touched) {
+        <p class="news-error" role="alert">Enter a valid email address.</p>
+      }
+    </form>
+  </div>
+
+  <!-- ── Links + hours ────────────────────────────── -->
+  <div class="container cols">
+    <div class="brand">
+      <app-logo tone="light" align="left" [compact]="true" />
+      @if (config.config()?.tagline; as tagline) {
+        <p class="tagline">{{ tagline }}</p>
+      }
+      <div class="social">
+        <a [href]="config.config()?.instagramUrl || 'https://instagram.com'" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+          <app-icon name="instagram" [size]="17" [strokeWidth]="1.5"></app-icon>
+        </a>
+        <a [href]="config.config()?.facebookUrl || 'https://facebook.com'" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+          <app-icon name="facebook" [size]="17" [strokeWidth]="1.5"></app-icon>
+        </a>
+      </div>
+    </div>
+
+    <nav class="col" aria-label="Shop">
       <h3>Shop</h3>
       @for (link of shopLinks; track link.slug) {
         <a [routerLink]="'/' + link.slug">{{ link.navLabel }}</a>
       }
-    </div>
-    <div>
+    </nav>
+
+    <nav class="col" aria-label="Resources">
       <h3>Resources</h3>
       <a routerLink="/about">About Us</a>
       <a routerLink="/custom-jewelry">Custom Jewelry</a>
@@ -23,30 +57,65 @@
       <a routerLink="/shop">Shop All</a>
       <a routerLink="/contact">Contact Us</a>
       <a routerLink="/favorites">Wishlist</a>
-    </div>
-    <div>
-      <h3>Store Hours</h3>
-      @if (config.config(); as cfg) {
-        <div class="hours">
-          @for (day of cfg.hours; track day.day) {
-            <span>{{ day.day }} {{ day.hours }}</span>
-          }
-        </div>
-        <p class="contact-line">{{ cfg.phoneDisplay }}</p>
-        <p class="contact-line">{{ cfg.email }}</p>
-        <div class="social">
-          <a [href]="cfg.instagramUrl || 'https://instagram.com'" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
-            <app-icon name="instagram" [size]="16" [strokeWidth]="1.6"></app-icon>
-          </a>
-          <a [href]="cfg.facebookUrl || 'https://facebook.com'" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
-            <app-icon name="facebook" [size]="16" [strokeWidth]="1.6"></app-icon>
-          </a>
-        </div>
-      }
+    </nav>
+
+    <div class="col hours-col">
+      <h3>Store hours</h3>
+      <dl class="hours">
+        @for (h of hours(); track h.day) {
+          <div class="hours-row" [class.today]="h.today" [class.closed]="h.closed">
+            <dt><abbr [title]="h.day">{{ h.short }}</abbr></dt>
+            <dd>{{ h.label }}</dd>
+          </div>
+        }
+      </dl>
     </div>
   </div>
-  <div class="legal container">
-    <span>© {{ year }} Lincroft Village Jewelers</span>
+
+  <!-- ── Visit + map ──────────────────────────────── -->
+  <div class="container visit">
+    <div class="visit-card">
+      <p class="visit-kicker">Visit the store</p>
+      <p class="visit-title">Lincroft Village Jewelers</p>
+      @if (address(); as a) {
+        <address class="visit-address">{{ a.line1 }}<br />{{ a.line2 }}</address>
+      }
+      <div class="visit-contact">
+        @if (config.config()?.phone; as phone) {
+          <a [href]="'tel:' + phone">
+            <app-icon name="phone" [size]="15" [strokeWidth]="1.5"></app-icon>
+            {{ config.config()?.phoneDisplay || phone }}
+          </a>
+        }
+        @if (config.config()?.email; as mail) {
+          <a [href]="'mailto:' + mail">
+            <app-icon name="message-circle" [size]="15" [strokeWidth]="1.5"></app-icon>
+            {{ mail }}
+          </a>
+        }
+      </div>
+      <div class="visit-actions">
+        <a class="visit-cta" [href]="directionsUrl" target="_blank" rel="noopener noreferrer">
+          <app-icon name="map-pin" [size]="15" [strokeWidth]="1.5"></app-icon>
+          Get directions
+        </a>
+        <a class="visit-link" routerLink="/contact">Book an appointment</a>
+      </div>
+    </div>
+
+    <div class="map">
+      <iframe
+        [src]="mapUrl"
+        title="Map showing Lincroft Village Jewelers in Lincroft, New Jersey"
+        loading="lazy"
+        referrerpolicy="strict-origin-when-cross-origin"
+        allowfullscreen></iframe>
+    </div>
+  </div>
+
+  <!-- ── Legal ────────────────────────────────────── -->
+  <div class="container legal">
+    <span>© {{ year }} Lincroft Village Jewelers. All rights reserved.</span>
     <span>Serving Lincroft, NJ · United States</span>
   </div>
 </footer>

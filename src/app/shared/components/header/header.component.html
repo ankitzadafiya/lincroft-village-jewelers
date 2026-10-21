@@ -23,6 +23,7 @@
 }
 
 <header class="header" [class.compact]="compact()">
+  <span class="scroll-line" aria-hidden="true" [style.transform]="'scaleX(' + progress() + ')'"></span>
   <div class="bar container">
     <div class="left">
       <button class="icon-btn menu-btn" type="button" aria-label="Open menu" (click)="mobileOpen.set(true)">
@@ -35,26 +36,34 @@
       @for (item of nav; track item.path) {
         <div
           class="nav-item"
+          [class.has-mega]="!!item.mega"
           [class.mega-open]="item.mega && megaKey() === item.mega"
-          (mouseenter)="openMega(item.mega)"
-          (mouseleave)="closeMega(item.mega)">
+          (mouseenter)="onNavEnter(item.mega)"
+          (mouseleave)="scheduleClose()">
           <a
             [routerLink]="item.path"
             routerLinkActive="active"
             [routerLinkActiveOptions]="{ exact: item.exact ?? false }">
             {{ item.label }}
-            @if (item.mega) {
-              <app-icon name="chevron-down" [size]="12" [strokeWidth]="1.75"></app-icon>
-            }
           </a>
-
-          @if (item.mega && megaKey() === item.mega) {
+          @if (item.mega) {
+            <button
+              type="button"
+              class="mega-toggle"
+              [attr.aria-expanded]="megaKey() === item.mega"
+              [attr.aria-controls]="'mega-' + item.mega"
+              [attr.aria-label]="(megaKey() === item.mega ? 'Hide ' : 'Show ') + item.label + ' menu'"
+              (click)="toggleMega(item.mega)">
+              <app-icon name="chevron-down" [size]="12" [strokeWidth]="1.75"></app-icon>
+            </button>
             <app-mega-menu
+              [panelId]="'mega-' + item.mega"
+              [active]="megaKey() === item.mega"
               [parent]="parent(item.mega)"
               [children]="children(item.mega)"
               [parentSlug]="item.mega"
-              (close)="megaKey.set(null)"
-              (stay)="megaKey.set(item.mega)" />
+              [label]="item.label"
+              (close)="closeNow()" />
           }
         </div>
       }
@@ -94,6 +103,7 @@
       </a>
     </div>
   </div>
+
 </header>
 
 @if (mobileOpen()) {
@@ -104,9 +114,34 @@
         <app-icon name="x" [size]="20" [strokeWidth]="1.5"></app-icon>
       </button>
     </div>
-    <nav>
+    <nav aria-label="Mobile">
       @for (item of nav; track item.path) {
-        <a [routerLink]="item.path">{{ item.label }}</a>
+        @if (item.mega && children(item.mega).length) {
+          <div class="drawer-group" [class.open]="drawerKey() === item.mega">
+            <div class="drawer-row">
+              <a [routerLink]="item.path">{{ item.label }}</a>
+              <button
+                type="button"
+                class="drawer-toggle"
+                [attr.aria-expanded]="drawerKey() === item.mega"
+                [attr.aria-controls]="'drawer-' + item.mega"
+                [attr.aria-label]="(drawerKey() === item.mega ? 'Hide ' : 'Show ') + item.label + ' styles'"
+                (click)="toggleDrawerGroup(item.mega)">
+                <app-icon name="chevron-down" [size]="16" [strokeWidth]="1.5"></app-icon>
+              </button>
+            </div>
+            <div class="drawer-subs" [id]="'drawer-' + item.mega">
+              <div class="drawer-subs-inner">
+                @for (sub of children(item.mega); track sub.id) {
+                  <a [routerLink]="item.path" [queryParams]="{ subcategory: sub.slug }">{{ sub.name }}</a>
+                }
+                <a class="drawer-all" [routerLink]="item.path">View all {{ item.label }}</a>
+              </div>
+            </div>
+          </div>
+        } @else {
+          <a [routerLink]="item.path">{{ item.label }}</a>
+        }
       }
       <a routerLink="/account">{{ customer.isAuthenticated() ? 'My Account' : 'Sign In' }}</a>
       @if (adminAuth.isAuthenticated()) {

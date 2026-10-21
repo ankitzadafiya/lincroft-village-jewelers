@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit, inject, signal } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit, inject, signal } from '@angular/core';
 import { NavigationEnd, Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, filter } from 'rxjs';
@@ -28,7 +28,7 @@ interface NavItem {
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent implements OnInit, OnDestroy {
   private readonly categoriesApi = inject(CategoryService);
   private readonly searchApi = inject(SearchService);
   private readonly router = inject(Router);
@@ -55,8 +55,18 @@ export class HeaderComponent implements OnInit {
     { label: 'About', path: '/about' }
   ];
 
+  /** Nav items that open a mega panel (rendered once, stacked under the header). */
+  readonly megaItems = this.nav.filter(item => !!item.mega);
+  readonly drawerKey = signal<string | null>(null);
+  private openTimer: ReturnType<typeof setTimeout> | null = null;
+  private closeTimer: ReturnType<typeof setTimeout> | null = null;
+  /** True while the open panel was opened by pointer hover (a click should then keep it open). */
+  private openedByHover = false;
+
   readonly categories = signal<Category[]>([]);
   readonly compact = signal(false);
+  /** 0–1 page scroll progress for the thin line under the header. */
+  readonly progress = signal(0);
   readonly mobileOpen = signal(false);
   readonly searchOpen = signal(false);
   readonly promoOpen = signal(true);
@@ -85,8 +95,13 @@ export class HeaderComponent implements OnInit {
     this.router.events.pipe(filter(e => e instanceof NavigationEnd)).subscribe(() => {
       this.mobileOpen.set(false);
       this.searchOpen.set(false);
-      this.megaKey.set(null);
+      this.closeNow();
+      this.drawerKey.set(null);
     });
+  }
+
+  ngOnDestroy(): void {
+    this.clearTimers();
   }
 
   parent(slug: string): Category | null {
@@ -101,14 +116,71 @@ export class HeaderComponent implements OnInit {
       .sort((a, b) => a.sortOrder - b.sortOrder);
   }
 
-  openMega(slug?: string): void {
-    this.megaKey.set(slug ?? null);
+  /** Hover intent: short delay before the first open, instant switching once a panel is open. */
+  onNavEnter(slug?: string): void {
+    this.cancelClose();
+    if (this.openTimer) clearTimeout(this.openTimer);
+    if (!slug) {
+      this.scheduleClose(90);
+      return;
+    }
+    if (this.megaKey()) {
+      if (this.megaKey() !== slug) this.openedByHover = true;
+      this.megaKey.set(slug);
+      return;
+    }
+    this.openTimer = setTimeout(() => {
+      this.openedByHover = true;
+      this.megaKey.set(slug);
+    }, 110);
   }
 
-  closeMega(slug?: string): void {
-    if (!slug || this.megaKey() === slug) {
-      this.megaKey.set(null);
+  scheduleClose(delay = 200): void {
+    if (this.openTimer) clearTimeout(this.openTimer);
+    this.cancelClose();
+    this.closeTimer = setTimeout(() => this.megaKey.set(null), delay);
+  }
+
+  cancelClose(): void {
+    if (this.closeTimer) clearTimeout(this.closeTimer);
+    this.closeTimer = null;
+  }
+
+  closeNow(): void {
+    this.clearTimers();
+    this.openedByHover = false;
+    this.megaKey.set(null);
+  }
+
+  /** Keyboard / click disclosure for the mega panel. */
+  toggleMega(slug: string): void {
+    this.clearTimers();
+    if (this.megaKey() === slug && this.openedByHover) {
+      // Pointer users hover first, then click: keep the panel open instead of toggling it shut.
+      this.openedByHover = false;
+      return;
     }
+    this.openedByHover = false;
+    this.megaKey.set(this.megaKey() === slug ? null : slug);
+  }
+
+  toggleDrawerGroup(slug: string): void {
+    this.drawerKey.set(this.drawerKey() === slug ? null : slug);
+  }
+
+  @HostListener('document:keydown.escape')
+  onEscape(): void {
+    const open = this.megaKey();
+    if (!open) return;
+    this.closeNow();
+    document.querySelector<HTMLButtonElement>(`.mega-toggle[aria-controls="mega-${open}"]`)?.focus();
+  }
+
+  private clearTimers(): void {
+    if (this.openTimer) clearTimeout(this.openTimer);
+    if (this.closeTimer) clearTimeout(this.closeTimer);
+    this.openTimer = null;
+    this.closeTimer = null;
   }
 
   goSearch(): void {
@@ -128,5 +200,7 @@ export class HeaderComponent implements OnInit {
   @HostListener('window:scroll')
   onScroll(): void {
     this.compact.set(window.scrollY > 24);
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    this.progress.set(max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0);
   }
 }

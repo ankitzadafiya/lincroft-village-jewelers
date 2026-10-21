@@ -1,6 +1,7 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { ConfigurationService } from '../../core/services/configuration.service';
+import { ScrollRevealService } from '../../core/services/scroll-reveal.service';
 import { SeoService } from '../../core/services/seo.service';
 import { HeaderComponent } from '../../shared/components/header/header.component';
 import { FooterComponent } from '../../shared/components/footer/footer.component';
@@ -23,11 +24,21 @@ import { WhatsAppFloatComponent } from '../../shared/components/whatsapp-float/w
     </div>
   `
 })
-export class StorefrontLayoutComponent implements OnInit {
+export class StorefrontLayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   private readonly config = inject(ConfigurationService);
   private readonly seo = inject(SeoService);
+  private readonly reveal = inject(ScrollRevealService);
+  private readonly host = inject(ElementRef<HTMLElement>);
 
   ngOnInit(): void {
     this.seo.setBusinessJsonLd(this.config.config());
+  }
+
+  ngAfterViewInit(): void {
+    this.reveal.start(this.host.nativeElement);
+  }
+
+  ngOnDestroy(): void {
+    this.reveal.stop();
   }
 }

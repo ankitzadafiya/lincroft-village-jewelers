@@ -1,17 +1,137 @@
-.mega {
+/*
+ * Dropdown anchored under its nav item (the nav item is position: relative
+ * and fills the header bar height, so `top: 100%` lands on the header edge).
+ */
+:host {
+  --dd-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --dd-accent: var(--lvj-accent);
   position: absolute;
   top: 100%;
-  left: 0;
+  left: 50%;
   z-index: 45;
-  padding-top: 0.5rem;
-  width: min(480px, calc(100vw - 1.5rem));
-  animation: drop 0.26s var(--lvj-ease);
+  display: block;
+  min-width: 270px;
+  padding-top: 1px;
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, 10px);
+  transition:
+    opacity 0.25s var(--dd-ease),
+    transform 0.35s var(--dd-ease),
+    visibility 0s linear 0.35s;
 }
 
-@keyframes drop {
+:host(.active) {
+  visibility: visible;
+  opacity: 1;
+  pointer-events: auto;
+  transform: translate(-50%, 0);
+  transition:
+    opacity 0.28s var(--dd-ease),
+    transform 0.4s var(--dd-ease),
+    visibility 0s;
+}
+
+.drop {
+  background: var(--lvj-white);
+  border: 1px solid var(--lvj-line);
+  border-top: 2px solid var(--dd-accent);
+  box-shadow: 0 24px 48px -18px rgba(var(--lvj-overlay), 0.25);
+  padding: 0.7rem 0 0;
+}
+
+.subs {
+  display: grid;
+}
+
+.sub-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.62rem 1.4rem;
+  font-size: 0.92rem;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  color: var(--lvj-charcoal);
+  transition: background 0.25s ease, color 0.25s ease;
+}
+
+.sub-name {
+  transition: transform 0.4s var(--dd-ease);
+}
+
+.sub-arrow {
+  display: inline-flex;
+  opacity: 0;
+  transform: translateX(-8px);
+  color: var(--dd-accent);
+  transition: opacity 0.3s ease, transform 0.4s var(--dd-ease);
+}
+
+.sub-link:hover,
+.sub-link:focus-visible {
+  background: var(--lvj-panel-alt);
+  color: var(--lvj-ink);
+
+  .sub-name {
+    transform: translateX(4px);
+  }
+
+  .sub-arrow {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Items cascade in when the dropdown opens */
+:host(.active) .sub-link {
+  animation: dd-rise 0.45s var(--dd-ease) both;
+  animation-delay: calc(0.035s * var(--i, 0) + 0.04s);
+}
+
+.view-all {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 0.55rem;
+  padding: 0.85rem 1.4rem;
+  border-top: 1px solid var(--lvj-line);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--lvj-ink);
+  transition: background 0.25s ease, color 0.25s ease;
+
+  app-icon {
+    display: inline-flex;
+    transition: transform 0.4s var(--dd-ease);
+  }
+
+  &:hover,
+  &:focus-visible {
+    background: var(--lvj-navy);
+    color: #fff;
+
+    app-icon {
+      transform: translate(2px, -2px);
+    }
+  }
+}
+
+a:focus-visible {
+  outline: 2px solid var(--lvj-ink);
+  outline-offset: -2px;
+}
+
+@keyframes dd-rise {
   from {
     opacity: 0;
-    transform: translateY(-6px);
+    transform: translateY(5px);
   }
   to {
     opacity: 1;
@@ -19,178 +139,13 @@
   }
 }
 
-.panel {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(168px, 190px);
-  gap: 0;
-  border-radius: 14px;
-  border: 1px solid var(--lvj-line);
-  background: var(--lvj-panel);
-  box-shadow:
-    0 18px 40px rgba(16, 50, 80, 0.11),
-    0 4px 12px rgba(16, 50, 80, 0.05);
-  overflow: hidden;
-}
-
-.links {
-  display: grid;
-  align-content: start;
-  gap: 0;
-  padding: 1.1rem 1.15rem 1.15rem;
-  border-right: 1px solid var(--lvj-line);
-}
-
-.cat-label {
-  margin: 0 0 0.65rem;
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--lvj-ink);
-}
-
-nav {
-  display: grid;
-  gap: 0;
-}
-
-.sub-link {
-  display: block;
-  padding: 0.42rem 0;
-  font-size: 0.92rem;
-  font-weight: 500;
-  letter-spacing: -0.01em;
-  line-height: 1.4;
-  color: var(--lvj-muted);
-  transition: color 0.2s ease, transform 0.25s var(--lvj-ease);
-}
-
-.sub-link:hover {
-  color: var(--lvj-gold-deep);
-  transform: translateX(3px);
-}
-
-.view-all {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  margin-top: 0.85rem;
-  padding-top: 0.85rem;
-  border-top: 1px solid var(--lvj-line);
-  font-size: 0.82rem;
-  font-weight: 600;
-  color: var(--lvj-ink);
-  transition: gap 0.25s var(--lvj-ease), color 0.2s ease;
-}
-
-.view-all:hover {
-  gap: 0.55rem;
-  color: var(--lvj-gold-deep);
-}
-
-.featured {
-  display: grid;
-  align-content: start;
-  gap: 0.55rem;
-  padding: 1.1rem 0.95rem 1rem;
-  background: var(--lvj-cream);
-}
-
-.featured-label {
-  margin: 0;
-  font-size: 0.62rem;
-  font-weight: 650;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--lvj-muted-2);
-}
-
-.featured-card {
-  display: grid;
-  gap: 0;
-  border-radius: 10px;
-  overflow: hidden;
-  background: var(--lvj-panel);
-  border: 1px solid var(--lvj-line);
-  transition: box-shadow 0.3s ease, transform 0.3s var(--lvj-ease);
-}
-
-.featured-card:hover {
-  box-shadow: var(--lvj-shadow-soft);
-  transform: translateY(-2px);
-}
-
-.featured-media {
-  aspect-ratio: 1;
-  overflow: hidden;
-  background: var(--lvj-soft);
-}
-
-.featured-media img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.65s var(--lvj-ease-out);
-}
-
-.featured-card:hover .featured-media img {
-  transform: scale(1.05);
-}
-
-.featured-foot {
-  display: grid;
-  gap: 0.25rem;
-  padding: 0.65rem 0.7rem 0.75rem;
-}
-
-.featured-name {
-  font-size: 0.88rem;
-  font-weight: 600;
-  letter-spacing: -0.02em;
-  color: var(--lvj-ink);
-  line-height: 1.3;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-.featured-cta {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.28rem;
-  font-size: 0.72rem;
-  font-weight: 600;
-  color: var(--lvj-muted);
-  transition: gap 0.25s var(--lvj-ease), color 0.2s ease;
-}
-
-.featured-card:hover .featured-cta {
-  gap: 0.45rem;
-  color: var(--lvj-gold-deep);
-}
-
-@media (max-width: 900px) {
-  .mega {
-    display: none;
-  }
-}
-
-@media (max-width: 520px) {
-  .panel {
-    grid-template-columns: 1fr;
+@media (prefers-reduced-motion: reduce) {
+  :host,
+  :host(.active) {
+    transition: none;
   }
 
-  .links {
-    border-right: 0;
-    border-bottom: 1px solid var(--lvj-line);
-  }
-
-  .featured {
-    padding-top: 0.85rem;
-  }
-
-  .featured-media {
-    aspect-ratio: 16 / 10;
+  :host(.active) .sub-link {
+    animation: none;
   }
 }

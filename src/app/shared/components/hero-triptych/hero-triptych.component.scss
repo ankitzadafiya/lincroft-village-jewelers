@@ -1,0 +1,303 @@
+@use 'mixins' as *;
+
+/*
+ * Home hero triptych.
+ * Rest:   three crisp images, small numbered label at the bottom.
+ * Hover:  image blurs + scales, warm veil fades in, title + CTA rise in.
+ * Touch:  copy always visible, horizontal scroll-snap carousel.
+ */
+
+:host {
+  --tp-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --tp-dur: 0.7s;
+  --tp-veil: rgba(var(--lvj-overlay), 0.42);
+  display: block;
+  background: var(--lvj-ivory);
+}
+
+.sr-only {
+  @include visually-hidden;
+}
+
+.track {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 86%;
+  gap: 2px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.panel {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  isolation: isolate;
+  aspect-ratio: 4 / 5;
+  background: var(--lvj-panel-alt);
+  color: #fff;
+  scroll-snap-align: start;
+  outline: none;
+}
+
+.media {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transform: scale(1.001);
+    filter: blur(0) saturate(1);
+    transition:
+      transform 1.1s var(--tp-ease),
+      filter var(--tp-dur) var(--tp-ease);
+    user-select: none;
+  }
+}
+
+/* Dims the image so white copy stays legible. */
+.veil {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(120% 80% at 50% 55%, var(--tp-veil), rgba(var(--lvj-overlay), 0.2) 70%),
+    linear-gradient(180deg, transparent 55%, rgba(var(--lvj-overlay), 0.4));
+  opacity: 0;
+  transition: opacity var(--tp-dur) var(--tp-ease);
+}
+
+/* ── Resting label ───────────────────────────────── */
+.rest {
+  position: absolute;
+  left: clamp(1.1rem, 2.2vw, 2rem);
+  bottom: clamp(1.1rem, 2.2vw, 1.9rem);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--lvj-ink);
+  padding: 0.55rem 0.9rem;
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(6px);
+  transition:
+    opacity 0.45s var(--tp-ease),
+    transform 0.45s var(--tp-ease);
+}
+
+.rest-index {
+  font-variant-numeric: tabular-nums;
+  opacity: 0.6;
+}
+
+.rest-rule {
+  width: 1.4rem;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.45;
+}
+
+/* ── Hover copy ──────────────────────────────────── */
+.copy {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  padding: 2rem 1.5rem;
+  text-align: center;
+  pointer-events: none;
+}
+
+.copy > * {
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity 0.55s var(--tp-ease),
+    transform 0.75s var(--tp-ease);
+}
+
+.eyebrow-line {
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.25);
+}
+
+.title {
+  font-family: var(--font-logo-serif);
+  font-weight: 600;
+  font-size: clamp(2.3rem, 3.7vw, 3.75rem);
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  margin-bottom: clamp(1.4rem, 2.6vw, 2.4rem);
+  text-shadow: 0 2px 24px rgba(0, 0, 0, 0.28);
+
+  em {
+    font-style: italic;
+    font-weight: 400;
+  }
+}
+
+.cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.95rem 2.4rem;
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  font-size: 0.82rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  position: relative;
+  overflow: hidden;
+
+  /* Fill sweep */
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: #fff;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.5s var(--tp-ease);
+  }
+
+  app-icon {
+    display: inline-flex;
+    transition: transform 0.45s var(--tp-ease);
+  }
+}
+
+.copy .cta {
+  isolation: isolate;
+}
+
+.copy > :nth-child(1) { transition-delay: 0.05s; }
+.copy > :nth-child(2) { transition-delay: 0.12s; }
+.copy > :nth-child(3) { transition-delay: 0.2s; }
+
+/* ── Touch / small screens: copy always visible ──── */
+@media (hover: none), (max-width: 899px) {
+  .veil {
+    opacity: 1;
+    background: linear-gradient(180deg, transparent 35%, rgba(var(--lvj-overlay), 0.68));
+  }
+
+  .rest {
+    display: none;
+  }
+
+  .copy {
+    justify-content: flex-end;
+    padding-bottom: 2.2rem;
+  }
+
+  .copy > * {
+    opacity: 1;
+    transform: none;
+  }
+
+  .title {
+    margin-bottom: 1.2rem;
+  }
+}
+
+/* ── Desktop triptych ────────────────────────────── */
+@media (min-width: 900px) {
+  .track {
+    grid-auto-flow: initial;
+    grid-template-columns: repeat(3, 1fr);
+    overflow: visible;
+    gap: 0;
+  }
+
+  .panel {
+    aspect-ratio: auto;
+    height: clamp(560px, calc(100vh - var(--lvj-header-h) - 40px), 900px);
+  }
+
+  .panel + .panel {
+    border-left: 1px solid rgba(255, 255, 255, 0.35);
+  }
+}
+
+@media (hover: hover) and (min-width: 900px) {
+  .panel:hover,
+  .panel:focus-visible {
+    .media img {
+      transform: scale(1.07);
+      filter: blur(14px) saturate(0.92);
+    }
+
+    .veil {
+      opacity: 1;
+    }
+
+    .rest {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+
+    .copy > * {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .panel .cta:hover,
+  .panel:focus-visible .cta {
+    color: var(--lvj-ink);
+
+    &::before {
+      transform: scaleX(1);
+    }
+  }
+
+  /* CTA is inside the link, so hovering the panel near it should fill it */
+  .panel:hover .cta {
+    pointer-events: auto;
+  }
+
+  .panel:hover .cta app-icon {
+    transform: translateX(4px);
+  }
+
+  .panel:focus-visible {
+    box-shadow: inset 0 0 0 2px #fff, inset 0 0 0 4px var(--lvj-navy);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .media img,
+  .veil,
+  .rest,
+  .copy > *,
+  .cta::before,
+  .cta app-icon {
+    transition-duration: 0.01ms !important;
+    transition-delay: 0s !important;
+  }
+
+  .panel:hover .media img,
+  .panel:focus-visible .media img {
+    transform: none;
+  }
+}

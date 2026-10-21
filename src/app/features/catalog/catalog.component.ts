@@ -1,8 +1,6 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, ElementRef, HostListener, OnInit, computed, inject, signal } from '@angular/core';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { PaginatorModule, PaginatorState } from 'primeng/paginator';
-import { SelectModule } from 'primeng/select';
 import { Category, ProductFilterFacets, ProductListItem, ProductListQuery } from '../../core/models';
 import { CategoryService } from '../../core/services/category.service';
 import { ConfigurationService } from '../../core/services/configuration.service';
@@ -14,12 +12,17 @@ import { ProductCardComponent } from '../../shared/components/product-card/produ
 import { ProductFiltersComponent } from '../../shared/components/product-filters/product-filters.component';
 import { AppIconComponent } from '../../shared/icons/lvj-icons';
 
+interface FilterChip {
+  key: 'subcategory' | 'metal' | 'gemstone' | 'diamondType' | 'designer' | 'price';
+  group: string;
+  label: string;
+}
+
 @Component({
   selector: 'app-catalog',
   imports: [
-    FormsModule,
+    RouterLink,
     PaginatorModule,
-    SelectModule,
     ProductFiltersComponent,
     ProductCardComponent,
     LoadingSkeletonComponent,
@@ -45,10 +48,35 @@ export class CatalogComponent implements OnInit {
   readonly loading = signal(true);
   readonly facets = signal<ProductFilterFacets | null>(null);
   readonly query = signal<ProductListQuery>({ page: 1, pageSize: 12, sort: 'newest' });
-  readonly mobileFilters = signal(false);
+  readonly sortOpen = signal(false);
+  private readonly host = inject(ElementRef<HTMLElement>);
   readonly category = signal<Category | null>(null);
   readonly columns = signal(3);
   private facetKey = '';
+
+  /** Removable chips for every active refinement. */
+  readonly chips = computed<FilterChip[]>(() => {
+    const q = this.query();
+    const f = this.facets();
+    const label = (list: { value: string; label: string }[] | undefined, value?: string) =>
+      list?.find(item => item.value.toLowerCase() === String(value).toLowerCase())?.label ?? String(value);
+    const out: FilterChip[] = [];
+    if (q.subcategory) out.push({ key: 'subcategory', group: 'Style', label: this.humanize(q.subcategory, q.category) });
+    if (q.metal) out.push({ key: 'metal', group: 'Metal', label: label(f?.metals, q.metal) });
+    if (q.gemstone) out.push({ key: 'gemstone', group: 'Gemstone', label: label(f?.gemstones, q.gemstone) });
+    if (q.diamondType) out.push({ key: 'diamondType', group: 'Diamond', label: label(f?.diamondTypes, q.diamondType) });
+    if (q.designer && !this.router.url.startsWith('/designers/')) {
+      out.push({ key: 'designer', group: 'Brand', label: label(f?.designers, q.designer) });
+    }
+    if (q.priceMin != null || q.priceMax != null) {
+      const usd = (n: number) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(n);
+      const text = q.priceMin != null && q.priceMax != null
+        ? `${usd(q.priceMin)} – ${usd(q.priceMax)}`
+        : q.priceMin != null ? `From ${usd(q.priceMin)}` : `Up to ${usd(q.priceMax!)}`;
+      out.push({ key: 'price', group: 'Price', label: text });
+    }
+    return out;
+  });
 
   readonly sortOptions = [
     { label: 'Newest', value: 'newest' },
@@ -62,6 +90,22 @@ export class CatalogComponent implements OnInit {
     { cols: 3, icon: 'layout-grid', label: 'Three columns' },
     { cols: 4, icon: 'columns-4', label: 'Four columns' }
   ];
+
+  readonly sortLabel = computed(
+    () => this.sortOptions.find(o => o.value === (this.query().sort || 'newest'))?.label ?? 'Newest'
+  );
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent): void {
+    if (!this.sortOpen()) return;
+    const wrap = this.host.nativeElement.querySelector('.sort-wrap');
+    if (wrap && !wrap.contains(event.target as Node)) this.sortOpen.set(false);
+  }
+
+  @HostListener('document:keydown.escape')
+  onEscape(): void {
+    this.sortOpen.set(false);
+  }
 
   ngOnInit(): void {
     this.route.data.subscribe(data => {
@@ -180,6 +224,30 @@ export class CatalogComponent implements OnInit {
       relativeTo: this.route,
       queryParams: this.toParams(query)
     });
+  }
+
+  removeChip(key: FilterChip['key']): void {
+    const next: ProductListQuery = { ...this.query(), page: 1 };
+    if (key === 'price') {
+      next.priceMin = undefined;
+      next.priceMax = undefined;
+    } else {
+      next[key] = undefined;
+    }
+    this.onFilter(next);
+  }
+
+  clearAll(): void {
+    const { category, q, sort, pageSize } = this.query();
+    const designer = this.router.url.startsWith('/designers/') ? this.query().designer : undefined;
+    this.onFilter({ category, q, sort, pageSize, designer, page: 1 });
+  }
+
+  /** "ring-lab-grown-engagement-ring" → "Lab-grown engagement ring". */
+  private humanize(slug: string, category?: string): string {
+    const trimmed = category && slug.startsWith(category + '-') ? slug.slice(category.length + 1) : slug;
+    const text = trimmed.replace(/-/g, ' ').replace(/\blab grown\b/i, 'lab-grown');
+    return text.charAt(0).toUpperCase() + text.slice(1);
   }
 
   onSort(sort: string): void {

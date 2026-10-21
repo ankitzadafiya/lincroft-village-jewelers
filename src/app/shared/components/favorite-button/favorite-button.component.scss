@@ -52,3 +52,32 @@
   display: block;
   transition: transform 0.3s var(--lvj-ease);
 }
+
+/* Square tile — product-card action rail (Vemus-style). */
+.fav.tile {
+  width: 44px;
+  height: 44px;
+  border-radius: 0;
+  background: #fff;
+  box-shadow: 0 6px 18px -8px rgba(var(--lvj-overlay), 0.3);
+}
+
+.fav.tile:hover,
+.fav.tile:focus-visible {
+  transform: none;
+  background: var(--lvj-navy);
+  color: #fff;
+}
+
+.fav.tile.on {
+  color: var(--lvj-accent);
+}
+
+.fav.tile.on:hover {
+  color: #fff;
+}
+
+.fav.tile:focus-visible {
+  outline: 2px solid var(--lvj-ink);
+  outline-offset: 2px;
+}

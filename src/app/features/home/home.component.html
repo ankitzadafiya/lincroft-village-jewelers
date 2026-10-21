@@ -1,10 +1,11 @@
-<app-hero-carousel />
+<app-hero-triptych [categories]="heroCategories()" />
 
 <div appReveal="soft">
-  <app-category-showcase [categories]="heroCategories()" />
+  <app-category-mosaic [categories]="heroCategories()" />
 </div>
 
-<section class="section container" appReveal="up" [appRevealStagger]="true">
+<section class="section band-tint">
+  <div class="container" appReveal="up" [appRevealStagger]="true">
   <app-section-header
     eyebrow="Trending"
     title="Best sellers"
@@ -16,44 +17,67 @@
   } @else {
     <app-product-grid [products]="featured()" />
   }
+  </div>
 </section>
 
-<section class="editorial">
-  <div class="container editorial-grid" appReveal="clip" [appRevealStagger]="true">
-    <a class="banner" routerLink="/ring">
-      <video
-        class="media"
-        [src]="bannerLeftVideo"
-        [poster]="bannerLeft"
-        muted
-        loop
-        playsinline
-        autoplay
-        preload="metadata"
-        aria-hidden="true"></video>
-      <div class="banner-copy">
-        <p>Rings</p>
-        <h2>Lab-grown & natural</h2>
-        <span>Shop rings</span>
-      </div>
-    </a>
-    <a class="banner" routerLink="/silver-jewelry-with-24k-gold-plating">
-      <video
-        class="media"
-        [src]="bannerRightVideo"
-        [poster]="bannerRight"
-        muted
-        loop
-        playsinline
-        autoplay
-        preload="metadata"
-        aria-hidden="true"></video>
-      <div class="banner-copy">
-        <p>Everyday</p>
-        <h2>Silver + 24k gold</h2>
-        <span>Shop collection</span>
-      </div>
-    </a>
+<section class="editorial" aria-labelledby="edit-title">
+  <div class="container">
+    <header class="ed-head" appReveal="fade">
+      <p class="ed-kicker">The edit</p>
+      <h2 id="edit-title">Signature collections</h2>
+    </header>
+
+    <div class="editorial-grid" appReveal="up" [appRevealStagger]="true">
+      <a class="banner" routerLink="/ring">
+        <div class="banner-media">
+          <video
+            class="media"
+            [src]="bannerLeftVideo"
+            [poster]="bannerLeft"
+            muted
+            loop
+            playsinline
+            autoplay
+            preload="metadata"
+            aria-hidden="true"></video>
+          <span class="banner-sheen" aria-hidden="true"></span>
+        </div>
+        <div class="banner-card">
+          <span class="banner-kicker">Rings</span>
+          <h3 class="banner-title">Lab-grown &amp; natural</h3>
+          <span class="banner-text">Engagement rings, wedding bands and everyday stacks.</span>
+          <span class="banner-cta">
+            Shop rings
+            <app-icon name="arrow-right" [size]="15" [strokeWidth]="1.5"></app-icon>
+          </span>
+        </div>
+      </a>
+
+      <a class="banner" routerLink="/silver-jewelry-with-24k-gold-plating">
+        <div class="banner-media">
+          <video
+            class="media"
+            [src]="bannerRightVideo"
+            [poster]="bannerRight"
+            muted
+            loop
+            playsinline
+            autoplay
+            preload="metadata"
+            aria-hidden="true"></video>
+          <span class="banner-sheen" aria-hidden="true"></span>
+        </div>
+        <div class="banner-card">
+          <span class="banner-kicker">Everyday</span>
+          <h3 class="banner-title">Silver + 24k gold</h3>
+          <span class="banner-text">Silver jewelry finished in 24k gold plating.</span>
+          <span class="banner-cta">
+            Shop collection
+            <app-icon name="arrow-right" [size]="15" [strokeWidth]="1.5"></app-icon>
+          </span>
+        </div>
+      </a>
+    </div>
   </div>
 </section>
 
@@ -72,36 +96,42 @@
   <app-services-help />
 </div>
 
+<!-- Previous consultation + before/after section — kept for reference, replaced by the ring journey.
 <div appReveal="scale">
   <app-custom-design-feature />
 </div>
+-->
 
-<section class="occasions container">
-  <div class="occ-head" appReveal="fade">
-    <p class="eyebrow">Shop for occasions</p>
-    <h2>Jewelry for every moment, every day</h2>
-  </div>
-  <div class="occ-grid" appReveal="up" [appRevealStagger]="true">
-    @for (item of occasionPicks; track item.subcategory) {
-      <a class="occ-card" [routerLink]="item.route" [queryParams]="{ subcategory: item.subcategory }">
-        <div class="occ-media">
-          <img
-            [src]="item.image"
-            [alt]="item.alt"
-            loading="lazy"
-            decoding="async"
-            [style.object-position]="item.imagePosition" />
-        </div>
-        <div class="occ-foot">
-          <div class="occ-copy">
-            <h3>{{ item.label }}</h3>
-            <p>{{ item.hint }}</p>
+<app-ring-journey />
+
+<section class="occasions band-tint" aria-labelledby="occ-title">
+  <div class="container">
+    <header class="occ-head" appReveal="fade">
+      <p class="occ-kicker">Shop for occasions</p>
+      <h2 id="occ-title">Jewelry for every moment, every day</h2>
+    </header>
+    <div class="occ-grid" appReveal="up" [appRevealStagger]="true">
+      @for (item of occasionPicks; track item.subcategory) {
+        <a class="occ-card" [routerLink]="item.route" [queryParams]="{ subcategory: item.subcategory }">
+          <div class="occ-media">
+            <img
+              [src]="item.image"
+              [alt]="item.alt"
+              loading="lazy"
+              decoding="async"
+              [style.object-position]="item.imagePosition" />
+            <span class="occ-frame" aria-hidden="true"></span>
           </div>
-          <span class="occ-go" aria-hidden="true">
-            <app-icon name="arrow-right" [size]="16" [strokeWidth]="1.8"></app-icon>
-          </span>
-        </div>
-      </a>
-    }
+          <div class="occ-overlay">
+            <span class="occ-hint">{{ item.hint }}</span>
+            <h3>{{ item.label }}</h3>
+            <span class="occ-cta">
+              <span>Shop now</span>
+              <app-icon name="arrow-right" [size]="14" [strokeWidth]="1.6"></app-icon>
+            </span>
+          </div>
+        </a>
+      }
+    </div>
   </div>
 </section>

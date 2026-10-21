@@ -1,0 +1,20 @@
+<div class="drop">
+  <nav class="subs" [attr.aria-label]="displayLabel() + ' styles'">
+    @for (item of children(); track item.id; let i = $index) {
+      <a
+        class="sub-link"
+        [style.--i]="i"
+        [routerLink]="path()"
+        [queryParams]="{ subcategory: item.slug }"
+        (click)="close.emit()">
+        <span class="sub-name">{{ item.name }}</span>
+        <app-icon class="sub-arrow" name="arrow-right" [size]="14" [strokeWidth]="1.5"></app-icon>
+      </a>
+    }
+  </nav>
+
+  <a class="view-all" [routerLink]="path()" (click)="close.emit()">
+    View all {{ displayLabel() }}
+    <app-icon name="arrow-up-right" [size]="14" [strokeWidth]="1.5"></app-icon>
+  </a>
+</div>

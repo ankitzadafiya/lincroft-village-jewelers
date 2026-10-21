@@ -1,12 +1,41 @@
 @use 'mixins' as *;
 
+/* ── Editorial banners ("The edit") ─────────────────────────── */
 .editorial {
-  padding: 1rem 0 2rem;
+  padding: clamp(3.5rem, 6vw, 5.5rem) 0;
+  background: var(--lvj-white);
+}
+
+.ed-head {
+  text-align: center;
+  margin-bottom: clamp(1.8rem, 3.5vw, 2.8rem);
+
+  h2 {
+    font-family: var(--font-logo-serif);
+    font-weight: 600;
+    font-size: clamp(2.2rem, 4vw, 3.3rem);
+    line-height: 1.05;
+    color: var(--lvj-ink);
+
+    em {
+      font-style: italic;
+      font-weight: 400;
+    }
+  }
+}
+
+.ed-kicker {
+  margin: 0 0 0.6rem;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--lvj-accent);
 }
 
 .editorial-grid {
   display: grid;
-  gap: 1rem;
+  gap: clamp(1rem, 2vw, 1.75rem);
 
   @include mq(md) {
     grid-template-columns: 1fr 1fr;
@@ -15,73 +44,167 @@
 
 .banner {
   position: relative;
-  min-height: 380px;
-  border-radius: 20px;
-  overflow: hidden;
-  background: var(--lvj-paper);
   display: block;
-  box-shadow: var(--lvj-shadow-soft);
-}
-
-.banner .media {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  position: absolute;
-  inset: 0;
-  transition: transform 0.45s var(--lvj-ease-out);
-}
-
-.banner:hover .media {
-  transform: scale(1.04);
-}
-
-.banner-copy {
-  position: absolute;
-  inset: auto 0 0 0;
-  padding: 1.7rem 1.5rem 1.45rem;
   color: #fff;
-  background:
-    linear-gradient(180deg, transparent, color-mix(in srgb, var(--lvj-jewel) 55%, rgba(20, 18, 16, 0.72)));
+  isolation: isolate;
+}
+
+.banner-media {
+  position: relative;
+  display: block;
+  aspect-ratio: 16 / 11;
+  overflow: hidden;
+  background: var(--lvj-media-bg);
+
+  .media {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  /* Faint navy floor so the card always sits on a defined edge */
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, transparent 55%, rgba(var(--lvj-overlay), 0.18));
+    pointer-events: none;
+  }
+}
+
+.banner-sheen {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 1;
+  width: 260%;
+  height: 0;
+  background: rgba(255, 255, 255, 0.28);
+  transform: translate(-50%, -50%) rotate(-45deg);
+  pointer-events: none;
+}
+
+/* Solid navy caption card — legible over any footage */
+.banner-card {
+  position: relative;
+  z-index: 2;
   display: grid;
   gap: 0.35rem;
-}
-
-.banner-copy p {
-  font-size: 0.72rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  font-weight: 600;
-  opacity: 0.85;
-}
-
-.banner-copy h2 {
+  padding: 1.4rem 1.4rem 1.5rem;
+  background: var(--lvj-navy);
   color: #fff;
-  font-family: var(--font-body);
-  font-style: normal;
-  font-size: clamp(1.35rem, 2.4vw, 1.75rem);
-  font-weight: 560;
-  letter-spacing: -0.02em;
-  line-height: 1.2;
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1), background 0.4s ease;
 }
 
-.banner-copy span {
-  font-family: var(--font-body);
-  font-size: 0.72rem;
-  font-weight: 600;
-  letter-spacing: 0.14em;
+@include mq(md) {
+  .banner-card {
+    position: absolute;
+    left: clamp(1rem, 2vw, 1.75rem);
+    bottom: clamp(1rem, 2vw, 1.75rem);
+    width: min(360px, calc(100% - 2rem));
+    padding: 1.6rem 1.7rem 1.7rem;
+    background: rgba(var(--lvj-overlay), 0.94);
+    backdrop-filter: blur(6px);
+    box-shadow: 0 24px 50px -24px rgba(var(--lvj-overlay), 0.6);
+  }
+}
+
+.banner-kicker {
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
-  margin-top: 0.45rem;
+  color: #9fc0e6;
+}
+
+.banner-title {
+  margin: 0;
+  font-family: var(--font-logo-serif);
+  font-weight: 600;
+  font-size: clamp(1.75rem, 2.6vw, 2.35rem);
+  line-height: 1.05;
+  color: #fff;
+
+  em {
+    font-style: italic;
+    font-weight: 400;
+  }
+}
+
+.banner-text {
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: rgba(238, 243, 249, 0.78);
+}
+
+.banner-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
   width: fit-content;
+  margin-top: 0.7rem;
+  padding-bottom: 0.3rem;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
   color: #fff;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.75);
-  padding-bottom: 3px;
-  transition: border-color 0.25s ease, opacity 0.25s ease;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.45);
+  transition: border-color 0.3s ease;
+
+  app-icon {
+    display: inline-flex;
+    transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  }
 }
 
-.banner:hover .banner-copy span {
-  border-bottom-color: #fff;
-  opacity: 0.9;
+@media (hover: hover) {
+  .banner:hover,
+  .banner:focus-visible {
+    .banner-media .media {
+      transform: scale(1.05);
+    }
+
+    .banner-sheen {
+      height: 260%;
+      opacity: 0;
+      transition:
+        height 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+        opacity 0.9s ease-in;
+    }
+
+    .banner-card {
+      transform: translateY(-6px);
+    }
+
+    .banner-cta {
+      border-bottom-color: #fff;
+
+      app-icon {
+        transform: translateX(4px);
+      }
+    }
+  }
+}
+
+.banner:focus-visible {
+  outline: 2px solid var(--lvj-navy);
+  outline-offset: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .banner-media .media,
+  .banner-card,
+  .banner-cta app-icon {
+    transition: none;
+  }
+
+  .banner-sheen {
+    display: none;
+  }
 }
 
 .soft-band {
@@ -89,125 +212,215 @@
 }
 
 .occasions {
-  padding: 2.5rem 0 5rem;
+  padding: clamp(3.5rem, 6vw, 5.5rem) 0;
 }
 
 .occ-head {
   text-align: center;
-  margin-bottom: 2rem;
-  display: grid;
-  justify-items: center;
-  gap: 0.45rem;
+  margin-bottom: clamp(1.8rem, 3.5vw, 2.8rem);
+
+  h2 {
+    margin: 0 auto;
+    max-width: 22ch;
+    font-family: var(--font-logo-serif);
+    font-weight: 600;
+    font-size: clamp(2rem, 3.4vw, 2.8rem);
+    line-height: 1.08;
+    color: var(--lvj-ink);
+  }
 }
 
-.occ-head h2 {
-  font-family: var(--font-body);
-  font-style: normal;
-  font-size: clamp(1.65rem, 3vw, 2.35rem);
-  font-weight: 550;
-  letter-spacing: -0.03em;
-  max-width: 18ch;
+.occ-kicker {
+  margin: 0 0 0.6rem;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--lvj-accent);
 }
 
 .occ-grid {
   display: grid;
-  gap: 1.15rem;
-  grid-template-columns: 1fr;
+  grid-auto-flow: column;
+  grid-auto-columns: 78%;
+  gap: 0.9rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  padding-bottom: 0.25rem;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 
   @include mq(md) {
+    grid-auto-flow: row;
     grid-template-columns: repeat(2, 1fr);
-    gap: 1.25rem;
+    overflow: visible;
+    gap: 1.1rem;
   }
 
   @include mq(lg) {
     grid-template-columns: repeat(4, 1fr);
+    gap: clamp(1rem, 1.6vw, 1.5rem);
   }
 }
 
 .occ-card {
-  display: grid;
-  gap: 0.95rem;
-  color: inherit;
-  text-decoration: none;
+  position: relative;
+  display: block;
+  overflow: hidden;
+  aspect-ratio: 3 / 4;
+  border-radius: 18px;
+  scroll-snap-align: start;
+  color: #fff;
+  isolation: isolate;
+  box-shadow: 0 20px 40px -30px rgba(var(--lvj-overlay), 0.5);
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.6s ease;
 }
 
 .occ-media {
-  aspect-ratio: 4 / 5;
-  border-radius: 14px;
-  overflow: hidden;
+  position: absolute;
+  inset: 0;
+  z-index: -1;
   background:
-    radial-gradient(circle at 50% 18%, #fff 0%, transparent 58%),
-    var(--lvj-panel-alt);
-  box-shadow: var(--lvj-shadow-soft);
-  border: 1px solid color-mix(in srgb, var(--lvj-line) 70%, transparent);
+    radial-gradient(ellipse 80% 70% at 50% 40%, #f8fbff 0%, transparent 70%),
+    linear-gradient(180deg, #e9f0f9 0%, #dbe6f3 100%);
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    mix-blend-mode: multiply;
+    transition: transform 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  /* Navy floor so the white type always reads */
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, transparent 42%, rgba(var(--lvj-overlay), 0.35) 62%, rgba(var(--lvj-overlay), 0.88) 100%);
+  }
 }
 
-.occ-media img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  object-position: center;
-  padding: 1.35rem 1.1rem;
-  box-sizing: border-box;
-  transition: transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+.occ-frame {
+  position: absolute;
+  inset: 12px;
+  z-index: 1;
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  border-radius: 12px;
+  opacity: 0;
+  transform: scale(1.04);
+  transition: opacity 0.45s ease, transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  pointer-events: none;
 }
 
-.occ-card:hover .occ-media img {
-  transform: scale(1.06);
-}
-
-.occ-foot {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 0.75rem;
-  padding: 0 0.1rem;
-}
-
-.occ-copy {
+.occ-overlay {
+  position: absolute;
+  inset: auto 0 0 0;
   display: grid;
-  gap: 0.2rem;
-  min-width: 0;
+  gap: 0.3rem;
+  padding: clamp(1.1rem, 1.8vw, 1.5rem);
 }
 
-.occ-copy h3 {
-  font-family: var(--font-body);
-  font-size: clamp(0.88rem, 1.6vw, 0.98rem);
+.occ-hint {
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #b9d3f0;
+}
+
+.occ-overlay h3 {
+  margin: 0;
+  font-family: var(--font-logo-serif);
   font-weight: 600;
-  letter-spacing: -0.015em;
-  color: var(--lvj-ink);
-  line-height: 1.3;
+  font-size: clamp(1.3rem, 1.6vw, 1.55rem);
+  line-height: 1.15;
+  color: #fff;
 }
 
-.occ-copy p {
-  font-size: 0.78rem;
-  color: var(--lvj-muted);
-  letter-spacing: 0.02em;
-}
-
-.occ-go {
-  flex-shrink: 0;
-  width: 38px;
-  height: 38px;
-  border-radius: 999px;
-  border: 1px solid var(--lvj-line-strong);
-  background: var(--lvj-panel);
+/* "Shop now" slides in on hover (always visible on touch) */
+.occ-cta {
   display: grid;
-  place-items: center;
-  color: var(--lvj-ink);
-  box-shadow: var(--lvj-shadow-soft);
-  transition:
-    background 0.28s ease,
-    color 0.28s ease,
-    border-color 0.28s ease,
-    box-shadow 0.28s ease,
-    transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+
+  > span,
+  > app-icon {
+    overflow: hidden;
+  }
 }
 
-.occ-card:hover .occ-go {
-  background: var(--lvj-ink);
-  color: var(--lvj-on-ink);
-  border-color: var(--lvj-ink);
-  transform: translateX(3px) scale(1.05);
-  box-shadow: var(--lvj-shadow);
+.occ-cta {
+  grid-template-columns: auto auto;
+  justify-content: start;
+  align-items: center;
+  column-gap: 0.45rem;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #fff;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.35s ease, transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), grid-template-rows 0.45s ease;
+
+  app-icon {
+    display: inline-flex;
+    transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  }
 }
+
+@media (hover: hover) {
+  .occ-card:hover,
+  .occ-card:focus-visible {
+    transform: translateY(-6px);
+    box-shadow: 0 30px 50px -28px rgba(var(--lvj-overlay), 0.6);
+
+    .occ-media img {
+      transform: scale(1.07);
+    }
+
+    .occ-frame {
+      opacity: 1;
+      transform: none;
+    }
+
+    .occ-cta {
+      grid-template-rows: 1fr;
+      opacity: 1;
+      transform: none;
+      margin-top: 0.35rem;
+    }
+
+    .occ-cta app-icon {
+      transform: translateX(4px);
+    }
+  }
+}
+
+@media (hover: none) {
+  .occ-cta {
+    grid-template-rows: 1fr;
+    opacity: 1;
+    transform: none;
+    margin-top: 0.3rem;
+  }
+}
+
+.occ-card:focus-visible {
+  outline: 2px solid var(--lvj-navy);
+  outline-offset: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .occ-card,
+  .occ-media img,
+  .occ-frame,
+  .occ-cta {
+    transition: none;
+  }
+}
+

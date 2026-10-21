@@ -1,4 +1,4 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable, forkJoin, map, of, switchMap } from 'rxjs';
 import { environment } from '../../../environments/environment';
@@ -37,9 +37,11 @@ export class ProductService {
   private readonly http = inject(HttpClient);
   private readonly api = environment.apiUrl;
 
-  list(query: ProductListQuery = {}): Observable<PaginatedResponse<ProductListItem>> {
+  /** `silent: true` skips the global page loader (used by background UI such as the mega menu). */
+  list(query: ProductListQuery = {}, options: { silent?: boolean } = {}): Observable<PaginatedResponse<ProductListItem>> {
     return this.http.get<PaginatedResponse<ProductListItem>>(`${this.api}/products`, {
-      params: this.toParams(query)
+      params: this.toParams(query),
+      headers: options.silent ? new HttpHeaders({ 'X-Skip-Loader': '1' }) : undefined
     });
   }
 

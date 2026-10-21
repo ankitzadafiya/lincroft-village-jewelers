@@ -12,6 +12,7 @@ import { RouterLink } from '@angular/router';
 import { ServiceOffering } from '../../../core/models';
 import { ContentService } from '../../../core/services/content.service';
 import { IMG } from '../../../core/mock/image-catalog';
+import { AppIconComponent } from '../../icons/lvj-icons';
 
 interface HelpItem {
   id: string;
@@ -61,14 +62,20 @@ const FALLBACK: HelpItem[] = [
 
 @Component({
   selector: 'app-services-help',
-  imports: [RouterLink],
+  imports: [RouterLink, AppIconComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <section class="help">
+    <section
+      class="help"
+      aria-labelledby="help-title"
+      (mouseenter)="pause()"
+      (mouseleave)="resume()"
+      (focusin)="pause()"
+      (focusout)="resume()">
       <div class="container grid">
         <div class="copy">
-          <p class="eyebrow">Jewelry Services</p>
-          <h2>We’re Here To Help</h2>
+          <p class="kicker">Jewelry services</p>
+          <h2 id="help-title">We’re Here To Help</h2>
 
           <div class="list" role="list">
             @for (item of items(); track item.id; let i = $index) {
@@ -78,50 +85,75 @@ const FALLBACK: HelpItem[] = [
                 role="listitem"
                 [class.open]="active() === i"
                 [attr.aria-expanded]="active() === i"
-                (mouseenter)="select(i)"
+                (mouseenter)="hoverSelect(i)"
+                (mouseleave)="cancelHover()"
                 (focus)="select(i)"
                 (click)="select(i)">
-                <div class="head">
-                  <span class="num">{{ pad(i + 1) }}.</span>
+                <span class="bar" aria-hidden="true"></span>
+                <span class="head">
+                  <span class="num">{{ pad(i + 1) }}</span>
                   <span class="title">{{ item.title }}</span>
-                </div>
-                <div class="body" [class.show]="active() === i">
-                  <div class="body-inner">
-                    <p>{{ item.body }}</p>
+                  <app-icon class="chev" name="chevron-down" [size]="16" [strokeWidth]="1.5"></app-icon>
+                </span>
+                <span class="body" [class.show]="active() === i">
+                  <span class="body-inner">
+                    <span class="text">{{ item.body }}</span>
                     @if (active() === i) {
-                      <span class="meter" aria-hidden="true">
+                      <span class="meter" [class.paused]="paused()" aria-hidden="true">
                         @for (_ of [tick()]; track _) {
                           <span class="meter-fill" [style.animationDuration.ms]="intervalMs"></span>
                         }
                       </span>
                     }
-                  </div>
-                </div>
+                  </span>
+                </span>
               </button>
             }
           </div>
 
-          @if (showLink()) {
-            <a routerLink="/services" class="more">View all services</a>
-          }
+          <div class="actions">
+            <a routerLink="/contact" class="cta">
+              Book an appointment
+              <app-icon name="arrow-right" [size]="15" [strokeWidth]="1.5"></app-icon>
+            </a>
+            @if (showLink()) {
+              <a routerLink="/services" class="more">View all services</a>
+            }
+          </div>
         </div>
 
         <div class="visual">
+          @for (item of items(); track item.id; let i = $index) {
+            <img
+              [src]="item.imageUrl"
+              [alt]="active() === i ? item.title : ''"
+              [class.on]="active() === i"
+              [attr.aria-hidden]="active() === i ? null : 'true'"
+              loading="lazy"
+              decoding="async" />
+          }
+          <span class="frame" aria-hidden="true"></span>
           @if (items()[active()]; as current) {
-            <img [src]="current.imageUrl" [alt]="current.title" decoding="async" />
+            <div class="caption" aria-live="polite">
+              <span class="caption-count">{{ pad(active() + 1) }} <span>/ {{ pad(items().length) }}</span></span>
+              <span class="caption-title">{{ current.title }}</span>
+            </div>
           }
         </div>
       </div>
     </section>
   `,
   styles: [`
+    :host {
+      --sh-ease: cubic-bezier(0.22, 1, 0.36, 1);
+      display: block;
+    }
+
     .help {
-      padding: 4.75rem 0;
+      padding: clamp(3.5rem, 6vw, 5.25rem) 0;
       background:
         radial-gradient(ellipse 70% 80% at 100% 20%, color-mix(in srgb, var(--lvj-sky-mid) 70%, transparent), transparent 58%),
         linear-gradient(180deg, var(--lvj-sky), color-mix(in srgb, var(--lvj-sky) 40%, var(--lvj-white)));
-      content-visibility: auto;
-      contain-intrinsic-size: 720px;
     }
 
     .grid {
@@ -132,83 +164,132 @@ const FALLBACK: HelpItem[] = [
 
     @media (min-width: 960px) {
       .grid {
-        grid-template-columns: 1.05fr 0.95fr;
-        gap: 4rem;
+        grid-template-columns: 1fr 1fr;
+        gap: clamp(2.5rem, 4.5vw, 4.5rem);
       }
     }
 
-    .eyebrow {
-      margin-bottom: 0.75rem;
+    .kicker {
+      margin: 0 0 0.7rem;
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--lvj-accent);
     }
 
     h2 {
-      font-family: var(--font-body);
+      font-family: var(--font-logo-serif);
       font-style: normal;
-      font-size: clamp(1.85rem, 3.4vw, 2.55rem);
+      font-size: clamp(2.1rem, 3.6vw, 2.9rem);
       font-weight: 600;
-      letter-spacing: -0.02em;
-      line-height: 1.15;
-      margin-bottom: 1.75rem;
+      letter-spacing: -0.005em;
+      line-height: 1.1;
+      margin: 0 0 1.6rem;
       color: var(--lvj-ink);
     }
 
+    /* ── List ─────────────────────────────────────── */
     .list {
       display: grid;
+      border-bottom: 1px solid rgba(var(--lvj-overlay), 0.1);
     }
 
     .row {
+      position: relative;
       display: grid;
       width: 100%;
       text-align: left;
       border: 0;
-      border-top: 1px solid color-mix(in srgb, var(--lvj-navy) 12%, transparent);
+      border-top: 1px solid rgba(var(--lvj-overlay), 0.1);
       background: transparent;
-      padding: 1.1rem 0;
+      padding: 1rem 0 1rem 1.1rem;
       margin: 0;
       cursor: pointer;
       color: inherit;
+      transition: background 0.35s ease;
     }
 
-    .row:last-child {
-      border-bottom: 1px solid color-mix(in srgb, var(--lvj-navy) 12%, transparent);
+    .row.open {
+      background: linear-gradient(90deg, rgba(255, 255, 255, 0.75), rgba(255, 255, 255, 0));
+    }
+
+    /* Active indicator on the left edge */
+    .bar {
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: var(--lvj-navy);
+      transform: scaleY(0);
+      transform-origin: top;
+      transition: transform 0.45s var(--sh-ease);
+    }
+
+    .row.open .bar {
+      transform: scaleY(1);
     }
 
     .head {
       display: grid;
-      grid-template-columns: 2.6rem 1fr;
-      gap: 0.45rem;
-      align-items: baseline;
+      grid-template-columns: 2.4rem 1fr auto;
+      gap: 0.5rem;
+      align-items: center;
     }
 
     .num {
-      font-family: var(--font-body);
-      font-size: 0.82rem;
+      font-size: 0.74rem;
       font-weight: 500;
-      color: var(--lvj-muted);
+      letter-spacing: 0.08em;
+      color: var(--lvj-muted-2);
       font-variant-numeric: tabular-nums;
+      transition: color 0.3s ease;
     }
 
     .title {
-      font-family: var(--font-body);
-      font-size: 1.05rem;
-      font-weight: 600;
-      font-style: normal;
-      letter-spacing: -0.01em;
+      font-size: 1.02rem;
+      font-weight: 500;
+      letter-spacing: 0;
       color: var(--lvj-muted);
-      line-height: 1.3;
-      transition: color 0.2s ease;
+      line-height: 1.35;
+      transition: color 0.3s ease, transform 0.45s var(--sh-ease);
     }
 
-    .row.open .title,
-    .row:hover .title,
-    .row.open .num {
+    .chev {
+      display: inline-flex;
+      margin-right: 0.4rem;
+      color: var(--lvj-muted-2);
+      transition: transform 0.45s var(--sh-ease), color 0.3s ease;
+    }
+
+    .row:hover .title {
       color: var(--lvj-ink);
+      transform: translateX(4px);
+    }
+
+    .row.open .title {
+      color: var(--lvj-ink);
+    }
+
+    .row.open .num {
+      color: var(--lvj-accent);
+    }
+
+    .row.open .chev {
+      transform: rotate(180deg);
+      color: var(--lvj-navy);
+    }
+
+    .row:focus-visible {
+      outline: 2px solid var(--lvj-navy);
+      outline-offset: -2px;
     }
 
     .body {
       display: grid;
       grid-template-rows: 0fr;
-      transition: grid-template-rows 0.28s ease;
+      transition: grid-template-rows 0.38s var(--sh-ease);
     }
 
     .body.show {
@@ -216,34 +297,35 @@ const FALLBACK: HelpItem[] = [
     }
 
     .body-inner {
+      display: block;
       overflow: hidden;
       min-height: 0;
     }
 
-    .body p {
-      margin: 0;
-      padding: 0 0 0 3.05rem;
-      max-width: 48ch;
-      font-family: var(--font-body);
+    .text {
+      display: block;
+      padding: 0 1.5rem 0 2.9rem;
+      max-width: 52ch;
       font-size: 0.92rem;
-      line-height: 1.65;
+      line-height: 1.7;
       color: var(--lvj-muted);
       opacity: 0;
-      transition: opacity 0.25s ease, padding-top 0.3s ease;
+      transform: translateY(-4px);
+      transition: opacity 0.35s ease, transform 0.45s var(--sh-ease), padding-top 0.35s ease;
     }
 
-    .body.show p {
+    .body.show .text {
       opacity: 1;
-      padding-top: 0.75rem;
+      transform: none;
+      padding-top: 0.6rem;
     }
 
     .meter {
       display: block;
-      height: 2px;
-      margin: 0.95rem 0 0.15rem 3.05rem;
-      background: color-mix(in srgb, var(--lvj-navy) 12%, transparent);
+      height: 1px;
+      margin: 0.95rem 1.5rem 0.2rem 2.9rem;
+      background: rgba(var(--lvj-overlay), 0.12);
       overflow: hidden;
-      transform: translateZ(0);
     }
 
     .meter-fill {
@@ -252,9 +334,12 @@ const FALLBACK: HelpItem[] = [
       width: 100%;
       transform-origin: left center;
       transform: scaleX(0);
-      background: var(--lvj-ink);
+      background: linear-gradient(90deg, var(--lvj-navy), var(--lvj-accent));
       animation: meterFill linear forwards;
-      will-change: transform;
+    }
+
+    .meter.paused .meter-fill {
+      animation-play-state: paused;
     }
 
     @keyframes meterFill {
@@ -262,45 +347,168 @@ const FALLBACK: HelpItem[] = [
       to { transform: scaleX(1); }
     }
 
-    @media (prefers-reduced-motion: reduce) {
-      .meter { display: none; }
-      .meter-fill { animation: none; }
-      .body { transition: none; }
+    /* ── Actions ──────────────────────────────────── */
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 1rem 1.6rem;
+      margin-top: 1.8rem;
+    }
+
+    .cta {
+      position: relative;
+      isolation: isolate;
+      overflow: hidden;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.9rem 1.5rem;
+      background: var(--lvj-navy);
+      color: #fff;
+      font-size: 0.74rem;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+
+      &::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+        background: var(--lvj-accent);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 0.5s var(--sh-ease);
+      }
+
+      app-icon {
+        display: inline-flex;
+        transition: transform 0.45s var(--sh-ease);
+      }
+
+      &:hover::before,
+      &:focus-visible::before {
+        transform: scaleX(1);
+      }
+
+      &:hover app-icon,
+      &:focus-visible app-icon {
+        transform: translateX(4px);
+      }
     }
 
     .more {
-      display: inline-flex;
-      margin-top: 1.5rem;
-      font-family: var(--font-body);
-      font-size: 0.86rem;
-      font-weight: 600;
+      font-size: 0.74rem;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
       color: var(--lvj-navy);
-      border-bottom: 1px solid currentColor;
-      padding-bottom: 2px;
-      width: fit-content;
+      padding-bottom: 3px;
+      background-image: linear-gradient(currentColor, currentColor);
+      background-size: 100% 1px;
+      background-position: 0 100%;
+      background-repeat: no-repeat;
+      transition: background-size 0.45s var(--sh-ease);
+
+      &:hover {
+        background-size: 40% 1px;
+      }
     }
 
+    /* ── Visual ───────────────────────────────────── */
     .visual {
-      border-radius: 4px;
-      overflow: hidden;
-      background: var(--lvj-sky-mid);
-      min-height: 360px;
       position: relative;
+      overflow: hidden;
+      min-height: 360px;
       contain: paint;
+      background:
+        radial-gradient(ellipse 80% 70% at 50% 42%, #f8fbff 0%, transparent 70%),
+        linear-gradient(180deg, #e9f0f9 0%, #dbe6f3 100%);
+      box-shadow: 0 30px 60px -36px rgba(var(--lvj-overlay), 0.45);
     }
 
     @media (min-width: 960px) {
       .visual {
-        min-height: 560px;
+        min-height: 540px;
       }
     }
 
     .visual img {
+      position: absolute;
+      inset: 0;
       width: 100%;
       height: 100%;
       object-fit: cover;
+      mix-blend-mode: multiply;
+      opacity: 0;
+      visibility: hidden;
+      transform: scale(1.03);
+      /* Inactive photos drop out of compositing once faded */
+      transition:
+        opacity 0.6s ease,
+        transform 0.9s var(--sh-ease),
+        visibility 0s linear 0.6s;
+    }
+
+    .visual img.on {
+      opacity: 1;
+      visibility: visible;
+      transform: none;
+      transition:
+        opacity 0.6s ease,
+        transform 0.9s var(--sh-ease),
+        visibility 0s;
+    }
+
+    .frame {
       position: absolute;
-      inset: 0;
+      inset: clamp(12px, 1.4vw, 20px);
+      border: 1px solid rgba(255, 255, 255, 0.9);
+      pointer-events: none;
+    }
+
+    .caption {
+      position: absolute;
+      left: clamp(12px, 1.4vw, 20px);
+      bottom: clamp(12px, 1.4vw, 20px);
+      display: grid;
+      gap: 0.3rem;
+      max-width: min(340px, calc(100% - 3rem));
+      padding: 1.1rem 1.35rem 1.2rem;
+      background: rgba(var(--lvj-overlay), 0.94);
+      color: #fff;
+      animation: captionIn 0.6s var(--sh-ease);
+    }
+
+    .caption-count {
+      font-size: 0.72rem;
+      letter-spacing: 0.18em;
+      color: #9fc0e6;
+      font-variant-numeric: tabular-nums;
+
+      span {
+        color: rgba(238, 243, 249, 0.5);
+      }
+    }
+
+    .caption-title {
+      font-family: var(--font-logo-serif);
+      font-size: clamp(1.25rem, 1.7vw, 1.55rem);
+      font-weight: 600;
+      line-height: 1.15;
+    }
+
+    @keyframes captionIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: none; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .meter { display: none; }
+      .meter-fill { animation: none; }
+      .body, .text, .title, .bar, .visual img, .cta::before { transition: none; }
+      .caption { animation: none; }
     }
   `]
 })
@@ -313,8 +521,10 @@ export class ServicesHelpComponent implements OnInit, OnDestroy {
   readonly active = signal(0);
   readonly items = signal<HelpItem[]>(FALLBACK);
   readonly tick = signal(0);
+  readonly paused = signal(false);
 
   private timer: ReturnType<typeof setTimeout> | null = null;
+  private hoverTimer: ReturnType<typeof setTimeout> | null = null;
   private visible = false;
   private observer?: IntersectionObserver;
 
@@ -338,6 +548,7 @@ export class ServicesHelpComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.clear();
+    this.cancelHover();
     this.observer?.disconnect();
   }
 
@@ -346,8 +557,38 @@ export class ServicesHelpComponent implements OnInit, OnDestroy {
   }
 
   select(i: number): void {
+    this.cancelHover();
     if (this.active() === i) return;
     this.active.set(i);
+    if (this.visible) this.startCycle();
+  }
+
+  /** Hover intent: only switch if the pointer rests on a row briefly. */
+  hoverSelect(i: number): void {
+    this.cancelHover();
+    if (this.active() === i) return;
+    this.hoverTimer = setTimeout(() => this.select(i), 140);
+  }
+
+  cancelHover(): void {
+    if (this.hoverTimer) {
+      clearTimeout(this.hoverTimer);
+      this.hoverTimer = null;
+    }
+  }
+
+  /** Auto-cycling stops while the visitor is reading or interacting. */
+  pause(): void {
+    if (this.paused()) return;
+    this.paused.set(true);
+    this.clear();
+  }
+
+  resume(): void {
+    if (!this.paused()) return;
+    const el = this.host.nativeElement as HTMLElement;
+    if (el.matches(':hover') || el.contains(document.activeElement)) return;
+    this.paused.set(false);
     if (this.visible) this.startCycle();
   }
 
@@ -386,7 +627,7 @@ export class ServicesHelpComponent implements OnInit, OnDestroy {
   private startCycle(): void {
     this.clear();
     this.tick.update(n => n + 1);
-    if (!this.visible || this.reducedMotion() || this.items().length < 2) return;
+    if (!this.visible || this.paused() || this.reducedMotion() || this.items().length < 2) return;
     this.timer = setTimeout(() => {
       this.active.set((this.active() + 1) % this.items().length);
       this.startCycle();

@@ -21,19 +21,19 @@ import { AppIconComponent } from '../../icons/lvj-icons';
       height: 44px;
       border: 0;
       border-radius: 12px;
-      background: #111;
+      background: var(--lvj-navy);
       color: var(--lvj-on-ink);
       cursor: pointer;
       display: grid;
       place-items: center;
-      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.16);
+      box-shadow: 0 10px 24px rgba(var(--lvj-overlay), 0.22);
       animation: rise 0.3s var(--lvj-ease);
       transition: transform 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
     }
     .top:hover {
       transform: translateY(-2px);
       background: var(--lvj-ink);
-      box-shadow: 0 14px 28px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 14px 28px rgba(var(--lvj-overlay), 0.28);
     }
     @keyframes rise {
       from { opacity: 0; transform: translateY(8px); }

@@ -7,7 +7,11 @@ import { LoadingService } from '../services/loading.service';
 const SKIP = /\/(assets\/|favicon|i\.etsystatic)/i;
 
 export const loadingInterceptor: HttpInterceptorFn = (req, next) => {
-  if (SKIP.test(req.url) || req.headers.has('X-Skip-Loader')) {
+  if (req.headers.has('X-Skip-Loader')) {
+    // Internal flag only — strip it so the API never sees an unexpected header (CORS preflight).
+    return next(req.clone({ headers: req.headers.delete('X-Skip-Loader') }));
+  }
+  if (SKIP.test(req.url)) {
     return next(req);
   }
 

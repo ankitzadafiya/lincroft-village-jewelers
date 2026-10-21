@@ -51,11 +51,11 @@
 }
 
 .visual-copy h1 {
-  font-family: var(--font-body);
+  font-family: var(--font-logo-serif);
   font-style: normal;
-  font-weight: 550;
-  font-size: clamp(2.1rem, 3.8vw, 3.1rem);
-  letter-spacing: -0.03em;
+  font-weight: 600;
+  font-size: clamp(2.42rem, 4.37vw, 3.56rem);
+  letter-spacing: -0.005em;
   line-height: 1.1;
   margin: 0.35rem 0 0.9rem;
   color: #fff;
@@ -113,11 +113,11 @@
   }
 
   h2 {
-    font-family: var(--font-body);
+    font-family: var(--font-logo-serif);
     font-style: normal;
-    font-weight: 550;
-    font-size: clamp(1.85rem, 5.5vw, 2.35rem);
-    letter-spacing: -0.03em;
+    font-weight: 600;
+    font-size: clamp(2.13rem, 6.32vw, 2.7rem);
+    letter-spacing: -0.005em;
     margin: 0.2rem 0 0.55rem;
     color: var(--lvj-ink);
   }
@@ -232,11 +232,11 @@
 }
 
 .who h1 {
-  font-family: var(--font-body);
+  font-family: var(--font-logo-serif);
   font-style: normal;
-  font-weight: 550;
-  font-size: 1.85rem;
-  letter-spacing: -0.025em;
+  font-weight: 600;
+  font-size: 2.13rem;
+  letter-spacing: -0.005em;
   margin: 0.15rem 0 0.25rem;
 }
 
