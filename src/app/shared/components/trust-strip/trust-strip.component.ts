@@ -70,7 +70,7 @@ import { Component } from '@angular/core';
 export class TrustStripComponent {
   readonly items = [
     { mark: '◆', title: 'Certified stones', copy: 'GIA / IGI documentation when available.' },
-    { mark: '◇', title: 'Lifetime guarantee', copy: 'Craftsmanship backed by our atelier.' },
+    { mark: '◇', title: 'Lifetime guarantee', copy: 'Craftsmanship backed by our team.' },
     { mark: '○', title: 'Private appointments', copy: 'Book a quiet consultation in Lincroft.' },
     { mark: '▢', title: 'Custom & repair', copy: 'From first sketch to lifelong care.' }
   ];

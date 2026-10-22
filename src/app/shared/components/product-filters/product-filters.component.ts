@@ -44,7 +44,7 @@ export class ProductFiltersComponent {
   readonly priceActive = computed(() => this.query().priceMin != null || this.query().priceMax != null);
   readonly priceLabel = computed(() => {
     const q = this.query();
-    if (q.priceMin != null && q.priceMax != null) return `${usd(q.priceMin)} – ${usd(q.priceMax)}`;
+    if (q.priceMin != null && q.priceMax != null) return `${usd(q.priceMin)} to ${usd(q.priceMax)}`;
     if (q.priceMin != null) return `From ${usd(q.priceMin)}`;
     if (q.priceMax != null) return `Up to ${usd(q.priceMax)}`;
     return '';

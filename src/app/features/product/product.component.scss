@@ -229,7 +229,8 @@ h1 {
 
   .info {
     position: sticky;
-    top: 96px;
+    top: calc(var(--lvj-header-offset, 66px) + 30px);
+    transition: top 0.6s cubic-bezier(0.22, 1, 0.36, 1);
     width: 100%;
     max-width: none;
   }

@@ -76,7 +76,7 @@ import { AppIconComponent } from '../../icons/lvj-icons';
       gap: 0.45rem;
       color: var(--lvj-ink);
     }
-    h3 { font-size: 1.05rem; font-family: var(--font-body); font-weight: 650; font-style: normal; }
+    h3 { font-size: 1.05rem; font-family: var(--font-body); font-weight: 600; font-style: normal; }
     small { color: var(--lvj-muted); font-size: 0.78rem; }
     .grid {
       display: grid;

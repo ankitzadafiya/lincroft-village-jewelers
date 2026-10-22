@@ -424,3 +424,13 @@
   }
 }
 
+
+/* ── Best sellers + New arrivals band ───────────── */
+.collections {
+  padding-block: clamp(0.75rem, 2vw, 1.75rem);
+}
+
+/* second collection sits closer to the first */
+.collections app-home-collection + app-home-collection ::ng-deep .hc {
+  padding-top: clamp(0.5rem, 1.5vw, 1.25rem);
+}

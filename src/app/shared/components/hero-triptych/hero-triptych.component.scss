@@ -231,7 +231,7 @@
 
   .panel {
     aspect-ratio: auto;
-    height: clamp(560px, calc(100vh - var(--lvj-header-h) - 40px), 900px);
+    height: clamp(600px, calc(100svh - var(--lvj-header-h) + 8px), 980px);
   }
 
   .panel + .panel {

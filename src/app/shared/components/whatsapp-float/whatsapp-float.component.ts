@@ -38,6 +38,6 @@ export class WhatsAppFloatComponent {
 
   href(): string {
     const phone = this.config.whatsAppNumber() || '17325550142';
-    return buildWhatsAppUrl(phone, 'Hello Lincroft Village Jewelers — I have a quick question.');
+    return buildWhatsAppUrl(phone, 'Hello Lincroft Village Jewelers, I have a quick question.');
   }
 }

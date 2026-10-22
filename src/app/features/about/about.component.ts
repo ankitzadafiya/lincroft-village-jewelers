@@ -10,16 +10,16 @@ import { IMG } from '../../core/mock/image-catalog';
     <section class="page-hero">
       <p class="eyebrow">About</p>
       <h1>A village jeweler, still.</h1>
-      <p class="lede">A considered collection on the floor. The rest, built with you — one appointment at a time in Lincroft.</p>
+      <p class="lede">A carefully chosen collection in our store, and custom pieces made with you, one appointment at a time in Lincroft.</p>
     </section>
     <section class="container story">
       <div class="media">
-        <img [src]="store" alt="Interior of Lincroft Village Jewelers atelier in Lincroft, New Jersey" width="800" height="600" loading="lazy" decoding="async" />
+        <img [src]="store" alt="Inside the Lincroft Village Jewelers store in Lincroft, New Jersey" width="800" height="600" loading="lazy" decoding="async" />
       </div>
       <div class="copy">
-        <p>Lincroft Village Jewelers is a local fine jewelry studio. We keep a considered collection on the floor and build the rest with you — one appointment at a time.</p>
+        <p>Lincroft Village Jewelers is a local fine jewelry studio. We keep a carefully chosen collection in the store and make custom pieces with you, one appointment at a time.</p>
         <p>The website exists so you can browse, save, and inquire. The important work still happens across the counter: looking at stones in mixed light, talking through budget without theater, and making something that will be worn.</p>
-        <a routerLink="/contact" class="btn btn-gold">Visit the atelier</a>
+        <a routerLink="/contact" class="btn btn-gold">Visit the store</a>
       </div>
     </section>
   `,
@@ -61,9 +61,9 @@ export class AboutComponent {
   readonly store = IMG.store;
   constructor() {
     inject(SeoService).set({
-      title: 'About Our Atelier',
+      title: 'About Our Store',
       description:
-        'Lincroft Village Jewelers is a local fine jewelry atelier in Lincroft, New Jersey — a considered collection on the floor, custom work by appointment.',
+        'Lincroft Village Jewelers is a local fine jewelry store in Lincroft, New Jersey, with a carefully chosen collection and custom work by appointment.',
       path: '/about'
     });
   }

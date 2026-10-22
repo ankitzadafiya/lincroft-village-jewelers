@@ -1,3 +1,4 @@
+<!-- Announcement bar (moving promo line) — hidden for now, re-enable later.
 @if (promoOpen()) {
   <div class="promo" aria-label="Store announcements">
     <div class="promo-marquee">
@@ -21,8 +22,9 @@
     </button>
   </div>
 }
+-->
 
-<header class="header" [class.compact]="compact()">
+<header class="header" [class.compact]="compact()" [class.is-hidden]="hidden()">
   <span class="scroll-line" aria-hidden="true" [style.transform]="'scaleX(' + progress() + ')'"></span>
   <div class="bar container">
     <div class="left">
@@ -77,8 +79,8 @@
         <a
           class="icon-btn icon-tip admin-entry"
           routerLink="/admin"
-          data-tip="Atelier admin"
-          aria-label="Open atelier admin">
+          data-tip="Store admin"
+          aria-label="Open store admin">
           <app-icon name="shield" [size]="19" [strokeWidth]="1.5"></app-icon>
         </a>
       }
@@ -145,7 +147,7 @@
       }
       <a routerLink="/account">{{ customer.isAuthenticated() ? 'My Account' : 'Sign In' }}</a>
       @if (adminAuth.isAuthenticated()) {
-        <a routerLink="/admin">Atelier admin</a>
+        <a routerLink="/admin">Store admin</a>
       }
       <a routerLink="/contact">Book Appointment</a>
       <a routerLink="/favorites">Wishlist</a>

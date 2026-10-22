@@ -83,6 +83,6 @@ export class GoogleSignInComponent implements AfterViewInit {
       this.credential.emit('mock-google');
       return;
     }
-    this.failed.emit('Google sign-in is not configured yet. The atelier still needs a Google Client ID.');
+    this.failed.emit('Google sign-in is not configured yet. The store still needs a Google Client ID.');
   }
 }

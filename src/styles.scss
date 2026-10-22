@@ -68,7 +68,7 @@ textarea {
 h1,
 h2 {
   font-family: var(--font-body);
-  font-weight: 550;
+  font-weight: 500;
   font-style: normal;
   letter-spacing: -0.025em;
   line-height: 1.15;
@@ -273,7 +273,7 @@ ul {
 .display-title {
   font-family: var(--font-body);
   font-size: var(--text-2xl);
-  font-weight: 550;
+  font-weight: 500;
   font-style: normal;
   letter-spacing: -0.03em;
   line-height: 1.1;
@@ -981,7 +981,7 @@ input[type='checkbox']:checked:hover {
   font-family: var(--font-body) !important;
   font-style: normal !important;
   font-size: 1.25rem !important;
-  font-weight: 550 !important;
+  font-weight: 500 !important;
   letter-spacing: -0.02em !important;
   color: var(--lvj-ink) !important;
 }
@@ -1065,7 +1065,7 @@ input[type='checkbox']:checked:hover {
   h1 {
     font-family: var(--font-body);
     font-style: normal;
-    font-weight: 650;
+    font-weight: 600;
     font-size: clamp(1.55rem, 2.5vw, 1.95rem);
     letter-spacing: -0.025em;
     line-height: 1.2;

@@ -1,0 +1,58 @@
+<section class="look" [class.reverse]="reverse()" [attr.aria-labelledby]="key() + '-title'">
+  <div class="container look-grid">
+    <header class="look-intro">
+      <p class="look-kicker">{{ kicker() }}</p>
+      <h2 [id]="key() + '-title'">{{ title() }}</h2>
+      @if (lede()) {
+        <p class="look-lede">{{ lede() }}</p>
+      }
+      <a [routerLink]="allLink()" [queryParams]="allQuery()" class="look-all">
+        {{ allLabel() }}
+        <app-icon name="arrow-right" [size]="15" [strokeWidth]="1.5" />
+      </a>
+    </header>
+
+    @for (look of looks(); track look.key; let i = $index) {
+      <article class="tile">
+        <a class="tile-link" [routerLink]="look.path" [queryParams]="look.queryParams ?? null" [attr.aria-label]="look.cta + ': ' + look.title">
+          <video
+            #vid
+            class="tile-video"
+            [attr.data-i]="i"
+            [src]="look.video"
+            [attr.poster]="look.poster || null"
+            [style.object-position]="look.focus || null"
+            muted
+            loop
+            playsinline
+            disablepictureinpicture
+            preload="metadata"
+            aria-hidden="true"
+            tabindex="-1"
+            (playing)="onMediaState(i, true)"
+            (pause)="onMediaState(i, false)"></video>
+          <span class="tile-shade" aria-hidden="true"></span>
+        </a>
+
+        <button
+          type="button"
+          class="tile-toggle"
+          [attr.aria-label]="(playing()[i] ? 'Pause' : 'Play') + ' video: ' + look.title"
+          (click)="toggle(i, $event)">
+          <app-icon [name]="playing()[i] ? 'pause' : 'play'" [size]="14" [strokeWidth]="1.8" />
+        </button>
+
+        <div class="tile-bar">
+          <span class="tile-thumb" [style.--zoom]="look.thumbZoom || 1"><img [src]="look.thumb" alt="" loading="lazy" decoding="async" width="64" height="64" /></span>
+          <span class="tile-text">
+            <span class="tile-kicker">{{ look.kicker }}</span>
+            <span class="tile-title">{{ look.title }}</span>
+          </span>
+          <a class="tile-go" [routerLink]="look.path" [queryParams]="look.queryParams ?? null" [attr.aria-label]="look.cta">
+            <app-icon name="arrow-up-right" [size]="17" [strokeWidth]="1.6" />
+          </a>
+        </div>
+      </article>
+    }
+  </div>
+</section>

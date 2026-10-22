@@ -27,7 +27,7 @@ const easeOut = (t: number) => 1 - Math.pow(1 - t, 3);
 /**
  * "If you can dream it, we can build it" — pinned, scroll-driven ring story.
  *
- *   01 Sketch & design → 02 Wax model → 03 Casting in gold → 04 Setting & finishing
+ *   01 Sketch & design → 02 CAD design (printed in wax) → 03 Casting in gold → 04 Setting & finishing
  *
  * - The whole frame fits one screen at any resolution (heights are vh-based).
  * - Visitors can jump to any step (step buttons) or skip the story entirely.
@@ -54,19 +54,19 @@ export class RingJourneyComponent implements AfterViewInit, OnDestroy {
     {
       n: '01',
       title: 'Sketch & design',
-      text: 'We start with a conversation and a hand sketch — your stone, metal, setting style and budget, refined until it feels right.',
+      text: 'We start with a conversation and a hand sketch of your stone, metal, setting style and budget, refined until it feels right.',
       at: 0.22
     },
     {
       n: '02',
-      title: 'Wax model',
-      text: 'The design is carved in jeweler’s wax so you can see the exact form and proportions before any gold is used.',
+      title: 'CAD design & 3D model',
+      text: 'Your sketch becomes a precise CAD file, and we send you a 3D rendering to review from every angle. Once you approve it, the model is printed in castable wax.',
       at: 0.47
     },
     {
       n: '03',
       title: 'Casting in gold',
-      text: 'Using the lost-wax method, the model is burned out of a plaster mould and molten gold is poured in to take its place.',
+      text: 'Using the lost wax method, the wax model is melted out of a plaster mould and molten gold is poured in to take its place.',
       at: 0.74
     },
     {
@@ -159,9 +159,9 @@ export class RingJourneyComponent implements AfterViewInit, OnDestroy {
     style.setProperty('--close', close.toFixed(4));
     style.setProperty('--polish', polish.toFixed(4));
 
-    // Fills rise from below the band (y 480) to above the head (y 150).
-    const waxY = 480 - s2 * 330;
-    const goldY = 480 - seg(s3, 0.15, 0.85) * 330;
+    // Fills rise from below the band (y 480) to above the prong tips (y 100).
+    const waxY = 480 - s2 * 380;
+    const goldY = 480 - seg(s3, 0.15, 0.85) * 380;
     this.waxRect().nativeElement.setAttribute('y', waxY.toFixed(1));
     this.goldRect().nativeElement.setAttribute('y', goldY.toFixed(1));
 

@@ -34,12 +34,43 @@
 }
 
 .rj-track {
-  height: 330vh;
+  /* longer track = slower, calmer story (more scrolling per stage) */
+  height: 560vh;
 }
+
+/* ── Centred heading (same scale as the other home sections) ── */
+.rj-head {
+  text-align: center;
+  padding-top: clamp(3.5rem, 6vw, 6rem);
+  padding-bottom: clamp(0.5rem, 1.5vw, 1.25rem);
+
+  /* same type as the "Our Categories" / "Jewelry services" headings */
+  .rj-kicker {
+    display: block;
+    margin: 0 0 0.7rem;
+    font-family: var(--font-body);
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #9fc0e6;
+  }
+
+  h2 {
+    margin: 0 auto;
+    max-width: none;
+    font-family: var(--font-logo-serif);
+    font-weight: 600;
+    font-size: clamp(2.2rem, 3.8vw, 3.3rem);
+    line-height: 1.05;
+  }
+}
+
 
 .rj-sticky {
   position: sticky;
-  top: var(--rj-top);
+  top: var(--lvj-header-offset, var(--rj-top));
+  transition: top 0.6s var(--rj-ease);
   height: calc(100vh - var(--rj-top));
   height: calc(100svh - var(--rj-top));
   display: flex;
@@ -104,23 +135,20 @@ h2 {
 }
 
 .rj-lede {
-  display: none;
-  margin: clamp(0.5rem, 1.6vh, 1.1rem) 0 0;
-  max-width: 50ch;
-  font-size: clamp(0.82rem, min(1vw, 1.75vh), 0.98rem);
-  line-height: 1.65;
-  color: rgba(238, 243, 249, 0.7);
-
-  @include mq(lg) { display: block; }
+  margin: 0;
+  max-width: 54ch;
+  font-family: var(--font-body);
+  font-size: clamp(0.88rem, min(1.05vw, 1.9vh), 1rem);
+  font-weight: 400;
+  line-height: 1.7;
+  color: rgba(238, 243, 249, 0.8);
 }
 
-/* Very short desktop windows: keep the lede, trim it to three lines */
+/* Very short desktop windows: slightly smaller text so the whole message fits */
 @media (min-width: 1024px) and (max-height: 760px) {
   .rj-lede {
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
+    font-size: 0.84rem;
+    line-height: 1.6;
   }
 }
 
@@ -491,13 +519,18 @@ h2 {
 .rj-crucible {
   transform-box: fill-box;
   transform-origin: 100% 100%;
-  transform: translate(calc((1 - min(1, var(--s3) * 6)) * 60px), calc((1 - min(1, var(--s3) * 6)) * -40px)) rotate(calc(min(1, var(--s3) * 4) * -14deg));
+  /* slides in, then tilts fully before any gold leaves the lip */
+  transform: translate(calc((1 - min(1, var(--s3) * 14)) * 60px), calc((1 - min(1, var(--s3) * 14)) * -40px)) rotate(calc(clamp(0, (var(--s3) - 0.04) * 14, 1) * -14deg));
   opacity: calc(min(1, var(--s3) * 12) * clamp(0, (0.92 - var(--s3)) * 8, 1));
+}
+
+.rj-lip {
+  opacity: calc(clamp(0, (var(--s3) - 0.1) * 30, 1) * clamp(0, (0.82 - var(--s3)) * 7, 1));
 }
 
 .rj-stream {
   stroke-dasharray: 1;
-  stroke-dashoffset: calc(1 - clamp(0, var(--s3) * 6 - 0.4, 1));
+  stroke-dashoffset: calc(1 - clamp(0, var(--s3) * 6 - 0.66, 1));
   opacity: calc(min(1, var(--s3) * 20) * clamp(0, (0.82 - var(--s3)) * 7, 1));
 }
 
@@ -519,7 +552,12 @@ h2 {
 /* Setting: prongs wait open, the diamond drops in, prongs close */
 .rj-prongs-back,
 .rj-prongs-front {
-  opacity: var(--cool);
+  /* the moving prongs take over from the cast ones when setting starts */
+  opacity: min(1, calc(var(--s4) * 30));
+}
+
+.rj-prongs-static {
+  opacity: calc(1 - min(1, var(--s4) * 30));
 }
 
 .rj-prong {

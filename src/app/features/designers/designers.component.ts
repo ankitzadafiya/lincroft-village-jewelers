@@ -11,7 +11,7 @@ import { SeoService } from '../../core/services/seo.service';
     <section class="page-hero">
       <p class="eyebrow">Houses</p>
       <h1>Designers we keep close.</h1>
-      <p class="lede">Houses and makers we stock on the floor — browse a collection, then inquire.</p>
+      <p class="lede">Brands and makers we carry in the store. Browse a collection, then send us an inquiry.</p>
     </section>
     <section class="container section grid">
       @for (designer of designers(); track designer.id) {

@@ -1,9 +1,9 @@
 <section class="triptych" aria-labelledby="triptych-title">
-  <h1 id="triptych-title" class="sr-only">Lincroft Village Jewelers — fine jewelry in Lincroft, New Jersey</h1>
+  <h1 id="triptych-title" class="sr-only">Lincroft Village Jewelers, fine jewelry in Lincroft, New Jersey</h1>
 
   <div class="track">
-    @for (panel of panels(); track panel.slug; let i = $index) {
-      <a class="panel" [routerLink]="panel.path" [attr.aria-label]="panel.eyebrow + ': ' + panel.title + ' ' + panel.accent + ' — shop now'">
+    @for (panel of panels(); track panel.key; let i = $index) {
+      <a class="panel" [routerLink]="panel.path" [queryParams]="panel.queryParams" [attr.aria-label]="panel.eyebrow + ': ' + panel.title + ' ' + panel.accent + ', shop now'">
         <div class="media">
           <img
             [src]="panel.image"

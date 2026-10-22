@@ -18,7 +18,7 @@ interface World {
         <div class="intro">
           <p class="eyebrow">Shop by moment</p>
           <h2>Find the right world.</h2>
-          <p class="lede">Bridal, everyday gold, and statement pieces — curated without the clutter.</p>
+          <p class="lede">Bridal, everyday gold, and statement pieces, chosen without the clutter.</p>
         </div>
         <div class="grid">
           @for (world of worlds; track world.path) {

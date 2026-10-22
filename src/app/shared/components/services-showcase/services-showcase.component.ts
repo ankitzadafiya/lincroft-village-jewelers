@@ -48,7 +48,7 @@ import { ServiceOffering } from '../../../core/models';
       font-family: var(--font-body);
       font-style: normal;
       font-size: clamp(1.85rem, 3.4vw, 2.6rem);
-      font-weight: 550;
+      font-weight: 500;
       letter-spacing: -0.03em;
       margin-bottom: 1.75rem;
       line-height: 1.12;

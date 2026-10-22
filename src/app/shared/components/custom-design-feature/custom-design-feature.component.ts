@@ -11,8 +11,8 @@ import { IMG } from '../../../core/mock/image-catalog';
         <h2>Book Your Personal Jewelry Consultation</h2>
         <p>
           Whether you're dreaming of a custom engagement ring, redesigning a cherished heirloom, or
-          browsing our fine jewelry collection, our expert team is here to guide you — from first
-          sketch to finished piece, with personalized attention in a relaxed, welcoming environment.
+          browsing our fine jewelry collection, our team is here to guide you from the first
+          sketch to the finished piece, with personal attention in a relaxed, welcoming setting.
         </p>
       </div>
     </section>
@@ -23,7 +23,7 @@ import { IMG } from '../../../core/mock/image-catalog';
           <img
             class="layer after"
             [src]="after"
-            alt="Finished diamond ring — same design as the CAD prototype"
+            alt="Finished diamond ring, same design as the CAD prototype"
             draggable="false"
             decoding="async" />
           <img
@@ -54,7 +54,7 @@ import { IMG } from '../../../core/mock/image-catalog';
           <p class="eyebrow">Custom Jewelry Design</p>
           <h2>If you can dream it, we can build it</h2>
           <p class="lead">
-            Our skilled custom jewelry artisans relish the chance to work with you — slide to compare
+            Our custom jewelry team loves working with you. Slide to compare
             sketch and finished piece, then book a private appointment to start yours.
           </p>
           <a routerLink="/contact" class="btn btn-gold">Book an Appointment</a>

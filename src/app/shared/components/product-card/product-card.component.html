@@ -1,4 +1,4 @@
-<article class="card" [class.has-hover]="!!hoverSrc()" [class.is-sold]="product().availability === 'sold'">
+<article class="card" [class.tone-dark]="tone() === 'dark'" [class.has-hover]="!!hoverSrc()" [class.is-sold]="product().availability === 'sold'">
   <div class="media">
     <a class="media-link" [routerLink]="['/product', product().slug]" tabindex="-1" aria-hidden="true">
       @if (primarySrc()) {

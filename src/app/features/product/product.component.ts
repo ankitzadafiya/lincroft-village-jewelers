@@ -48,7 +48,7 @@ export class ProductComponent implements OnInit {
     return productDisplayBrand({
       brandName: product.brandName,
       designerName: product.designerName
-    }) || 'Lincroft Atelier';
+    }) || 'Lincroft Village Jewelers';
   }
 
   ngOnInit(): void {

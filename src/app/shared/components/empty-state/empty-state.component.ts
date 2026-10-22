@@ -19,7 +19,7 @@ import { Component, input } from '@angular/core';
       font-family: var(--font-body);
       font-size: 1.55rem;
       font-style: normal;
-      font-weight: 550;
+      font-weight: 500;
       letter-spacing: -0.02em;
       margin-bottom: 0.6rem;
     }
@@ -28,5 +28,5 @@ import { Component, input } from '@angular/core';
 export class EmptyStateComponent {
   readonly eyebrow = input('Collection');
   readonly title = input('Nothing here just yet');
-  readonly message = input('Try another search or browse the atelier collection.');
+  readonly message = input('Try another search or browse our collection.');
 }

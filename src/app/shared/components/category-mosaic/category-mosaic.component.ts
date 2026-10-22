@@ -12,7 +12,9 @@ interface MosaicCard {
   meta: string;
   image: string;
   alt: string;
-  featured: boolean;
+  /** Grid slot: m = tall middle, a/b = left stack, c/d = right stack. */
+  area: 'm' | 'a' | 'b' | 'c' | 'd';
+  index: string;
 }
 
 /** Used only when the API category has no `imageUrl`. */
@@ -21,16 +23,23 @@ const FALLBACK_IMAGES: Record<string, string> = {
   earring: IMG.catEarrings,
   pendant: IMG.catPendants,
   necklace: IMG.catNecklaces,
-  bracelet: IMG.catBracelets,
-  'silver-jewelry-with-24k-gold-plating': IMG.catSilver
+  bracelet: IMG.catBracelets
 };
 
+/** Five-tile layout: Rings tall in the middle, two tiles stacked each side. */
+const LAYOUT: { slug: string; area: MosaicCard['area'] }[] = [
+  { slug: 'earring', area: 'a' },
+  { slug: 'pendant', area: 'b' },
+  { slug: 'ring', area: 'm' },
+  { slug: 'necklace', area: 'c' },
+  { slug: 'bracelet', area: 'd' }
+];
+
 /**
- * Home "Our Categories" — editorial 3-column mosaic.
- * Left + right columns stack two cards; the middle column holds the featured
- * (tall) card, plus a shorter sixth card when one exists.
- * Hover: a diagonal light sheen bursts outward from the centre of the image.
- * Data: API top-level categories (order follows STORE_TOP_CATEGORIES).
+ * Home "Our Categories" — five-tile editorial grid sized to fit one screen.
+ * Labels sit on the photo; hover zooms the image, draws an inset frame,
+ * sweeps a light sheen and slides in "Shop now".
+ * (Silver + 24k gold is intentionally not shown here for now.)
  */
 @Component({
   selector: 'app-category-mosaic',
@@ -48,29 +57,22 @@ export class CategoryMosaicComponent {
     'Lab-grown and natural diamond pieces, chosen for the floor in Lincroft. Find the signature piece you will wear every day.'
   );
 
-  private readonly cards = computed<MosaicCard[]>(() =>
-    this.categories()
-      .filter(c => !c.parentId)
-      .map((c, i) => ({
+  readonly cards = computed<MosaicCard[]>(() => {
+    const top = this.categories().filter(c => !c.parentId);
+    return LAYOUT.map((slot, i) => {
+      const c = top.find(cat => cat.slug === slot.slug);
+      if (!c) return null;
+      return {
         id: c.id,
         slug: c.slug,
         label: STORE_TOP_CATEGORIES.find(s => s.slug === c.slug)?.navLabel ?? c.name,
         meta: this.countLabel(c.productCount),
         image: c.imageUrl || FALLBACK_IMAGES[c.slug] || '',
         alt: `${c.name} jewelry at Lincroft Village Jewelers`,
-        featured: i === 0
-      }))
-  );
-
-  /** Distribute cards: [1,2] left · [0,5] middle · [3,4] right · extras round-robin. */
-  readonly columns = computed<MosaicCard[][]>(() => {
-    const list = this.cards();
-    const left = [list[1], list[2]];
-    const middle = [list[0], list[5]];
-    const right = [list[3], list[4]];
-    const cols = [left, middle, right];
-    list.slice(6).forEach((card, i) => cols[i % 3].push(card));
-    return cols.map(col => col.filter((c): c is MosaicCard => !!c));
+        area: slot.area,
+        index: String(i + 1).padStart(2, '0')
+      };
+    }).filter((c): c is MosaicCard => !!c);
   });
 
   readonly hasCards = computed(() => this.cards().length > 0);

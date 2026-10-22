@@ -71,7 +71,7 @@ export class CatalogComponent implements OnInit {
     if (q.priceMin != null || q.priceMax != null) {
       const usd = (n: number) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(n);
       const text = q.priceMin != null && q.priceMax != null
-        ? `${usd(q.priceMin)} – ${usd(q.priceMax)}`
+        ? `${usd(q.priceMin)} to ${usd(q.priceMax)}`
         : q.priceMin != null ? `From ${usd(q.priceMin)}` : `Up to ${usd(q.priceMax!)}`;
       out.push({ key: 'price', group: 'Price', label: text });
     }
@@ -144,6 +144,9 @@ export class CatalogComponent implements OnInit {
       priceMin: qp.get('priceMin') ? Number(qp.get('priceMin')) : undefined,
       priceMax: qp.get('priceMax') ? Number(qp.get('priceMax')) : undefined,
       q: qp.get('q') || undefined,
+      // Curated collections (/best-sellers, /new-arrivals) come from route data
+      bestSeller: data['bestSeller'] ? true : undefined,
+      newArrival: data['newArrival'] ? true : undefined,
       sort: this.resolveSort(qp.get('sort')),
       page: Number(qp.get('page') || 1),
       pageSize: 12
@@ -157,7 +160,7 @@ export class CatalogComponent implements OnInit {
           this.eyebrow.set('Collection');
           this.title.set(cat.name);
           this.description.set(
-            cat.description || 'Selected for the floor — browse, save, and inquire from the atelier.'
+            cat.description || 'Chosen for our store. Browse, save, and ask us about any piece.'
           );
           this.seo.set({
             title: `${cat.name} Jewelry`,
@@ -194,7 +197,7 @@ export class CatalogComponent implements OnInit {
     } else {
       this.eyebrow.set(this.router.url.startsWith('/designers/') ? 'Designer' : 'Shop');
       this.title.set(data['title'] || 'Shop');
-      this.description.set('Browse the Lincroft Village Jewelers collection.');
+      this.description.set(data['description'] || 'Browse the Lincroft Village Jewelers collection.');
       const path = this.router.url.split('?')[0] || '/shop';
       this.seo.set({
         title: this.title() === 'Shop' ? 'Shop Fine Jewelry' : this.title(),
@@ -238,9 +241,9 @@ export class CatalogComponent implements OnInit {
   }
 
   clearAll(): void {
-    const { category, q, sort, pageSize } = this.query();
+    const { category, q, sort, pageSize, bestSeller, newArrival } = this.query();
     const designer = this.router.url.startsWith('/designers/') ? this.query().designer : undefined;
-    this.onFilter({ category, q, sort, pageSize, designer, page: 1 });
+    this.onFilter({ category, q, sort, pageSize, designer, bestSeller, newArrival, page: 1 });
   }
 
   /** "ring-lab-grown-engagement-ring" → "Lab-grown engagement ring". */

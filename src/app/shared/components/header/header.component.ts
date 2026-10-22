@@ -1,4 +1,4 @@
-import { Component, HostListener, OnDestroy, OnInit, inject, signal } from '@angular/core';
+import { Component, ElementRef, HostListener, OnDestroy, OnInit, inject, signal } from '@angular/core';
 import { NavigationEnd, Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, filter } from 'rxjs';
@@ -37,10 +37,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
   readonly inquiry = inject(InquiryService);
   readonly customer = inject(CustomerAuthService);
   readonly adminAuth = inject(AuthService);
+  private readonly host = inject(ElementRef<HTMLElement>);
 
   readonly promos = [
     'Free shipping on orders over $500 across the USA',
-    'Lab-grown & natural diamonds — new arrivals this week',
+    'Lab-grown & natural diamonds, new arrivals this week',
     'Book a private appointment in Lincroft, NJ'
   ];
 
@@ -52,7 +53,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       mega: category.slug
     })),
     { label: 'Custom', path: '/custom-jewelry' },
-    { label: 'About', path: '/about' }
+    // { label: 'About', path: '/about' } — About page hidden for now
   ];
 
   /** Nav items that open a mega panel (rendered once, stacked under the header). */
@@ -67,6 +68,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
   readonly compact = signal(false);
   /** 0–1 page scroll progress for the thin line under the header. */
   readonly progress = signal(0);
+  /** Header slid away while scrolling down; returns on scroll up. */
+  readonly hidden = signal(false);
+  private lastY = 0;
   readonly mobileOpen = signal(false);
   readonly searchOpen = signal(false);
   readonly promoOpen = signal(true);
@@ -97,6 +101,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       this.searchOpen.set(false);
       this.closeNow();
       this.drawerKey.set(null);
+      this.setHidden(false);
     });
   }
 
@@ -199,8 +204,31 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   @HostListener('window:scroll')
   onScroll(): void {
-    this.compact.set(window.scrollY > 24);
+    const y = window.scrollY;
+    const delta = y - this.lastY;
+    if (y < 140) {
+      this.setHidden(false);
+    } else if (delta > 6 && !this.megaKey() && !this.searchOpen() && !this.mobileOpen()) {
+      this.setHidden(true);
+    } else if (delta < -6) {
+      this.setHidden(false);
+    }
+    if (Math.abs(delta) > 6 || y < 140) this.lastY = y;
+    this.compact.set(y > 24);
     const max = document.documentElement.scrollHeight - window.innerHeight;
     this.progress.set(max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0);
   }
+
+  /** Also publishes --lvj-header-offset so other sticky bars follow the header. */
+  private setHidden(value: boolean): void {
+    if (this.hidden() === value && this.lastOffsetSet) return;
+    this.hidden.set(value);
+    const bar = (this.host.nativeElement as HTMLElement).querySelector('header');
+    const h = value ? 0 : Math.round(bar?.getBoundingClientRect().height ?? 66);
+    document.documentElement.style.setProperty('--lvj-header-offset', `${h}px`);
+    document.documentElement.classList.toggle('header-hidden', value);
+    this.lastOffsetSet = true;
+  }
+
+  private lastOffsetSet = false;
 }

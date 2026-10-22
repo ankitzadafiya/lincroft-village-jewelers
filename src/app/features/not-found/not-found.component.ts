@@ -10,7 +10,7 @@ import { SeoService } from '../../core/services/seo.service';
       <p class="eyebrow">404</p>
       <h1>Page not found</h1>
       <p class="muted">
-        That page isn’t in our collection. Try shopping jewelry, custom design, or contact the atelier.
+        That page isn’t in our collection. Try shopping jewelry, custom design, or contact us.
       </p>
       <div class="actions">
         <a routerLink="/" class="btn btn-gold">Home</a>

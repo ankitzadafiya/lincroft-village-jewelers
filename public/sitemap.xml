@@ -13,6 +13,18 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://lincroft-village-jewelers.netlify.app/best-sellers</loc>
+    <lastmod>2026-10-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://lincroft-village-jewelers.netlify.app/new-arrivals</loc>
+    <lastmod>2026-10-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://lincroft-village-jewelers.netlify.app/ring</loc>
     <lastmod>2026-09-01</lastmod>
     <changefreq>weekly</changefreq>
@@ -60,12 +72,14 @@
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
+  <!-- About page hidden for now
   <url>
     <loc>https://lincroft-village-jewelers.netlify.app/about</loc>
     <lastmod>2026-09-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
+  -->
   <url>
     <loc>https://lincroft-village-jewelers.netlify.app/contact</loc>
     <lastmod>2026-09-01</lastmod>

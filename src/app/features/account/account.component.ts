@@ -1,7 +1,6 @@
 import { Component, inject, signal } from '@angular/core';
 import { AbstractControl, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { IMG } from '../../core/mock/image-catalog';
 import { CustomerAuthService } from '../../core/services/customer-auth.service';
 import { FavoriteService } from '../../core/services/favorite.service';
 import { SeoService } from '../../core/services/seo.service';
@@ -37,7 +36,8 @@ export class AccountComponent {
   readonly showLoginPassword = signal(false);
   readonly showRegisterPassword = signal(false);
   readonly showConfirmPassword = signal(false);
-  readonly heroImage = IMG.atelier;
+  /** Store photo used on the sign-in visual panel. */
+  readonly heroImage = '/images/hero/hero-ring-on-hand.webp';
 
   readonly loginForm = this.fb.nonNullable.group({
     email: ['', [emailAddress]],

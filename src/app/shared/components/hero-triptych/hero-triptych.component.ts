@@ -1,26 +1,29 @@
 import { Component, computed, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Category } from '../../../core/models';
-import { IMG } from '../../../core/mock/image-catalog';
 import { AppIconComponent } from '../../icons/lvj-icons';
 
 interface TriptychPanelDef {
+  /** Unique key for the panel. */
+  key: string;
   /** Top-level category slug — must match STORE_TOP_CATEGORIES / API. */
   slug: string;
+  /** Optional subcategory filter for the link. */
+  subcategory?: string;
   eyebrow: string;
   title: string;
   /** Italic accent word(s) rendered after `title`. */
   accent: string;
-  /** Used only when the API category has no `imageUrl`. */
-  fallbackImage: string;
+  /** Hero photo (store-supplied, in /public/images/hero). */
+  image: string;
   /** Short resting label shown before hover. */
   label: string;
 }
 
 interface TriptychPanel extends TriptychPanelDef {
-  image: string;
   alt: string;
   path: string;
+  queryParams: Record<string, string> | null;
 }
 
 /**
@@ -44,28 +47,32 @@ export class HeroTriptychComponent {
 
   private readonly defs: TriptychPanelDef[] = [
     {
+      key: 'rings',
       slug: 'ring',
       eyebrow: 'Ring collection',
       title: 'Rings of',
       accent: 'Radiance',
       label: 'Rings',
-      fallbackImage: IMG.catRings
+      image: '/images/hero/hero-ring-on-hand.webp'
     },
     {
+      key: 'bands',
+      slug: 'ring',
+      subcategory: 'ring-lab-grown-wedding-band',
+      eyebrow: 'Wedding bands',
+      title: 'Bands of',
+      accent: 'Forever',
+      label: 'Wedding bands',
+      image: '/images/hero/hero-eternity-band.webp'
+    },
+    {
+      key: 'earrings',
       slug: 'earring',
       eyebrow: 'Earring collection',
       title: 'Everyday',
       accent: 'Brilliance',
       label: 'Earrings',
-      fallbackImage: IMG.catEarrings
-    },
-    {
-      slug: 'bracelet',
-      eyebrow: 'Tennis collection',
-      title: 'Lines of',
-      accent: 'Light',
-      label: 'Bracelets',
-      fallbackImage: IMG.catBracelets
+      image: '/images/hero/hero-diamond-studs.webp'
     }
   ];
 
@@ -75,9 +82,9 @@ export class HeroTriptychComponent {
       const cat = list.find(c => c.slug === def.slug && !c.parentId);
       return {
         ...def,
-        image: cat?.imageUrl || def.fallbackImage,
-        alt: `${cat?.name ?? def.label} — Lincroft Village Jewelers`,
-        path: '/' + def.slug
+        alt: `${def.label}, ${cat?.name ? cat.name + ' collection, ' : ''}Lincroft Village Jewelers`,
+        path: '/' + def.slug,
+        queryParams: def.subcategory ? { subcategory: def.subcategory } : null
       };
     });
   });

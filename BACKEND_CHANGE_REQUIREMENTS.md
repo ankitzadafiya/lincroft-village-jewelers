@@ -202,6 +202,23 @@ Only `https://www.google.com/maps/embed…` values should be accepted (validate 
 
 ---
 
+## 9a. Home "Shop the look" videos — demo media for now (P3)
+
+The home page has a new **"Shop the look"** section: two tall autoplaying video tiles (rings, bracelets) with a link bar. Until the store has its own videos, it uses two **free-licence Pexels clips** (Pexels licence: free for commercial use) hard-coded in the frontend (`DEMO_VIDEO` in `src/app/core/mock/image-catalog.ts`).
+
+No backend work is needed for launch. **Later (optional):** let admin manage these tiles, e.g. a home-content list:
+
+```json
+// GET /api/content/home → add
+"lookVideos": [
+  { "videoUrl": "https://…/ring.mp4", "posterUrl": "https://…/ring.jpg", "title": "Solitaire engagement rings", "href": "/ring" }
+]
+```
+
+Video guidance: portrait 9:16, 720 px wide, MP4 (H.264), muted, 8–20 s loop, under ~4 MB, plus a poster JPG.
+
+---
+
 ## 10. Redesign items that need **no backend change**
 
 | Area | Why no change |

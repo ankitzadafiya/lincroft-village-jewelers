@@ -40,6 +40,24 @@ export const routes: Routes = [
     children: [
       { path: '', loadComponent: () => import('./features/home/home.component').then(m => m.HomeComponent) },
       { path: 'shop', loadComponent: catalogPage, data: { title: 'Shop' } },
+      {
+        path: 'best-sellers',
+        loadComponent: catalogPage,
+        data: {
+          title: 'Best sellers',
+          bestSeller: true,
+          description: 'The pieces our customers love most, chosen by the Lincroft Village Jewelers team.'
+        }
+      },
+      {
+        path: 'new-arrivals',
+        loadComponent: catalogPage,
+        data: {
+          title: 'New arrivals',
+          newArrival: true,
+          description: 'The latest pieces to arrive at Lincroft Village Jewelers.'
+        }
+      },
       ...STORE_TOP_CATEGORIES.map(category => ({
         path: category.slug,
         loadComponent: catalogPage,
@@ -56,7 +74,9 @@ export const routes: Routes = [
       { path: 'product/:slug', loadComponent: () => import('./features/product/product.component').then(m => m.ProductComponent) },
       { path: 'custom-jewelry', loadComponent: () => import('./features/custom-jewelry/custom-jewelry.component').then(m => m.CustomJewelryComponent) },
       { path: 'services', loadComponent: () => import('./features/services/services.component').then(m => m.ServicesComponent) },
-      { path: 'about', loadComponent: () => import('./features/about/about.component').then(m => m.AboutComponent) },
+      // About page hidden for now — old links go to the home page.
+      // { path: 'about', loadComponent: () => import('./features/about/about.component').then(m => m.AboutComponent) },
+      { path: 'about', redirectTo: '', pathMatch: 'full' },
       { path: 'contact', loadComponent: () => import('./features/contact/contact.component').then(m => m.ContactComponent) },
       { path: 'favorites', loadComponent: () => import('./features/favorites/favorites.component').then(m => m.FavoritesComponent) },
       { path: 'account', loadComponent: () => import('./features/account/account.component').then(m => m.AccountComponent) },

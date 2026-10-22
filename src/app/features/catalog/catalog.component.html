@@ -100,7 +100,7 @@
         [totalRecords]="total()"
         [first]="((query().page || 1) - 1) * (query().pageSize || 12)"
         [showCurrentPageReport]="total() > 12"
-        currentPageReportTemplate="{first}–{last} of {totalRecords}"
+        currentPageReportTemplate="{first} to {last} of {totalRecords}"
         (onPageChange)="onPage($event)" />
     }
   </div>

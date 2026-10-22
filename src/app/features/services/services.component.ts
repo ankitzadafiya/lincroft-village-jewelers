@@ -9,9 +9,9 @@ import { CustomDesignFeatureComponent } from '../../shared/components/custom-des
   imports: [RouterLink, ServicesHelpComponent, CustomDesignFeatureComponent],
   template: `
     <section class="page-hero">
-      <p class="eyebrow">Atelier services</p>
+      <p class="eyebrow">Our services</p>
       <h1>Care for what you already wear.</h1>
-      <p class="lede">Repair, cleaning, appraisals, watch care, and custom design — one appointment at a time in Lincroft.</p>
+      <p class="lede">Repair, cleaning, appraisals, watch care, and custom design, one appointment at a time in Lincroft.</p>
       <a routerLink="/contact" class="btn btn-gold">Book an appointment</a>
     </section>
     <app-services-help [showLink]="false" />
@@ -23,7 +23,7 @@ export class ServicesComponent implements OnInit {
 
   ngOnInit(): void {
     this.seo.set({
-      title: 'Jewelry Repair & Atelier Services',
+      title: 'Jewelry Repair & Services',
       description:
         'Jewelry repair, cleaning, appraisals, watch care, and custom design at Lincroft Village Jewelers in Lincroft, NJ.',
       path: '/services',

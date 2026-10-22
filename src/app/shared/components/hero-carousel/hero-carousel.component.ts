@@ -134,7 +134,7 @@ interface HeroSlide {
       font-family: var(--font-body);
       font-style: normal;
       font-size: clamp(2rem, 4.8vw, 3.35rem);
-      font-weight: 550;
+      font-weight: 500;
       letter-spacing: -0.03em;
       line-height: 1.08;
       color: #fff;

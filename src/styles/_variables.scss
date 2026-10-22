@@ -63,12 +63,15 @@
   --lvj-gutter: calc(1.125rem + 15px);
   --lvj-gutter-xl: calc(1.875rem + 15px);
 
-  /* Typography:
-     logo*     → brand mark only (Cormorant + Great Vibes)
-     body/product/display → storefront UI (Outfit) */
+  /* Typography — two families only:
+     --font-logo-serif (Cormorant Garamond) → headings, wordmark, display titles
+     --font-body (Outfit)                   → menus, body text, buttons, labels
+     Loaded weights: Outfit 400/500/600/700, Cormorant 400/600 — use only these. */
   --font-logo: 'Outfit', 'Segoe UI', sans-serif;
+  --font-nav: var(--font-body);
+  /* Visible header height (0 while it is slid away) — set by the header */
+  --lvj-header-offset: 66px;
   --font-logo-serif: 'Cormorant Garamond', Georgia, serif;
-  --font-logo-script: 'Great Vibes', cursive;
   --font-display: 'Outfit', 'Segoe UI', sans-serif;
   --font-body: 'Outfit', 'Segoe UI', sans-serif;
   --font-product: 'Outfit', 'Segoe UI', sans-serif;

@@ -1,0 +1,41 @@
+<section class="hc" [attr.aria-labelledby]="key() + '-title'">
+  <div class="container">
+    <header class="hc-head">
+      @if (kicker()) {
+        <p class="hc-kicker">{{ kicker() }}</p>
+      }
+      <h2 [id]="key() + '-title'">{{ title() }}</h2>
+      @if (subtitle()) {
+        <p class="hc-sub">{{ subtitle() }}</p>
+      }
+    </header>
+
+    <div class="panel">
+      <div class="grid">
+        @if (loading()) {
+          @for (g of ghosts; track g) {
+            <div class="ghost" aria-hidden="true">
+              <span class="ghost-media"></span>
+              <span class="ghost-line"></span>
+              <span class="ghost-line short"></span>
+            </div>
+          }
+        } @else {
+          @for (product of products().slice(0, 4); track product.id) {
+            <app-product-card [product]="product" tone="dark" />
+          }
+        }
+      </div>
+
+      <a class="view-all" [routerLink]="viewAllLink()" [attr.aria-label]="viewAllLabel() + ': ' + title()">
+        <span class="va-label">
+          <span class="va-text">{{ viewAllLabel() }}</span>
+          <span class="va-line" aria-hidden="true"></span>
+        </span>
+        <span class="va-arrow" aria-hidden="true">
+          <app-icon name="arrow-up-right" [size]="18" [strokeWidth]="1.5"></app-icon>
+        </span>
+      </a>
+    </div>
+  </div>
+</section>

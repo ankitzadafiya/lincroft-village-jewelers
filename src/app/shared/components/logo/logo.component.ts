@@ -1,6 +1,10 @@
 import { Component, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
+/**
+ * Text-only wordmark (no symbol): "LINCROFT" set in the heading serif,
+ * with "VILLAGE JEWELERS" spaced out to the same width underneath.
+ */
 @Component({
   selector: 'app-logo',
   imports: [RouterLink],
@@ -12,113 +16,79 @@ import { RouterLink } from '@angular/router';
       [class.left]="align() === 'left'"
       [class.light]="tone() === 'light'"
       aria-label="Lincroft Village Jewelers home">
-      <span class="diamond" aria-hidden="true"></span>
-      <span class="wordmark">
-        <span class="top">Lincroft</span>
-        <span class="script">Village</span>
-        <span class="rule" aria-hidden="true"></span>
-        <span class="bottom">Jewelers</span>
+      <span class="wordmark" aria-hidden="true">
+        <span class="name">Lincroft</span>
+        <span class="sub" aria-hidden="true">
+          @for (ch of subLetters; track $index) {
+            <span>{{ ch }}</span>
+          }
+        </span>
       </span>
     </a>
   `,
   styles: [`
     .logo {
       display: inline-flex;
-      align-items: center;
-      gap: 0.55rem;
       color: var(--lvj-ink);
       text-decoration: none;
       transition: opacity 0.28s ease, color 0.25s ease;
     }
 
     .logo:hover {
-      opacity: 0.7;
+      opacity: 0.72;
     }
 
     .logo.light {
       color: var(--lvj-on-inverse);
     }
 
-    .diamond {
-      width: 14px;
-      height: 14px;
-      border: 1.4px solid currentColor;
-      transform: rotate(45deg);
-      flex-shrink: 0;
-      margin-top: 0.15rem;
-      opacity: 0.9;
-    }
-
-    .compact .diamond {
-      width: 11px;
-      height: 11px;
-    }
-
     .wordmark {
-      display: grid;
-      justify-items: center;
-      gap: 0;
+      display: inline-grid;
+      gap: 0.3rem;
       line-height: 1;
       text-align: center;
     }
 
-    .left .wordmark {
-      justify-items: start;
-      text-align: left;
-    }
-
-    .top {
+    .name {
       font-family: var(--font-logo-serif);
-      font-size: 0.72rem;
-      font-weight: 500;
-      letter-spacing: 0.12em;
-      text-transform: none;
-      margin-bottom: -0.12rem;
-    }
-
-    .script {
-      font-family: var(--font-logo-script);
-      font-size: 1.55rem;
-      font-weight: 400;
-      letter-spacing: 0.01em;
-      line-height: 0.9;
-      padding-right: 0.15rem;
-    }
-
-    .rule {
-      display: block;
-      width: 100%;
-      height: 1px;
-      background: currentColor;
-      opacity: 0.35;
-      margin: 0.28rem 0 0.22rem;
-    }
-
-    .bottom {
-      font-family: var(--font-logo-serif);
-      font-size: 0.58rem;
+      font-size: 1.6rem;
       font-weight: 600;
-      letter-spacing: 0.28em;
+      letter-spacing: 0.16em;
       text-transform: uppercase;
-      padding-left: 0.28em;
+      /* trailing letter-spacing would push the word off-centre */
+      margin-right: -0.16em;
     }
 
-    .compact .top {
-      font-size: 0.64rem;
+    /* Letters spread evenly across exactly the width of the name */
+    .sub {
+      display: flex;
+      justify-content: space-between;
+      font-family: var(--font-sans, inherit);
+      font-size: 0.56rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      opacity: 0.8;
     }
 
-    .compact .script {
-      font-size: 1.28rem;
+    .compact .name {
+      font-size: 1.32rem;
     }
 
-    .compact .bottom {
-      font-size: 0.52rem;
-      letter-spacing: 0.24em;
+    .compact .sub {
+      font-size: 0.5rem;
+    }
+
+    .compact .wordmark {
+      gap: 0.24rem;
     }
 
     @media (max-width: 640px) {
-      .script {
-        font-size: 1.35rem;
+      .name {
+        font-size: 1.3rem;
+      }
+
+      .sub {
+        font-size: 0.48rem;
       }
     }
   `]
@@ -127,4 +97,7 @@ export class LogoComponent {
   readonly tone = input<'dark' | 'light'>('dark');
   readonly compact = input(false);
   readonly align = input<'center' | 'left'>('left');
+
+  /** "VILLAGE JEWELERS" one letter per span; the space becomes a wider gap. */
+  readonly subLetters = 'Village\u00a0\u00a0Jewelers'.split('');
 }

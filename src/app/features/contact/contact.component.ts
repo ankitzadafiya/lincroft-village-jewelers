@@ -24,7 +24,7 @@ import { AppIconComponent } from '../../shared/icons/lvj-icons';
           <header class="intro">
             <p class="eyebrow">Contact</p>
             <h1>We would love to hear from you.</h1>
-            <p>Your journey to timeless elegance starts here.</p>
+            <p>We would love to hear from you.</p>
           </header>
 
           <form [formGroup]="form" (ngSubmit)="submit()">

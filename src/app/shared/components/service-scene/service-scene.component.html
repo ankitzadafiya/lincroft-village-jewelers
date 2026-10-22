@@ -1,0 +1,608 @@
+<div class="scene" [class]="'scene scene-' + kind()" [style.--d]="duration() + 's'" aria-hidden="true">
+  @switch (kind()) {
+    <!-- ───────────── 1 · Jewelry repair & cleaning ───────────── -->
+    @case ('repair') {
+      <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="rp-gold" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#fbe7a6" /><stop offset=".45" stop-color="#e3b34f" /><stop offset="1" stop-color="#a8761c" />
+          </linearGradient>
+          <linearGradient id="rp-gem" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#ffffff" /><stop offset=".55" stop-color="#d4e6f8" /><stop offset="1" stop-color="#8fb3da" />
+          </linearGradient>
+          <linearGradient id="rp-top" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#2d5a94" /><stop offset="1" stop-color="#1b3c69" />
+          </linearGradient>
+          <radialGradient id="rp-floor"><stop offset="0" stop-color="#000" stop-opacity=".45" /><stop offset="1" stop-color="#000" stop-opacity="0" /></radialGradient>
+        </defs>
+        <ellipse cx="200" cy="268" rx="150" ry="14" fill="url(#rp-floor)" />
+
+        <!-- jeweler -->
+        <g transform="translate(286 132)">
+          <defs>
+            <linearGradient id="rp-skin" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f3c7a5" /><stop offset="1" stop-color="#d79a74" /></linearGradient>
+            <linearGradient id="rp-shirt" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f7fafd" /><stop offset="1" stop-color="#c3d1e2" /></linearGradient>
+          </defs>
+          <g class="person">
+            <ellipse cx="0" cy="98" rx="46" ry="6" fill="#000" opacity=".18" />
+            <path d="M-50 98 Q-50 36 -34 27 Q-20 19 0 19 Q20 19 34 27 Q50 36 50 98 Z" fill="url(#rp-shirt)" />
+            <path d="M-10 19 L0 31 L10 19 Z" fill="#c98d68" />
+            <path d="M-12 19 L0 33 L12 19" fill="none" stroke="#b9c8da" stroke-width="3" stroke-linejoin="round" />
+            <path d="M-25 98 L-22 46 Q0 53 22 46 L25 98 Z" fill="#1b3c69" />
+            <path d="M-22 46 L-15 22 M22 46 L15 22" stroke="#1b3c69" stroke-width="4" stroke-linecap="round" />
+            <circle cx="0" cy="64" r="3.2" fill="#e3b34f" />
+            <rect x="-8" y="-1" width="16" height="23" rx="6" fill="url(#rp-skin)" />
+            <path d="M-8 9 Q0 15 8 9 L8 14 Q0 19 -8 14 Z" fill="#b97f5c" opacity=".55" />
+            <g class="head"><g transform="translate(0 -6) scale(1.12)">
+              <ellipse cx="-21" cy="-24" rx="4.2" ry="6" fill="#dca07b" />
+              <ellipse cx="21" cy="-24" rx="4.2" ry="6" fill="#dca07b" />
+              <ellipse cx="0" cy="-26" rx="20" ry="23.5" fill="url(#rp-skin)" />
+              <path d="M-15 -14 Q-12 1 0 2 Q12 1 15 -14 Q10 -6 0 -6 Q-10 -6 -15 -14 Z" fill="#6b5244" opacity=".28" />
+              <path d="M-21 -28 Q-24 -54 0 -55 Q23 -54 21 -28 Q19 -40 9 -44 Q-4 -38 -21 -28 Z" fill="#3b2c24" /><path d="M-6 -53 Q2 -64 12 -56 Q6 -58 2 -52 Z" fill="#3b2c24" />
+              <path d="M-12 -47 Q-2 -51 10 -46" stroke="#6a5244" stroke-width="2" fill="none" stroke-linecap="round" opacity=".7" />
+              <path d="M-13 -34 q5 -3 9 0 M4 -34 q5 -3 9 0" stroke="#3b2c24" stroke-width="2.2" fill="none" stroke-linecap="round" />
+              <g class="eyes">
+                <ellipse cx="-8.5" cy="-26" rx="3.1" ry="3.7" fill="#1f1a17" />
+                <ellipse cx="8.5" cy="-26" rx="3.1" ry="3.7" fill="#1f1a17" />
+                <circle cx="-7.3" cy="-27.6" r="1.3" fill="#fff" />
+                <circle cx="9.7" cy="-27.6" r="1.3" fill="#fff" />
+                <circle cx="-9.4" cy="-24.6" r=".55" fill="#fff" />
+                <circle cx="7.6" cy="-24.6" r=".55" fill="#fff" />
+              </g>
+              <circle cx="-8.5" cy="-26.5" r="6.6" fill="#cfe3f7" fill-opacity=".14" stroke="#24344a" stroke-width="1.6" />
+              <circle cx="8.5" cy="-26.5" r="6.6" fill="#cfe3f7" fill-opacity=".14" stroke="#24344a" stroke-width="1.6" />
+              <path d="M-2 -27 Q0 -29 2 -27 M-15 -27 L-20 -25 M15 -27 L20 -25" stroke="#24344a" stroke-width="1.6" fill="none" />
+              <path d="M0 -23 q2.4 6 -1 8" stroke="#b97f5c" stroke-width="1.7" fill="none" stroke-linecap="round" />
+              <path d="M-7 -11 Q0 -2 7 -11 Z" fill="#8c3b34" stroke="#8c3b34" stroke-width="1.4" stroke-linejoin="round" /><path d="M-5.2 -10.4 H5.2" stroke="#fff" stroke-width="1.6" stroke-linecap="round" />
+              <circle cx="-13" cy="-16.5" r="4.2" fill="#ef8f86" opacity=".42" />
+              <circle cx="13" cy="-16.5" r="4.2" fill="#ef8f86" opacity=".42" />
+            </g></g>
+            <!-- resting / gesturing arm -->
+            <g class="arm-rest"><path d="M40 30 Q54 50 50 72" fill="none" stroke="url(#rp-shirt)" stroke-width="14" stroke-linecap="round" /><path d="M40 30 Q54 50 50 72" fill="none" stroke="#9fb1c7" stroke-width="14" stroke-linecap="round" opacity=".18" /><circle cx="50" cy="73" r="7.5" fill="url(#rp-skin)" /></g>
+            <!-- working arm (+ tool) -->
+            
+          </g>
+        </g>
+        <!-- bench -->
+        <polygon points="70,212 200,184 330,212 200,240" fill="url(#rp-top)" />
+        <polygon points="70,212 200,240 200,258 70,230" fill="#13305a" />
+        <polygon points="200,240 330,212 330,230 200,258" fill="#0e2647" />
+        <polygon points="70,212 200,184 330,212" fill="none" stroke="#4a80c2" stroke-opacity=".5" />
+        <!-- polishing mat -->
+        <polygon points="130,212 200,197 270,212 200,227" fill="#e9eef5" opacity=".14" />
+        <!-- ring -->
+        <g transform="translate(200 182) scale(.8) translate(-200 -182)">
+        <g class="ring">
+          <ellipse cx="200" cy="207" rx="26" ry="6" fill="#000" opacity=".3" />
+          <ellipse cx="200" cy="175" rx="27" ry="31" fill="none" stroke="#8d6012" stroke-width="11" />
+          <ellipse cx="200" cy="175" rx="27" ry="31" fill="none" stroke="url(#rp-gold)" stroke-width="7" />
+          <path d="M177 160 A27 31 0 0 1 200 144" fill="none" stroke="#fff6d8" stroke-width="2" stroke-linecap="round" opacity=".85" />
+          <rect x="193" y="137" width="14" height="9" rx="2" fill="#c9962f" />
+          <polygon points="184,136 190,123 210,123 216,136 200,153" fill="url(#rp-gem)" stroke="#f2f8ff" stroke-width="1" />
+          <path d="M184 136 H216 M190 123 L196 136 L200 123 L204 136 L210 123 M196 136 L200 153 L204 136" stroke="#9fbfe0" stroke-width=".8" fill="none" />
+          <polygon class="flash" points="190,126 197,126 193,134" fill="#fff" />
+        </g>
+        </g>
+        <!-- cleaning bubbles -->
+        <g fill="none" stroke="#bcd6f2" stroke-width="1.4">
+          <circle class="bub b1" cx="174" cy="198" r="4" />
+          <circle class="bub b2" cx="226" cy="194" r="3" />
+          <circle class="bub b3" cx="208" cy="202" r="5" />
+          <circle class="bub b4" cx="186" cy="192" r="2.5" />
+        </g>
+        <!-- working arm drawn in front of the ring -->
+        <g transform="translate(286 132)"><g class="person"><g class="arm-work scrub-arm"><path d="M-40 30 Q-56 24 -60 2" fill="none" stroke="url(#rp-shirt)" stroke-width="14" stroke-linecap="round" /><path d="M-40 30 Q-56 24 -60 2" fill="none" stroke="#9fb1c7" stroke-width="14" stroke-linecap="round" opacity=".18" /><circle cx="-60" cy="2" r="7.5" fill="url(#rp-skin)" /><g><rect x="-86" y="-4" width="34" height="7" rx="3.5" fill="#d9e4f0" transform="rotate(8 -60 0)" /><rect x="-96" y="-2" width="16" height="12" rx="3" fill="#4a80c2" /><g stroke="#f4f8fc" stroke-width="2" stroke-linecap="round"><line x1="-94" y1="10" x2="-94" y2="17" /><line x1="-90" y1="10" x2="-90" y2="18" /><line x1="-86" y1="10" x2="-86" y2="18" /><line x1="-82" y1="10" x2="-82" y2="17" /></g></g></g></g></g>
+        <!-- sparkles -->
+        <g transform="translate(158 130)"><path class="spark k1" d="M0 -11 L2.6 -2.6 L11 0 L2.6 2.6 L0 11 L-2.6 2.6 L-11 0 L-2.6 -2.6Z" fill="#fff" /></g>
+        <g transform="translate(240 150)"><path class="spark k2" d="M0 -8 L2 -2 L8 0 L2 2 L0 8 L-2 2 L-8 0 L-2 -2Z" fill="#f7e2a3" /></g>
+        <g transform="translate(206 104)"><path class="spark k3" d="M0 -9 L2.2 -2.2 L9 0 L2.2 2.2 L0 9 L-2.2 2.2 L-9 0 L-2.2 -2.2Z" fill="#fff" /></g>
+      </svg>
+    }
+
+    <!-- ───────────── 2 · We buy gold ───────────── -->
+    @case ('gold') {
+      <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="gd-gold" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#fff0b8" /><stop offset=".5" stop-color="#e6b648" /><stop offset="1" stop-color="#b07d22" />
+          </linearGradient>
+          <linearGradient id="gd-silver" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#f6f9fc" /><stop offset="1" stop-color="#c9d4e2" />
+          </linearGradient>
+          <radialGradient id="gd-floor"><stop offset="0" stop-color="#000" stop-opacity=".45" /><stop offset="1" stop-color="#000" stop-opacity="0" /></radialGradient>
+        </defs>
+        <ellipse cx="190" cy="266" rx="150" ry="14" fill="url(#gd-floor)" />
+
+        <!-- jeweler -->
+        <g transform="translate(104 118)">
+          <defs>
+            <linearGradient id="gd-skin" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f3c7a5" /><stop offset="1" stop-color="#d79a74" /></linearGradient>
+            <linearGradient id="gd-shirt" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f7fafd" /><stop offset="1" stop-color="#c3d1e2" /></linearGradient>
+          </defs>
+          <g class="person">
+            <ellipse cx="0" cy="98" rx="46" ry="6" fill="#000" opacity=".18" />
+            <path d="M-50 98 Q-50 36 -34 27 Q-20 19 0 19 Q20 19 34 27 Q50 36 50 98 Z" fill="url(#gd-shirt)" />
+            <path d="M-10 19 L0 31 L10 19 Z" fill="#c98d68" />
+            <path d="M-12 19 L0 33 L12 19" fill="none" stroke="#b9c8da" stroke-width="3" stroke-linejoin="round" />
+            <path d="M-25 98 L-22 46 Q0 53 22 46 L25 98 Z" fill="#1b3c69" />
+            <path d="M-22 46 L-15 22 M22 46 L15 22" stroke="#1b3c69" stroke-width="4" stroke-linecap="round" />
+            <circle cx="0" cy="64" r="3.2" fill="#e3b34f" />
+            <rect x="-8" y="-1" width="16" height="23" rx="6" fill="url(#gd-skin)" />
+            <path d="M-8 9 Q0 15 8 9 L8 14 Q0 19 -8 14 Z" fill="#b97f5c" opacity=".55" />
+            <g class="head"><g transform="translate(0 -6) scale(1.12)">
+              <ellipse cx="-21" cy="-24" rx="4.2" ry="6" fill="#dca07b" />
+              <ellipse cx="21" cy="-24" rx="4.2" ry="6" fill="#dca07b" />
+              <ellipse cx="0" cy="-26" rx="20" ry="23.5" fill="url(#gd-skin)" />
+              <path d="M-15 -14 Q-12 1 0 2 Q12 1 15 -14 Q10 -6 0 -6 Q-10 -6 -15 -14 Z" fill="#6b5244" opacity=".28" />
+              <path d="M-21 -28 Q-24 -54 0 -55 Q23 -54 21 -28 Q19 -40 9 -44 Q-4 -38 -21 -28 Z" fill="#3b2c24" /><path d="M-6 -53 Q2 -64 12 -56 Q6 -58 2 -52 Z" fill="#3b2c24" />
+              <path d="M-12 -47 Q-2 -51 10 -46" stroke="#6a5244" stroke-width="2" fill="none" stroke-linecap="round" opacity=".7" />
+              <path d="M-13 -34 q5 -3 9 0 M4 -34 q5 -3 9 0" stroke="#3b2c24" stroke-width="2.2" fill="none" stroke-linecap="round" />
+              <g class="eyes">
+                <ellipse cx="-8.5" cy="-26" rx="3.1" ry="3.7" fill="#1f1a17" />
+                <ellipse cx="8.5" cy="-26" rx="3.1" ry="3.7" fill="#1f1a17" />
+                <circle cx="-7.3" cy="-27.6" r="1.3" fill="#fff" />
+                <circle cx="9.7" cy="-27.6" r="1.3" fill="#fff" />
+                <circle cx="-9.4" cy="-24.6" r=".55" fill="#fff" />
+                <circle cx="7.6" cy="-24.6" r=".55" fill="#fff" />
+              </g>
+              <circle cx="-8.5" cy="-26.5" r="6.6" fill="#cfe3f7" fill-opacity=".14" stroke="#24344a" stroke-width="1.6" />
+              <circle cx="8.5" cy="-26.5" r="6.6" fill="#cfe3f7" fill-opacity=".14" stroke="#24344a" stroke-width="1.6" />
+              <path d="M-2 -27 Q0 -29 2 -27 M-15 -27 L-20 -25 M15 -27 L20 -25" stroke="#24344a" stroke-width="1.6" fill="none" />
+              <path d="M0 -23 q2.4 6 -1 8" stroke="#b97f5c" stroke-width="1.7" fill="none" stroke-linecap="round" />
+              <path d="M-7 -11 Q0 -2 7 -11 Z" fill="#8c3b34" stroke="#8c3b34" stroke-width="1.4" stroke-linejoin="round" /><path d="M-5.2 -10.4 H5.2" stroke="#fff" stroke-width="1.6" stroke-linecap="round" />
+              <circle cx="-13" cy="-16.5" r="4.2" fill="#ef8f86" opacity=".42" />
+              <circle cx="13" cy="-16.5" r="4.2" fill="#ef8f86" opacity=".42" />
+            </g></g>
+            <!-- resting / gesturing arm -->
+            <g class="arm-rest"><path d="M-40 30 Q-50 52 -44 74" fill="none" stroke="url(#gd-shirt)" stroke-width="14" stroke-linecap="round" /><path d="M-40 30 Q-50 52 -44 74" fill="none" stroke="#9fb1c7" stroke-width="14" stroke-linecap="round" opacity=".18" /><circle cx="-44" cy="75" r="7.5" fill="url(#gd-skin)" /></g>
+            <!-- working arm (+ tool) -->
+            <g class="arm-work wave-arm"><path d="M40 30 Q64 18 70 -6" fill="none" stroke="url(#gd-shirt)" stroke-width="14" stroke-linecap="round" /><path d="M40 30 Q64 18 70 -6" fill="none" stroke="#9fb1c7" stroke-width="14" stroke-linecap="round" opacity=".18" /><circle cx="70" cy="-7" r="7.5" fill="url(#gd-skin)" /></g>
+          </g>
+        </g>
+        <g transform="translate(56 18) scale(.86)">
+        <!-- digital scale -->
+        <polygon points="96,214 186,193 276,214 186,235" fill="url(#gd-silver)" />
+        <polygon points="96,214 186,235 186,252 96,231" fill="#aeb9c9" />
+        <polygon points="186,235 276,214 276,231 186,252" fill="#8f9db1" />
+        <polygon points="112,226 168,239 168,247 112,234" fill="#0b1d36" />
+        <g transform="translate(118 233) skewY(13)" font-family="Outfit, sans-serif" font-size="8" font-weight="600">
+          <text class="read r0" x="6" y="4" fill="#7ee0a5">0.00 g</text>
+          <text class="read r1" x="6" y="4" fill="#7ee0a5">12.40 g</text>
+        </g>
+        <!-- gold bar dropping onto the scale -->
+        <g class="bar">
+          <polygon points="150,197 186,189 222,197 186,206" fill="#fff1bf" />
+          <polygon points="150,197 186,206 186,219 150,210" fill="#d9a43a" />
+          <polygon points="186,206 222,197 222,210 186,219" fill="#a8761c" />
+          <path d="M168 197 L186 193 L204 197 L186 201Z" fill="none" stroke="#c8952f" stroke-width="1" />
+          <polygon class="bar-shine" points="160,197 170,195 182,203 172,205" fill="#fff" opacity=".7" />
+        </g>
+        <!-- dashed trail to the payout -->
+        <path class="trail" d="M232 180 C 262 150, 280 140, 300 130" fill="none" stroke="#cfe0f4" stroke-width="2" stroke-dasharray="5 6" stroke-linecap="round" />
+        <!-- payout: cash + coins -->
+        <g class="cash">
+          <rect x="282" y="78" width="96" height="56" rx="9" fill="#3c9a6c" />
+          <rect x="288" y="84" width="84" height="44" rx="6" fill="none" stroke="#b9f0d2" stroke-opacity=".7" />
+          <circle cx="330" cy="106" r="14" fill="#2f7e57" stroke="#b9f0d2" stroke-opacity=".6" />
+          <text x="330" y="112" text-anchor="middle" font-family="Outfit, sans-serif" font-size="17" font-weight="600" fill="#e8fff2">$</text>
+        </g>
+        <g class="coin c1"><ellipse cx="300" cy="170" rx="16" ry="6" fill="#a8761c" /><ellipse cx="300" cy="166" rx="16" ry="6" fill="url(#gd-gold)" /></g>
+        <g class="coin c2"><ellipse cx="300" cy="160" rx="16" ry="6" fill="#a8761c" /><ellipse cx="300" cy="156" rx="16" ry="6" fill="url(#gd-gold)" /></g>
+        <g class="coin c3"><ellipse cx="300" cy="150" rx="16" ry="6" fill="#a8761c" /><ellipse cx="300" cy="146" rx="16" ry="6" fill="url(#gd-gold)" /></g>
+        <g transform="translate(150 182)"><path class="spark k1" d="M0 -10 L2.4 -2.4 L10 0 L2.4 2.4 L0 10 L-2.4 2.4 L-10 0 L-2.4 -2.4Z" fill="#fff" /></g>
+        <g transform="translate(226 176)"><path class="spark k2" d="M0 -8 L2 -2 L8 0 L2 2 L0 8 L-2 2 L-8 0 L-2 -2Z" fill="#f7e2a3" /></g>
+      </g>
+      </svg>
+    }
+
+    <!-- ───────────── 3 · Watch repairs ───────────── -->
+    @case ('watch') {
+      <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="wt-gold" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#fbe7a6" /><stop offset=".5" stop-color="#e0ad44" /><stop offset="1" stop-color="#a8761c" />
+          </linearGradient>
+          <linearGradient id="wt-steel" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#ffffff" /><stop offset=".5" stop-color="#cdd8e5" /><stop offset="1" stop-color="#8797ab" />
+          </linearGradient>
+          <radialGradient id="wt-floor"><stop offset="0" stop-color="#000" stop-opacity=".45" /><stop offset="1" stop-color="#000" stop-opacity="0" /></radialGradient>
+        </defs>
+        <ellipse cx="200" cy="266" rx="120" ry="13" fill="url(#wt-floor)" />
+        <g transform="translate(-36 0)">
+        <!-- strap -->
+        <rect x="172" y="26" width="56" height="64" rx="12" fill="#1b3c69" />
+        <rect x="172" y="210" width="56" height="54" rx="12" fill="#1b3c69" />
+        <!-- case, open back -->
+        <circle cx="200" cy="150" r="78" fill="#0b1d36" opacity=".35" transform="translate(4 6)" />
+        <circle cx="200" cy="150" r="78" fill="url(#wt-steel)" />
+        <circle cx="200" cy="150" r="66" fill="#0c2342" />
+        <circle cx="200" cy="150" r="66" fill="none" stroke="#4a80c2" stroke-opacity=".35" />
+        <!-- movement -->
+        <g transform="translate(178 140)">
+          <g class="gear g1">
+            <circle r="27" fill="none" stroke="url(#wt-gold)" stroke-width="9" stroke-dasharray="5.2 4.2" />
+            <circle r="21" fill="url(#wt-gold)" />
+            <circle r="13" fill="#0c2342" />
+            <path d="M0 -13 V13 M-13 0 H13" stroke="url(#wt-gold)" stroke-width="3" />
+            <circle r="3.5" fill="#c0392b" />
+          </g>
+        </g>
+        <g transform="translate(228 168)">
+          <g class="gear g2">
+            <circle r="17" fill="none" stroke="url(#wt-steel)" stroke-width="7" stroke-dasharray="4 3.6" />
+            <circle r="13" fill="url(#wt-steel)" />
+            <circle r="3" fill="#c0392b" />
+          </g>
+        </g>
+        <g transform="translate(226 116)">
+          <g class="gear g3">
+            <circle r="11" fill="none" stroke="url(#wt-gold)" stroke-width="5" stroke-dasharray="3 2.8" />
+            <circle r="8" fill="url(#wt-gold)" />
+            <circle r="2.4" fill="#c0392b" />
+          </g>
+        </g>
+        <g transform="translate(176 190)">
+          <g class="balance">
+            <circle r="14" fill="none" stroke="url(#wt-steel)" stroke-width="3" />
+            <path d="M-14 0 H14 M0 -14 V14" stroke="url(#wt-steel)" stroke-width="2" />
+          </g>
+        </g>
+        </g>
+
+        <!-- jeweler -->
+        <g transform="translate(300 142) scale(.95)">
+          <defs>
+            <linearGradient id="wt-skin" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f3c7a5" /><stop offset="1" stop-color="#d79a74" /></linearGradient>
+            <linearGradient id="wt-shirt" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f7fafd" /><stop offset="1" stop-color="#c3d1e2" /></linearGradient>
+          </defs>
+          <g class="person">
+            <ellipse cx="0" cy="98" rx="46" ry="6" fill="#000" opacity=".18" />
+            <path d="M-50 98 Q-50 36 -34 27 Q-20 19 0 19 Q20 19 34 27 Q50 36 50 98 Z" fill="url(#wt-shirt)" />
+            <path d="M-10 19 L0 31 L10 19 Z" fill="#c98d68" />
+            <path d="M-12 19 L0 33 L12 19" fill="none" stroke="#b9c8da" stroke-width="3" stroke-linejoin="round" />
+            <path d="M-25 98 L-22 46 Q0 53 22 46 L25 98 Z" fill="#1b3c69" />
+            <path d="M-22 46 L-15 22 M22 46 L15 22" stroke="#1b3c69" stroke-width="4" stroke-linecap="round" />
+            <circle cx="0" cy="64" r="3.2" fill="#e3b34f" />
+            <rect x="-8" y="-1" width="16" height="23" rx="6" fill="url(#wt-skin)" />
+            <path d="M-8 9 Q0 15 8 9 L8 14 Q0 19 -8 14 Z" fill="#b97f5c" opacity=".55" />
+            <g class="head"><g transform="translate(0 -6) scale(1.12)">
+              <ellipse cx="-21" cy="-24" rx="4.2" ry="6" fill="#dca07b" />
+              <ellipse cx="21" cy="-24" rx="4.2" ry="6" fill="#dca07b" />
+              <ellipse cx="0" cy="-26" rx="20" ry="23.5" fill="url(#wt-skin)" />
+              <path d="M-15 -14 Q-12 1 0 2 Q12 1 15 -14 Q10 -6 0 -6 Q-10 -6 -15 -14 Z" fill="#6b5244" opacity=".28" />
+              <path d="M-21 -28 Q-24 -54 0 -55 Q23 -54 21 -28 Q19 -40 9 -44 Q-4 -38 -21 -28 Z" fill="#3b2c24" /><path d="M-6 -53 Q2 -64 12 -56 Q6 -58 2 -52 Z" fill="#3b2c24" />
+              <path d="M-12 -47 Q-2 -51 10 -46" stroke="#6a5244" stroke-width="2" fill="none" stroke-linecap="round" opacity=".7" />
+              <path d="M-13 -34 q5 -3 9 0 M4 -34 q5 -3 9 0" stroke="#3b2c24" stroke-width="2.2" fill="none" stroke-linecap="round" />
+              <g class="eyes">
+                <ellipse cx="-8.5" cy="-26" rx="3.1" ry="3.7" fill="#1f1a17" />
+                <ellipse cx="8.5" cy="-26" rx="3.1" ry="3.7" fill="#1f1a17" />
+                <circle cx="-7.3" cy="-27.6" r="1.3" fill="#fff" />
+                <circle cx="9.7" cy="-27.6" r="1.3" fill="#fff" />
+                <circle cx="-9.4" cy="-24.6" r=".55" fill="#fff" />
+                <circle cx="7.6" cy="-24.6" r=".55" fill="#fff" />
+              </g>
+              <circle cx="-8.5" cy="-26.5" r="6.6" fill="#cfe3f7" fill-opacity=".14" stroke="#24344a" stroke-width="1.6" />
+              <circle cx="8.5" cy="-26.5" r="6.6" fill="#cfe3f7" fill-opacity=".14" stroke="#24344a" stroke-width="1.6" />
+              <path d="M-2 -27 Q0 -29 2 -27 M-15 -27 L-20 -25 M15 -27 L20 -25" stroke="#24344a" stroke-width="1.6" fill="none" />
+              <path d="M0 -23 q2.4 6 -1 8" stroke="#b97f5c" stroke-width="1.7" fill="none" stroke-linecap="round" />
+              <path d="M-7 -11 Q0 -2 7 -11 Z" fill="#8c3b34" stroke="#8c3b34" stroke-width="1.4" stroke-linejoin="round" /><path d="M-5.2 -10.4 H5.2" stroke="#fff" stroke-width="1.6" stroke-linecap="round" />
+              <circle cx="-13" cy="-16.5" r="4.2" fill="#ef8f86" opacity=".42" />
+              <circle cx="13" cy="-16.5" r="4.2" fill="#ef8f86" opacity=".42" />
+            </g></g>
+            <!-- resting / gesturing arm -->
+            <g class="arm-rest"><path d="M40 30 Q50 54 44 76" fill="none" stroke="url(#wt-shirt)" stroke-width="14" stroke-linecap="round" /><path d="M40 30 Q50 54 44 76" fill="none" stroke="#9fb1c7" stroke-width="14" stroke-linecap="round" opacity=".18" /><circle cx="44" cy="77" r="7.5" fill="url(#wt-skin)" /></g>
+            <!-- working arm (+ tool) -->
+            <g class="arm-work tweeze-arm"><path d="M-40 30 Q-58 22 -62 0" fill="none" stroke="url(#wt-shirt)" stroke-width="14" stroke-linecap="round" /><path d="M-40 30 Q-58 22 -62 0" fill="none" stroke="#9fb1c7" stroke-width="14" stroke-linecap="round" opacity=".18" /><circle cx="-62" cy="0" r="7.5" fill="url(#wt-skin)" /><path d="M-62 -4 L-112 -26" stroke="#dfe7f1" stroke-width="3.4" stroke-linecap="round" /><path d="M-60 2 L-112 -23" stroke="#b9c6d6" stroke-width="3.4" stroke-linecap="round" /><circle cx="-112" cy="-25" r="2.6" fill="#e3b34f" /></g>
+          </g>
+        </g>
+        <g transform="translate(268 98)"><path class="spark k1" d="M0 -9 L2.2 -2.2 L9 0 L2.2 2.2 L0 9 L-2.2 2.2 L-9 0 L-2.2 -2.2Z" fill="#fff" /></g>
+      </svg>
+    }
+
+    <!-- ───────────── 4 · Appraisals ───────────── -->
+    @case ('appraisal') {
+      <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="ap-crown" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#ffffff" /><stop offset=".6" stop-color="#d7e8fa" /><stop offset="1" stop-color="#a3c3e6" />
+          </linearGradient>
+          <linearGradient id="ap-pav" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#c3dbf3" /><stop offset=".5" stop-color="#8fb3da" /><stop offset="1" stop-color="#5d86b8" />
+          </linearGradient>
+          <radialGradient id="ap-floor"><stop offset="0" stop-color="#000" stop-opacity=".45" /><stop offset="1" stop-color="#000" stop-opacity="0" /></radialGradient>
+        </defs>
+        <ellipse cx="200" cy="262" rx="150" ry="14" fill="url(#ap-floor)" />
+        <g transform="translate(78 34) scale(.8)">
+        <!-- diamond on a stand -->
+        <ellipse cx="150" cy="230" rx="46" ry="10" fill="#1b3c69" />
+        <ellipse cx="150" cy="226" rx="46" ry="10" fill="#2d5a94" />
+        <g class="diamond">
+          <polygon points="100,128 124,102 176,102 200,128" fill="url(#ap-crown)" />
+          <polygon points="100,128 200,128 150,214" fill="url(#ap-pav)" />
+          <path d="M100 128 H200 M124 102 L136 128 L150 102 L164 128 L176 102 M136 128 L150 214 L164 128 M112 115 L136 128 M188 115 L164 128" stroke="#ffffff" stroke-opacity=".7" stroke-width="1" fill="none" />
+          <polygon class="shimmer" points="126,104 140,104 132,126" fill="#fff" />
+        </g>
+        <!-- certificate -->
+        <g transform="translate(240 70)">
+          <rect x="4" y="6" width="104" height="138" rx="8" fill="#0b1d36" opacity=".35" />
+          <rect width="104" height="138" rx="8" fill="#fbfdff" />
+          <rect width="104" height="18" rx="8" fill="#4a80c2" />
+          <rect y="10" width="104" height="8" fill="#4a80c2" />
+          <text x="52" y="13" text-anchor="middle" font-family="Outfit, sans-serif" font-size="7" font-weight="600" letter-spacing="1.4" fill="#fff">APPRAISAL</text>
+          <rect class="ln l1" x="14" y="34" width="76" height="5" rx="2.5" fill="#c9d6e6" />
+          <rect class="ln l2" x="14" y="47" width="60" height="5" rx="2.5" fill="#c9d6e6" />
+          <rect class="ln l3" x="14" y="60" width="70" height="5" rx="2.5" fill="#c9d6e6" />
+          <rect class="ln l4" x="14" y="73" width="50" height="5" rx="2.5" fill="#c9d6e6" />
+          <g transform="translate(76 108)">
+            <g class="seal">
+              <circle r="17" fill="#e3b34f" />
+              <circle r="13" fill="none" stroke="#fff3cf" stroke-width="1.5" stroke-dasharray="2 2" />
+              <path d="M-6 0 L-1.5 5 L7 -5" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+            </g>
+          </g>
+        </g>
+        <g transform="translate(212 96)"><path class="spark k1" d="M0 -10 L2.4 -2.4 L10 0 L2.4 2.4 L0 10 L-2.4 2.4 L-10 0 L-2.4 -2.4Z" fill="#fff" /></g>
+      </g>
+
+        <!-- jeweler -->
+        <g transform="translate(98 126)">
+          <defs>
+            <linearGradient id="ap-skin" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f3c7a5" /><stop offset="1" stop-color="#d79a74" /></linearGradient>
+            <linearGradient id="ap-shirt" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f7fafd" /><stop offset="1" stop-color="#c3d1e2" /></linearGradient>
+          </defs>
+          <g class="person">
+            <ellipse cx="0" cy="98" rx="46" ry="6" fill="#000" opacity=".18" />
+            <path d="M-50 98 Q-50 36 -34 27 Q-20 19 0 19 Q20 19 34 27 Q50 36 50 98 Z" fill="url(#ap-shirt)" />
+            <path d="M-10 19 L0 31 L10 19 Z" fill="#c98d68" />
+            <path d="M-12 19 L0 33 L12 19" fill="none" stroke="#b9c8da" stroke-width="3" stroke-linejoin="round" />
+            <path d="M-25 98 L-22 46 Q0 53 22 46 L25 98 Z" fill="#1b3c69" />
+            <path d="M-22 46 L-15 22 M22 46 L15 22" stroke="#1b3c69" stroke-width="4" stroke-linecap="round" />
+            <circle cx="0" cy="64" r="3.2" fill="#e3b34f" />
+            <rect x="-8" y="-1" width="16" height="23" rx="6" fill="url(#ap-skin)" />
+            <path d="M-8 9 Q0 15 8 9 L8 14 Q0 19 -8 14 Z" fill="#b97f5c" opacity=".55" />
+            <g class="head"><g transform="translate(0 -6) scale(1.12)">
+              <ellipse cx="-21" cy="-24" rx="4.2" ry="6" fill="#dca07b" />
+              <ellipse cx="21" cy="-24" rx="4.2" ry="6" fill="#dca07b" />
+              <ellipse cx="0" cy="-26" rx="20" ry="23.5" fill="url(#ap-skin)" />
+              <path d="M-15 -14 Q-12 1 0 2 Q12 1 15 -14 Q10 -6 0 -6 Q-10 -6 -15 -14 Z" fill="#6b5244" opacity=".28" />
+              <path d="M-21 -28 Q-24 -54 0 -55 Q23 -54 21 -28 Q19 -40 9 -44 Q-4 -38 -21 -28 Z" fill="#3b2c24" /><path d="M-6 -53 Q2 -64 12 -56 Q6 -58 2 -52 Z" fill="#3b2c24" />
+              <path d="M-12 -47 Q-2 -51 10 -46" stroke="#6a5244" stroke-width="2" fill="none" stroke-linecap="round" opacity=".7" />
+              <path d="M-13 -34 q5 -3 9 0 M4 -34 q5 -3 9 0" stroke="#3b2c24" stroke-width="2.2" fill="none" stroke-linecap="round" />
+              <g class="eyes">
+                <ellipse cx="-8.5" cy="-26" rx="3.1" ry="3.7" fill="#1f1a17" />
+                <ellipse cx="8.5" cy="-26" rx="3.1" ry="3.7" fill="#1f1a17" />
+                <circle cx="-7.3" cy="-27.6" r="1.3" fill="#fff" />
+                <circle cx="9.7" cy="-27.6" r="1.3" fill="#fff" />
+                <circle cx="-9.4" cy="-24.6" r=".55" fill="#fff" />
+                <circle cx="7.6" cy="-24.6" r=".55" fill="#fff" />
+              </g>
+              <circle cx="-8.5" cy="-26.5" r="6.6" fill="#cfe3f7" fill-opacity=".14" stroke="#24344a" stroke-width="1.6" />
+              <circle cx="8.5" cy="-26.5" r="6.6" fill="#cfe3f7" fill-opacity=".14" stroke="#24344a" stroke-width="1.6" />
+              <path d="M-2 -27 Q0 -29 2 -27 M-15 -27 L-20 -25 M15 -27 L20 -25" stroke="#24344a" stroke-width="1.6" fill="none" />
+              <path d="M0 -23 q2.4 6 -1 8" stroke="#b97f5c" stroke-width="1.7" fill="none" stroke-linecap="round" />
+              <path d="M-7 -11 Q0 -2 7 -11 Z" fill="#8c3b34" stroke="#8c3b34" stroke-width="1.4" stroke-linejoin="round" /><path d="M-5.2 -10.4 H5.2" stroke="#fff" stroke-width="1.6" stroke-linecap="round" />
+              <circle cx="-13" cy="-16.5" r="4.2" fill="#ef8f86" opacity=".42" />
+              <circle cx="13" cy="-16.5" r="4.2" fill="#ef8f86" opacity=".42" />
+            </g></g>
+            <!-- resting / gesturing arm -->
+            <g class="arm-rest"><path d="M-40 30 Q-50 52 -44 74" fill="none" stroke="url(#ap-shirt)" stroke-width="14" stroke-linecap="round" /><path d="M-40 30 Q-50 52 -44 74" fill="none" stroke="#9fb1c7" stroke-width="14" stroke-linecap="round" opacity=".18" /><circle cx="-44" cy="75" r="7.5" fill="url(#ap-skin)" /></g>
+            <!-- working arm (+ tool) -->
+            <g class="arm-work inspect-arm"><path d="M40 30 Q56 22 60 2" fill="none" stroke="url(#ap-shirt)" stroke-width="14" stroke-linecap="round" /><path d="M40 30 Q56 22 60 2" fill="none" stroke="#9fb1c7" stroke-width="14" stroke-linecap="round" opacity=".18" /><circle cx="60" cy="2" r="7.5" fill="url(#ap-skin)" /><g transform="translate(98 8)"><circle r="24" fill="#cfe3f7" fill-opacity=".2" stroke="#e3ebf4" stroke-width="6" /><path d="M-14 -10 A17 17 0 0 1 -3 -17" stroke="#fff" stroke-width="2.6" fill="none" stroke-linecap="round" opacity=".85" /></g><rect x="58" y="-2" width="20" height="8" rx="4" fill="#1b3c69" transform="rotate(8 58 2)" /></g>
+          </g>
+        </g>
+      </svg>
+    }
+
+    <!-- ───────────── 5 · Same-day battery & link adjustments ───────────── -->
+    @case ('battery') {
+      <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="bt-steel" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#ffffff" /><stop offset=".5" stop-color="#cdd8e5" /><stop offset="1" stop-color="#8797ab" />
+          </linearGradient>
+          <linearGradient id="bt-gold" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#fbe7a6" /><stop offset=".5" stop-color="#e0ad44" /><stop offset="1" stop-color="#a8761c" />
+          </linearGradient>
+          <radialGradient id="bt-floor"><stop offset="0" stop-color="#000" stop-opacity=".45" /><stop offset="1" stop-color="#000" stop-opacity="0" /></radialGradient>
+        </defs>
+        <ellipse cx="200" cy="264" rx="160" ry="13" fill="url(#bt-floor)" />
+
+        <!-- jeweler -->
+        <g transform="translate(94 130)">
+          <defs>
+            <linearGradient id="bt-skin" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f3c7a5" /><stop offset="1" stop-color="#d79a74" /></linearGradient>
+            <linearGradient id="bt-shirt" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f7fafd" /><stop offset="1" stop-color="#c3d1e2" /></linearGradient>
+          </defs>
+          <g class="person">
+            <ellipse cx="0" cy="98" rx="46" ry="6" fill="#000" opacity=".18" />
+            <path d="M-50 98 Q-50 36 -34 27 Q-20 19 0 19 Q20 19 34 27 Q50 36 50 98 Z" fill="url(#bt-shirt)" />
+            <path d="M-10 19 L0 31 L10 19 Z" fill="#c98d68" />
+            <path d="M-12 19 L0 33 L12 19" fill="none" stroke="#b9c8da" stroke-width="3" stroke-linejoin="round" />
+            <path d="M-25 98 L-22 46 Q0 53 22 46 L25 98 Z" fill="#1b3c69" />
+            <path d="M-22 46 L-15 22 M22 46 L15 22" stroke="#1b3c69" stroke-width="4" stroke-linecap="round" />
+            <circle cx="0" cy="64" r="3.2" fill="#e3b34f" />
+            <rect x="-8" y="-1" width="16" height="23" rx="6" fill="url(#bt-skin)" />
+            <path d="M-8 9 Q0 15 8 9 L8 14 Q0 19 -8 14 Z" fill="#b97f5c" opacity=".55" />
+            <g class="head"><g transform="translate(0 -6) scale(1.12)">
+              <ellipse cx="-21" cy="-24" rx="4.2" ry="6" fill="#dca07b" />
+              <ellipse cx="21" cy="-24" rx="4.2" ry="6" fill="#dca07b" />
+              <ellipse cx="0" cy="-26" rx="20" ry="23.5" fill="url(#bt-skin)" />
+              <path d="M-15 -14 Q-12 1 0 2 Q12 1 15 -14 Q10 -6 0 -6 Q-10 -6 -15 -14 Z" fill="#6b5244" opacity=".28" />
+              <path d="M-21 -28 Q-24 -54 0 -55 Q23 -54 21 -28 Q19 -40 9 -44 Q-4 -38 -21 -28 Z" fill="#3b2c24" /><path d="M-6 -53 Q2 -64 12 -56 Q6 -58 2 -52 Z" fill="#3b2c24" />
+              <path d="M-12 -47 Q-2 -51 10 -46" stroke="#6a5244" stroke-width="2" fill="none" stroke-linecap="round" opacity=".7" />
+              <path d="M-13 -34 q5 -3 9 0 M4 -34 q5 -3 9 0" stroke="#3b2c24" stroke-width="2.2" fill="none" stroke-linecap="round" />
+              <g class="eyes">
+                <ellipse cx="-8.5" cy="-26" rx="3.1" ry="3.7" fill="#1f1a17" />
+                <ellipse cx="8.5" cy="-26" rx="3.1" ry="3.7" fill="#1f1a17" />
+                <circle cx="-7.3" cy="-27.6" r="1.3" fill="#fff" />
+                <circle cx="9.7" cy="-27.6" r="1.3" fill="#fff" />
+                <circle cx="-9.4" cy="-24.6" r=".55" fill="#fff" />
+                <circle cx="7.6" cy="-24.6" r=".55" fill="#fff" />
+              </g>
+              <circle cx="-8.5" cy="-26.5" r="6.6" fill="#cfe3f7" fill-opacity=".14" stroke="#24344a" stroke-width="1.6" />
+              <circle cx="8.5" cy="-26.5" r="6.6" fill="#cfe3f7" fill-opacity=".14" stroke="#24344a" stroke-width="1.6" />
+              <path d="M-2 -27 Q0 -29 2 -27 M-15 -27 L-20 -25 M15 -27 L20 -25" stroke="#24344a" stroke-width="1.6" fill="none" />
+              <path d="M0 -23 q2.4 6 -1 8" stroke="#b97f5c" stroke-width="1.7" fill="none" stroke-linecap="round" />
+              <path d="M-7 -11 Q0 -2 7 -11 Z" fill="#8c3b34" stroke="#8c3b34" stroke-width="1.4" stroke-linejoin="round" /><path d="M-5.2 -10.4 H5.2" stroke="#fff" stroke-width="1.6" stroke-linecap="round" />
+              <circle cx="-13" cy="-16.5" r="4.2" fill="#ef8f86" opacity=".42" />
+              <circle cx="13" cy="-16.5" r="4.2" fill="#ef8f86" opacity=".42" />
+            </g></g>
+            <!-- resting / gesturing arm -->
+            <g class="arm-rest"><path d="M-40 30 Q-50 52 -44 74" fill="none" stroke="url(#bt-shirt)" stroke-width="14" stroke-linecap="round" /><path d="M-40 30 Q-50 52 -44 74" fill="none" stroke="#9fb1c7" stroke-width="14" stroke-linecap="round" opacity=".18" /><circle cx="-44" cy="75" r="7.5" fill="url(#bt-skin)" /></g>
+            <!-- working arm (+ tool) -->
+            <g class="arm-work point-arm"><path d="M40 30 Q52 14 50 -8" fill="none" stroke="url(#bt-shirt)" stroke-width="14" stroke-linecap="round" /><path d="M40 30 Q52 14 50 -8" fill="none" stroke="#9fb1c7" stroke-width="14" stroke-linecap="round" opacity=".18" /><circle cx="50" cy="-9" r="7.5" fill="url(#bt-skin)" /></g>
+          </g>
+        </g>
+        <g transform="translate(96 36) scale(.78)">
+        <!-- watch, back open -->
+        <rect x="104" y="60" width="44" height="40" rx="10" fill="#1b3c69" />
+        <rect x="104" y="196" width="44" height="48" rx="10" fill="#1b3c69" />
+        <circle cx="126" cy="150" r="58" fill="url(#bt-steel)" />
+        <circle cx="126" cy="150" r="47" fill="#0c2342" />
+        <circle cx="126" cy="150" r="25" fill="#071830" />
+        <g class="batt old">
+          <circle cx="126" cy="150" r="21" fill="url(#bt-steel)" />
+          <circle cx="126" cy="150" r="16" fill="none" stroke="#8797ab" />
+          <text x="126" y="155" text-anchor="middle" font-family="Outfit, sans-serif" font-size="13" font-weight="600" fill="#5d6c80">+</text>
+        </g>
+        <g class="batt new">
+          <circle cx="126" cy="150" r="21" fill="url(#bt-steel)" />
+          <circle cx="126" cy="150" r="16" fill="none" stroke="#4a80c2" />
+          <text x="126" y="155" text-anchor="middle" font-family="Outfit, sans-serif" font-size="13" font-weight="600" fill="#4a80c2">+</text>
+        </g>
+        <circle class="pulse" cx="126" cy="150" r="24" fill="none" stroke="#7ee0a5" stroke-width="2" />
+        <!-- bracelet links -->
+        <g transform="translate(212 136)">
+          <g class="link a"><rect width="26" height="30" rx="6" fill="url(#bt-gold)" /><circle cx="13" cy="15" r="2" fill="#a8761c" /></g>
+          <g class="link b" transform="translate(28 0)"><rect width="26" height="30" rx="6" fill="url(#bt-gold)" /><circle cx="13" cy="15" r="2" fill="#a8761c" /></g>
+          <g transform="translate(56 0)"><g class="link out"><rect width="26" height="30" rx="6" fill="url(#bt-gold)" /><circle cx="13" cy="15" r="2" fill="#a8761c" /></g></g>
+          <g transform="translate(84 0)"><g class="link shift">
+            <rect width="26" height="30" rx="6" fill="url(#bt-gold)" /><circle cx="13" cy="15" r="2" fill="#a8761c" />
+            <rect x="28" width="26" height="30" rx="6" fill="url(#bt-gold)" /><circle cx="41" cy="15" r="2" fill="#a8761c" />
+            <rect x="56" width="26" height="30" rx="6" fill="url(#bt-gold)" /><circle cx="69" cy="15" r="2" fill="#a8761c" />
+          </g></g>
+        </g>
+        <!-- same-day clock badge -->
+        <g transform="translate(300 64)">
+          <circle r="24" fill="#fbfdff" />
+          <circle r="24" fill="none" stroke="#4a80c2" stroke-width="3" />
+          <g class="hand-min"><line x1="0" y1="0" x2="0" y2="-15" stroke="#0b1d36" stroke-width="2.6" stroke-linecap="round" /></g>
+          <line x1="0" y1="0" x2="9" y2="0" stroke="#0b1d36" stroke-width="2.6" stroke-linecap="round" />
+          <circle r="2.6" fill="#e3b34f" />
+          <text y="42" text-anchor="middle" font-family="Outfit, sans-serif" font-size="9" font-weight="600" letter-spacing="1.6" fill="#cfe0f4">SAME DAY</text>
+        </g>
+      </g>
+      </svg>
+    }
+
+    <!-- ───────────── 6 · Estate jewelry consulting ───────────── -->
+    @case ('estate') {
+      <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="es-gold" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#fbe7a6" /><stop offset=".5" stop-color="#e0ad44" /><stop offset="1" stop-color="#a8761c" />
+          </linearGradient>
+          <linearGradient id="es-box" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#2d5a94" /><stop offset="1" stop-color="#173a66" />
+          </linearGradient>
+          <radialGradient id="es-floor"><stop offset="0" stop-color="#000" stop-opacity=".45" /><stop offset="1" stop-color="#000" stop-opacity="0" /></radialGradient>
+        </defs>
+        <ellipse cx="200" cy="264" rx="160" ry="13" fill="url(#es-floor)" />
+
+        <!-- jeweler -->
+        <g transform="translate(94 128)">
+          <defs>
+            <linearGradient id="es-skin" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f3c7a5" /><stop offset="1" stop-color="#d79a74" /></linearGradient>
+            <linearGradient id="es-shirt" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f7fafd" /><stop offset="1" stop-color="#c3d1e2" /></linearGradient>
+          </defs>
+          <g class="person">
+            <ellipse cx="0" cy="98" rx="46" ry="6" fill="#000" opacity=".18" />
+            <path d="M-50 98 Q-50 36 -34 27 Q-20 19 0 19 Q20 19 34 27 Q50 36 50 98 Z" fill="url(#es-shirt)" />
+            <path d="M-10 19 L0 31 L10 19 Z" fill="#c98d68" />
+            <path d="M-12 19 L0 33 L12 19" fill="none" stroke="#b9c8da" stroke-width="3" stroke-linejoin="round" />
+            <path d="M-25 98 L-22 46 Q0 53 22 46 L25 98 Z" fill="#1b3c69" />
+            <path d="M-22 46 L-15 22 M22 46 L15 22" stroke="#1b3c69" stroke-width="4" stroke-linecap="round" />
+            <circle cx="0" cy="64" r="3.2" fill="#e3b34f" />
+            <rect x="-8" y="-1" width="16" height="23" rx="6" fill="url(#es-skin)" />
+            <path d="M-8 9 Q0 15 8 9 L8 14 Q0 19 -8 14 Z" fill="#b97f5c" opacity=".55" />
+            <g class="head"><g transform="translate(0 -6) scale(1.12)">
+              <ellipse cx="-21" cy="-24" rx="4.2" ry="6" fill="#dca07b" />
+              <ellipse cx="21" cy="-24" rx="4.2" ry="6" fill="#dca07b" />
+              <ellipse cx="0" cy="-26" rx="20" ry="23.5" fill="url(#es-skin)" />
+              <path d="M-15 -14 Q-12 1 0 2 Q12 1 15 -14 Q10 -6 0 -6 Q-10 -6 -15 -14 Z" fill="#6b5244" opacity=".28" />
+              <path d="M-21 -28 Q-24 -54 0 -55 Q23 -54 21 -28 Q19 -40 9 -44 Q-4 -38 -21 -28 Z" fill="#3b2c24" /><path d="M-6 -53 Q2 -64 12 -56 Q6 -58 2 -52 Z" fill="#3b2c24" />
+              <path d="M-12 -47 Q-2 -51 10 -46" stroke="#6a5244" stroke-width="2" fill="none" stroke-linecap="round" opacity=".7" />
+              <path d="M-13 -34 q5 -3 9 0 M4 -34 q5 -3 9 0" stroke="#3b2c24" stroke-width="2.2" fill="none" stroke-linecap="round" />
+              <g class="eyes">
+                <ellipse cx="-8.5" cy="-26" rx="3.1" ry="3.7" fill="#1f1a17" />
+                <ellipse cx="8.5" cy="-26" rx="3.1" ry="3.7" fill="#1f1a17" />
+                <circle cx="-7.3" cy="-27.6" r="1.3" fill="#fff" />
+                <circle cx="9.7" cy="-27.6" r="1.3" fill="#fff" />
+                <circle cx="-9.4" cy="-24.6" r=".55" fill="#fff" />
+                <circle cx="7.6" cy="-24.6" r=".55" fill="#fff" />
+              </g>
+              <circle cx="-8.5" cy="-26.5" r="6.6" fill="#cfe3f7" fill-opacity=".14" stroke="#24344a" stroke-width="1.6" />
+              <circle cx="8.5" cy="-26.5" r="6.6" fill="#cfe3f7" fill-opacity=".14" stroke="#24344a" stroke-width="1.6" />
+              <path d="M-2 -27 Q0 -29 2 -27 M-15 -27 L-20 -25 M15 -27 L20 -25" stroke="#24344a" stroke-width="1.6" fill="none" />
+              <path d="M0 -23 q2.4 6 -1 8" stroke="#b97f5c" stroke-width="1.7" fill="none" stroke-linecap="round" />
+              <path d="M-7 -11 Q0 -2 7 -11 Z" fill="#8c3b34" stroke="#8c3b34" stroke-width="1.4" stroke-linejoin="round" /><path d="M-5.2 -10.4 H5.2" stroke="#fff" stroke-width="1.6" stroke-linecap="round" />
+              <circle cx="-13" cy="-16.5" r="4.2" fill="#ef8f86" opacity=".42" />
+              <circle cx="13" cy="-16.5" r="4.2" fill="#ef8f86" opacity=".42" />
+            </g></g>
+            <!-- resting / gesturing arm -->
+            <g class="arm-rest"><path d="M-40 30 Q-50 52 -44 74" fill="none" stroke="url(#es-shirt)" stroke-width="14" stroke-linecap="round" /><path d="M-40 30 Q-50 52 -44 74" fill="none" stroke="#9fb1c7" stroke-width="14" stroke-linecap="round" opacity=".18" /><circle cx="-44" cy="75" r="7.5" fill="url(#es-skin)" /></g>
+            <!-- working arm (+ tool) -->
+            <g class="arm-work present-arm"><path d="M40 30 Q62 22 72 4" fill="none" stroke="url(#es-shirt)" stroke-width="14" stroke-linecap="round" /><path d="M40 30 Q62 22 72 4" fill="none" stroke="#9fb1c7" stroke-width="14" stroke-linecap="round" opacity=".18" /><circle cx="72" cy="3" r="7.5" fill="url(#es-skin)" /></g>
+          </g>
+        </g>
+        <g transform="translate(84 36) scale(.78)">
+        <!-- jewelry box -->
+        <g transform="translate(0 6)">
+          <!-- lid (opens upward) -->
+          <g class="lid">
+            <polygon points="70,170 140,150 140,92 70,112" fill="url(#es-box)" />
+            <polygon points="140,150 210,170 210,112 140,92" fill="#1e4677" />
+            <polygon points="70,112 140,92 210,112 140,132" fill="#2a568d" opacity=".0" />
+            <polygon points="78,166 140,148 140,100 78,118" fill="#3a1d3f" opacity=".55" />
+          </g>
+          <!-- box top opening + velvet -->
+          <polygon points="70,170 140,150 210,170 140,190" fill="#0d1f3a" />
+          <polygon points="80,170 140,153 200,170 140,187" fill="#4b1f3f" />
+          <!-- treasures -->
+          <g class="treasure">
+            <path d="M104 168 Q140 150 176 168" fill="none" stroke="#f4f1ea" stroke-width="5" stroke-dasharray="0.1 7" stroke-linecap="round" />
+            <ellipse cx="140" cy="168" rx="11" ry="12" fill="none" stroke="url(#es-gold)" stroke-width="4" />
+            <polygon points="134,156 137,150 143,150 146,156 140,162" fill="#d7e8fa" />
+          </g>
+          <!-- box sides -->
+          <polygon points="70,170 140,190 140,232 70,212" fill="url(#es-box)" />
+          <polygon points="140,190 210,170 210,212 140,232" fill="#122f55" />
+          <polygon points="70,170 140,190 210,170" fill="none" stroke="url(#es-gold)" stroke-width="2" />
+          <rect x="132" y="200" width="16" height="10" rx="2" fill="url(#es-gold)" />
+          <!-- closed cover (fades as the lid opens) -->
+          <polygon class="cover" points="70,170 140,150 210,170 140,190" fill="#2a568d" />
+        </g>
+        <!-- valuation report -->
+        <g transform="translate(244 74)">
+          <rect x="4" y="6" width="108" height="134" rx="8" fill="#0b1d36" opacity=".35" />
+          <rect width="108" height="134" rx="8" fill="#fbfdff" />
+          <rect x="12" y="12" width="56" height="6" rx="3" fill="#0b1d36" opacity=".8" />
+          <rect x="12" y="24" width="38" height="4" rx="2" fill="#c9d6e6" />
+          <line x1="14" y1="112" x2="96" y2="112" stroke="#c9d6e6" />
+          <rect class="bar1" x="20" y="72" width="16" height="40" rx="3" fill="#4a80c2" />
+          <rect class="bar2" x="44" y="56" width="16" height="56" rx="3" fill="#2d5a94" />
+          <rect class="bar3" x="68" y="44" width="16" height="68" rx="3" fill="url(#es-gold)" />
+          <g transform="translate(92 122)">
+            <g class="seal">
+              <circle r="13" fill="#3c9a6c" />
+              <path d="M-5 0 L-1 4 L6 -4" stroke="#fff" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+            </g>
+          </g>
+        </g>
+        <g transform="translate(116 132)"><path class="spark k1" d="M0 -10 L2.4 -2.4 L10 0 L2.4 2.4 L0 10 L-2.4 2.4 L-10 0 L-2.4 -2.4Z" fill="#fff" /></g>
+        <g transform="translate(170 126)"><path class="spark k2" d="M0 -8 L2 -2 L8 0 L2 2 L0 8 L-2 2 L-8 0 L-2 -2Z" fill="#f7e2a3" /></g>
+      </g>
+      </svg>
+    }
+  }
+</div>

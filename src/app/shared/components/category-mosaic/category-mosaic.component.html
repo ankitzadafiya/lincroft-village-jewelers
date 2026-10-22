@@ -8,41 +8,40 @@
 
   @if (hasCards()) {
     <div class="mosaic">
-      @for (col of columns(); track $index; let c = $index) {
-        <div class="col" [class.col-mid]="c === 1">
-          @for (card of col; track card.id) {
-            <a class="card" [class.featured]="card.featured" [routerLink]="'/' + card.slug">
-              <div class="media">
-                @if (card.image) {
-                  <img [src]="card.image" [alt]="card.alt" loading="lazy" decoding="async" draggable="false" />
-                }
-                <span class="sheen" aria-hidden="true"></span>
-              </div>
-              <div class="foot">
-                <span class="name">
-                  <span class="roll">
-                    <span class="label">{{ card.label }}</span>
-                    <span class="label label-alt" aria-hidden="true">Shop {{ card.label }}</span>
-                  </span>
-                  @if (showCount()) {
-                    <span class="meta">{{ card.meta }}</span>
-                  }
-                </span>
-                <span class="go" aria-hidden="true">
-                  <app-icon class="go-icon" name="arrow-up-right" [size]="13" [strokeWidth]="1.6"></app-icon>
-                  <app-icon class="go-icon go-next" name="arrow-up-right" [size]="13" [strokeWidth]="1.6"></app-icon>
-                </span>
-              </div>
-            </a>
-          }
-        </div>
+      @for (card of cards(); track card.id) {
+        <a class="tile" [class]="'tile area-' + card.area" [routerLink]="'/' + card.slug">
+          <span class="media">
+            @if (card.image) {
+              <img [src]="card.image" [alt]="card.alt" loading="lazy" decoding="async" draggable="false" />
+            }
+          </span>
+          <span class="shade" aria-hidden="true"></span>
+          <span class="sheen" aria-hidden="true"></span>
+          <span class="frame" aria-hidden="true"></span>
+
+          <span class="cap">
+            <span class="cap-text">
+              <span class="idx" aria-hidden="true">{{ card.index }}</span>
+              <span class="label">{{ card.label }}</span>
+              @if (showCount()) {
+                <span class="meta">{{ card.meta }}</span>
+              }
+              <span class="shop" aria-hidden="true">Shop now</span>
+            </span>
+            <span class="go" aria-hidden="true">
+              <app-icon name="arrow-up-right" [size]="12" [strokeWidth]="1.7"></app-icon>
+            </span>
+          </span>
+        </a>
       }
     </div>
   } @else {
     <div class="mosaic is-loading" aria-hidden="true">
-      <div class="col"><span class="ghost"></span><span class="ghost"></span></div>
-      <div class="col col-mid"><span class="ghost"></span></div>
-      <div class="col"><span class="ghost"></span><span class="ghost"></span></div>
+      <span class="ghost area-a"></span>
+      <span class="ghost area-b"></span>
+      <span class="ghost area-m"></span>
+      <span class="ghost area-c"></span>
+      <span class="ghost area-d"></span>
     </div>
   }
 </section>

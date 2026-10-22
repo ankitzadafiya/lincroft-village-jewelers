@@ -108,8 +108,19 @@
   z-index: 50;
   background: var(--lvj-header-bg);
   border-bottom: 1px solid var(--lvj-line);
-  transition: background 0.3s ease, border-color 0.3s ease;
+  transition:
+    background 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease,
+    transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
   overflow: visible;
+  will-change: transform;
+}
+
+/* Slides up out of view while scrolling down; back on scroll up */
+.header.is-hidden {
+  transform: translateY(-100%);
+  box-shadow: none;
 }
 
 .header.compact {
@@ -140,7 +151,7 @@
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
-  gap: 0.15rem 1.35rem;
+  gap: 0.15rem 2.25rem;
 }
 
 .nav-item {
@@ -152,10 +163,13 @@
 }
 
 .mega-toggle {
+  position: relative;
   display: inline-grid;
   place-items: center;
-  width: 18px;
+  /* box = arrow glyph only, so items with and without an arrow space evenly */
+  width: 12px;
   height: 22px;
+  margin-right: -3px; /* trims the icon's built-in side padding */
   padding: 0;
   border: 0;
   background: transparent;
@@ -163,6 +177,13 @@
   opacity: 0.45;
   cursor: pointer;
   transition: opacity 0.2s ease, transform 0.35s var(--lvj-ease);
+}
+
+/* Comfortable click target without taking layout space */
+.mega-toggle::before {
+  content: '';
+  position: absolute;
+  inset: -8px -6px;
 }
 
 .mega-toggle[aria-expanded='true'] {
@@ -195,10 +216,12 @@
   display: inline-flex;
   align-items: center;
   gap: 0.2rem;
-  font-size: 0.78rem;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
+  /* same type as the dropdown items: Outfit, regular, sentence case */
+  font-family: var(--font-body);
+  font-size: 0.98rem;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  text-transform: none;
   color: var(--lvj-ink);
   padding: 0.35rem 0;
   position: relative;
@@ -333,7 +356,7 @@
   font-family: var(--font-body);
   font-style: normal;
   font-size: 1.05rem;
-  font-weight: 560;
+  font-weight: 500;
   letter-spacing: -0.01em;
   padding: 0.85rem 0;
   border-bottom: 1px solid var(--lvj-line);
@@ -427,6 +450,44 @@
 @include mq(lg) {
   .nav-desktop {
     align-self: stretch;
+  }
+}
+
+/* Menu sizing steps so all items stay on one line */
+/* Too narrow for eight menu items: use the menu button + drawer */
+@media (max-width: 1099px) {
+  .nav-desktop {
+    display: none !important;
+  }
+
+  .menu-btn {
+    display: grid !important;
+  }
+
+  app-mega-menu {
+    display: none;
+  }
+}
+
+@media (min-width: 1100px) and (max-width: 1199px) {
+  .nav-desktop {
+    gap: 0.15rem 18px;
+  }
+
+  .nav-desktop a {
+    font-size: 13.5px;
+  }
+}
+
+@media (min-width: 1200px) and (max-width: 1279px) {
+  .nav-desktop {
+    gap: 0.15rem 22px;
+  }
+}
+
+@media (min-width: 1280px) and (max-width: 1365px) {
+  .nav-desktop {
+    gap: 0.15rem 30px;
   }
 }
 

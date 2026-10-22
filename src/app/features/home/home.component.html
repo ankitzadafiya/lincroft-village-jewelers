@@ -4,22 +4,51 @@
   <app-category-mosaic [categories]="heroCategories()" />
 </div>
 
-<section class="section band-tint">
-  <div class="container" appReveal="up" [appRevealStagger]="true">
-  <app-section-header
-    eyebrow="Trending"
-    title="Best sellers"
-    subtitle="Pieces customers love right now — priced in USD."
-    link="/shop"
-    linkLabel="View all" />
-  @if (loading()) {
-    <app-loading-skeleton />
-  } @else {
-    <app-product-grid [products]="featured()" />
+<!-- Best sellers + New arrivals: four admin-chosen pieces each (product flags) -->
+<div class="collections band-tint">
+  @if (bestLoading() || bestSellers().length) {
+    <app-home-collection
+      key="best"
+      kicker="Trending"
+      title="Best sellers"
+      subtitle="Pieces customers love right now, priced in USD."
+      [products]="bestSellers()"
+      [loading]="bestLoading()"
+      viewAllLink="/best-sellers" />
   }
-  </div>
-</section>
+  @if (arrivalsLoading() || arrivals().length) {
+    <app-home-collection
+      key="new"
+      kicker="Just in"
+      title="New arrivals"
+      subtitle="The latest pieces to arrive in the Lincroft showroom."
+      [products]="arrivals()"
+      [loading]="arrivalsLoading()"
+      viewAllLink="/new-arrivals" />
+  }
+</div>
 
+<!-- Video features (demo Pexels clips until the store's own videos arrive) -->
+<app-shop-the-look
+  key="bridal"
+  kicker="Lab-grown bridal"
+  title="Made to be worn"
+  lede="Engagement rings and wedding bands in lab-grown diamonds. See them in real light, then try them on in Lincroft."
+  allLink="/ring"
+  allLabel="Explore all rings"
+  [tiles]="bridalTiles" />
+
+<app-shop-the-look
+  key="everyday"
+  kicker="Everyday & gold"
+  title="Shine every day"
+  lede="Easy pieces for every day, and silver finished in 24k gold plating. Made to layer, stack and wear."
+  allLink="/shop"
+  allLabel="Explore all jewelry"
+  [reverse]="true"
+  [tiles]="everydayTiles" />
+
+<!-- "Signature collections" editorial banners — removed for now, kept for reference.
 <section class="editorial" aria-labelledby="edit-title">
   <div class="container">
     <header class="ed-head" appReveal="fade">
@@ -80,11 +109,12 @@
     </div>
   </div>
 </section>
+-->
 
 <!-- Just arrived section hidden for now
 <section class="section container soft-band" appReveal="soft" [appRevealStagger]="true">
   <app-section-header
-    eyebrow="Fresh from the atelier"
+    eyebrow="New in store"
     title="Just arrived"
     link="/shop"
     linkLabel="View all" />

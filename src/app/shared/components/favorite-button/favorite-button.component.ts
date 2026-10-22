@@ -59,7 +59,7 @@ export class FavoriteButtonComponent {
   private promptSignIn(): void {
     this.confirm.confirm({
       header: 'Sign in to save',
-      message: 'Wishlist items are saved to your account — not only on this device. Sign in or create an account to keep the pieces you love.',
+      message: 'Wishlist items are saved to your account, not only on this device. Sign in or create an account to keep the pieces you love.',
       icon: 'pi pi-heart',
       acceptLabel: 'Sign in',
       rejectLabel: 'Not now',

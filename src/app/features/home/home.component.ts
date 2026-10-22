@@ -6,14 +6,13 @@ import { Category, ProductListItem } from '../../core/models';
 import { CategoryService } from '../../core/services/category.service';
 import { ProductService } from '../../core/services/product.service';
 import { SeoService } from '../../core/services/seo.service';
-import { IMG, VIDEO } from '../../core/mock/image-catalog';
+import { DEMO_VIDEO, IMG } from '../../core/mock/image-catalog';
 import { CategoryMosaicComponent } from '../../shared/components/category-mosaic/category-mosaic.component';
-import { ProductGridComponent } from '../../shared/components/product-grid/product-grid.component';
-import { SectionHeaderComponent } from '../../shared/components/section-header/section-header.component';
-import { LoadingSkeletonComponent } from '../../shared/components/loading-skeleton/loading-skeleton.component';
 import { HeroTriptychComponent } from '../../shared/components/hero-triptych/hero-triptych.component';
 import { ServicesHelpComponent } from '../../shared/components/services-help/services-help.component';
 // import { CustomDesignFeatureComponent } from '../../shared/components/custom-design-feature/custom-design-feature.component';
+import { LookTile, ShopTheLookComponent } from '../../shared/components/shop-the-look/shop-the-look.component';
+import { HomeCollectionComponent } from '../../shared/components/home-collection/home-collection.component';
 import { RingJourneyComponent } from '../../shared/components/ring-journey/ring-journey.component';
 import { RevealDirective } from '../../shared/directives/reveal.directive';
 import { AppIconComponent } from '../../shared/icons/lvj-icons';
@@ -23,13 +22,12 @@ import { AppIconComponent } from '../../shared/icons/lvj-icons';
   imports: [
     RouterLink,
     CategoryMosaicComponent,
-    ProductGridComponent,
-    SectionHeaderComponent,
-    LoadingSkeletonComponent,
     HeroTriptychComponent,
     ServicesHelpComponent,
     // CustomDesignFeatureComponent,
     RingJourneyComponent,
+    ShopTheLookComponent,
+    HomeCollectionComponent,
     RevealDirective,
     AppIconComponent
   ],
@@ -42,14 +40,66 @@ export class HomeComponent implements OnInit {
   private readonly seo = inject(SeoService);
 
   readonly heroCategories = signal<Category[]>([]);
-  readonly featured = signal<ProductListItem[]>([]);
+  readonly bestSellers = signal<ProductListItem[]>([]);
   readonly arrivals = signal<ProductListItem[]>([]);
-  readonly loading = signal(true);
+  readonly bestLoading = signal(true);
+  readonly arrivalsLoading = signal(true);
 
-  readonly bannerLeft = IMG.elise.marquiseLabY;
-  readonly bannerRight = IMG.elise.tennis7ct;
-  readonly bannerLeftVideo = VIDEO.bannerRings;
-  readonly bannerRightVideo = VIDEO.bannerEveryday;
+  /** Video feature 1 — lab-grown bridal. */
+  readonly bridalTiles: LookTile[] = [
+    {
+      key: 'engagement',
+      kicker: 'Lab-grown',
+      title: 'Engagement rings',
+      cta: 'Shop lab-grown engagement rings',
+      path: '/ring',
+      queryParams: { subcategory: 'ring-lab-grown-engagement-ring' },
+      src: DEMO_VIDEO.ringOnHand.src,
+      srcSmall: DEMO_VIDEO.ringOnHand.srcSmall,
+      poster: DEMO_VIDEO.ringOnHand.poster,
+      thumb: '/images/hero/hero-ring-on-hand.webp',
+      thumbZoom: 1.6
+    },
+    {
+      key: 'bands',
+      kicker: 'Lab-grown',
+      title: 'Wedding bands',
+      cta: 'Shop lab-grown wedding bands',
+      path: '/ring',
+      queryParams: { subcategory: 'ring-lab-grown-wedding-band' },
+      src: DEMO_VIDEO.weddingBand.src,
+      thumb: '/images/hero/hero-eternity-band.webp',
+      thumbZoom: 1.3,
+      focus: '42% 50%'
+    }
+  ];
+
+  /** Video feature 2 — everyday + silver with 24k gold plating (mirrored layout). */
+  readonly everydayTiles: LookTile[] = [
+    {
+      key: 'everyday',
+      kicker: 'Everyday',
+      title: 'Everyday jewelry',
+      cta: 'Shop everyday jewelry',
+      path: '/shop',
+      src: DEMO_VIDEO.everydayRings.src,
+      srcSmall: DEMO_VIDEO.everydayRings.srcSmall,
+      thumb: IMG.catEarrings,
+      thumbZoom: 1.4,
+      focus: '60% 50%'
+    },
+    {
+      key: 'silver-gold',
+      kicker: 'Silver + 24k gold',
+      title: 'Gold-plated silver',
+      cta: 'Shop silver jewelry with 24k gold plating',
+      path: '/silver-jewelry-with-24k-gold-plating',
+      src: DEMO_VIDEO.goldBracelet.src,
+      srcSmall: DEMO_VIDEO.goldBracelet.srcSmall,
+      thumb: IMG.catSilver,
+      thumbZoom: 1.2
+    }
+  ];
 
   readonly occasionPicks = [
     {
@@ -94,14 +144,14 @@ export class HomeComponent implements OnInit {
     this.seo.set({
       title: 'Fine Jewelry & Custom Jewelry in Lincroft, NJ',
       description:
-        'Lincroft Village Jewelers — lab-grown and natural diamond rings, earrings, pendants, necklaces, and bracelets in Lincroft, New Jersey. Browse, save, and inquire.',
+        'Lab-grown and natural diamond rings, earrings, pendants, necklaces, and bracelets at Lincroft Village Jewelers in Lincroft, New Jersey. Browse, save, and inquire.',
       path: '/',
       jsonLd: {
         '@context': 'https://schema.org',
         '@type': 'WebPage',
         name: 'Lincroft Village Jewelers',
         description:
-          'Fine jewelry atelier in Lincroft, New Jersey offering lab-grown and natural diamond jewelry and custom design.',
+          'Fine jewelry store in Lincroft, New Jersey offering lab-grown and natural diamond jewelry and custom design.',
         url: this.seo.absoluteUrl('/'),
         isPartOf: { '@id': `${this.seo.siteUrl}/#website` },
         about: { '@id': `${this.seo.siteUrl}/#store` }
@@ -120,10 +170,20 @@ export class HomeComponent implements OnInit {
       );
     });
 
-    this.productsApi.list({ featured: true, pageSize: 8, sort: 'featured' }).subscribe(res => {
-      this.featured.set(res.data);
-      this.loading.set(false);
+    // Home shows four pieces per collection, chosen in Admin → Products (flags).
+    this.productsApi.list({ bestSeller: true, pageSize: 4, sort: 'featured' }).subscribe({
+      next: res => {
+        this.bestSellers.set(res.data);
+        this.bestLoading.set(false);
+      },
+      error: () => this.bestLoading.set(false)
     });
-    this.productsApi.list({ newArrival: true, pageSize: 8, sort: 'newest' }).subscribe(res => this.arrivals.set(res.data));
+    this.productsApi.list({ newArrival: true, pageSize: 4, sort: 'newest' }).subscribe({
+      next: res => {
+        this.arrivals.set(res.data);
+        this.arrivalsLoading.set(false);
+      },
+      error: () => this.arrivalsLoading.set(false)
+    });
   }
 }

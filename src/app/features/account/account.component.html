@@ -10,7 +10,7 @@
           <div class="chips">
             <span>{{ customer.user()?.provider === 'google' ? 'Google account' : 'Email account' }}</span>
             @if (customer.user()?.role === 'admin' || customer.user()?.role === 'staff') {
-              <span class="staff">Atelier {{ customer.user()?.role }}</span>
+              <span class="staff">Store {{ customer.user()?.role }}</span>
             }
           </div>
         </div>
@@ -46,25 +46,29 @@
         <div class="visual-scrim"></div>
         <div class="visual-copy">
           <p class="eyebrow light">Lincroft Village Jewelers</p>
-          <h1>{{ mode() === 'login' ? 'Welcome back' : 'Join the atelier' }}</h1>
+          <h1>{{ mode() === 'login' ? 'Welcome back' : 'Join us' }}</h1>
           <p>
             {{ mode() === 'login'
               ? 'Sign in to save wishlist items to your account and pick up inquiries from any device.'
               : 'Create an account to save pieces you love and continue custom design conversations.' }}
           </p>
           <ul class="perks">
-            <li>Wishlist saved to your account</li>
-            <li>Inquiry bag ready when you return</li>
-            <li>Private consultation booking</li>
+            <li><span class="tick" aria-hidden="true"><app-icon name="check" [size]="12" [strokeWidth]="2.2"></app-icon></span>Wishlist saved to your account</li>
+            <li><span class="tick" aria-hidden="true"><app-icon name="check" [size]="12" [strokeWidth]="2.2"></app-icon></span>Inquiry bag ready when you return</li>
+            <li><span class="tick" aria-hidden="true"><app-icon name="check" [size]="12" [strokeWidth]="2.2"></app-icon></span>Private consultation booking</li>
           </ul>
         </div>
       </aside>
 
       <div class="form-col">
-        <div class="mobile-intro">
-          <p class="eyebrow">Account</p>
-          <h2>{{ mode() === 'login' ? 'Welcome back' : 'Create your account' }}</h2>
-          <p>Save wishlist items to your account and keep inquiry pieces with you.</p>
+        <div class="form-head">
+          <p class="eyebrow">Your account</p>
+          <h2>{{ mode() === 'login' ? 'Sign in' : 'Create your account' }}</h2>
+          <p>
+            {{ mode() === 'login'
+              ? 'Welcome back. Pick up your wishlist and inquiries where you left off.'
+              : 'Save the pieces you love and keep custom design conversations in one place.' }}
+          </p>
         </div>
 
         <div class="auth-card">
@@ -268,6 +272,16 @@
               </button>
             </form>
           }
+
+          <p class="switch">
+            @if (mode() === 'login') {
+              New to Lincroft Village Jewelers?
+              <button type="button" (click)="setMode('register')">Create an account</button>
+            } @else {
+              Already have an account?
+              <button type="button" (click)="setMode('login')">Sign in</button>
+            }
+          </p>
         </div>
       </div>
     </div>

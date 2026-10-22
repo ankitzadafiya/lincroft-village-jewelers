@@ -60,7 +60,7 @@ export class FooterComponent {
       return {
         day: h.day,
         short: h.day.slice(0, 3),
-        label: closed ? 'Closed' : h.hours.replace(/\s*-\s*/, ' – '),
+        label: closed ? 'Closed' : h.hours.replace(/\s*-\s*/, ' to '),
         closed,
         today: h.day.toLowerCase() === this.storeNow.day.toLowerCase()
       };

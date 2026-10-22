@@ -113,6 +113,39 @@ export const VIDEO = {
   bannerEveryday: '/videos/banner-everyday.mp4'
 };
 
+/**
+ * DEMO ONLY — free-licence clips from Pexels (pexels.com/license: free for
+ * commercial use, no attribution required). Shown on the home "Shop the look"
+ * section until the store supplies its own product videos. Credits:
+ *  - 9431543 "A woman wearing an engagement ring" — Anna Pou
+ *  - 10283802 "A person wearing gold bracelet" — cottonbro studio
+ *  - 36189561 "Elegant wooden surface with rotating wedding rings" — Agung Pandit Wiguna
+ *  - 9431064 "A female model posing with rings on her fingers" — cottonbro studio
+ */
+export const DEMO_VIDEO = {
+  ringOnHand: {
+    src: 'https://videos.pexels.com/video-files/9431543/9431543-hd_720_1280_24fps.mp4',
+    srcSmall: 'https://videos.pexels.com/video-files/9431543/9431543-sd_540_960_24fps.mp4',
+    poster: 'https://images.pexels.com/videos/9431543/adult-barefoot-bride-child-9431543.jpeg?auto=compress&cs=tinysrgb&w=720'
+  },
+  goldBracelet: {
+    src: 'https://videos.pexels.com/video-files/10283802/10283802-hd_720_1366_25fps.mp4#t=3',
+    srcSmall: 'https://videos.pexels.com/video-files/10283802/10283802-sd_506_960_25fps.mp4#t=3',
+    /* first frame is an empty grey background, so start at 3s and use that frame */
+    poster: ''
+  },
+  weddingBand: {
+    src: 'https://videos.pexels.com/video-files/36189561/15348102_1920_1080_24fps.mp4',
+    srcSmall: 'https://videos.pexels.com/video-files/36189561/15348102_1920_1080_24fps.mp4',
+    poster: ''
+  },
+  everydayRings: {
+    src: 'https://videos.pexels.com/video-files/9431064/9431064-hd_720_1366_25fps.mp4#t=4',
+    srcSmall: 'https://videos.pexels.com/video-files/9431064/9431064-sd_506_960_25fps.mp4#t=4',
+    poster: ''
+  }
+};
+
 export function thumb(url: string): string {
   if (url.includes('etsystatic.com')) {
     return url

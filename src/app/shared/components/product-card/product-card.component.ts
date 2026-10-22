@@ -27,6 +27,8 @@ interface CardBadge {
 })
 export class ProductCardComponent {
   readonly product = input.required<ProductListItem>();
+  /** 'dark' = white text, for cards placed on a navy panel. */
+  readonly tone = input<'light' | 'dark'>('light');
   readonly config = inject(ConfigurationService);
   private readonly inquiry = inject(InquiryService);
   private readonly toast = inject(ToastService);

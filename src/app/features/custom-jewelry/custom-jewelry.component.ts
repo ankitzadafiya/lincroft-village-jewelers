@@ -58,7 +58,7 @@ export class CustomJewelryComponent {
     seo.set({
       title: 'Custom Jewelry Design',
       description:
-        'Commission a custom piece with Lincroft Village Jewelers in Lincroft, NJ — from heirloom reset to an entirely new design.',
+        'Create a custom piece with Lincroft Village Jewelers in Lincroft, NJ, from resetting an heirloom to a completely new design.',
       path: '/custom-jewelry',
       jsonLd: {
         '@context': 'https://schema.org',
