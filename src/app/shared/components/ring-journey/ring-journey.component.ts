@@ -6,6 +6,7 @@ import {
   NgZone,
   OnDestroy,
   inject,
+  input,
   signal,
   viewChild
 } from '@angular/core';
@@ -43,6 +44,12 @@ const easeOut = (t: number) => 1 - Math.pow(1 - t, 3);
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RingJourneyComponent implements AfterViewInit, OnDestroy {
+  /** On the Custom jewelry page the heading is the page H1 and the second
+   *  action scrolls to the request form instead of linking to the page. */
+  readonly pageMode = input(false);
+  /** Element id the page-mode action scrolls to. */
+  readonly formAnchor = input('request');
+
   private readonly host = inject(ElementRef<HTMLElement>);
   private readonly zone = inject(NgZone);
 
@@ -173,5 +180,13 @@ export class RingJourneyComponent implements AfterViewInit, OnDestroy {
         this.done.set(finished);
       });
     }
+  }
+
+  scrollToForm(): void {
+    const target = document.getElementById(this.formAnchor());
+    if (!target) return;
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    target.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+    (target.querySelector('input, textarea, select') as HTMLElement | null)?.focus({ preventScroll: true });
   }
 }

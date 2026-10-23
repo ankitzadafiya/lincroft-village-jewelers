@@ -42,55 +42,63 @@
   100% { opacity: 0; transform: scale(0); }
 }
 
-/* ── 1 · Repair & cleaning ───────────────────────── */
+/* ── 1 · Repair & cleaning ───────────────────────
+   0–45%: pliers tighten a prong (click spark)
+   50–90%: cloth polishes, the ring goes from dull to bright */
 .scene-repair {
-  .brush {
-    animation: scrub calc(var(--d) / 8) ease-in-out infinite alternate;
+  .rp-arm {
+    transform-box: view-box;
+    transform-origin: 38px 32px;
+    animation: rp-arm var(--d) ease-in-out infinite;
   }
 
-  .ring {
-    animation: bob var(--d) ease-in-out infinite;
-  }
+  .rp-pliers { animation: rp-pliers var(--d) linear infinite; }
+  .rp-cloth { opacity: 0; animation: rp-cloth var(--d) linear infinite; }
+  .rp-dull { animation: rp-dull var(--d) ease-in-out infinite; }
 
-  .flash {
-    opacity: 0;
-    animation: flash var(--d) ease-in-out infinite;
-  }
-
-  .bub {
-    opacity: 0;
-    animation: rise calc(var(--d) / 2) ease-out infinite;
-  }
-
-  .b2 { animation-delay: calc(var(--d) * 0.12); }
-  .b3 { animation-delay: calc(var(--d) * 0.25); }
-  .b4 { animation-delay: calc(var(--d) * 0.37); }
-
-  .k1 { animation-delay: calc(var(--d) * 0.3); }
-  .k2 { animation-delay: calc(var(--d) * 0.55); }
-  .k3 { animation-delay: calc(var(--d) * 0.78); }
+  .k1 { animation-delay: calc(var(--d) * 0.24); }
+  .k2 { animation-delay: calc(var(--d) * 0.8); }
+  .k3 { animation-delay: calc(var(--d) * 0.86); }
+  .k4 { animation-delay: calc(var(--d) * 0.9); }
 }
 
-@keyframes scrub {
-  from { transform: translate(6px, -4px); }
-  to { transform: translate(-28px, 10px); }
+@keyframes rp-arm {
+  0% { transform: rotate(10deg); }
+  14% { transform: rotate(0deg); }
+  22% { transform: rotate(-3deg); }
+  28% { transform: rotate(1deg); }
+  36% { transform: rotate(-2deg); }
+  44% { transform: rotate(8deg); }
+  52% { transform: rotate(0deg); }
+  58% { transform: rotate(-5deg); }
+  64% { transform: rotate(3deg); }
+  70% { transform: rotate(-5deg); }
+  76% { transform: rotate(3deg); }
+  82% { transform: rotate(-4deg); }
+  88% { transform: rotate(2deg); }
+  100% { transform: rotate(10deg); }
 }
 
-@keyframes bob {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-3px); }
+@keyframes rp-pliers {
+  0%, 45% { opacity: 1; }
+  47%, 100% { opacity: 0; }
+}
+
+@keyframes rp-cloth {
+  0%, 46% { opacity: 0; }
+  50%, 95% { opacity: 1; }
+  99%, 100% { opacity: 0; }
+}
+
+@keyframes rp-dull {
+  0%, 50% { opacity: 1; }
+  88%, 100% { opacity: 0; }
 }
 
 @keyframes flash {
   0%, 40% { opacity: 0; }
   50% { opacity: 1; }
   62%, 100% { opacity: 0; }
-}
-
-@keyframes rise {
-  0% { opacity: 0; transform: translateY(0) scale(0.6); }
-  20% { opacity: 0.9; }
-  100% { opacity: 0; transform: translateY(-48px) scale(1.1); }
 }
 
 /* ── 2 · We buy gold ─────────────────────────────── */
@@ -507,6 +515,8 @@
   }
 
   .spark,
+  .rp-pliers,
+  .rp-dull,
   .bub,
   .flash,
   .shimmer,
@@ -520,6 +530,7 @@
   }
 
   .new,
+  .rp-cloth,
   .coin,
   .treasure {
     opacity: 1 !important;

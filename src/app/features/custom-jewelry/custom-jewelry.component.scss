@@ -1,75 +1,161 @@
 @use 'mixins' as *;
 
-.intro {
-  padding-top: 2rem;
-  border-bottom: 1px solid var(--lvj-line);
+/* Custom jewelry page
+   1 · ring story (shared with the home page, navy)
+   2 · request form (soft blue panel)
+   Type follows the rest of the site: serif headings, Outfit for everything else. */
+
+/* ── Shared bits ─────────────────────────────────── */
+.cj-kicker {
+  margin: 0 0 0.7rem;
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--lvj-accent);
 }
 
-.intro-grid {
-  display: grid;
-  gap: 2rem;
+.cj-btn {
+  display: inline-flex;
   align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  min-height: 48px;
+  padding: 0.85rem 1.6rem;
+  border: 1px solid var(--lvj-navy);
+  border-radius: 0;
+  background: var(--lvj-navy);
+  color: #fff;
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+
+  &:hover,
+  &:focus-visible {
+    background: var(--lvj-jewel-soft);
+    border-color: var(--lvj-jewel-soft);
+  }
 }
 
-.intro-copy {
+.cj-btn-ghost {
+  background: transparent;
+  color: var(--lvj-navy);
+  border-color: var(--lvj-line-strong);
+
+  &:hover,
+  &:focus-visible {
+    background: var(--lvj-navy);
+    border-color: var(--lvj-navy);
+    color: #fff;
+  }
+}
+
+/* ── 2 · Request ─────────────────────────────────── */
+.cj-request {
+  padding: clamp(4rem, 8vw, 7rem) 0;
+  background: var(--lvj-ivory);
+  border-top: 1px solid var(--lvj-line);
+  scroll-margin-top: calc(var(--lvj-header-offset, 0px) + 1rem);
+}
+
+.cj-head {
+  text-align: center;
+  margin-bottom: clamp(2.2rem, 4vw, 3.5rem);
+
+  h2 {
+    margin: 0;
+    font-family: var(--font-logo-serif);
+    font-weight: 600;
+    font-size: clamp(2rem, 3.2vw, 2.8rem);
+    letter-spacing: -0.005em;
+    line-height: 1.05;
+    color: var(--lvj-ink);
+  }
+}
+
+.cj-layout {
   display: grid;
-  gap: 0.85rem;
-  justify-items: start;
-}
-
-.intro-copy h1 {
-  font-family: var(--font-logo-serif);
-  font-style: normal;
-  font-size: clamp(2.3rem, 4.6vw, 3.33rem);
-  font-weight: 600;
-  letter-spacing: -0.005em;
-  max-width: 14ch;
-  line-height: 1.12;
-}
-
-.intro-copy > p {
-  color: var(--lvj-muted);
-  max-width: 42ch;
-  line-height: 1.65;
-}
-
-.layout {
-  display: grid;
-  gap: 2.5rem;
+  gap: clamp(2rem, 4vw, 3.5rem);
   align-items: start;
 }
 
-.process h2 {
+.cj-process {
+  h3 {
+    margin: 0 0 1.4rem;
+    font-family: var(--font-logo-serif);
+    font-weight: 600;
+    font-size: clamp(1.5rem, 2vw, 1.85rem);
+    color: var(--lvj-ink);
+  }
+
+  ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+  }
+
+  li {
+    display: grid;
+    grid-template-columns: 2.6rem 1fr;
+    gap: 1rem;
+    padding: 1.15rem 0;
+    border-top: 1px solid var(--lvj-line);
+
+    &:last-child { border-bottom: 1px solid var(--lvj-line); }
+  }
+}
+
+.cj-num {
   font-family: var(--font-logo-serif);
-  font-style: normal;
-  font-size: clamp(1.67rem, 2.53vw, 2.13rem);
+  font-size: 1.35rem;
   font-weight: 600;
-  letter-spacing: -0.005em;
+  line-height: 1.2;
+  color: var(--lvj-accent);
 }
 
-ol {
+.cj-step {
   display: grid;
-  gap: 1rem;
-  margin: 1.2rem 0 1.5rem;
+  gap: 0.3rem;
+
+  strong {
+    font-family: var(--font-body);
+    font-size: 0.98rem;
+    font-weight: 500;
+    color: var(--lvj-ink);
+  }
+
+  span {
+    color: var(--lvj-muted);
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
 }
 
-li {
+.cj-reach {
+  margin: 1.8rem 0 0.8rem;
   color: var(--lvj-muted);
+  font-size: 0.9rem;
 }
 
-li strong {
-  display: block;
-  color: var(--lvj-charcoal);
-  font-family: var(--font-body);
-  font-size: 0.92rem;
-  font-weight: 600;
+.cj-contact {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
 }
 
-.request {
+.cj-form {
   background: var(--lvj-white);
   border: 1px solid var(--lvj-line);
   border-radius: var(--lvj-radius);
-  padding: 1.35rem 1.25rem 1.4rem;
+  box-shadow: var(--lvj-shadow-soft);
+  padding: clamp(1.4rem, 3vw, 2.4rem);
 }
 
 .hint {
@@ -136,26 +222,16 @@ li strong {
 }
 
 .form-actions {
-  margin-top: 1.5rem;
-}
+  margin-top: 1.75rem;
 
-.form-actions .btn {
-  min-width: min(100%, 280px);
+  .cj-btn {
+    min-width: min(100%, 280px);
+  }
 }
 
 @include mq(lg) {
-  .intro-grid {
-    grid-template-columns: 1.05fr 0.95fr;
-    gap: 3.5rem;
-  }
-
-  .layout {
-    grid-template-columns: 0.85fr 1.15fr;
-    gap: 3rem;
-  }
-
-  .request {
-    padding: 1.6rem 1.5rem 1.55rem;
+  .cj-layout {
+    grid-template-columns: 0.8fr 1.2fr;
   }
 }
 
@@ -164,11 +240,9 @@ li strong {
     grid-template-columns: 1fr;
   }
 
-  .url-row .btn {
-    width: 100%;
-  }
-
-  .form-actions .btn {
+  .url-row .btn,
+  .form-actions .cj-btn,
+  .cj-contact .cj-btn {
     width: 100%;
   }
 }

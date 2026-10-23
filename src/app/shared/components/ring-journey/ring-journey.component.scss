@@ -56,6 +56,7 @@
     color: #9fc0e6;
   }
 
+  h1,
   h2 {
     margin: 0 auto;
     max-width: none;
@@ -372,6 +373,11 @@ h2 {
 }
 
 .rj-link {
+  background: none;
+  border: 0;
+  border-radius: 0;
+  cursor: pointer;
+  font-family: var(--font-body);
   font-size: 0.72rem;
   font-weight: 500;
   letter-spacing: 0.16em;
@@ -379,6 +385,9 @@ h2 {
   color: #fff;
   padding-bottom: 3px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.45);
+  padding-left: 0;
+  padding-right: 0;
+  padding-top: 0;
   transition: border-color 0.3s ease;
 
   &:hover { border-bottom-color: #fff; }

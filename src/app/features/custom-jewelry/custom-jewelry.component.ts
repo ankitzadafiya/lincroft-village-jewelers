@@ -1,29 +1,31 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { RouterLink } from '@angular/router';
 import { SelectModule } from 'primeng/select';
 import { ConfigurationService } from '../../core/services/configuration.service';
 import { ContentService } from '../../core/services/content.service';
 import { SeoService } from '../../core/services/seo.service';
 import { ToastService } from '../../core/services/toast.service';
 import { buildMailto, buildWhatsAppUrl } from '../../core/utils/slug';
-import { IMG } from '../../core/mock/image-catalog';
-import { ImageCompareComponent } from '../../shared/components/image-compare/image-compare.component';
+import { RingJourneyComponent } from '../../shared/components/ring-journey/ring-journey.component';
 
 @Component({
   selector: 'app-custom-jewelry',
-  imports: [ReactiveFormsModule, RouterLink, ImageCompareComponent, SelectModule],
+  imports: [ReactiveFormsModule, SelectModule, RingJourneyComponent],
   templateUrl: './custom-jewelry.component.html',
   styleUrl: './custom-jewelry.component.scss'
 })
 export class CustomJewelryComponent {
-  readonly sketch = IMG.customSketch;
-  readonly finished = IMG.customAfter;
   readonly config = inject(ConfigurationService);
   private readonly content = inject(ContentService);
   private readonly toast = inject(ToastService);
   private readonly fb = inject(FormBuilder);
   readonly referenceUrls = signal<string[]>(['']);
+
+  readonly process = [
+    { n: '01', title: 'Share your idea', text: 'Send sketches, photos or the stone you would like to use.' },
+    { n: '02', title: 'CAD and quote', text: 'We send a CAD file, a 3D rendering and a price for the metal and diamonds.' },
+    { n: '03', title: 'We make it', text: 'Once you approve, we print the wax model, cast it in gold, set the stones and polish.' }
+  ];
 
   readonly jewelryTypeOptions = [
     { label: 'Engagement ring', value: 'Engagement ring' },

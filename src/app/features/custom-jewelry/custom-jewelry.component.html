@@ -1,38 +1,40 @@
-<section class="intro section">
-  <div class="container intro-grid">
-    <app-image-compare
-      [beforeSrc]="sketch"
-      [afterSrc]="finished"
-      beforeAlt="Engagement ring design sketch"
-      afterAlt="Finished diamond engagement ring" />
-    <div class="intro-copy">
-      <p class="eyebrow">Custom Jewelry Design</p>
-      <h1>If you can dream it, we can build it.</h1>
-      <p>Drag the slider to see how a sketch becomes a finished piece. Share your idea below and we will guide the next steps.</p>
-      <a routerLink="/contact" class="btn">Book an Appointment</a>
-    </div>
-  </div>
-</section>
+<!-- 1 · The ring story: sketch, CAD and wax model, casting, setting (page title lives here) -->
+<app-ring-journey [pageMode]="true" formAnchor="request" />
 
-<section class="section container layout">
-  <aside class="process">
-    <h2>How it works</h2>
-    <ol>
-      <li><strong>01 · Begin</strong> Share the idea, the stone, or the heirloom.</li>
-      <li><strong>02 · Draw</strong> We refine metal, proportion, and budget together.</li>
-      <li><strong>03 · Make</strong> You approve the design before it is finished.</li>
-    </ol>
-    <div class="btn-row">
-      <a class="btn btn-ghost btn-sm" [href]="whatsapp()" target="_blank" rel="noreferrer">WhatsApp</a>
-      <a class="btn btn-ghost btn-sm" [href]="emailHref()">Email</a>
-    </div>
-  </aside>
+<!-- 2 · Request form -->
+<section class="cj-request" id="request" aria-labelledby="cj-request-title">
+  <div class="container">
+    <header class="cj-head">
+      <p class="cj-kicker">Tell us your idea</p>
+      <h2 id="cj-request-title">Start your custom piece</h2>
+    </header>
 
-  <form class="request" [formGroup]="form" (ngSubmit)="submit()">
+    <div class="cj-layout">
+      <aside class="cj-process">
+        <h3>How it works</h3>
+        <ol>
+          @for (s of process; track s.n) {
+            <li>
+              <span class="cj-num">{{ s.n }}</span>
+              <span class="cj-step">
+                <strong>{{ s.title }}</strong>
+                <span>{{ s.text }}</span>
+              </span>
+            </li>
+          }
+        </ol>
+        <p class="cj-reach">Prefer to talk it through?</p>
+        <div class="cj-contact">
+          <a class="cj-btn cj-btn-ghost" [href]="whatsapp()" target="_blank" rel="noreferrer">WhatsApp</a>
+          <a class="cj-btn cj-btn-ghost" [href]="emailHref()">Email</a>
+        </div>
+      </aside>
+
+      <form class="cj-form" [formGroup]="form" (ngSubmit)="submit()">
     <div class="form-grid">
-      <div class="field"><label>Name</label><input formControlName="name" /></div>
-      <div class="field"><label>Email</label><input formControlName="email" /></div>
-      <div class="field"><label>Phone</label><input formControlName="phone" /></div>
+      <div class="field"><label for="cj-name">Name</label><input id="cj-name" formControlName="name" autocomplete="name" /></div>
+      <div class="field"><label for="cj-email">Email</label><input id="cj-email" type="email" formControlName="email" autocomplete="email" /></div>
+      <div class="field"><label for="cj-phone">Phone</label><input id="cj-phone" type="tel" formControlName="phone" autocomplete="tel" /></div>
         <div class="field">
           <label>Jewelry type</label>
           <p-select
@@ -57,7 +59,7 @@
         </div>
       <div class="field"><label>Gemstone / diamond</label><input formControlName="gemstone" placeholder="Optional" /></div>
       <div class="field"><label>Budget</label><input formControlName="budget" placeholder="Optional" /></div>
-      <div class="field full"><label>Describe the piece</label><textarea formControlName="description"></textarea></div>
+      <div class="field full"><label for="cj-desc">Describe the piece</label><textarea id="cj-desc" formControlName="description" rows="5"></textarea></div>
       <div class="field full refs">
         <label>Reference image URLs</label>
         <p class="hint">Paste public photo links (Instagram, Pinterest, Google Drive, etc.).</p>
@@ -83,7 +85,9 @@
       </div>
     </div>
     <div class="form-actions">
-      <button class="btn" type="submit">Request a custom design</button>
+      <button class="cj-btn" type="submit">Request a custom design</button>
     </div>
   </form>
+    </div>
+  </div>
 </section>

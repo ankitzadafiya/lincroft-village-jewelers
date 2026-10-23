@@ -2,7 +2,11 @@
   <!-- Centred section heading (scrolls away before the story pins) -->
   <header class="rj-head container">
     <p class="rj-kicker">Custom jewelry design</p>
-    <h2 id="rj-title">If you can dream it, we can build it</h2>
+    @if (pageMode()) {
+      <h1 id="rj-title">If you can dream it, we can build it</h1>
+    } @else {
+      <h2 id="rj-title">If you can dream it, we can build it</h2>
+    }
   </header>
 
   <div class="rj-track" #track>
@@ -34,7 +38,11 @@
               Book your consultation
               <app-icon name="arrow-right" [size]="15" [strokeWidth]="1.5"></app-icon>
             </a>
-            <a routerLink="/custom-jewelry" class="rj-link">Start a custom piece</a>
+            @if (pageMode()) {
+              <button type="button" class="rj-link" (click)="scrollToForm()">Start your request</button>
+            } @else {
+              <a routerLink="/custom-jewelry" class="rj-link">Start a custom piece</a>
+            }
           </div>
         </div>
 
