@@ -180,7 +180,7 @@ export class HomeComponent implements OnInit {
     });
     this.productsApi.list({ newArrival: true, pageSize: 4, sort: 'newest' }).subscribe({
       next: res => {
-        this.arrivals.set(withDemoImages(res.data, 1));
+        this.arrivals.set(withDemoImages(res.data));
         this.arrivalsLoading.set(false);
       },
       error: () => this.arrivalsLoading.set(false)

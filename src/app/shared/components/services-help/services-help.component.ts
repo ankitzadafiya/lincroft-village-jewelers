@@ -600,8 +600,10 @@ export class ServicesHelpComponent implements OnInit, OnDestroy {
   private seen = false;
   /** Set by the pause button; hover never resumes it. */
   private userStopped = false;
-  /** Hover-to-pause turns off once the visitor explicitly presses play. */
-  private hoverPause = true;
+  /** Hover no longer pauses: the story plays by itself as soon as it is on
+   *  screen (the cursor often rests on it while scrolling). Only the pause
+   *  button stops it. */
+  private hoverPause = false;
   private observer?: IntersectionObserver;
 
   ngOnInit(): void {
@@ -721,7 +723,7 @@ export class ServicesHelpComponent implements OnInit, OnDestroy {
         if (this.visible) this.startCycle();
         else this.clear();
       },
-      { rootMargin: '0px', threshold: 0.35 }
+      { rootMargin: '0px', threshold: 0.2 }
     );
     this.observer.observe(this.host.nativeElement);
   }
