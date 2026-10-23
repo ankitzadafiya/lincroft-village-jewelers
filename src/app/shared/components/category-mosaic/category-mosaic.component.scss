@@ -172,10 +172,9 @@
   gap: 0.85rem;
   max-width: calc(100% - 2 * clamp(12px, 1.2vw, 20px));
   padding: 0.45rem 0.45rem 0.45rem 0.85rem;
-  background: rgba(255, 255, 255, 0.5);
+  /* solid tint instead of backdrop blur: blur re-renders on every scroll frame */
+  background: rgba(255, 255, 255, 0.82);
   border: 1px solid rgba(255, 255, 255, 0.6);
-  backdrop-filter: blur(8px) saturate(1.2);
-  -webkit-backdrop-filter: blur(8px) saturate(1.2);
   color: var(--lvj-ink);
   transition:
     background 0.4s ease,

@@ -1,4 +1,4 @@
-import { Component, HostListener, signal } from '@angular/core';
+import { Component, NgZone, OnDestroy, inject, signal } from '@angular/core';
 import { AppIconComponent } from '../../icons/lvj-icons';
 
 @Component({
@@ -41,12 +41,23 @@ import { AppIconComponent } from '../../icons/lvj-icons';
     }
   `]
 })
-export class ScrollTopComponent {
+export class ScrollTopComponent implements OnDestroy {
   readonly visible = signal(false);
 
-  @HostListener('window:scroll')
-  onScroll(): void {
-    this.visible.set(window.scrollY > 480);
+  /** Passive listener outside Angular; only touches the signal when it flips. */
+  private readonly onScroll = () => {
+    const show = window.scrollY > 480;
+    if (show !== this.visible()) this.visible.set(show);
+  };
+
+  constructor() {
+    inject(NgZone).runOutsideAngular(() =>
+      window.addEventListener('scroll', this.onScroll, { passive: true })
+    );
+  }
+
+  ngOnDestroy(): void {
+    window.removeEventListener('scroll', this.onScroll);
   }
 
   go(): void {

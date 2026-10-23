@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener, OnDestroy, OnInit, inject, signal } from '@angular/core';
+import { Component, ElementRef, HostListener, NgZone, OnDestroy, OnInit, inject, signal } from '@angular/core';
 import { NavigationEnd, Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, filter } from 'rxjs';
@@ -79,7 +79,22 @@ export class HeaderComponent implements OnInit, OnDestroy {
   readonly searching = signal(false);
   readonly query = new FormControl('', { nonNullable: true });
 
+  private readonly zone = inject(NgZone);
+  private scrollTicking = false;
+  /** Scroll work runs outside Angular, at most once per frame. */
+  private readonly onScrollEvent = () => {
+    if (this.scrollTicking) return;
+    this.scrollTicking = true;
+    requestAnimationFrame(() => {
+      this.scrollTicking = false;
+      this.onScroll();
+    });
+  };
+
   ngOnInit(): void {
+    this.zone.runOutsideAngular(() =>
+      window.addEventListener('scroll', this.onScrollEvent, { passive: true })
+    );
     this.categoriesApi.list().subscribe(list => this.categories.set(list));
     this.query.valueChanges.pipe(debounceTime(280), distinctUntilChanged()).subscribe(value => {
       const q = value.trim();
@@ -106,6 +121,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    window.removeEventListener('scroll', this.onScrollEvent);
     this.clearTimers();
   }
 
@@ -202,7 +218,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
     return `https://maps.google.com/?q=${q}`;
   }
 
-  @HostListener('window:scroll')
   onScroll(): void {
     const y = window.scrollY;
     const delta = y - this.lastY;
@@ -214,9 +229,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
       this.setHidden(false);
     }
     if (Math.abs(delta) > 6 || y < 140) this.lastY = y;
-    this.compact.set(y > 24);
+    if (this.compact() !== y > 24) this.compact.set(y > 24);
+    // progress line: written straight to the element (no change detection per frame)
     const max = document.documentElement.scrollHeight - window.innerHeight;
-    this.progress.set(max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0);
+    const p = max > 0 ? Math.min(1, Math.max(0, y / max)) : 0;
+    this.line ??= (this.host.nativeElement as HTMLElement).querySelector<HTMLElement>('.scroll-line');
+    if (this.line) this.line.style.transform = `scaleX(${p.toFixed(4)})`;
   }
 
   /** Also publishes --lvj-header-offset so other sticky bars follow the header. */
@@ -231,4 +249,5 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   private lastOffsetSet = false;
+  private line: HTMLElement | null = null;
 }

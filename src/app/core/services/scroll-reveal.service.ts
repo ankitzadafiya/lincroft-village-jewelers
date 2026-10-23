@@ -2,8 +2,8 @@ import { Injectable, NgZone, inject } from '@angular/core';
 
 /** What gets a subtle reveal. Kept short on purpose — minimal motion. */
 const TARGETS = [
-  'main section',
-  'main .page-hero',
+  // whole sections are no longer animated: moving very large blocks while
+  // scrolling made the page feel heavy. Only small elements fade in.
   'app-product-card',
   'app-footer .cols > *'
 ].join(',');

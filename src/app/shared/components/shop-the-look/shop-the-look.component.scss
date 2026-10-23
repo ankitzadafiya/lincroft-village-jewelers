@@ -197,9 +197,8 @@ h2 {
   align-items: center;
   gap: 0.9rem;
   padding: 0.75rem 0.9rem 0.75rem 0.75rem;
-  background: rgba(var(--lvj-overlay), 0.42);
-  backdrop-filter: blur(10px) saturate(1.2);
-  -webkit-backdrop-filter: blur(10px) saturate(1.2);
+  /* gradient tint instead of backdrop blur over a playing video (very costly) */
+  background: linear-gradient(180deg, rgba(var(--lvj-overlay), 0.55), rgba(var(--lvj-overlay), 0.78));
   border-top: 1px solid rgba(255, 255, 255, 0.14);
   color: #fff;
 }
