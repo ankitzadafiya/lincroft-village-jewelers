@@ -18,6 +18,7 @@ interface FilterChip {
   label: string;
 }
 
+import { withDemoImages } from '../../core/mock/demo-product-images';
 @Component({
   selector: 'app-catalog',
   imports: [
@@ -213,7 +214,8 @@ export class CatalogComponent implements OnInit {
     this.loading.set(true);
     this.productsApi.list(this.query()).subscribe({
       next: res => {
-        this.products.set(res.data);
+        const q = this.query();
+        this.products.set(q.bestSeller || q.newArrival ? withDemoImages(res.data) : res.data);
         this.total.set(res.total);
         this.loading.set(false);
       },

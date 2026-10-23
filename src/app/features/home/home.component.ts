@@ -17,6 +17,7 @@ import { RingJourneyComponent } from '../../shared/components/ring-journey/ring-
 import { RevealDirective } from '../../shared/directives/reveal.directive';
 import { AppIconComponent } from '../../shared/icons/lvj-icons';
 
+import { withDemoImages } from '../../core/mock/demo-product-images';
 @Component({
   selector: 'app-home',
   imports: [
@@ -57,8 +58,8 @@ export class HomeComponent implements OnInit {
       src: DEMO_VIDEO.ringOnHand.src,
       srcSmall: DEMO_VIDEO.ringOnHand.srcSmall,
       poster: DEMO_VIDEO.ringOnHand.poster,
-      thumb: '/images/hero/hero-ring-on-hand.webp',
-      thumbZoom: 1.6
+      thumb: '/images/jewelry/engagement-ring-side.webp',
+      thumbZoom: 1.25
     },
     {
       key: 'bands',
@@ -68,9 +69,8 @@ export class HomeComponent implements OnInit {
       path: '/ring',
       queryParams: { subcategory: 'ring-lab-grown-wedding-band' },
       src: DEMO_VIDEO.weddingBand.src,
-      thumb: '/images/hero/hero-eternity-band.webp',
-      thumbZoom: 1.3,
-      focus: '42% 50%'
+      thumb: '/images/jewelry/twist-band-side.webp',
+      thumbZoom: 1.25
     }
   ];
 
@@ -106,7 +106,7 @@ export class HomeComponent implements OnInit {
       label: 'Lab-Grown tennis bracelet',
       hint: 'Tennis bracelet',
       alt: 'Lab-grown diamond tennis bracelet',
-      image: IMG.bracelet2,
+      image: '/images/jewelry/tennis-bracelet.webp',
       imagePosition: 'center',
       route: '/bracelet',
       subcategory: 'bracelet-lab-grown-diamond-tennis-bracelet'
@@ -173,14 +173,14 @@ export class HomeComponent implements OnInit {
     // Home shows four pieces per collection, chosen in Admin → Products (flags).
     this.productsApi.list({ bestSeller: true, pageSize: 4, sort: 'featured' }).subscribe({
       next: res => {
-        this.bestSellers.set(res.data);
+        this.bestSellers.set(withDemoImages(res.data));
         this.bestLoading.set(false);
       },
       error: () => this.bestLoading.set(false)
     });
     this.productsApi.list({ newArrival: true, pageSize: 4, sort: 'newest' }).subscribe({
       next: res => {
-        this.arrivals.set(res.data);
+        this.arrivals.set(withDemoImages(res.data, 1));
         this.arrivalsLoading.set(false);
       },
       error: () => this.arrivalsLoading.set(false)
