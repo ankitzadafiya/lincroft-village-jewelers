@@ -18,7 +18,6 @@ interface FilterChip {
   label: string;
 }
 
-import { withDemoImages } from '../../core/mock/demo-product-images';
 @Component({
   selector: 'app-catalog',
   imports: [
@@ -52,7 +51,7 @@ export class CatalogComponent implements OnInit {
   readonly sortOpen = signal(false);
   private readonly host = inject(ElementRef<HTMLElement>);
   readonly category = signal<Category | null>(null);
-  readonly columns = signal(3);
+  readonly columns = signal(4);
   private facetKey = '';
 
   /** Removable chips for every active refinement. */
@@ -87,9 +86,9 @@ export class CatalogComponent implements OnInit {
   ];
 
   readonly densityOptions = [
-    { cols: 2, icon: 'columns-2', label: 'Two columns' },
-    { cols: 3, icon: 'layout-grid', label: 'Three columns' },
-    { cols: 4, icon: 'columns-4', label: 'Four columns' }
+    { cols: 3, icon: 'columns-2', label: 'Large pieces' },
+    { cols: 4, icon: 'layout-grid', label: 'Medium pieces' },
+    { cols: 5, icon: 'columns-4', label: 'Compact grid' }
   ];
 
   readonly sortLabel = computed(
@@ -214,8 +213,7 @@ export class CatalogComponent implements OnInit {
     this.loading.set(true);
     this.productsApi.list(this.query()).subscribe({
       next: res => {
-        const q = this.query();
-        this.products.set(q.bestSeller || q.newArrival ? withDemoImages(res.data) : res.data);
+        this.products.set(res.data);
         this.total.set(res.total);
         this.loading.set(false);
       },

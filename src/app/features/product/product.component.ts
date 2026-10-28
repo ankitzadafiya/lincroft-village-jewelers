@@ -1,6 +1,6 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { Product, ProductListItem, productDisplayBrand } from '../../core/models';
+import { Product, ProductListItem, ProductSpec, productDisplayBrand } from '../../core/models';
 import { ProductService } from '../../core/services/product.service';
 import { ConfigurationService } from '../../core/services/configuration.service';
 import { InquiryService } from '../../core/services/inquiry.service';
@@ -12,7 +12,6 @@ import { LoadingSkeletonComponent } from '../../shared/components/loading-skelet
 import { ProductGalleryComponent } from '../../shared/components/product-gallery/product-gallery.component';
 import { ProductSpecificationsComponent } from '../../shared/components/product-specifications/product-specifications.component';
 import { ProductGridComponent } from '../../shared/components/product-grid/product-grid.component';
-import { SectionHeaderComponent } from '../../shared/components/section-header/section-header.component';
 import { PricePipe } from '../../shared/pipes/price.pipe';
 
 @Component({
@@ -24,7 +23,6 @@ import { PricePipe } from '../../shared/pipes/price.pipe';
     ProductGalleryComponent,
     ProductSpecificationsComponent,
     ProductGridComponent,
-    SectionHeaderComponent,
     PricePipe
   ],
   templateUrl: './product.component.html',
@@ -43,6 +41,27 @@ export class ProductComponent implements OnInit {
   readonly error = signal('');
   readonly loading = signal(true);
   readonly tab = signal<'desc' | 'details' | 'ship'>('desc');
+
+  /** Gallery images, in the order the backend sends them (sortOrder). */
+  readonly gallery = computed(() => this.product()?.images ?? []);
+
+  availabilityLabel(p: Product): string {
+    switch (p.availability) {
+      case 'in_stock': return 'In stock';
+      case 'sold': return 'Sold';
+      default: return p.availability.replaceAll('_', ' ').replace(/^./, c => c.toUpperCase());
+    }
+  }
+
+  savePercent(p: Product): number | null {
+    if (!p.price || !p.compareAtPrice || p.compareAtPrice <= p.price) return null;
+    return Math.round((1 - p.price / p.compareAtPrice) * 100);
+  }
+
+  /** Up to four filled specs shown as a quick summary next to the price. */
+  keySpecs(p: Product): ProductSpec[] {
+    return (p.specs || []).filter(s => !!s.value?.trim()).slice(0, 4);
+  }
 
   displayBrand(product: Product): string {
     return productDisplayBrand({

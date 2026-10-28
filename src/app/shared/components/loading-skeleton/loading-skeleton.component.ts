@@ -49,7 +49,7 @@ import { Component, input } from '@angular/core';
       animation: shimmer 1.4s infinite;
       border-radius: 6px;
     }
-    .sk-img { aspect-ratio: 1 / 1.15; border-radius: 12px; }
+    .sk-img { aspect-ratio: 5 / 6; border-radius: 10px; }
     .sk-line { height: 12px; }
     .sk-line.short { width: 40%; }
     .sk-line.mid { width: 68%; }
@@ -69,9 +69,8 @@ import { Component, input } from '@angular/core';
     }
     .sk-gallery {
       aspect-ratio: 1;
-      border-radius: 14px;
-      width: min(100%, 82vh, 880px);
-      max-height: min(82vh, 880px);
+      border-radius: 20px;
+      width: min(100%, 560px);
     }
     .sk-info {
       display: grid;

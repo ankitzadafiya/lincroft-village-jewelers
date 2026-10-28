@@ -17,7 +17,6 @@ import { RingJourneyComponent } from '../../shared/components/ring-journey/ring-
 import { RevealDirective } from '../../shared/directives/reveal.directive';
 import { AppIconComponent } from '../../shared/icons/lvj-icons';
 
-import { withDemoImages } from '../../core/mock/demo-product-images';
 @Component({
   selector: 'app-home',
   imports: [
@@ -173,14 +172,14 @@ export class HomeComponent implements OnInit {
     // Home shows four pieces per collection, chosen in Admin → Products (flags).
     this.productsApi.list({ bestSeller: true, pageSize: 4, sort: 'featured' }).subscribe({
       next: res => {
-        this.bestSellers.set(withDemoImages(res.data));
+        this.bestSellers.set(res.data);
         this.bestLoading.set(false);
       },
       error: () => this.bestLoading.set(false)
     });
     this.productsApi.list({ newArrival: true, pageSize: 4, sort: 'newest' }).subscribe({
       next: res => {
-        this.arrivals.set(withDemoImages(res.data));
+        this.arrivals.set(res.data);
         this.arrivalsLoading.set(false);
       },
       error: () => this.arrivalsLoading.set(false)

@@ -15,26 +15,7 @@ interface MosaicCard {
   /** Grid slot: m = tall middle, a/b = left stack, c/d = right stack. */
   area: 'm' | 'a' | 'b' | 'c' | 'd';
   index: string;
-  /** Studio product shot on white: shown whole instead of cropped. */
-  contain: boolean;
 }
-
-/**
- * Store's own studio photos (demo). These win over the API `imageUrl`
- * until the backend stores real photos for these categories.
- * `contain` = show the whole piece on white rather than cropping it.
- */
-const LOCAL_IMAGES: Record<string, { src: string; contain: boolean }> = {
-  ring: { src: '/images/jewelry/engagement-ring-side.webp', contain: false },
-  pendant: { src: '/images/jewelry/pear-drop-pendant.webp', contain: true },
-  bracelet: { src: '/images/jewelry/tennis-bracelet.webp', contain: true },
-  necklace: { src: '/images/jewelry/pear-drop-pendant-side.webp', contain: true },
-  // Free Unsplash photo (Unsplash licence) until the store has its own earring renders
-  earring: {
-    src: 'https://images.unsplash.com/photo-1777999763640-b228fe3192de?w=1200&h=1500&q=80&auto=format&fit=crop',
-    contain: false
-  }
-};
 
 /** Used only when the API category has no `imageUrl`. */
 const FALLBACK_IMAGES: Record<string, string> = {
@@ -86,8 +67,7 @@ export class CategoryMosaicComponent {
         slug: c.slug,
         label: STORE_TOP_CATEGORIES.find(s => s.slug === c.slug)?.navLabel ?? c.name,
         meta: this.countLabel(c.productCount),
-        image: LOCAL_IMAGES[c.slug]?.src || c.imageUrl || FALLBACK_IMAGES[c.slug] || '',
-        contain: !!LOCAL_IMAGES[c.slug]?.contain,
+        image: c.imageUrl || FALLBACK_IMAGES[c.slug] || '',
         alt: `${c.name} jewelry at Lincroft Village Jewelers`,
         area: slot.area,
         index: String(i + 1).padStart(2, '0')

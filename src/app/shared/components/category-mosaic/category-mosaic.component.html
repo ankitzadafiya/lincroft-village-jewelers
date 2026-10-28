@@ -10,7 +10,7 @@
     <div class="mosaic">
       @for (card of cards(); track card.id) {
         <a class="tile" [class]="'tile area-' + card.area" [routerLink]="'/' + card.slug">
-          <span class="media" [class.contain]="card.contain">
+          <span class="media">
             @if (card.image) {
               <img [src]="card.image" [alt]="card.alt" loading="lazy" decoding="async" draggable="false" />
             }

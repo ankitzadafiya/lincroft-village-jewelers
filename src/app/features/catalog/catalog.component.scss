@@ -298,12 +298,22 @@ app-product-filters {
 }
 
 /* ── Grid density ────────────────────────────────── */
-.grid-products.cols-2 { grid-template-columns: 1fr 1fr; }
-.grid-products.cols-3 { grid-template-columns: repeat(3, 1fr); }
-.grid-products.cols-4 { grid-template-columns: repeat(4, 1fr); }
+/* large · medium · compact. Compact also tightens the gaps and card text. */
+.grid-products.cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.grid-products.cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.grid-products.cols-5 {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 2rem 1rem;
+  font-size: 0.92em;
+}
+
+@media (max-width: 1280px) {
+  .grid-products.cols-5 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
 
 @media (max-width: 1100px) {
-  .grid-products.cols-4 { grid-template-columns: repeat(3, 1fr); }
+  .grid-products.cols-4,
+  .grid-products.cols-5 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 
 /* Tablet / phone */
@@ -323,9 +333,9 @@ app-product-filters {
 }
 
 @media (max-width: 767px) {
-  .grid-products.cols-2,
   .grid-products.cols-3,
-  .grid-products.cols-4 {
+  .grid-products.cols-4,
+  .grid-products.cols-5 {
     grid-template-columns: 1fr 1fr;
   }
 

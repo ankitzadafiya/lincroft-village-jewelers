@@ -9,58 +9,93 @@
   @if (product(); as p) {
     <nav class="crumbs container" aria-label="Breadcrumb">
       <a routerLink="/">Home</a>
-      <span>/</span>
+      <span aria-hidden="true">/</span>
       <a routerLink="/shop">Shop</a>
-      <span>/</span>
-      <span>{{ p.name }}</span>
+      <span aria-hidden="true">/</span>
+      <span aria-current="page">{{ p.name }}</span>
     </nav>
 
     <section class="pdp container">
       <div class="pdp-layout">
         <div class="gallery-col">
-          <app-product-gallery [images]="p.images || []" [videos]="p.videos || []" />
+          <app-product-gallery [images]="gallery()" [videos]="p.videos || []" />
         </div>
 
         <div class="info">
-          <p class="eyebrow">{{ displayBrand(p) }}</p>
-          <div class="title-row">
-            <h1>{{ p.name }}</h1>
+          <div class="info-head">
+            <p class="kicker">{{ displayBrand(p) }}</p>
             <app-favorite-button [id]="p.id" variant="ghost" />
           </div>
-          <p class="sku">SKU {{ p.sku }}</p>
-          <p class="price">
-            {{ p.price | lvjPrice: p.showPrice }}
+          <h1>{{ p.name }}</h1>
+
+          <div class="meta">
+            <span class="stock" [class.out]="p.availability === 'sold'">
+              <span class="dot" aria-hidden="true"></span>
+              {{ availabilityLabel(p) }}
+            </span>
+            <span class="sku">SKU {{ p.sku }}</span>
+          </div>
+
+          <div class="price-row">
+            <p class="price">{{ p.price | lvjPrice: p.showPrice }}</p>
             @if (config.isPriceVisible(p) && p.compareAtPrice) {
               <span class="price-compare">{{ p.compareAtPrice | lvjPrice: true }}</span>
+              @if (savePercent(p); as pct) {
+                <span class="save">Save {{ pct }}%</span>
+              }
             }
-          </p>
+          </div>
+
           @if (p.description) {
             <p class="desc">{{ p.description }}</p>
           }
-          <p class="avail">{{ p.availability.replaceAll('_', ' ') }}</p>
-          <div class="actions">
-            <button class="btn btn-gold" type="button" (click)="addInquiry()">Call For Price / Inquire</button>
+
+          @if (keySpecs(p).length) {
+            <dl class="key-specs">
+              @for (s of keySpecs(p); track s.label) {
+                <div>
+                  <dt>{{ s.label }}</dt>
+                  <dd>{{ s.value }}</dd>
+                </div>
+              }
+            </dl>
+          }
+
+          <div class="cta">
+            <button class="btn-primary" type="button" (click)="addInquiry()">
+              <i class="pi pi-shopping-bag" aria-hidden="true"></i>
+              Inquire about this piece
+            </button>
+            <div class="cta-row">
+              <a class="btn-outline wa" [href]="whatsapp()" target="_blank" rel="noreferrer">
+                <i class="pi pi-whatsapp" aria-hidden="true"></i> WhatsApp
+              </a>
+              <a class="btn-outline" [href]="emailHref()">
+                <i class="pi pi-envelope" aria-hidden="true"></i> Email
+              </a>
+            </div>
+            <a class="custom-link" routerLink="/custom-jewelry">
+              Want it in another metal or size? Request a custom version
+              <i class="pi pi-arrow-right" aria-hidden="true"></i>
+            </a>
           </div>
-          <div class="alt">
-            <a class="btn btn-ghost" [href]="whatsapp()" target="_blank" rel="noreferrer">WhatsApp inquiry</a>
-            <a class="btn btn-ghost" [href]="emailHref()">Email inquiry</a>
-            <a class="btn btn-ghost" routerLink="/custom-jewelry">Customization request</a>
-          </div>
-          <div class="perks">
-            <p>Estimated delivery · Ask our team for timing</p>
-            <p>Complimentary local pickup in Lincroft</p>
-          </div>
+
+          <ul class="assure">
+            <li><i class="pi pi-map-marker" aria-hidden="true"></i><span>Complimentary local pickup in Lincroft</span></li>
+            <li><i class="pi pi-clock" aria-hidden="true"></i><span>Ask our team for delivery timing</span></li>
+            <li><i class="pi pi-heart" aria-hidden="true"></i><span>Every piece handled personally by our jewelers</span></li>
+          </ul>
         </div>
       </div>
     </section>
 
-    <div class="tabs container">
-      <div class="tab-nav">
-        <button type="button" [class.on]="tab() === 'desc'" (click)="tab.set('desc')">Product description</button>
-        <button type="button" [class.on]="tab() === 'details'" (click)="tab.set('details')">Product Details</button>
-        <button type="button" [class.on]="tab() === 'ship'" (click)="tab.set('ship')">Shipping & Return</button>
+    <section class="more container" aria-label="Product information">
+      <div class="tab-nav" role="tablist">
+        <button type="button" role="tab" [attr.aria-selected]="tab() === 'desc'" [class.on]="tab() === 'desc'" (click)="tab.set('desc')">Description</button>
+        <button type="button" role="tab" [attr.aria-selected]="tab() === 'details'" [class.on]="tab() === 'details'" (click)="tab.set('details')">Details</button>
+        <button type="button" role="tab" [attr.aria-selected]="tab() === 'ship'" [class.on]="tab() === 'ship'" (click)="tab.set('ship')">Pickup and returns</button>
       </div>
-      <div class="tab-body">
+      <div class="tab-body" role="tabpanel">
         @if (tab() === 'desc') {
           <p>{{ p.description || 'A carefully selected piece from the Lincroft Village Jewelers collection.' }}</p>
         } @else if (tab() === 'details') {
@@ -69,19 +104,24 @@
           <p>In-store pickup is free. Shipping options and returns are confirmed when you inquire, and every piece is handled personally by our team.</p>
         }
       </div>
-    </div>
+    </section>
 
     @if (related().length) {
-      <section class="section container">
-        <app-section-header title="You may also like" eyebrow="Related" />
-        <app-product-grid [products]="related()" />
+      <section class="related">
+        <div class="container">
+          <header class="related-head">
+            <p class="kicker">Related</p>
+            <h2>You may also like</h2>
+          </header>
+          <app-product-grid [products]="related()" />
+        </div>
       </section>
     }
 
     <div class="sticky-bar">
       <div class="sticky-inner container">
         <div class="sticky-meta">
-          @if (p.images[0]; as img) {
+          @if (gallery()[0]; as img) {
             <img [src]="img.thumbnailUrl || img.url" [alt]="p.name" />
           }
           <div>
@@ -89,7 +129,7 @@
             <span>{{ p.price | lvjPrice: p.showPrice }}</span>
           </div>
         </div>
-        <button class="btn btn-gold" type="button" (click)="addInquiry()">Add to inquiry</button>
+        <button class="btn-primary sm" type="button" (click)="addInquiry()">Add to inquiry</button>
       </div>
     </div>
   }

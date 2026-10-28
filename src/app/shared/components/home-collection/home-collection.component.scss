@@ -200,14 +200,7 @@ h2 {
   }
 }
 
-/* Cards on the panel: softly rounded photos to match the panel */
-:host ::ng-deep app-product-card .media {
-  border-radius: 10px;
-}
-
-:host ::ng-deep app-product-card .badge {
-  border-radius: 3px;
-}
+/* Rounded photos + badges now come from the product card itself (site-wide). */
 
 /* ── Loading ───────────────────────────────────── */
 .ghost {
