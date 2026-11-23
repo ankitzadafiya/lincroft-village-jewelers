@@ -151,40 +151,6 @@ h2 {
   pointer-events: none;
 }
 
-/* Pause / play */
-.tile-toggle {
-  position: absolute;
-  top: 0.9rem;
-  right: 0.9rem;
-  z-index: 2;
-  display: grid;
-  place-items: center;
-  width: 34px;
-  height: 34px;
-  border: 1px solid rgba(255, 255, 255, 0.45);
-  border-radius: 50%;
-  background: rgba(var(--lvj-overlay), 0.35);
-  color: #fff;
-  cursor: pointer;
-  opacity: 0.75;
-  transition: opacity 0.25s ease, background 0.25s ease;
-
-  app-icon {
-    display: inline-flex;
-  }
-
-  &:hover,
-  &:focus-visible {
-    opacity: 1;
-    background: rgba(var(--lvj-overlay), 0.6);
-  }
-
-  &:focus-visible {
-    outline: 2px solid #fff;
-    outline-offset: 2px;
-  }
-}
-
 /* Shoppable bar */
 .tile-bar {
   position: absolute;

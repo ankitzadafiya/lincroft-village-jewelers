@@ -1,21 +1,19 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { SelectModule } from 'primeng/select';
-import { ConfigurationService } from '../../core/services/configuration.service';
 import { ContentService } from '../../core/services/content.service';
 import { SeoService } from '../../core/services/seo.service';
 import { ToastService } from '../../core/services/toast.service';
-import { buildMailto, buildWhatsAppUrl } from '../../core/utils/slug';
 import { RingJourneyComponent } from '../../shared/components/ring-journey/ring-journey.component';
+import { ContactActionsComponent } from '../../shared/components/contact-actions/contact-actions.component';
 
 @Component({
   selector: 'app-custom-jewelry',
-  imports: [ReactiveFormsModule, SelectModule, RingJourneyComponent],
+  imports: [ReactiveFormsModule, SelectModule, RingJourneyComponent, ContactActionsComponent],
   templateUrl: './custom-jewelry.component.html',
   styleUrl: './custom-jewelry.component.scss'
 })
 export class CustomJewelryComponent {
-  readonly config = inject(ConfigurationService);
   private readonly content = inject(ContentService);
   private readonly toast = inject(ToastService);
   private readonly fb = inject(FormBuilder);
@@ -113,17 +111,13 @@ export class CustomJewelryComponent {
     });
   }
 
-  whatsapp(): string {
+  whatsappMessage(): string {
     const v = this.form.getRawValue();
-    const phone = this.config.whatsAppNumber();
-    return phone
-      ? buildWhatsAppUrl(phone, `Custom jewelry request from ${v.name || 'a client'}: ${v.jewelryType}. ${v.description}`)
-      : '#';
+    return `Custom jewelry request from ${v.name || 'a client'}: ${v.jewelryType}. ${v.description}`;
   }
 
-  emailHref(): string {
-    const cfg = this.config.config();
+  emailBodyText(): string {
     const v = this.form.getRawValue();
-    return cfg?.email ? buildMailto(cfg.email, 'Custom jewelry request', `${v.jewelryType}\n${v.description}`) : '#';
+    return `${v.jewelryType}\n${v.description}`;
   }
 }

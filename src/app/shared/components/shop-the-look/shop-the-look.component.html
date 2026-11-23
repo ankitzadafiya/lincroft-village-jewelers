@@ -28,19 +28,9 @@
             disablepictureinpicture
             preload="metadata"
             aria-hidden="true"
-            tabindex="-1"
-            (playing)="onMediaState(i, true)"
-            (pause)="onMediaState(i, false)"></video>
+            tabindex="-1"></video>
           <span class="tile-shade" aria-hidden="true"></span>
         </a>
-
-        <button
-          type="button"
-          class="tile-toggle"
-          [attr.aria-label]="(playing()[i] ? 'Pause' : 'Play') + ' video: ' + look.title"
-          (click)="toggle(i, $event)">
-          <app-icon [name]="playing()[i] ? 'pause' : 'play'" [size]="14" [strokeWidth]="1.8" />
-        </button>
 
         <div class="tile-bar">
           <span class="tile-thumb" [style.--zoom]="look.thumbZoom || 1"><img [src]="look.thumb" alt="" loading="lazy" decoding="async" width="64" height="64" /></span>

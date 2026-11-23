@@ -144,12 +144,6 @@
   font-size: 0.9rem;
 }
 
-.cj-contact {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.7rem;
-}
-
 .cj-form {
   background: var(--lvj-white);
   border: 1px solid var(--lvj-line);
@@ -241,8 +235,7 @@
   }
 
   .url-row .btn,
-  .form-actions .cj-btn,
-  .cj-contact .cj-btn {
+  .form-actions .cj-btn {
     width: 100%;
   }
 }

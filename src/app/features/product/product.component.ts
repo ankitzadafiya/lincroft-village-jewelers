@@ -6,12 +6,12 @@ import { ConfigurationService } from '../../core/services/configuration.service'
 import { InquiryService } from '../../core/services/inquiry.service';
 import { SeoService } from '../../core/services/seo.service';
 import { ToastService } from '../../core/services/toast.service';
-import { buildMailto, buildWhatsAppUrl } from '../../core/utils/slug';
 import { FavoriteButtonComponent } from '../../shared/components/favorite-button/favorite-button.component';
 import { LoadingSkeletonComponent } from '../../shared/components/loading-skeleton/loading-skeleton.component';
 import { ProductGalleryComponent } from '../../shared/components/product-gallery/product-gallery.component';
 import { ProductSpecificationsComponent } from '../../shared/components/product-specifications/product-specifications.component';
 import { ProductGridComponent } from '../../shared/components/product-grid/product-grid.component';
+import { ContactActionsComponent } from '../../shared/components/contact-actions/contact-actions.component';
 import { PricePipe } from '../../shared/pipes/price.pipe';
 
 @Component({
@@ -23,6 +23,7 @@ import { PricePipe } from '../../shared/pipes/price.pipe';
     ProductGalleryComponent,
     ProductSpecificationsComponent,
     ProductGridComponent,
+    ContactActionsComponent,
     PricePipe
   ],
   templateUrl: './product.component.html',
@@ -167,17 +168,20 @@ export class ProductComponent implements OnInit {
     this.toast.success('Added to your inquiry bag.');
   }
 
-  whatsapp(): string {
+  whatsappMessage(): string {
     const product = this.product();
-    const cfg = this.config.config();
-    if (!product || !cfg) return '#';
-    return buildWhatsAppUrl(this.config.whatsAppNumber(), `Hello Lincroft Village Jewelers, I would like information about ${product.name} (${product.sku}).`);
+    if (!product) return '';
+    return `Hello Lincroft Village Jewelers, I would like information about ${product.name} (${product.sku}).`;
   }
 
-  emailHref(): string {
+  emailSubject(): string {
     const product = this.product();
-    const cfg = this.config.config();
-    if (!product || !cfg?.email) return '#';
-    return buildMailto(cfg.email, `Inquiry: ${product.name}`, `Hello,\n\nI would like information about ${product.name} (SKU ${product.sku}).\n`);
+    return product ? `Inquiry: ${product.name}` : 'Inquiry';
+  }
+
+  emailBodyText(): string {
+    const product = this.product();
+    if (!product) return '';
+    return `Hello,\n\nI would like information about ${product.name} (SKU ${product.sku}).\n`;
   }
 }

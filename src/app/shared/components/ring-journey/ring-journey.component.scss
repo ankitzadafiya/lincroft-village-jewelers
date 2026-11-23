@@ -47,7 +47,7 @@
   /* same type as the "Our Categories" / "Jewelry services" headings */
   .rj-kicker {
     display: block;
-    margin: 0 0 0.7rem;
+    margin: 0 0 0.85rem;
     font-family: var(--font-body);
     font-size: 0.72rem;
     font-weight: 500;
@@ -62,8 +62,9 @@
     max-width: none;
     font-family: var(--font-logo-serif);
     font-weight: 600;
-    font-size: clamp(2.2rem, 3.8vw, 3.3rem);
-    line-height: 1.05;
+    font-size: clamp(1.5rem, 2.2vw, 2rem);
+    line-height: 1.15;
+    color: #fff;
   }
 }
 
@@ -407,17 +408,34 @@ h2 {
 
 .rj-stage-head {
   display: flex;
-  align-items: baseline;
-  gap: 0.75rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.85rem;
 }
 
 .rj-caption-n {
-  font-size: 0.72rem;
-  letter-spacing: 0.18em;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.2rem;
+  padding: 0.3rem 0.65rem;
+  border-radius: 999px;
+  border: 1px solid rgba(242, 210, 126, 0.35);
+  background: rgba(242, 210, 126, 0.08);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
   color: var(--rj-gold-ui);
   font-variant-numeric: tabular-nums;
+  flex: none;
 
-  span { color: rgba(159, 192, 230, 0.6); }
+  span { color: rgba(159, 192, 230, 0.55); font-weight: 500; }
+}
+
+.rj-caption-rule {
+  width: 1px;
+  height: 1.1rem;
+  flex: none;
+  background: rgba(159, 192, 230, 0.25);
 }
 
 .rj-caption-t {

@@ -62,13 +62,13 @@ const FALLBACK: HelpItem[] = [
     id: 'battery-links',
     title: 'Same Day Watch Battery Replacement & Link Adjustments',
     body: 'Most battery replacements and bracelet link adjustments are completed while you wait, so you leave with a watch that fits and keeps time.',
-    imageUrl: IMG.serviceWatch
+    imageUrl: IMG.serviceBattery
   },
   {
     id: 'estate-consulting',
     title: 'Estate Jewelry Consulting',
     body: 'Our experts provide guidance on rough valuations and help establish a clear, informed plan for asset distribution. This service is tailored specifically for jewelry-only estates.',
-    imageUrl: IMG.serviceAppraisal
+    imageUrl: IMG.serviceEstate
   }
 ];
 
@@ -77,13 +77,7 @@ const FALLBACK: HelpItem[] = [
   imports: [RouterLink, AppIconComponent, ServiceSceneComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <section
-      class="help"
-      aria-labelledby="help-title"
-      (mouseenter)="pause()"
-      (mouseleave)="resume()"
-      (focusin)="pause()"
-      (focusout)="resume()">
+    <section class="help" aria-labelledby="help-title">
       <header class="head container">
         <p class="kicker">We’re here to help</p>
         <h2 id="help-title">Jewelry services</h2>
@@ -92,17 +86,9 @@ const FALLBACK: HelpItem[] = [
 
       <div class="container grid">
         <!-- Animated stage -->
-        <div class="stage" [class.is-paused]="paused()">
+        <div class="stage">
           <div class="stage-top">
             <span class="stage-step">Step {{ pad(active() + 1) }} <span>/ {{ pad(items().length) }}</span></span>
-            <button
-              type="button"
-              class="stage-toggle"
-              [attr.aria-label]="paused() ? 'Play the service animation' : 'Pause the service animation'"
-              [attr.aria-pressed]="paused()"
-              (click)="togglePlay()">
-              <app-icon [name]="paused() ? 'play' : 'pause'" [size]="12" [strokeWidth]="2"></app-icon>
-            </button>
           </div>
           <div class="stage-art">
             @for (key of [sceneKey()]; track key) {
@@ -263,35 +249,6 @@ const FALLBACK: HelpItem[] = [
       justify-content: space-between;
     }
 
-    .stage-toggle {
-      display: grid;
-      place-items: center;
-      width: 30px;
-      height: 30px;
-      padding: 0;
-      border: 1px solid rgba(255, 255, 255, 0.35);
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.06);
-      color: #fff;
-      cursor: pointer;
-      transition: background 0.25s ease, border-color 0.25s ease, color 0.25s ease;
-
-      app-icon {
-        display: inline-flex;
-      }
-
-      &:hover {
-        background: #fff;
-        border-color: #fff;
-        color: var(--lvj-navy);
-      }
-
-      &:focus-visible {
-        outline: 2px solid #fff;
-        outline-offset: 2px;
-      }
-    }
-
     .stage-step {
       font-size: 0.72rem;
       letter-spacing: 0.2em;
@@ -319,10 +276,6 @@ const FALLBACK: HelpItem[] = [
     @keyframes scene-in {
       from { opacity: 0; transform: translateY(10px) scale(0.98); }
       to { opacity: 1; transform: none; }
-    }
-
-    .is-paused app-service-scene ::ng-deep * {
-      animation-play-state: paused !important;
     }
 
     .stage-title {
@@ -359,10 +312,6 @@ const FALLBACK: HelpItem[] = [
       background: linear-gradient(90deg, #cfe0f4, #fff);
       transform-origin: left center;
       animation: fill linear forwards;
-    }
-
-    .is-paused .seg-fill {
-      animation-play-state: paused;
     }
 
     @keyframes fill {
@@ -592,18 +541,11 @@ export class ServicesHelpComponent implements OnInit, OnDestroy {
   readonly active = signal(0);
   readonly items = signal<HelpItem[]>(FALLBACK);
   readonly tick = signal(0);
-  readonly paused = signal(false);
 
   private timer: ReturnType<typeof setTimeout> | null = null;
   private hoverTimer: ReturnType<typeof setTimeout> | null = null;
   private visible = false;
   private seen = false;
-  /** Set by the pause button; hover never resumes it. */
-  private userStopped = false;
-  /** Hover no longer pauses: the story plays by itself as soon as it is on
-   *  screen (the cursor often rests on it while scrolling). Only the pause
-   *  button stops it. */
-  private hoverPause = false;
   private observer?: IntersectionObserver;
 
   ngOnInit(): void {
@@ -662,35 +604,6 @@ export class ServicesHelpComponent implements OnInit, OnDestroy {
     }
   }
 
-  /** Auto-cycling stops while the visitor is reading or interacting. */
-  /** Pause/play button: an explicit choice that hover won't override. */
-  togglePlay(): void {
-    if (this.paused()) {
-      this.userStopped = false;
-      this.hoverPause = false;
-      this.paused.set(false);
-      if (this.visible) this.startCycle();
-    } else {
-      this.userStopped = true;
-      this.paused.set(true);
-      this.clear();
-    }
-  }
-
-  pause(): void {
-    if (!this.hoverPause || this.paused()) return;
-    this.paused.set(true);
-    this.clear();
-  }
-
-  resume(): void {
-    if (this.userStopped || !this.paused()) return;
-    const el = this.host.nativeElement as HTMLElement;
-    if (el.matches(':hover') || el.contains(document.activeElement)) return;
-    this.paused.set(false);
-    if (this.visible) this.startCycle();
-  }
-
   private fromApi(service: ServiceOffering, fallback: HelpItem): HelpItem {
     if (fallback.id === 'gold-buying' || fallback.id === 'estate-consulting' || fallback.id === 'battery-links') {
       return {
@@ -731,7 +644,7 @@ export class ServicesHelpComponent implements OnInit, OnDestroy {
   private startCycle(): void {
     this.clear();
     this.tick.update(n => n + 1);
-    if (!this.visible || this.paused() || this.reducedMotion() || this.items().length < 2) return;
+    if (!this.visible || this.reducedMotion() || this.items().length < 2) return;
     this.timer = setTimeout(() => {
       this.active.set((this.active() + 1) % this.items().length);
       this.startCycle();

@@ -54,6 +54,16 @@ const E = {
   studReview: 'https://i.etsystatic.com/5715323567/r/il/ad8163/5715323567/il_1588xN.5715323567_ks4w.jpg'
 };
 
+/** Pexels (free license, no attribution required) — real photos for the service pages. */
+const P = {
+  repairBench: 'https://images.pexels.com/photos/33748058/pexels-photo-33748058.jpeg?auto=compress&cs=tinysrgb&w=1200',
+  goldCoins: 'https://images.pexels.com/photos/8442429/pexels-photo-8442429.jpeg?auto=compress&cs=tinysrgb&w=1200',
+  watchRepair: 'https://images.pexels.com/photos/8327868/pexels-photo-8327868.jpeg?auto=compress&cs=tinysrgb&w=1200',
+  loupeAppraisal: 'https://images.pexels.com/photos/1050321/pexels-photo-1050321.jpeg?auto=compress&cs=tinysrgb&w=1200',
+  watchBand: 'https://images.pexels.com/photos/14509619/pexels-photo-14509619.jpeg?auto=compress&cs=tinysrgb&w=1200',
+  vintageJewelryBox: 'https://images.pexels.com/photos/34673097/pexels-photo-34673097.jpeg?auto=compress&cs=tinysrgb&w=1200'
+};
+
 /** High-res Elise Jewelry NYC photos used for UI until backend media is ready. */
 export const IMG = {
   hero: E.tennis7ct,
@@ -72,10 +82,12 @@ export const IMG = {
   catSilver: E.crossBracelet,
   customSketch: '/images/custom-ring-sketch.svg',
   customAfter: '/images/custom-ring-finished.jpg',
-  serviceRepair: E.flexBracelet2,
-  serviceGold: E.yellowNatural,
-  serviceWatch: E.flexBracelet4,
-  serviceAppraisal: E.paveWhite,
+  serviceRepair: P.repairBench,
+  serviceGold: P.goldCoins,
+  serviceWatch: P.watchRepair,
+  serviceAppraisal: P.loupeAppraisal,
+  serviceBattery: P.watchBand,
+  serviceEstate: P.vintageJewelryBox,
   serviceCustom: E.cocktailLab,
   serviceClean: E.stacking,
   ring1: E.starRing,

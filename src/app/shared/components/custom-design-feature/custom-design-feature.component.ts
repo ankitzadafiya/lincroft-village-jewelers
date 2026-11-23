@@ -233,7 +233,7 @@ import { IMG } from '../../../core/mock/image-catalog';
     .copy h2 {
       font-family: var(--font-logo-serif);
       font-style: normal;
-      font-size: clamp(1.78rem, 3.22vw, 2.47rem);
+      font-size: clamp(1.5rem, 2.2vw, 2rem);
       font-weight: 600;
       letter-spacing: -0.005em;
       line-height: 1.2;

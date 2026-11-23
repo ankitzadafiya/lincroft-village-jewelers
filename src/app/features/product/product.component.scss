@@ -225,8 +225,7 @@ h1 {
   margin: 1.5rem 0 0;
 }
 
-.btn-primary,
-.btn-outline {
+.btn-primary {
   position: relative;
   isolation: isolate;
   overflow: hidden;
@@ -288,55 +287,6 @@ h1 {
     padding: 0.7rem 1.5rem;
     font-size: 0.74rem;
     box-shadow: 0 8px 18px rgba(10, 29, 58, 0.2);
-  }
-}
-
-.cta-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.65rem;
-}
-
-.btn-outline {
-  min-height: 50px;
-  padding: 0.75rem 1rem;
-  border: 1px solid var(--lvj-line-strong);
-  background: #fff;
-  color: var(--lvj-ink);
-  font-size: 0.9rem;
-
-  .pi {
-    display: grid;
-    place-items: center;
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    background: var(--lvj-sky);
-    color: var(--lvj-navy);
-    font-size: 0.85rem;
-    transition: background-color 0.25s ease, color 0.25s ease;
-  }
-
-  &.wa .pi {
-    background: #e7f7ee;
-    color: #1f9d55;
-  }
-
-  &:hover,
-  &:focus-visible {
-    border-color: var(--lvj-navy);
-    transform: translateY(-1px);
-    box-shadow: 0 8px 18px rgba(10, 29, 58, 0.08);
-  }
-
-  &.wa:hover .pi {
-    background: #1f9d55;
-    color: #fff;
-  }
-
-  &:not(.wa):hover .pi {
-    background: var(--lvj-navy);
-    color: #fff;
   }
 }
 

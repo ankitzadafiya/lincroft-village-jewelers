@@ -66,14 +66,10 @@
               <i class="pi pi-shopping-bag" aria-hidden="true"></i>
               Inquire about this piece
             </button>
-            <div class="cta-row">
-              <a class="btn-outline wa" [href]="whatsapp()" target="_blank" rel="noreferrer">
-                <i class="pi pi-whatsapp" aria-hidden="true"></i> WhatsApp
-              </a>
-              <a class="btn-outline" [href]="emailHref()">
-                <i class="pi pi-envelope" aria-hidden="true"></i> Email
-              </a>
-            </div>
+            <app-contact-actions
+              [whatsappMessage]="whatsappMessage()"
+              [emailSubject]="emailSubject()"
+              [emailBody]="emailBodyText()" />
             <a class="custom-link" routerLink="/custom-jewelry">
               Want it in another metal or size? Request a custom version
               <i class="pi pi-arrow-right" aria-hidden="true"></i>

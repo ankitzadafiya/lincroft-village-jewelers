@@ -31,10 +31,10 @@
         <div class="field"><label>Phone</label><input pInputText formControlName="phone" class="w-full" /></div>
         <div class="field"><label>Message</label><textarea pTextarea formControlName="message" rows="5" class="w-full"></textarea></div>
         <button class="btn btn-gold" type="submit">Send inquiry</button>
-        <div class="alt">
-          <a class="btn btn-ghost" [href]="whatsapp()" target="_blank" rel="noreferrer">WhatsApp inquiry</a>
-          <a class="btn btn-ghost" [href]="emailHref()">Email inquiry</a>
-        </div>
+        <app-contact-actions
+          [whatsappMessage]="whatsappMessage()"
+          emailSubject="Jewelry inquiry"
+          [emailBody]="emailBodyText()" />
       </form>
     </div>
   }

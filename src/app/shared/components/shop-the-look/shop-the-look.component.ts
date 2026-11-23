@@ -8,7 +8,6 @@ import {
   computed,
   inject,
   input,
-  signal,
   viewChildren
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
@@ -36,9 +35,9 @@ export interface LookTile {
 /**
  * Home video feature — intro text + two tall autoplaying video tiles with a
  * shoppable bar. `reverse` puts the videos first and the text on the right.
- * Videos are muted, inline, play only while on screen, never preload until
- * needed, and stay paused for reduced-motion / data-saver visitors.
- * Each tile has its own pause control (WCAG 2.2.2).
+ * Videos are muted, inline, autoplay as soon as they are on screen, never
+ * preload until needed, and stay paused for reduced-motion / data-saver
+ * visitors (autoplay is skipped entirely for them).
  */
 @Component({
   selector: 'app-shop-the-look',
@@ -68,11 +67,6 @@ export class ShopTheLookComponent implements AfterViewInit, OnDestroy {
     return this.tiles().map(t => ({ ...t, video: small && t.srcSmall ? t.srcSmall : t.src }));
   });
 
-  /** Index → user paused that tile. */
-  readonly userPaused = signal<Record<number, boolean>>({});
-  /** Index → currently playing (drives the toggle icon). */
-  readonly playing = signal<Record<number, boolean>>({});
-
   private observer?: IntersectionObserver;
   /** Tiles currently on screen. */
   private readonly inView = new Set<number>();
@@ -81,7 +75,7 @@ export class ShopTheLookComponent implements AfterViewInit, OnDestroy {
     // Browsers pause video in background tabs; resume what's on screen.
     for (const i of this.inView) {
       const video = this.videos()[i]?.nativeElement;
-      if (video?.paused && !this.userPaused()[i]) this.play(video, i);
+      if (video?.paused) this.play(video);
     }
   };
   private readonly autoplayAllowed = this.canAutoplay();
@@ -96,12 +90,10 @@ export class ShopTheLookComponent implements AfterViewInit, OnDestroy {
             const i = Number(video.dataset['i']);
             if (entry.isIntersecting) {
               this.inView.add(i);
-              if (this.autoplayAllowed && !this.userPaused()[i]) this.play(video, i);
+              if (this.autoplayAllowed) this.play(video);
             } else {
               this.inView.delete(i);
-              if (video.paused) continue;
               video.pause();
-              this.setPlaying(i, false);
             }
           }
         },
@@ -118,34 +110,10 @@ export class ShopTheLookComponent implements AfterViewInit, OnDestroy {
     for (const ref of this.videos()) ref.nativeElement.pause();
   }
 
-  toggle(i: number, event: Event): void {
-    event.preventDefault();
-    event.stopPropagation();
-    const video = this.videos()[i]?.nativeElement;
-    if (!video) return;
-    if (video.paused) {
-      this.userPaused.update(m => ({ ...m, [i]: false }));
-      this.play(video, i);
-    } else {
-      video.pause();
-      this.userPaused.update(m => ({ ...m, [i]: true }));
-      this.setPlaying(i, false);
-    }
-  }
-
-  /** Keep the toggle icon honest when the browser itself pauses/plays. */
-  onMediaState(i: number, isPlaying: boolean): void {
-    this.playing.update(m => ({ ...m, [i]: isPlaying }));
-  }
-
-  private play(video: HTMLVideoElement, i: number): void {
+  private play(video: HTMLVideoElement): void {
     if (video.preload !== 'auto') video.preload = 'auto';
     video.muted = true;
-    video.play().catch(() => this.setPlaying(i, false));
-  }
-
-  private setPlaying(i: number, value: boolean): void {
-    this.zone.run(() => this.playing.update(m => ({ ...m, [i]: value })));
+    void video.play().catch(() => undefined);
   }
 
   private canAutoplay(): boolean {

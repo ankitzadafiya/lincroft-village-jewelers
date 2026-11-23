@@ -1,0 +1,72 @@
+<section class="page-hero">
+  <p class="eyebrow">Our services</p>
+  <h1>Care for what you already wear.</h1>
+  <p class="lede">Repair, cleaning, appraisals, watch care, gold buying, and custom design, one appointment at a time in Lincroft.</p>
+  <a routerLink="/contact" class="btn btn-gold">Book an appointment</a>
+</section>
+
+<app-services-help [showLink]="false" />
+
+<!-- Every service, in full detail -->
+<section class="sv-detail" aria-labelledby="sv-detail-title">
+  <div class="container">
+    <header class="sv-head">
+      <p class="sv-kicker">Every service, in detail</p>
+      <h2 id="sv-detail-title">How we take care of your jewelry</h2>
+    </header>
+
+    <div class="sv-grid">
+      @for (s of services(); track s.id) {
+        <article class="sv-card">
+          <div class="sv-copy">
+            <h3>{{ s.title }}</h3>
+            <p>{{ s.body }}</p>
+            <a routerLink="/contact" [queryParams]="{ service: s.id }" class="sv-link">
+              Book this service
+              <app-icon name="arrow-right" [size]="15" [strokeWidth]="1.5" />
+            </a>
+          </div>
+        </article>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- How to book + custom design cross-link -->
+<section class="sv-steps" aria-labelledby="sv-steps-title">
+  <div class="container sv-steps-layout">
+    <div class="sv-steps-copy">
+      <p class="sv-kicker">How it works</p>
+      <h2 id="sv-steps-title">Booking an appointment is simple</h2>
+
+      <ol class="sv-process">
+        @for (s of process; track s.n) {
+          <li>
+            <span class="sv-num">{{ s.n }}</span>
+            <span class="sv-step">
+              <strong>{{ s.title }}</strong>
+              <span>{{ s.text }}</span>
+            </span>
+          </li>
+        }
+      </ol>
+
+      <p class="sv-reach">Prefer to talk it through?</p>
+      <app-contact-actions
+        whatsappMessage="Hi! I would like to book a jewelry service in Lincroft."
+        emailSubject="Jewelry service appointment"
+        emailBody="I would like to book an appointment for the following service: " />
+    </div>
+
+    <a routerLink="/custom-jewelry" class="sv-custom-card">
+      <app-icon class="sv-custom-mark" name="sparkles" [size]="120" [strokeWidth]="1" />
+      <span class="sv-custom-kicker">Have something more personal in mind?</span>
+      <h3>Design a completely custom piece</h3>
+      <p>From first sketch to finished ring: share your idea and we'll bring it to life, start to finish.</p>
+      <span class="sv-custom-cta">
+        Start a custom design
+        <app-icon name="arrow-right" [size]="15" [strokeWidth]="1.5" />
+      </span>
+    </a>
+  </div>
+</section>

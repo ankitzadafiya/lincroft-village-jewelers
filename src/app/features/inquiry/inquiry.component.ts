@@ -1,24 +1,22 @@
 import { Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { ConfigurationService } from '../../core/services/configuration.service';
 import { InquiryService } from '../../core/services/inquiry.service';
 import { SeoService } from '../../core/services/seo.service';
 import { ToastService } from '../../core/services/toast.service';
-import { buildMailto, buildWhatsAppUrl } from '../../core/utils/slug';
 import { InputTextModule } from 'primeng/inputtext';
 import { TextareaModule } from 'primeng/textarea';
 import { EmptyStateComponent } from '../../shared/components/empty-state/empty-state.component';
+import { ContactActionsComponent } from '../../shared/components/contact-actions/contact-actions.component';
 
 @Component({
   selector: 'app-inquiry',
-  imports: [ReactiveFormsModule, RouterLink, EmptyStateComponent, InputTextModule, TextareaModule],
+  imports: [ReactiveFormsModule, RouterLink, EmptyStateComponent, InputTextModule, TextareaModule, ContactActionsComponent],
   templateUrl: './inquiry.component.html',
   styleUrl: './inquiry.component.scss'
 })
 export class InquiryComponent {
   readonly inquiry = inject(InquiryService);
-  readonly config = inject(ConfigurationService);
   private readonly fb = inject(FormBuilder);
   private readonly toast = inject(ToastService);
   private readonly seo = inject(SeoService);
@@ -54,17 +52,13 @@ export class InquiryComponent {
     });
   }
 
-  whatsapp(): string {
-    const cfg = this.config.config();
-    if (!cfg) return '#';
+  whatsappMessage(): string {
     const lines = this.inquiry.items().map(i => `- ${i.name} (${i.sku})`).join('\n');
-    return buildWhatsAppUrl(this.config.whatsAppNumber(), `Hello Lincroft Village Jewelers, I would like information about:\n${lines}`);
+    return `Hello Lincroft Village Jewelers, I would like information about:\n${lines}`;
   }
 
-  emailHref(): string {
-    const cfg = this.config.config();
-    if (!cfg?.email) return '#';
+  emailBodyText(): string {
     const lines = this.inquiry.items().map(i => `- ${i.name} (${i.sku})`).join('\n');
-    return buildMailto(cfg.email, 'Jewelry inquiry', `Hello,\n\nI would like information about:\n${lines}\n`);
+    return `Hello,\n\nI would like information about:\n${lines}\n`;
   }
 }

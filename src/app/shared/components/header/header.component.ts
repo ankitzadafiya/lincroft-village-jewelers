@@ -53,6 +53,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       mega: category.slug
     })),
     { label: 'Custom', path: '/custom-jewelry' },
+    { label: 'Services', path: '/services' },
     // { label: 'About', path: '/about' } — About page hidden for now
   ];
 

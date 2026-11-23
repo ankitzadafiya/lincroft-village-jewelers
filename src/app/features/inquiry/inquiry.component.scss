@@ -12,5 +12,4 @@ li {
   border-bottom: 1px solid var(--lvj-line);
 }
 img { width: 72px; height: 90px; object-fit: cover; }
-.alt { display: flex; gap: 0.6rem; flex-wrap: wrap; margin-top: 0.8rem; }
 @include mq(lg) { .layout { grid-template-columns: 1fr 0.9fr; align-items: start; } }
