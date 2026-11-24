@@ -62,7 +62,14 @@ type LeadTab = 'inquiries' | 'custom' | 'contact' | 'newsletter';
               @if (item.items.length) {
                 <ul class="chips">
                   @for (product of item.items; track product.sku) {
-                    <li>{{ product.name }} <span>{{ product.sku }}</span></li>
+                    <li [class.diamond]="product.kind === 'diamond'">
+                      @if (product.kind === 'diamond') {
+                        <span class="chip-tag">Diamond</span>
+                        {{ product.name }}
+                      } @else {
+                        {{ product.name }} <span>{{ product.sku }}</span>
+                      }
+                    </li>
                   }
                 </ul>
               }
@@ -385,6 +392,23 @@ type LeadTab = 'inquiries' | 'custom' | 'contact' | 'newsletter';
       color: var(--lvj-muted);
       font-weight: 500;
       margin-left: 0.25rem;
+    }
+    .chips li.diamond {
+      background: color-mix(in srgb, var(--lvj-jewel) 12%, #fff);
+      border-color: color-mix(in srgb, var(--lvj-jewel) 35%, var(--lvj-line));
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .chip-tag {
+      padding: 0.1rem 0.4rem;
+      border-radius: 999px;
+      background: var(--lvj-jewel);
+      color: #fff;
+      font-size: 0.64rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
     }
     .refs li {
       display: inline-flex;

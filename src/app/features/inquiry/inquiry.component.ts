@@ -8,10 +8,11 @@ import { InputTextModule } from 'primeng/inputtext';
 import { TextareaModule } from 'primeng/textarea';
 import { EmptyStateComponent } from '../../shared/components/empty-state/empty-state.component';
 import { ContactActionsComponent } from '../../shared/components/contact-actions/contact-actions.component';
+import { AppIconComponent } from '../../shared/icons/lvj-icons';
 
 @Component({
   selector: 'app-inquiry',
-  imports: [ReactiveFormsModule, RouterLink, EmptyStateComponent, InputTextModule, TextareaModule, ContactActionsComponent],
+  imports: [ReactiveFormsModule, RouterLink, EmptyStateComponent, InputTextModule, TextareaModule, ContactActionsComponent, AppIconComponent],
   templateUrl: './inquiry.component.html',
   styleUrl: './inquiry.component.scss'
 })
@@ -52,13 +53,17 @@ export class InquiryComponent {
     });
   }
 
+  private itemLines(): string {
+    return this.inquiry.items()
+      .map(i => i.kind === 'diamond' ? `- ${i.name}` : `- ${i.name} (${i.sku})`)
+      .join('\n');
+  }
+
   whatsappMessage(): string {
-    const lines = this.inquiry.items().map(i => `- ${i.name} (${i.sku})`).join('\n');
-    return `Hello Lincroft Village Jewelers, I would like information about:\n${lines}`;
+    return `Hello Lincroft Village Jewelers, I would like information about:\n${this.itemLines()}`;
   }
 
   emailBodyText(): string {
-    const lines = this.inquiry.items().map(i => `- ${i.name} (${i.sku})`).join('\n');
-    return `Hello,\n\nI would like information about:\n${lines}\n`;
+    return `Hello,\n\nI would like information about:\n${this.itemLines()}\n`;
   }
 }

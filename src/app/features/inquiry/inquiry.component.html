@@ -11,31 +11,57 @@
     </app-empty-state>
   } @else {
     <div class="layout">
-      <ul>
-        @for (item of inquiry.items(); track item.productId) {
-          <li>
-            @if (item.imageUrl) {
-              <img [src]="item.imageUrl" [alt]="item.name" />
-            }
-            <div>
-              <a [routerLink]="['/product', item.slug]"><strong>{{ item.name }}</strong></a>
-              <p class="sku">{{ item.sku }}</p>
-            </div>
-            <button type="button" class="btn btn-ghost" (click)="inquiry.remove(item.productId || item.sku)">Remove</button>
-          </li>
-        }
-      </ul>
-      <form [formGroup]="form" (ngSubmit)="submit()">
-        <div class="field"><label>Name</label><input pInputText formControlName="name" class="w-full" /></div>
-        <div class="field"><label>Email</label><input pInputText formControlName="email" class="w-full" /></div>
-        <div class="field"><label>Phone</label><input pInputText formControlName="phone" class="w-full" /></div>
-        <div class="field"><label>Message</label><textarea pTextarea formControlName="message" rows="5" class="w-full"></textarea></div>
-        <button class="btn btn-gold" type="submit">Send inquiry</button>
-        <app-contact-actions
-          [whatsappMessage]="whatsappMessage()"
-          emailSubject="Jewelry inquiry"
-          [emailBody]="emailBodyText()" />
-      </form>
+      <div class="inq-list">
+        <p class="inq-label">Your selection ({{ inquiry.items().length }})</p>
+        <ul>
+          @for (item of inquiry.items(); track item.sku) {
+            <li class="inq-item">
+              <span class="inq-thumb">
+                @if (item.imageUrl) {
+                  <img [src]="item.imageUrl" [alt]="item.name" />
+                } @else {
+                  <app-icon name="image" [size]="20" [strokeWidth]="1.5" />
+                }
+              </span>
+              <div class="inq-info">
+                @if (item.kind === 'diamond') {
+                  <span class="inq-tag">Diamond</span>
+                  <strong>{{ item.name }}</strong>
+                } @else {
+                  <a [routerLink]="['/product', item.slug]"><strong>{{ item.name }}</strong></a>
+                  <p class="inq-sku">SKU {{ item.sku }}</p>
+                }
+              </div>
+              <button
+                type="button"
+                class="inq-remove"
+                [attr.aria-label]="'Remove ' + item.name"
+                (click)="inquiry.remove(item.productId || item.sku)">
+                <app-icon name="x" [size]="15" [strokeWidth]="1.8" />
+              </button>
+            </li>
+          }
+        </ul>
+      </div>
+
+      <div class="inq-form-card">
+        <p class="inq-label">Your details</p>
+        <form [formGroup]="form" (ngSubmit)="submit()">
+          <div class="form-grid">
+            <div class="field"><label>Name</label><input pInputText formControlName="name" class="w-full" /></div>
+            <div class="field"><label>Email</label><input pInputText formControlName="email" class="w-full" /></div>
+            <div class="field full"><label>Phone</label><input pInputText formControlName="phone" class="w-full" /></div>
+            <div class="field full"><label>Message</label><textarea pTextarea formControlName="message" rows="5" class="w-full"></textarea></div>
+          </div>
+          <button class="btn btn-gold btn-block" type="submit">Send inquiry</button>
+
+          <div class="inq-divider"><span>or reach out directly</span></div>
+          <app-contact-actions
+            [whatsappMessage]="whatsappMessage()"
+            emailSubject="Jewelry inquiry"
+            [emailBody]="emailBodyText()" />
+        </form>
+      </div>
     </div>
   }
 </section>

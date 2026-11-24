@@ -990,6 +990,23 @@ input[type='checkbox']:checked:hover {
   padding: 1.15rem 1.25rem 1.35rem !important;
 }
 
+.diamond-modal.p-dialog {
+  display: flex;
+  flex-direction: column;
+}
+
+.diamond-modal .p-dialog-content {
+  flex: 1;
+  min-height: 0;
+}
+
+.diamond-modal .p-dialog-footer {
+  flex-shrink: 0;
+  padding: 1.1rem 1.4rem !important;
+  border-top: 1px solid var(--lvj-line) !important;
+  background: var(--lvj-panel) !important;
+}
+
 .p-select-clear-icon {
   display: none !important;
 }

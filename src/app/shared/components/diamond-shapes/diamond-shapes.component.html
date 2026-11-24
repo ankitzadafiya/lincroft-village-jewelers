@@ -1,0 +1,114 @@
+<section class="ds" aria-labelledby="ds-title">
+  <div class="container">
+    <header class="ds-head">
+      <p class="ds-kicker">Build your own</p>
+      <h2 id="ds-title">Select your diamond</h2>
+      <p class="ds-sub">Choose a shape, then your carat, clarity and color — we'll help you find or create the exact stone.</p>
+    </header>
+
+    <div class="ds-grid">
+      @for (s of shapes; track s.key) {
+        <button type="button" class="ds-card" (click)="open(s.key)">
+          <span class="ds-media">
+            <img [src]="cardImg(s.key)" [alt]="s.name + ' cut diamond'" loading="lazy" decoding="async" />
+          </span>
+          <span class="ds-name">{{ s.name }}</span>
+        </button>
+      }
+    </div>
+  </div>
+</section>
+
+<p-dialog
+  [visible]="dialogVisible()"
+  (visibleChange)="onVisibleChange($event)"
+  [modal]="true"
+  [draggable]="false"
+  [resizable]="false"
+  [dismissableMask]="true"
+  [style]="{ width: '96vw', height: '94vh' }"
+  [contentStyle]="{ flex: '1', 'min-height': '0', overflow: 'auto' }"
+  styleClass="product-modal diamond-modal"
+  [header]="(activeShape()?.name ?? '') + ' Cut Diamond'">
+  @if (activeShape(); as shape) {
+    <div class="dm-body">
+      <div class="dm-main">
+        <p class="dm-blurb">{{ shape.blurb }}</p>
+
+        <p class="dm-label">Carat weight</p>
+        <div class="dm-carats" role="tablist" aria-label="Carat weight">
+          @for (c of carats; track c) {
+            <button type="button" class="dm-carat" [class.on]="isActiveCarat(c)" (click)="selectCarat(c)">
+              {{ formatCarat(c) }} ct
+            </button>
+          }
+        </div>
+
+        <div class="dm-label-row">
+          <p class="dm-label">Clarity &amp; color</p>
+          <span class="dm-hint">Select as many as you like</span>
+        </div>
+        <ul class="dm-combos" role="list">
+          @for (combo of combos; track combo.clarity + combo.color) {
+            <li>
+              <button
+                type="button"
+                class="dm-combo"
+                [class.on]="isComboSelected(combo)"
+                [attr.aria-pressed]="isComboSelected(combo)"
+                (click)="toggleCombo(combo)">
+                <img class="dm-combo-icon" [src]="iconImg(shape.key)" alt="" aria-hidden="true" />
+                <span class="dm-combo-text">
+                  <span class="dm-combo-carat">{{ formatCarat(activeCarat()) }} ct</span>
+                  <span class="dm-combo-spec">
+                    <b>{{ combo.clarity }}</b>
+                    <span class="dm-combo-color">{{ combo.color }}</span>
+                  </span>
+                </span>
+                <span class="dm-combo-check-box" aria-hidden="true">
+                  @if (isComboSelected(combo)) {
+                    <app-icon name="check" [size]="12" [strokeWidth]="2.6" />
+                  }
+                </span>
+              </button>
+            </li>
+          }
+        </ul>
+      </div>
+
+      <div class="dm-hero">
+        <img [src]="cardImg(shape.key)" [alt]="shape.name + ' cut diamond'" loading="lazy" decoding="async" />
+        <span class="dm-hero-label">{{ shape.name }} Cut</span>
+      </div>
+    </div>
+  }
+
+  <ng-template pTemplate="footer">
+    <div class="dm-footer-row">
+      @if (selectedDiamonds().length; as n) {
+        <div class="dm-cart">
+          <span class="dm-cart-badge">{{ n }}</span>
+          <span class="dm-cart-count">{{ n === 1 ? 'Diamond' : 'Diamonds' }} selected</span>
+          <a routerLink="/inquiry" class="dm-cart-cta" (click)="close()">
+            Review &amp; send
+            <app-icon name="arrow-right" [size]="14" [strokeWidth]="2" />
+          </a>
+        </div>
+      }
+
+      @if (otherShapes(); as rest) {
+        <div class="dm-footer">
+          <p class="dm-footer-label">Explore other shapes</p>
+          <div class="dm-footer-grid">
+            @for (s of rest; track s.key) {
+              <button type="button" class="dm-footer-shape" (click)="open(s.key)">
+                <img [src]="iconImg(s.key)" [alt]="s.name + ' cut diamond'" loading="lazy" decoding="async" />
+                <span>{{ s.name }}</span>
+              </button>
+            }
+          </div>
+        </div>
+      }
+    </div>
+  </ng-template>
+</p-dialog>

@@ -14,6 +14,7 @@ import { ServicesHelpComponent } from '../../shared/components/services-help/ser
 import { LookTile, ShopTheLookComponent } from '../../shared/components/shop-the-look/shop-the-look.component';
 import { HomeCollectionComponent } from '../../shared/components/home-collection/home-collection.component';
 import { RingJourneyComponent } from '../../shared/components/ring-journey/ring-journey.component';
+import { DiamondShapesComponent } from '../../shared/components/diamond-shapes/diamond-shapes.component';
 import { RevealDirective } from '../../shared/directives/reveal.directive';
 import { AppIconComponent } from '../../shared/icons/lvj-icons';
 
@@ -26,6 +27,7 @@ import { AppIconComponent } from '../../shared/icons/lvj-icons';
     ServicesHelpComponent,
     // CustomDesignFeatureComponent,
     RingJourneyComponent,
+    DiamondShapesComponent,
     ShopTheLookComponent,
     HomeCollectionComponent,
     RevealDirective,

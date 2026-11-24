@@ -405,12 +405,17 @@ Facet sources (from **active** products, optionally scoped by the same `category
   "message": "string",
   "items": [
     {
+      "kind": "product|diamond",      // optional, defaults to "product" — see BACKEND_DIAMOND_SELECTION.md
       "productId": "string",
       "sku": "string",
       "slug": "string",
       "name": "string",
       "imageUrl": "string|null",
-      "quantity": 1
+      "quantity": 1,
+      "diamondShape": "string",        // optional, only present when kind = "diamond"
+      "diamondCarat": 1.5,             // optional, only present when kind = "diamond"
+      "diamondClarity": "string",      // optional, only present when kind = "diamond"
+      "diamondColor": "string"         // optional, only present when kind = "diamond"
     }
   ],
   "source": "cart"

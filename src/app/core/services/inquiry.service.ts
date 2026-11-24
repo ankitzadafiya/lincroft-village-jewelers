@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, computed, inject, signal } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { ApiMessage, InquiryItem, InquiryRecord, InquiryRequest, InquiryStatus, Product, ProductListItem } from '../models';
+import { ApiMessage, DiamondSelection, InquiryItem, InquiryRecord, InquiryRequest, InquiryStatus, Product, ProductListItem } from '../models';
 
 const KEY = 'lvj_inquiry_cart';
 
@@ -33,6 +33,39 @@ export class InquiryService {
 
   remove(key: string): void {
     this.persist(this.itemsSignal().filter(i => i.productId !== key && i.sku !== key));
+  }
+
+  /** Stable identity for a diamond selection — same shape+carat+clarity+color always maps to one line item. */
+  private diamondSku(selection: DiamondSelection): string {
+    return `DIAMOND-${selection.shape.toUpperCase()}-${selection.carat}-${selection.clarity}-${selection.color}`;
+  }
+
+  hasDiamond(selection: DiamondSelection): boolean {
+    const sku = this.diamondSku(selection);
+    return this.itemsSignal().some(i => i.sku === sku);
+  }
+
+  /** Adds the selection if not already present, or removes it if it is — mirrors a checkbox toggle. */
+  toggleDiamond(selection: DiamondSelection): void {
+    const sku = this.diamondSku(selection);
+    const current = this.itemsSignal();
+    if (current.some(i => i.sku === sku)) {
+      this.persist(current.filter(i => i.sku !== sku));
+      return;
+    }
+    const item: InquiryItem = {
+      kind: 'diamond',
+      sku,
+      slug: 'diamond-selection',
+      name: `${selection.shape} Cut Diamond — ${selection.carat.toFixed(2)} ct, ${selection.clarity}, ${selection.color}`,
+      imageUrl: selection.imageUrl ?? null,
+      quantity: 1,
+      diamondShape: selection.shape,
+      diamondCarat: selection.carat,
+      diamondClarity: selection.clarity,
+      diamondColor: selection.color
+    };
+    this.persist([...current, item]);
   }
 
   clear(): void {

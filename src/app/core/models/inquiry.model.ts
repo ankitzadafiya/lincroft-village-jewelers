@@ -1,13 +1,21 @@
 export type InquirySource = 'cart' | 'product' | 'whatsapp' | 'email';
 export type InquiryStatus = 'new' | 'reviewed' | 'closed';
+/** 'product' is the default for any item that omits `kind` (back-compat with existing records). */
+export type InquiryItemKind = 'product' | 'diamond';
 
 export interface InquiryItem {
+  kind?: InquiryItemKind;
   productId?: string;
   sku: string;
   slug: string;
   name: string;
   imageUrl?: string | null;
   quantity: number;
+  /** Present only when kind === 'diamond'. */
+  diamondShape?: string;
+  diamondCarat?: number;
+  diamondClarity?: string;
+  diamondColor?: string;
 }
 
 export interface InquiryRequest {
@@ -33,6 +41,15 @@ export interface InquiryRecord {
 
 export interface InquiryStatusUpdate {
   status: InquiryStatus;
+}
+
+/** A single diamond spec the customer has picked in the "Select your diamond" modal. */
+export interface DiamondSelection {
+  shape: string;
+  carat: number;
+  clarity: string;
+  color: string;
+  imageUrl?: string | null;
 }
 
 export interface CustomJewelryRequest {
