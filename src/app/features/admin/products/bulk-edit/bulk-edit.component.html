@@ -1,0 +1,259 @@
+<div class="be">
+  <!-- ── Settings ─────────────────────────────────── -->
+  <div class="be-settings">
+    <!-- Apply to -->
+    <section class="be-card">
+      <p class="be-title">Apply to</p>
+      <div class="be-scope" role="radiogroup" aria-label="Products to change">
+        <button
+          type="button"
+          role="radio"
+          class="be-scope-opt"
+          [class.on]="scopeChoice() === 'selected'"
+          [attr.aria-checked]="scopeChoice() === 'selected'"
+          [disabled]="!selectedIds().length"
+          (click)="scopeChoice.set('selected')">
+          <strong>Selected</strong>
+          <span>{{ selectedIds().length }} product{{ selectedIds().length === 1 ? '' : 's' }}</span>
+        </button>
+        @if (searchText()) {
+          <button
+            type="button"
+            role="radio"
+            class="be-scope-opt"
+            [class.on]="scopeChoice() === 'filter'"
+            [attr.aria-checked]="scopeChoice() === 'filter'"
+            (click)="scopeChoice.set('filter')">
+            <strong>Search results</strong>
+            <span>“{{ searchText() }}”</span>
+          </button>
+        }
+        <button
+          type="button"
+          role="radio"
+          class="be-scope-opt"
+          [class.on]="scopeChoice() === 'all'"
+          [attr.aria-checked]="scopeChoice() === 'all'"
+          (click)="scopeChoice.set('all')">
+          <strong>All products</strong>
+          <span>Archived excluded</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- Price -->
+    <section class="be-card">
+      <p class="be-title">Price</p>
+      <p class="be-hint">Use this when the gold price moves. Products marked “price upon request” are skipped.</p>
+
+      <div class="be-row">
+        <label class="be-field">
+          <span class="be-label">Edit price mode</span>
+          <select class="be-select" [value]="priceMode()" (change)="pickPriceMode($event)">
+            @for (m of priceModes; track m.value) {
+              <option [value]="m.value">{{ m.label }}</option>
+            }
+          </select>
+        </label>
+
+        @if (needsValue()) {
+          <label class="be-field">
+            <span class="be-label">{{ isPercentMode() ? 'Percentage' : 'Amount' }}</span>
+            <span class="be-input" [class.invalid]="!!priceError() && priceValue() !== null" [class.pct]="isPercentMode()">
+              @if (!isPercentMode()) { <em>$</em> }
+              <input
+                type="number"
+                min="0"
+                step="any"
+                inputmode="decimal"
+                [value]="priceValue() ?? ''"
+                (input)="priceValue.set(numberFrom($event))"
+                [attr.aria-label]="isPercentMode() ? 'Percentage' : 'Amount in dollars'" />
+              @if (isPercentMode()) { <em>%</em> }
+            </span>
+          </label>
+        }
+      </div>
+
+      @if (needsValue() && priceError()) {
+        <p class="be-error"><app-icon name="info" [size]="14" [strokeWidth]="2" /> {{ priceError() }}</p>
+      }
+
+      @if (needsValue()) {
+        <label class="be-check">
+          <input type="checkbox" [checked]="roundWhole()" (change)="roundWhole.set($any($event.target).checked)" />
+          <span class="box" aria-hidden="true"></span>
+          Round to the nearest whole number
+        </label>
+      }
+
+      @if (needsValue() || compareMode() !== 'none') {
+        <div class="be-karats">
+          <span class="be-label">Karat prices to change</span>
+          <div class="be-chips">
+            @for (k of karats; track k) {
+              <button
+                type="button"
+                class="be-chip"
+                [class.on]="karatTargets().includes(k)"
+                [attr.aria-pressed]="karatTargets().includes(k)"
+                (click)="toggleKarat(k)">
+                @if (karatTargets().includes(k)) { <app-icon name="check" [size]="13" [strokeWidth]="2.4" /> }
+                {{ k }}
+              </button>
+            }
+          </div>
+          <p class="be-hint small">Products without karat pricing change their main price.</p>
+        </div>
+      }
+    </section>
+
+    <!-- Compare-at -->
+    <section class="be-card">
+      <p class="be-title">Compare-at price</p>
+      <p class="be-hint">The “was” price shown with a strike-through, set as a percentage above the selling price.</p>
+      <div class="be-seg" role="radiogroup" aria-label="Compare-at price">
+        <button type="button" role="radio" [class.on]="compareMode() === 'none'" [attr.aria-checked]="compareMode() === 'none'" (click)="compareMode.set('none')">Leave as is</button>
+        <button type="button" role="radio" [class.on]="compareMode() === 'percent_above'" [attr.aria-checked]="compareMode() === 'percent_above'" (click)="compareMode.set('percent_above')">% above price</button>
+        <button type="button" role="radio" [class.on]="compareMode() === 'remove'" [attr.aria-checked]="compareMode() === 'remove'" (click)="compareMode.set('remove')">Remove</button>
+      </div>
+      @if (compareMode() === 'percent_above') {
+        <div class="be-row single">
+          <label class="be-field">
+            <span class="be-label">Percentage above price</span>
+            <span class="be-input pct" [class.invalid]="!!compareError() && comparePercent() !== null">
+              <input
+                type="number"
+                min="0"
+                step="any"
+                inputmode="decimal"
+                [value]="comparePercent() ?? ''"
+                (input)="comparePercent.set(numberFrom($event))"
+                aria-label="Percentage above price" />
+              <em>%</em>
+            </span>
+          </label>
+        </div>
+        @if (compareError()) {
+          <p class="be-error"><app-icon name="info" [size]="14" [strokeWidth]="2" /> {{ compareError() }}</p>
+        } @else {
+          <p class="be-hint small">Example: price {{ money(1000) }} with {{ comparePercent() }}% → was {{ money(1000 * (1 + (comparePercent() ?? 0) / 100)) }}</p>
+        }
+      }
+    </section>
+
+    <!-- Visibility -->
+    <section class="be-card">
+      <p class="be-title">Visibility & status</p>
+
+      <span class="be-label">Show price</span>
+      <div class="be-seg">
+        <button type="button" [class.on]="showPrice() === null" (click)="showPrice.set(null)">No change</button>
+        <button type="button" [class.on]="showPrice() === true" (click)="showPrice.set(true)">Show</button>
+        <button type="button" [class.on]="showPrice() === false" (click)="showPrice.set(false)">Hide</button>
+      </div>
+
+      <span class="be-label">Status</span>
+      <div class="be-seg">
+        <button type="button" [class.on]="status() === null" (click)="status.set(null)">No change</button>
+        <button type="button" [class.on]="status() === 'active'" (click)="status.set('active')">Active</button>
+        <button type="button" [class.on]="status() === 'inactive'" (click)="status.set('inactive')">Inactive</button>
+      </div>
+
+      <span class="be-label">Availability</span>
+      <div class="be-seg wrap">
+        <button type="button" [class.on]="availability() === null" (click)="availability.set(null)">No change</button>
+        <button type="button" [class.on]="availability() === 'in_stock'" (click)="availability.set('in_stock')">In stock</button>
+        <button type="button" [class.on]="availability() === 'made_to_order'" (click)="availability.set('made_to_order')">Made to order</button>
+        <button type="button" [class.on]="availability() === 'sold'" (click)="availability.set('sold')">Sold</button>
+      </div>
+    </section>
+  </div>
+
+  <!-- ── Preview ──────────────────────────────────── -->
+  <div class="be-preview">
+    <div class="be-preview-head">
+      <p class="be-title">Preview</p>
+      @if (previewLoading()) {
+        <span class="be-loading">Updating…</span>
+      }
+    </div>
+
+    @if (!ready()) {
+      <div class="be-empty">
+        <app-icon name="sliders-horizontal" [size]="26" [strokeWidth]="1.5" />
+        <p>Choose a change on the left to see exactly what will happen before anything is saved.</p>
+      </div>
+    } @else if (preview()) {
+      @if (preview(); as p) {
+      <div class="be-stats">
+        <div><strong>{{ p.matched }}</strong><span>in scope</span></div>
+        <div class="good"><strong>{{ p.updated }}</strong><span>will change</span></div>
+        <div><strong>{{ p.unchanged }}</strong><span>no change</span></div>
+      </div>
+
+      <ul class="be-rows">
+        @for (row of p.preview; track row.id) {
+          <li [class.muted]="!row.changed">
+            <div class="be-row-head">
+              <strong>{{ row.name }}</strong>
+              <span>{{ row.sku }}</span>
+            </div>
+            @for (line of row.lines; track line.target) {
+              <div class="be-line">
+                <span class="be-target">{{ line.target === 'main' ? 'Price' : line.target }}</span>
+                <span class="be-from">{{ money(line.before) }}</span>
+                <app-icon name="arrow-right" [size]="13" [strokeWidth]="2" />
+                <span class="be-to" [class.up]="(line.after ?? 0) > (line.before ?? 0)" [class.down]="(line.after ?? 0) < (line.before ?? 0)">
+                  {{ money(line.after) }}
+                </span>
+                @if (line.compareBefore !== line.compareAfter) {
+                  <span class="be-compare">was {{ money(line.compareBefore) }} → {{ money(line.compareAfter) }}</span>
+                } @else if (line.compareAfter) {
+                  <span class="be-compare">was {{ money(line.compareAfter) }}</span>
+                }
+              </div>
+            }
+            @for (o of row.otherChanges; track o) {
+              <p class="be-other">{{ o }}</p>
+            }
+            @if (row.skippedReason) {
+              <p class="be-skip">Skipped — {{ row.skippedReason }}</p>
+            } @else if (!row.changed) {
+              <p class="be-skip">Already up to date</p>
+            }
+          </li>
+        }
+      </ul>
+      @if (p.matched > p.preview.length) {
+        <p class="be-hint small center">Showing the first {{ p.preview.length }} of {{ p.matched }} products.</p>
+      }
+      }
+    } @else if (!previewLoading()) {
+      <div class="be-empty"><p>No preview yet.</p></div>
+    }
+  </div>
+</div>
+
+<!-- ── Footer ─────────────────────────────────────── -->
+<div class="be-footer">
+  @if (confirming() && preview(); as p) {
+    <p class="be-confirm">
+      This will <b>{{ summary() }}</b> on <b>{{ p.updated }} product{{ p.updated === 1 ? '' : 's' }}</b>. This can’t be undone automatically.
+    </p>
+    <div class="be-actions">
+      <button type="button" class="btn btn-ghost" (click)="confirming.set(false)" [disabled]="applying()">Back</button>
+      <button type="button" class="btn" (click)="apply()" [disabled]="applying()">
+        {{ applying() ? 'Applying…' : 'Yes, apply changes' }}
+      </button>
+    </div>
+  } @else {
+    <span class="be-foot-note">Nothing is saved until you apply.</span>
+    <div class="be-actions">
+      <button type="button" class="btn btn-ghost" (click)="cancelled.emit()">Cancel</button>
+      <button type="button" class="btn" (click)="startApply()" [disabled]="!ready() || previewLoading() || !preview()?.updated">
+        Apply{{ preview()?.updated ? ' to ' + preview()!.updated + ' product' + (preview()!.updated === 1 ? '' : 's') : '' }}
+      </button>
+    </div>
+  }
+</div>

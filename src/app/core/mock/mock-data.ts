@@ -126,7 +126,57 @@ function product(p: Omit<Product, 'createdAt' | 'updatedAt' | 'status'> & { stat
 export const MOCK_PRODUCTS: Product[] = [
   product({
     id: 'p1', sku: 'LVJ-ER-1042', slug: 'aurora-halo-diamond-ring', name: 'Star Pattern Diamond Ring',
-    description: 'A luminous round brilliant held in a finely milgrain halo, set in 18k white gold. Designed to catch light from every angle without excess. Available for viewing and sizing at our Lincroft atelier.',
+    // Demo of the client's description format + metal color / karat options.
+    description: `Crafted in solid gold, this vintage-inspired ring is perfect for those who love distinctive diamond jewelry with a delicate cluster design. A memorable choice for an engagement, anniversary, promise, or special gift.
+
+💎 DIAMOND DETAILS:
+
+Diamond Details:
+* Diamond Type: Lab Grown Diamond
+* Shape: Round Cut
+* Carat Weight: 0.10 TCW Approx.
+* Color: E-F Color
+* Clarity: VVS-VS
+* Cut: Excellent
+
+✨ MATERIAL OPTIONS:
+* Karat: 10K Gold / 14K Gold / 18K Gold
+* Gold Tone: White Gold / Yellow Gold / Rose Gold
+
+📜 CERTIFICATION
+
+*IGI Certificate: If you would like an official IGI certification for your diamond, it can be added for a nominal additional cost ($35 to $50).
+
+🛠️ CUSTOM JEWELRY
+Looking for something unique?
+We specialize in custom lab grown diamond jewelry and personalized gold jewelry.
+We can customize:
+* Diamond shape
+* Diamond carat weight
+* Gold karat
+* Gold color
+* Ring size
+* Engraving
+
+🛠️We provide CAD designs, realistic 3D renderings, and a detailed quotation for your approval.
+
+📦 PACKAGING & SHIPPING
+* Comes in a premium jewelry gift box ready for gifting.
+* Fast, secure & insured worldwide shipping included.
+
+📌 NOTE
+Product images are for reference. Actual diamond dimensions and carat weight may vary slightly within the stated tolerance.`,
+    options: {
+      metalColors: ['yellow', 'white', 'rose'],
+      defaultMetalColor: 'white',
+      karatPrices: [
+        { karat: '10K', price: 5480 },
+        { karat: '14K', price: 6280, compareAtPrice: 6900 },
+        { karat: '18K', price: 7350 }
+      ],
+      defaultKarat: '14K',
+      allowCustomization: true
+    },
     categoryId: 'cat-rings', subcategoryId: 'sub-natural-rings', designerId: 'des-aurora', designerName: 'Aurora & Co',
     price: 6280, compareAtPrice: null, showPrice: true, availability: 'in_stock', featured: true, newArrival: true, bestSeller: true,
     tags: ['engagement', 'halo', 'diamond'],
@@ -136,7 +186,12 @@ export const MOCK_PRODUCTS: Product[] = [
       spec('carat', 'Carat', '1.01 ct', 'diamond'), spec('color', 'Color', 'F', 'diamond'),
       spec('clarity', 'Clarity', 'VS1', 'diamond'), spec('size', 'Size', '6.5 (resizable)', 'general')
     ],
-    images: [media('p1-1', IMG.elise.starRing, 'Star Pattern Diamond Ring', 0, true), media('p1-2', IMG.elise.celestial, 'Star Pattern Diamond Ring', 1, false)],
+    images: [
+      { ...media('p1-1', IMG.elise.starRing, 'Star Pattern Diamond Ring in white gold', 0, true), metalColor: 'white' },
+      { ...media('p1-2', IMG.elise.celestial, 'Star Pattern Diamond Ring in yellow gold', 1, false), metalColor: 'yellow' },
+      { ...media('p1-3', '/images/jewelry/engagement-ring-side.webp', 'Star Pattern Diamond Ring in rose gold', 2, false), metalColor: 'rose' },
+      media('p1-4', '/images/hero/hero-ring-on-hand.webp', 'Star Pattern Diamond Ring on hand', 3, false)
+    ],
     videos: [video('p1-v1', 0)]
   }),
   product({
@@ -674,8 +729,21 @@ export const DEFAULT_IMPORT_MAPPING = [
   { excelHeader: 'Gemstone', field: 'gemstone', required: false },
   { excelHeader: 'Weight', field: 'weight', required: false },
   { excelHeader: 'Price', field: 'price', required: false },
+  { excelHeader: 'Compare At Price', field: 'compareAtPrice', required: false },
   { excelHeader: 'Show Price', field: 'showPrice', required: false },
   { excelHeader: 'Status', field: 'status', required: false },
+  // ── Customer options (all optional) ──
+  { excelHeader: 'Metal Colors', field: 'metalColors', required: false },
+  { excelHeader: 'Default Metal Color', field: 'defaultMetalColor', required: false },
+  { excelHeader: 'Price 10K', field: 'price10k', required: false },
+  { excelHeader: 'Price 14K', field: 'price14k', required: false },
+  { excelHeader: 'Price 18K', field: 'price18k', required: false },
+  { excelHeader: 'Default Karat', field: 'defaultKarat', required: false },
+  { excelHeader: 'Ring Sizes', field: 'ringSizes', required: false },
+  { excelHeader: 'Allow Customization', field: 'allowCustomization', required: false },
+  { excelHeader: 'Yellow Gold Images', field: 'imagesYellow', required: false },
+  { excelHeader: 'White Gold Images', field: 'imagesWhite', required: false },
+  { excelHeader: 'Rose Gold Images', field: 'imagesRose', required: false },
   ...Array.from({ length: 12 }, (_, i) => ({ excelHeader: `Image ${i + 1}`, field: `image${i + 1}`, required: false })),
   ...Array.from({ length: 3 }, (_, i) => ({ excelHeader: `Video ${i + 1}`, field: `video${i + 1}`, required: false }))
 ];

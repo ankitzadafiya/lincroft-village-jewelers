@@ -2,9 +2,31 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, computed, inject, signal } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { ApiMessage, DiamondSelection, InquiryItem, InquiryRecord, InquiryRequest, InquiryStatus, Product, ProductListItem } from '../models';
+import {
+  ApiMessage,
+  DiamondSelection,
+  InquiryItem,
+  InquiryRecord,
+  InquiryRequest,
+  InquiryStatus,
+  MetalColor,
+  Product,
+  ProductListItem,
+  metalColorLabel
+} from '../models';
 
 const KEY = 'lvj_inquiry_cart';
+
+/** Options picked on the product page, carried into the inquiry bag. */
+export interface ProductChoice {
+  metalColor?: MetalColor | null;
+  karat?: string | null;
+  ringSize?: string | null;
+  customization?: string | null;
+  unitPrice?: number | null;
+  /** Photo of the picked color, used as the bag thumbnail. */
+  imageUrl?: string | null;
+}
 
 @Injectable({ providedIn: 'root' })
 export class InquiryService {
@@ -15,24 +37,65 @@ export class InquiryService {
   readonly items = this.itemsSignal.asReadonly();
   readonly count = computed(() => this.itemsSignal().reduce((sum, item) => sum + item.quantity, 0));
 
-  add(product: Pick<Product, 'id' | 'sku' | 'slug' | 'name' | 'images'> | ProductListItem): void {
-    let imageUrl: string | null = null;
-    if ('images' in product && product.images) {
+  add(
+    product: Pick<Product, 'id' | 'sku' | 'slug' | 'name' | 'images'> | ProductListItem,
+    choice: ProductChoice = {}
+  ): void {
+    let imageUrl: string | null = choice.imageUrl ?? null;
+    if (!imageUrl && 'images' in product && product.images) {
       const images = product.images;
       imageUrl = images.find(i => i.isPrimary)?.thumbnailUrl ?? images[0]?.url ?? null;
-    } else if ('primaryImage' in product) {
+    } else if (!imageUrl && 'primaryImage' in product) {
       imageUrl = product.primaryImage?.thumbnailUrl ?? product.primaryImage?.url ?? null;
     }
+    const candidate: InquiryItem = {
+      productId: product.id,
+      sku: product.sku,
+      slug: product.slug,
+      name: product.name,
+      imageUrl,
+      quantity: 1,
+      metalColor: choice.metalColor || undefined,
+      karat: choice.karat || undefined,
+      ringSize: choice.ringSize || undefined,
+      customization: choice.customization?.trim() || undefined,
+      unitPrice: choice.unitPrice ?? undefined
+    };
+    const key = InquiryService.lineKey(candidate);
     const current = this.itemsSignal();
-    const existing = current.find(i => i.productId === product.id);
+    const existing = current.find(i => InquiryService.lineKey(i) === key);
     const next = existing
-      ? current.map(i => i.productId === product.id ? { ...i, quantity: i.quantity + 1 } : i)
-      : [...current, { productId: product.id, sku: product.sku, slug: product.slug, name: product.name, imageUrl, quantity: 1 }];
+      ? current.map(i => InquiryService.lineKey(i) === key ? { ...i, quantity: i.quantity + 1 } : i)
+      : [...current, candidate];
     this.persist(next);
   }
 
+  /**
+   * Identity of one bag line. The same product in a different color / karat / size /
+   * custom request is a separate line.
+   */
+  static lineKey(item: InquiryItem): string {
+    return [
+      item.productId || item.sku,
+      item.metalColor ?? '',
+      item.karat ?? '',
+      item.ringSize ?? '',
+      item.customization ?? ''
+    ].join('|');
+  }
+
+  /** Removes one line (by `lineKey`). Product id / SKU still work and remove every matching line. */
   remove(key: string): void {
-    this.persist(this.itemsSignal().filter(i => i.productId !== key && i.sku !== key));
+    this.persist(this.itemsSignal().filter(i =>
+      InquiryService.lineKey(i) !== key && i.productId !== key && i.sku !== key));
+  }
+
+  /** Short human summary of the picked options, e.g. "Rose Gold · 18K · Size 6.5". */
+  static optionSummary(item: InquiryItem): string {
+    const color = item.metalColor ? metalColorLabel(item.metalColor as MetalColor) || item.metalColor : '';
+    return [color, item.karat, item.ringSize ? `Size ${item.ringSize}` : '']
+      .filter(Boolean)
+      .join(' · ');
   }
 
   /** Stable identity for a diamond selection — same shape+carat+clarity+color always maps to one line item. */

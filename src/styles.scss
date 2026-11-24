@@ -990,12 +990,14 @@ input[type='checkbox']:checked:hover {
   padding: 1.15rem 1.25rem 1.35rem !important;
 }
 
-.diamond-modal.p-dialog {
+.diamond-modal.p-dialog,
+.bulk-modal.p-dialog {
   display: flex;
   flex-direction: column;
 }
 
-.diamond-modal .p-dialog-content {
+.diamond-modal .p-dialog-content,
+.bulk-modal .p-dialog-content {
   flex: 1;
   min-height: 0;
 }

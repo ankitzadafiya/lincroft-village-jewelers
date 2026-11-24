@@ -2,7 +2,16 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { DashboardStats, PaginatedResponse, Product, ProductListQuery, ProductStatus, ProductWritePayload } from '../models';
+import {
+  BulkUpdateRequest,
+  BulkUpdateResult,
+  DashboardStats,
+  PaginatedResponse,
+  Product,
+  ProductListQuery,
+  ProductStatus,
+  ProductWritePayload
+} from '../models';
 
 @Injectable({ providedIn: 'root' })
 export class AdminProductService {
@@ -39,5 +48,10 @@ export class AdminProductService {
 
   setStatus(id: string, status: ProductStatus): Observable<Product> {
     return this.http.patch<Product>(`${this.api}/admin/products/${id}/status`, { status });
+  }
+
+  /** Bulk price / visibility edit. `dryRun: true` returns the preview without saving. */
+  bulkUpdate(request: BulkUpdateRequest): Observable<BulkUpdateResult> {
+    return this.http.post<BulkUpdateResult>(`${this.api}/admin/products/bulk-update`, request);
   }
 }

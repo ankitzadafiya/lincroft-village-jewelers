@@ -37,29 +37,118 @@
           </div>
 
           <div class="price-row">
-            <p class="price">{{ p.price | lvjPrice: p.showPrice }}</p>
-            @if (config.isPriceVisible(p) && p.compareAtPrice) {
-              <span class="price-compare">{{ p.compareAtPrice | lvjPrice: true }}</span>
-              @if (savePercent(p); as pct) {
+            <p class="price">{{ price() | lvjPrice: p.showPrice }}</p>
+            @if (config.isPriceVisible(p) && compareAtPrice()) {
+              <span class="price-compare">{{ compareAtPrice() | lvjPrice: true }}</span>
+              @if (savePercent(); as pct) {
                 <span class="save">Save {{ pct }}%</span>
               }
             }
           </div>
 
-          @if (p.description) {
-            <p class="desc">{{ p.description }}</p>
-          }
-
-          @if (keySpecs(p).length) {
-            <dl class="key-specs">
-              @for (s of keySpecs(p); track s.label) {
-                <div>
-                  <dt>{{ s.label }}</dt>
-                  <dd>{{ s.value }}</dd>
+          <!-- ── Options ─────────────────────────────── -->
+          <div class="opts">
+            @if (colorOptions().length) {
+              <div class="opt">
+                <p class="opt-label">Metal color <span>{{ colorLabel(metalColor()) }}</span></p>
+                <div class="swatches" role="radiogroup" aria-label="Metal color">
+                  @for (c of colorOptions(); track c.value) {
+                    <button
+                      type="button"
+                      class="swatch"
+                      role="radio"
+                      [class.on]="metalColor() === c.value"
+                      [attr.aria-checked]="metalColor() === c.value"
+                      [attr.aria-label]="c.label"
+                      [attr.title]="c.label"
+                      (click)="pickColor(c.value)">
+                      <span [style.background]="c.swatch"></span>
+                    </button>
+                  }
                 </div>
-              }
-            </dl>
-          }
+              </div>
+            }
+
+            @if (karatOptions().length) {
+              <div class="opt">
+                <p class="opt-label">Metal type <span>{{ karat() }}</span></p>
+                <div class="chips" role="radiogroup" aria-label="Metal type">
+                  @for (k of karatOptions(); track k.karat) {
+                    <button
+                      type="button"
+                      class="chip"
+                      role="radio"
+                      [class.on]="karat() === k.karat"
+                      [attr.aria-checked]="karat() === k.karat"
+                      (click)="pickKarat(k.karat)">
+                      {{ k.karat }}
+                    </button>
+                  }
+                </div>
+              </div>
+            }
+
+            @if (sizeOptions().length) {
+              <div class="opt" [class.invalid]="triedSubmit() && sizeMissing()">
+                <p class="opt-label">
+                  Size <span>{{ ringSize() || 'Select your size' }}</span>
+                </p>
+                <div class="chips sizes" role="radiogroup" aria-label="Ring size">
+                  @for (s of sizeOptions(); track s) {
+                    <button
+                      type="button"
+                      class="chip"
+                      role="radio"
+                      [class.on]="ringSize() === s"
+                      [attr.aria-checked]="ringSize() === s"
+                      (click)="pickSize(s)">
+                      {{ s }}
+                    </button>
+                  }
+                  <button
+                    type="button"
+                    class="chip wide"
+                    role="radio"
+                    [class.on]="ringSize() === sizeNotSure"
+                    [attr.aria-checked]="ringSize() === sizeNotSure"
+                    (click)="pickSize(sizeNotSure)">
+                    Not sure
+                  </button>
+                </div>
+                @if (triedSubmit() && sizeMissing()) {
+                  <p class="opt-error">Please choose a size, or pick “Not sure” and we’ll help you.</p>
+                }
+              </div>
+            }
+
+            @if (allowCustomization()) {
+              <div class="opt">
+                <p class="opt-label">Customize</p>
+                <div class="custom-box" [class.open]="customize()" [class.invalid]="triedSubmit() && noteMissing()">
+                  <label class="custom-check">
+                    <input type="checkbox" [checked]="customize()" (change)="toggleCustomize($any($event.target).checked)" />
+                    <span class="box" aria-hidden="true"></span>
+                    <span>Customize this item</span>
+                  </label>
+                  @if (customize()) {
+                    <div class="custom-body">
+                      <textarea
+                        rows="3"
+                        [value]="customNote()"
+                        [attr.maxlength]="customMax"
+                        (input)="onNote($event)"
+                        placeholder="Tell us what you would like — stone shape or size, engraving, band width, anything else."
+                        aria-label="Your customization request"></textarea>
+                      <span class="custom-count">{{ customNote().length }} / {{ customMax }}</span>
+                    </div>
+                  }
+                </div>
+                @if (triedSubmit() && noteMissing()) {
+                  <p class="opt-error">Please describe your customization.</p>
+                }
+              </div>
+            }
+          </div>
 
           <div class="cta">
             <button class="btn-primary" type="button" (click)="addInquiry()">
@@ -70,10 +159,6 @@
               [whatsappMessage]="whatsappMessage()"
               [emailSubject]="emailSubject()"
               [emailBody]="emailBodyText()" />
-            <a class="custom-link" routerLink="/custom-jewelry">
-              Want it in another metal or size? Request a custom version
-              <i class="pi pi-arrow-right" aria-hidden="true"></i>
-            </a>
           </div>
 
           <ul class="assure">
@@ -85,21 +170,12 @@
       </div>
     </section>
 
-    <section class="more container" aria-label="Product information">
-      <div class="tab-nav" role="tablist">
-        <button type="button" role="tab" [attr.aria-selected]="tab() === 'desc'" [class.on]="tab() === 'desc'" (click)="tab.set('desc')">Description</button>
-        <button type="button" role="tab" [attr.aria-selected]="tab() === 'details'" [class.on]="tab() === 'details'" (click)="tab.set('details')">Details</button>
-        <button type="button" role="tab" [attr.aria-selected]="tab() === 'ship'" [class.on]="tab() === 'ship'" (click)="tab.set('ship')">Pickup and returns</button>
-      </div>
-      <div class="tab-body" role="tabpanel">
-        @if (tab() === 'desc') {
-          <p>{{ p.description || 'A carefully selected piece from the Lincroft Village Jewelers collection.' }}</p>
-        } @else if (tab() === 'details') {
-          <app-product-specifications [specs]="p.specs" />
-        } @else {
-          <p>In-store pickup is free. Shipping options and returns are confirmed when you inquire, and every piece is handled personally by our team.</p>
-        }
-      </div>
+    <section class="more container" aria-labelledby="pd-title">
+      <header class="more-head">
+        <p class="kicker">About this piece</p>
+        <h2 id="pd-title">Product details</h2>
+      </header>
+      <app-product-description [text]="descriptionText()" [hideSections]="hiddenSections()" />
     </section>
 
     @if (related().length) {
@@ -122,7 +198,7 @@
           }
           <div>
             <strong>{{ p.name }}</strong>
-            <span>{{ p.price | lvjPrice: p.showPrice }}</span>
+            <span>{{ price() | lvjPrice: p.showPrice }}</span>
           </div>
         </div>
         <button class="btn-primary sm" type="button" (click)="addInquiry()">Add to inquiry</button>

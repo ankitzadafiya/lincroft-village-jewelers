@@ -6,3 +6,4 @@ export * from './inquiry.model';
 export * from './user.model';
 export * from './content.model';
 export * from './import.model';
+export * from './bulk-edit.model';

@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { InquiryService } from '../../core/services/inquiry.service';
+import { InquiryItem } from '../../core/models';
 import { SeoService } from '../../core/services/seo.service';
 import { ToastService } from '../../core/services/toast.service';
 import { InputTextModule } from 'primeng/inputtext';
@@ -53,9 +54,22 @@ export class InquiryComponent {
     });
   }
 
+  lineKey(item: InquiryItem): string {
+    return InquiryService.lineKey(item);
+  }
+
+  optionSummary(item: InquiryItem): string {
+    return InquiryService.optionSummary(item);
+  }
+
   private itemLines(): string {
     return this.inquiry.items()
-      .map(i => i.kind === 'diamond' ? `- ${i.name}` : `- ${i.name} (${i.sku})`)
+      .map(i => {
+        if (i.kind === 'diamond') return `- ${i.name}`;
+        const opts = InquiryService.optionSummary(i);
+        const custom = i.customization ? `\n  Customization: ${i.customization}` : '';
+        return `- ${i.name} (${i.sku})${opts ? ` — ${opts}` : ''}${custom}`;
+      })
       .join('\n');
   }
 

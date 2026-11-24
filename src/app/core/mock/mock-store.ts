@@ -190,7 +190,8 @@ export class MockStore {
       alt: m.alt,
       sortOrder: m.sortOrder,
       type,
-      isPrimary: m.isPrimary
+      isPrimary: m.isPrimary,
+      metalColor: m.metalColor ?? null
     });
     const product: Product = {
       id: id ?? this.nextId('p'),
@@ -220,6 +221,7 @@ export class MockStore {
       featured: payload.featured ?? false,
       newArrival: payload.newArrival ?? false,
       bestSeller: payload.bestSeller ?? false,
+      options: payload.options ?? null,
       createdAt: id ? this.products.find(p => p.id === id)?.createdAt ?? new Date().toISOString() : new Date().toISOString(),
       updatedAt: new Date().toISOString()
     };

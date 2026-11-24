@@ -1,19 +1,20 @@
 <section class="rj" data-no-reveal [class.is-static]="reduced()" aria-labelledby="rj-title">
-  <!-- Centred section heading (scrolls away before the story pins) -->
-  <header class="rj-head container">
-    <p class="rj-kicker">Custom jewelry design</p>
-    @if (pageMode()) {
-      <h1 id="rj-title">If you can dream it, we can build it</h1>
-    } @else {
-      <h2 id="rj-title">If you can dream it, we can build it</h2>
-    }
-  </header>
-
   <div class="rj-track" #track>
     <div class="rj-sticky">
       <div class="container rj-grid">
         <!-- ── Copy ─────────────────────────────────────── -->
         <div class="rj-copy">
+          <!-- Heading lives inside the pinned frame so it stays visible while the story scrolls -->
+          <header class="rj-heading">
+            <p class="rj-tagline">If you can dream it, we can build it</p>
+            @if (pageMode()) {
+              <h1 id="rj-title">Custom jewelry design</h1>
+            } @else {
+              <h2 id="rj-title">Custom jewelry design</h2>
+            }
+            <span class="rj-heading-rule" aria-hidden="true"></span>
+          </header>
+
           <p class="rj-lede">
             Please share any sketches or reference images of your desired design. We’ll provide a CAD file, 3D rendering,
             and price quotation for the jewelry and diamonds. Once everything is approved, we’ll create your dream piece

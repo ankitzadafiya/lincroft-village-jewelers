@@ -6,7 +6,8 @@ import {
   computed,
   effect,
   input,
-  signal
+  signal,
+  untracked
 } from '@angular/core';
 import { ProductMedia } from '../../../core/models';
 
@@ -48,15 +49,10 @@ export class ProductGalleryComponent implements OnDestroy {
   readonly current = computed(() => this.items()[this.activeIndex()] ?? null);
 
   constructor() {
+    // A new photo set (e.g. the customer picked another metal color) starts at the first photo.
     effect(() => {
-      const list = this.items();
-      if (!list.length) {
-        this.activeIndex.set(0);
-        return;
-      }
-      if (this.activeIndex() >= list.length) {
-        this.activeIndex.set(0);
-      }
+      this.items();
+      untracked(() => this.activeIndex.set(0));
     });
 
     effect(() => {

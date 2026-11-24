@@ -11,6 +11,14 @@ export interface InquiryItem {
   name: string;
   imageUrl?: string | null;
   quantity: number;
+  /** Product options the customer picked (product items only; all optional). */
+  metalColor?: string;
+  karat?: string;
+  ringSize?: string;
+  /** Free-text request from the "Customize this item" box. */
+  customization?: string;
+  /** Price of the picked karat at the time it was added (display only). */
+  unitPrice?: number | null;
   /** Present only when kind === 'diamond'. */
   diamondShape?: string;
   diamondCarat?: number;

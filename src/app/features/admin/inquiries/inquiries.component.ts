@@ -61,13 +61,19 @@ type LeadTab = 'inquiries' | 'custom' | 'contact' | 'newsletter';
               }
               @if (item.items.length) {
                 <ul class="chips">
-                  @for (product of item.items; track product.sku) {
-                    <li [class.diamond]="product.kind === 'diamond'">
+                  @for (product of item.items; track $index) {
+                    <li [class.diamond]="product.kind === 'diamond'" [class.has-custom]="!!product.customization">
                       @if (product.kind === 'diamond') {
                         <span class="chip-tag">Diamond</span>
                         {{ product.name }}
                       } @else {
                         {{ product.name }} <span>{{ product.sku }}</span>
+                        @if (optionSummary(product); as opts) {
+                          <em class="chip-opts">{{ opts }}</em>
+                        }
+                        @if (product.customization) {
+                          <small class="chip-custom">Customization: {{ product.customization }}</small>
+                        }
                       }
                     </li>
                   }
@@ -393,6 +399,22 @@ type LeadTab = 'inquiries' | 'custom' | 'contact' | 'newsletter';
       font-weight: 500;
       margin-left: 0.25rem;
     }
+    .chip-opts {
+      margin-left: 0.35rem;
+      font-style: normal;
+      font-weight: 600;
+      color: var(--lvj-navy);
+    }
+    .chips li.has-custom {
+      border-radius: 12px;
+    }
+    .chip-custom {
+      display: block;
+      margin-top: 0.25rem;
+      font-weight: 450;
+      color: var(--lvj-muted);
+      white-space: pre-wrap;
+    }
     .chips li.diamond {
       background: color-mix(in srgb, var(--lvj-jewel) 12%, #fff);
       border-color: color-mix(in srgb, var(--lvj-jewel) 35%, var(--lvj-line));
@@ -518,6 +540,7 @@ type LeadTab = 'inquiries' | 'custom' | 'contact' | 'newsletter';
   `]
 })
 export class AdminInquiriesComponent implements OnInit {
+  readonly optionSummary = InquiryService.optionSummary;
   private readonly inquiry = inject(InquiryService);
   private readonly inbox = inject(AdminInboxService);
   private readonly toast = inject(ToastService);

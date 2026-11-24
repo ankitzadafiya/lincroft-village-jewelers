@@ -65,6 +65,9 @@
         <div class="field">
           <label for="price">Price</label>
           <p-inputNumber inputId="price" formControlName="price" mode="currency" currency="USD" locale="en-US" styleClass="w-full" inputStyleClass="w-full" />
+          @if (enabledKarats().length) {
+            <small class="field-note">Karat prices are on — the default karat's price is used instead.</small>
+          }
         </div>
         <div class="field">
           <label for="compareAtPrice">Compare-at price</label>
@@ -93,8 +96,38 @@
             [showClear]="false" />
         </div>
         <div class="field full">
-          <label for="description">Description</label>
-          <textarea pTextarea id="description" formControlName="description" rows="4" class="w-full"></textarea>
+          <div class="desc-label-row">
+            <label for="description">Description</label>
+            <button type="button" class="link-btn" (click)="showPreview.set(!showPreview())">
+              {{ showPreview() ? 'Hide preview' : 'Show preview' }}
+            </button>
+          </div>
+          <div class="desc-editor" [class.with-preview]="showPreview()">
+            <div class="desc-input">
+              <textarea pTextarea id="description" formControlName="description" rows="16" class="w-full"></textarea>
+              <details class="desc-help">
+                <summary>How to format the description</summary>
+                <ul>
+                  <li>First lines = short introduction.</li>
+                  <li>A line in <b>CAPITALS</b> starts a section (emoji allowed), e.g. <code>💎 DIAMOND DETAILS</code>.</li>
+                  <li><code>* Label: value</code> becomes a detail row, e.g. <code>* Shape: Round Cut</code>.</li>
+                  <li><code>* text</code> without a colon becomes a bullet point.</li>
+                  <li>A “Material options” section is hidden on the site when metal color / karat options are on (the buttons already show it).</li>
+                </ul>
+                <pre>{{ descriptionExample }}</pre>
+              </details>
+            </div>
+            @if (showPreview()) {
+              <div class="desc-preview" aria-label="Description preview">
+                <p class="eyebrow">Preview</p>
+                @if (descriptionPreview().trim()) {
+                  <app-product-description [text]="descriptionPreview()" [compact]="true" />
+                } @else {
+                  <p class="muted">Start typing to see how it looks on the product page.</p>
+                }
+              </div>
+            }
+          </div>
         </div>
         <div class="field full">
           <label for="tags">Tags</label>
@@ -158,12 +191,126 @@
       </div>
     </section>
 
+    <section class="block" formGroupName="options">
+      <header class="block-head">
+        <p class="eyebrow">Customer options</p>
+        <h3>Metal color, karat, size & customization</h3>
+      </header>
+
+      <div class="opt-grid">
+        <!-- Metal colors -->
+        <div class="opt-card">
+          <p class="opt-title">Metal colors</p>
+          <p class="opt-hint">Tick the gold colors this piece comes in. Upload photos for each color under Media.</p>
+          <div class="color-checks">
+            @for (c of metalColors; track c.value) {
+              <label class="color-check" [class.on]="colorControl(c.value).value">
+                <input type="checkbox" [formControl]="colorControl(c.value)" />
+                <span class="dot" [style.background]="c.swatch" aria-hidden="true"></span>
+                {{ c.label }}
+              </label>
+            }
+          </div>
+          @if (checkedColors().length > 1) {
+            <div class="field">
+              <label for="defaultMetalColor">Shown first</label>
+              <select id="defaultMetalColor" class="native-select" formControlName="defaultMetalColor">
+                <option value="">{{ colorLabel(checkedColors()[0]) }} (first ticked)</option>
+                @for (c of metalColors; track c.value) {
+                  @if (colorControl(c.value).value) {
+                    <option [value]="c.value">{{ c.label }}</option>
+                  }
+                }
+              </select>
+            </div>
+          }
+        </div>
+
+        <!-- Karat prices -->
+        <div class="opt-card">
+          <p class="opt-title">Metal type & price</p>
+          <p class="opt-hint">Tick each karat you offer and enter its price. Leave all unticked to use the main price only.</p>
+          <div class="karat-table">
+            <div class="karat-row head">
+              <span>Karat</span><span>Price</span><span>Compare-at (optional)</span>
+            </div>
+            @for (k of karats; track k) {
+              <div class="karat-row" [formGroup]="karatControl(k)" [class.off]="!karatControl(k).controls.enabled.value">
+                <label class="karat-check">
+                  <input type="checkbox" formControlName="enabled" />
+                  {{ k }}
+                </label>
+                <p-inputNumber formControlName="price" mode="currency" currency="USD" locale="en-US" styleClass="w-full" inputStyleClass="w-full" [attr.aria-label]="k + ' price'" />
+                <p-inputNumber formControlName="compareAtPrice" mode="currency" currency="USD" locale="en-US" styleClass="w-full" inputStyleClass="w-full" [attr.aria-label]="k + ' compare-at price'" />
+              </div>
+            }
+          </div>
+          @if (enabledKarats().length > 1) {
+            <div class="field">
+              <label for="defaultKarat">Selected by default</label>
+              <select id="defaultKarat" class="native-select" formControlName="defaultKarat">
+                <option value="">{{ enabledKarats()[0] }} (first ticked)</option>
+                @for (k of enabledKarats(); track k) {
+                  <option [value]="k">{{ k }}</option>
+                }
+              </select>
+            </div>
+          }
+        </div>
+
+        <!-- Ring sizes -->
+        <div class="opt-card">
+          <p class="opt-title">Ring sizes</p>
+          <p class="opt-hint">Automatic shows sizes 4 – 11 for products in the Ring category.</p>
+          <div class="field">
+            <label for="ringSizeMode">Size picker</label>
+            <select id="ringSizeMode" class="native-select" formControlName="ringSizeMode">
+              @for (m of ringSizeModes; track m.value) {
+                <option [value]="m.value">{{ m.label }}</option>
+              }
+            </select>
+          </div>
+          @if (form.controls.options.controls.ringSizeMode.value !== 'off') {
+            <div class="field">
+              <label for="ringSizes">Sizes offered</label>
+              <input pInputText id="ringSizes" formControlName="ringSizes" class="w-full" />
+              <small class="field-note">Comma separated. Customers can also pick “Not sure”.</small>
+            </div>
+          }
+        </div>
+
+        <!-- Customization -->
+        <div class="opt-card">
+          <p class="opt-title">Customization</p>
+          <p class="opt-hint">Shows a “Customize this item” checkbox with a text box for the customer’s request.</p>
+          <label class="check" for="allowCustomization">
+            <input id="allowCustomization" type="checkbox" formControlName="allowCustomization" />
+            Allow customization requests
+          </label>
+        </div>
+      </div>
+    </section>
+
     <section class="block">
       <header class="block-head">
         <p class="eyebrow">Media</p>
         <h3>Images & videos</h3>
       </header>
-      <app-media-uploader kind="image" [items]="images()" (itemsChange)="images.set($event)" />
+      <app-media-uploader
+        kind="image"
+        title="Photos for every color"
+        hint="Lifestyle or detail shots shown with any metal color"
+        [items]="imagesFor(null)"
+        (itemsChange)="setImagesFor(null, $event)" />
+      @for (c of metalColors; track c.value) {
+        <app-media-uploader
+          kind="image"
+          [title]="c.label + ' photos'"
+          [swatch]="c.swatch"
+          [hint]="colorControl(c.value).value ? 'Shown when a customer picks ' + c.label : 'Upload to offer ' + c.label"
+          [items]="imagesFor(c.value)"
+          (itemsChange)="setImagesFor(c.value, $event)" />
+      }
       <app-media-uploader kind="video" [items]="videos()" (itemsChange)="videos.set($event)" />
     </section>
 

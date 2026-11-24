@@ -13,7 +13,13 @@ import { AppIconComponent } from '../../icons/lvj-icons';
       <div class="head">
         <div class="title">
           <app-icon [name]="kind() === 'image' ? 'image' : 'video'" [size]="16" [strokeWidth]="1.7"></app-icon>
-          <h3>{{ kind() === 'image' ? 'Images' : 'Videos' }}</h3>
+          @if (swatch()) {
+            <span class="swatch" [style.background]="swatch()" aria-hidden="true"></span>
+          }
+          <h3>{{ title() || (kind() === 'image' ? 'Images' : 'Videos') }}</h3>
+          @if (hint()) {
+            <span class="hint">{{ hint() }}</span>
+          }
         </div>
         <small>{{ items().length }} / {{ max() }}</small>
       </div>
@@ -77,6 +83,13 @@ import { AppIconComponent } from '../../icons/lvj-icons';
       color: var(--lvj-ink);
     }
     h3 { font-size: 1.05rem; font-family: var(--font-body); font-weight: 600; font-style: normal; }
+    .title .swatch {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      box-shadow: inset 0 0 0 1px rgba(10, 29, 58, 0.18);
+    }
+    .title .hint { color: var(--lvj-muted); font-size: 0.78rem; margin-left: 0.2rem; }
     small { color: var(--lvj-muted); font-size: 0.78rem; }
     .grid {
       display: grid;
@@ -162,13 +175,19 @@ import { AppIconComponent } from '../../icons/lvj-icons';
 export class MediaUploaderComponent {
   readonly kind = input<'image' | 'video'>('image');
   readonly items = input<ProductMedia[]>([]);
+  /** Optional heading (defaults to "Images"/"Videos"), small hint and color dot. */
+  readonly title = input('');
+  readonly hint = input('');
+  readonly swatch = input('');
+  /** Max files for this uploader; defaults to the environment limit. */
+  readonly limit = input<number | null>(null);
   readonly itemsChange = output<ProductMedia[]>();
   readonly progress = signal<number | null>(null);
   private readonly media = inject(MediaService);
   private readonly toast = inject(ToastService);
 
   max(): number {
-    return this.kind() === 'image' ? environment.media.maxImages : environment.media.maxVideos;
+    return this.limit() ?? (this.kind() === 'image' ? environment.media.maxImages : environment.media.maxVideos);
   }
 
   onFile(event: Event): void {

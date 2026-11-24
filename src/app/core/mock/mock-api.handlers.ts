@@ -1,12 +1,20 @@
 import { HttpErrorResponse, HttpRequest, HttpResponse } from '@angular/common/http';
 import { Observable, of, throwError } from 'rxjs';
 import { delay } from 'rxjs/operators';
+import { applyBulkChanges } from '../utils/bulk-price';
 import {
+  BulkUpdateRequest,
+  BulkUpdateResult,
   CustomJewelryRequest,
   ImportPreviewResult,
   InquiryRequest,
   InquiryRecord,
+  Karat,
+  KaratPrice,
   LoginRequest,
+  MetalColor,
+  ProductMediaWrite,
+  ProductOptions,
   ProductFilterFacets,
   ProductListQuery,
   ProductStatus,
@@ -656,6 +664,38 @@ export function handleMockRequest(req: HttpRequest<unknown>): Observable<HttpRes
     });
   }
 
+  if (method === 'POST' && path.endsWith('/admin/products/bulk-update')) {
+    const request = body as unknown as BulkUpdateRequest;
+    const scope = request.scope;
+    const inScope = scope.type === 'ids'
+      ? mockStore.products.filter(p => scope.ids.includes(p.id))
+      : scope.type === 'filter'
+        ? mockStore.queryProducts({ ...scope.filter, page: 1, pageSize: 100000 }, false).items
+        : mockStore.products.filter(p => p.status !== 'archived');
+    const results = inScope.map(p => ({ product: p, ...applyBulkChanges(p, request.changes) }));
+    if (!request.dryRun) {
+      const now = new Date().toISOString();
+      results.filter(r => r.row.changed).forEach(({ product, patch }) => {
+        product.price = patch.price;
+        product.compareAtPrice = patch.compareAtPrice;
+        product.showPrice = patch.showPrice;
+        product.status = patch.status;
+        product.availability = patch.availability;
+        if (patch.karatPrices && product.options) product.options = { ...product.options, karatPrices: patch.karatPrices };
+        product.updatedAt = now;
+      });
+    }
+    const updated = results.filter(r => r.row.changed).length;
+    const result: BulkUpdateResult = {
+      matched: results.length,
+      updated,
+      unchanged: results.length - updated,
+      preview: results.slice(0, 200).map(r => r.row),
+      dryRun: request.dryRun
+    };
+    return ok(result);
+  }
+
   const adminProduct = path.match(/\/admin\/products\/([^/]+)$/);
   if (method === 'GET' && adminProduct) {
     const product = mockStore.products.find(p => p.id === adminProduct[1]);
@@ -906,8 +946,7 @@ export function handleMockRequest(req: HttpRequest<unknown>): Observable<HttpRes
         subcategoryId: subcategory?.id ?? null,
         designerId: designer?.id ?? null,
         brandName: d['brandName'] || null,
-        price: d['price'] ? Number(d['price']) : null,
-        compareAtPrice: null,
+        ...priceAndOptionsFromRow(d),
         showPrice: (d['showPrice'] ?? 'true').toLowerCase() !== 'false',
         status: (d['status'] || 'active') as ProductWritePayload['status'],
         availability: 'in_stock',
@@ -916,7 +955,7 @@ export function handleMockRequest(req: HttpRequest<unknown>): Observable<HttpRes
         featured: false,
         newArrival: true,
         bestSeller: false,
-        images: [],
+        images: imagesFromRow(d),
         videos: []
       });
     });
@@ -944,6 +983,81 @@ export function handleMockRequest(req: HttpRequest<unknown>): Observable<HttpRes
   }
 
   return fail(404, `No mock handler for ${method} ${path}`);
+}
+
+const COLOR_WORDS: Record<string, MetalColor> = { yellow: 'yellow', white: 'white', rose: 'rose' };
+
+/** "Yellow Gold, rose" → ['yellow', 'rose'] (unknown words ignored). */
+function parseColors(raw: string | null | undefined): MetalColor[] {
+  const found = (raw ?? '')
+    .toLowerCase()
+    .split(/[,/\n;]+/)
+    .map(s => COLOR_WORDS[s.replace(/gold/g, '').trim()])
+    .filter((c): c is MetalColor => !!c);
+  return [...new Set(found)];
+}
+
+function parseUrls(raw: string | null | undefined): string[] {
+  return (raw ?? '').split(/[\n,]+/).map(s => s.trim()).filter(s => /^https?:\/\//i.test(s));
+}
+
+function num(raw: string | null | undefined): number | null {
+  if (!raw?.toString().trim()) return null;
+  const n = Number(raw.toString().replace(/[$,\s]/g, ''));
+  return Number.isNaN(n) ? null : n;
+}
+
+/** Excel → price, compare-at price and the customer `options` block. */
+function priceAndOptionsFromRow(d: Record<string, string | null>) {
+  const karatPrices: KaratPrice[] = (
+    [['10K', d['price10k']], ['14K', d['price14k']], ['18K', d['price18k']]] as [Karat, string | null][]
+  )
+    .map(([karat, raw]) => ({ karat, price: num(raw) }))
+    .filter(k => k.price != null);
+
+  const colors = parseColors(d['metalColors']);
+  // Colors that only appear as photo columns still count as offered.
+  (['yellow', 'white', 'rose'] as MetalColor[]).forEach(c => {
+    const key = c === 'yellow' ? 'imagesYellow' : c === 'white' ? 'imagesWhite' : 'imagesRose';
+    if (parseUrls(d[key]).length && !colors.includes(c)) colors.push(c);
+  });
+
+  const wantKarat = (d['defaultKarat'] ?? '').toUpperCase().replace(/\s/g, '') as Karat;
+  const defaultKarat = karatPrices.some(k => k.karat === wantKarat) ? wantKarat : karatPrices[0]?.karat ?? null;
+  const wantColor = parseColors(d['defaultMetalColor'])[0];
+
+  const sizesRaw = (d['ringSizes'] ?? '').trim();
+  const sizesOff = /^(none|no|off)$/i.test(sizesRaw);
+  const sizes = sizesOff ? [] : sizesRaw.split(/[,\s]+/).filter(Boolean);
+
+  const options: ProductOptions = {
+    metalColors: colors,
+    defaultMetalColor: wantColor && colors.includes(wantColor) ? wantColor : colors[0] ?? null,
+    karatPrices,
+    defaultKarat,
+    showRingSizes: sizesOff ? false : sizes.length ? true : null,
+    ringSizes: sizes,
+    allowCustomization: !/^(no|false|0)$/i.test((d['allowCustomization'] ?? '').trim())
+  };
+
+  const defaultPrice = karatPrices.find(k => k.karat === defaultKarat)?.price ?? null;
+  return {
+    price: defaultPrice ?? num(d['price']),
+    compareAtPrice: num(d['compareAtPrice']),
+    options
+  };
+}
+
+/** Shared photos (Image 1–12) first, then each color's photos tagged with that color. */
+function imagesFromRow(d: Record<string, string | null>): ProductMediaWrite[] {
+  const shared = Array.from({ length: 12 }, (_, i) => d[`image${i + 1}`]).flatMap(parseUrls);
+  const rows: { url: string; metalColor: MetalColor | null }[] = [
+    ...shared.map(url => ({ url, metalColor: null })),
+    ...parseUrls(d['imagesYellow']).map(url => ({ url, metalColor: 'yellow' as MetalColor })),
+    ...parseUrls(d['imagesWhite']).map(url => ({ url, metalColor: 'white' as MetalColor })),
+    ...parseUrls(d['imagesRose']).map(url => ({ url, metalColor: 'rose' as MetalColor }))
+  ];
+  return rows.map((r, i) => ({ url: r.url, sourceUrl: r.url, sortOrder: i, isPrimary: i === 0, metalColor: r.metalColor }));
 }
 
 function buildSpecsFromRow(d: Record<string, string | null>) {
@@ -982,8 +1096,15 @@ function validateImport(rows: Record<string, string>[], mapping: typeof DEFAULT_
       if (!sub) errors.push('Unknown subcategory.');
       else if (category && sub.parentId !== category.id) errors.push('Subcategory does not belong to category.');
     }
-    if (data['price'] && Number.isNaN(Number(data['price']))) {
-      errors.push('Price must be numeric.');
+    (['price', 'compareAtPrice', 'price10k', 'price14k', 'price18k'] as const).forEach(field => {
+      const raw = data[field];
+      if (raw && num(raw) == null) errors.push(`${field === 'price' ? 'Price' : field} must be a number.`);
+    });
+    if (data['metalColors'] && !parseColors(data['metalColors']).length) {
+      errors.push('Metal Colors must be Yellow, White and/or Rose.');
+    }
+    if (data['defaultKarat'] && !/^(10|14|18)\s*k$/i.test(data['defaultKarat'])) {
+      errors.push('Default Karat must be 10K, 14K or 18K.');
     }
     const skuKey = data['sku'].toLowerCase();
     if (skuKey && (seen.has(skuKey) || fileSeen.has(skuKey))) {

@@ -86,6 +86,34 @@
   color: var(--lvj-muted);
 }
 
+.inq-opts {
+  margin: 0;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--lvj-navy);
+}
+
+.inq-custom {
+  margin: 0.3rem 0 0;
+  padding: 0.45rem 0.6rem;
+  border-radius: 8px;
+  background: var(--lvj-panel-alt);
+  font-size: 0.8rem;
+  line-height: 1.45;
+  color: var(--lvj-ink);
+  overflow-wrap: anywhere;
+
+  span {
+    display: block;
+    margin-bottom: 0.1rem;
+    font-size: 0.62rem;
+    font-weight: 650;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--lvj-muted-2);
+  }
+}
+
 .inq-tag {
   display: inline-flex;
   align-items: center;

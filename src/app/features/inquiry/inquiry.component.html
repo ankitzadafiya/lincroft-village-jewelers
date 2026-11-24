@@ -14,7 +14,7 @@
       <div class="inq-list">
         <p class="inq-label">Your selection ({{ inquiry.items().length }})</p>
         <ul>
-          @for (item of inquiry.items(); track item.sku) {
+          @for (item of inquiry.items(); track lineKey(item)) {
             <li class="inq-item">
               <span class="inq-thumb">
                 @if (item.imageUrl) {
@@ -29,14 +29,20 @@
                   <strong>{{ item.name }}</strong>
                 } @else {
                   <a [routerLink]="['/product', item.slug]"><strong>{{ item.name }}</strong></a>
+                  @if (optionSummary(item); as opts) {
+                    <p class="inq-opts">{{ opts }}</p>
+                  }
                   <p class="inq-sku">SKU {{ item.sku }}</p>
+                  @if (item.customization) {
+                    <p class="inq-custom"><span>Customization</span>{{ item.customization }}</p>
+                  }
                 }
               </div>
               <button
                 type="button"
                 class="inq-remove"
                 [attr.aria-label]="'Remove ' + item.name"
-                (click)="inquiry.remove(item.productId || item.sku)">
+                (click)="inquiry.remove(lineKey(item))">
                 <app-icon name="x" [size]="15" [strokeWidth]="1.8" />
               </button>
             </li>
